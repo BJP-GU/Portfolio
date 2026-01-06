@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bryce Parsons Designer</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <script>
+        // Ensure page loads at the top (Welcome section)
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
+    <div class="site-wrapper">
+        <!-- Navigation -->
+        <nav class="main-grid">
+            <div class="grid-cell logo-cell">
+                <a href="#" class="home-button" id="home-button">
+                    <img src="P.svg" alt="P Logo">
+                </a>
+            </div>
+            <div class="grid-cell nav-links-cell">
+                <a href="#welcome">welcome</a>
+                <a href="#my-work">my work</a>
+                <a href="#resume">resume</a>
+            </div>
+            <div class="grid-cell location-cell">
+                San Francisco, CA
+            </div>
+        </nav>
+
+        <!-- Spacer with vertical lines -->
+        <div class="main-grid spacer-row">
+            <div class="grid-cell empty-cell"></div>
+            <div class="grid-cell empty-cell"></div>
+            <div class="grid-cell empty-cell"></div>
+            <div class="grid-cell empty-cell"></div>
+        </div>
+
+        <!-- Welcome Section -->
+        <section id="welcome" class="main-grid">
+            <!-- Title Row -->
+            <div class="grid-cell empty-cell title-row"></div>
+            <div class="grid-cell title-cell">
+                <div class="main-title">
+                    <span class="name">Bryce Parsons<img src="P-circle.svg" alt="P Logo" class="name-logo"></span>
+                    <span class="designer">Designer</span>
+                </div>
+            </div>
+            <div class="grid-cell empty-cell title-row"></div>
+
+            <!-- Image Row -->
+            <div class="grid-cell empty-cell image-row"></div>
+            <div class="grid-cell image-cell">
+                <div class="image-wrapper">
+                    <img src="Image (Default).jpg" alt="Bryce Parsons" class="default-img">
+                    <img src="Image (hover).jpg" alt="Bryce Parsons" class="hover-img">
+                </div>
+            </div>
+            <div class="grid-cell empty-cell image-row"></div>
+
+            <!-- Content Row -->
+            <div class="grid-cell empty-cell content-row-side"></div>
+            <div class="grid-cell content-cell">
+                <div class="content-wrapper">
+                    <div class="content-row currently">
+                        <span class="label">currently</span>
+                        <div class="text">
+                            studying emerging technology design at <a href="https://mdes.berkeley.edu/" target="_blank" class="link-black">UC Berkeley MDes</a> — focusing on the application of artificial intelligence and the future of human computer interaction.
+                        </div>
+                    </div>
+                    <div class="content-row previously">
+                        <span class="label">previously</span>
+                        <div class="text">
+                            <p>worked five years in Product Design and Strategy consulting for clients including Microsoft, the Gates Foundation, Nintendo, and Gap Inc.</p>
+                            <p>Angel investor and part-time work at <a href="https://onlook.dev/" target="_blank">Onlook (YC W25)</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-cell content-row-side arrow-cell">
+                <a href="#my-work" class="scroll-indicator">
+                    <img src="Arrow Down.svg" alt="Scroll down">
+                </a>
+            </div>
+        </section>
+
+        <!-- My Work Section -->
+        <section id="my-work" class="my-work-section">
+            <!-- Project Detail View (Hidden by default) -->
+            <div class="project-detail-view" id="project-detail-view">
+                <div class="work-container">
+                    <div class="grid-header">
+                        <div class="section-label">My Work</div>
+                        <div class="empty-cell"></div>
+                        <div class="empty-cell"></div>
+                        <div class="empty-cell"></div>
+                    </div>
+                    
+                    <!-- Project Detail Row -->
+                    <div class="project-detail-row">
+                        <!-- Left Sidebar with Project Info -->
+                        <div class="project-sidebar">
+                            <button class="back-button" id="back-button">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M24 12L16 20L24 28" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            
+                            <h2 class="detail-title" id="detail-title">Synthetic Archetype</h2>
+                            <p class="detail-subtitle" id="detail-subtitle"></p>
+                            <p class="detail-description" id="detail-description">Building a tool for product teams to test software with their target customers using generative agents</p>
+                            
+                            <div class="detail-meta">
+                                <div class="meta-row">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Company</span>
+                                        <span class="meta-value" id="detail-company">Synthetic Archetype</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Role</span>
+                                        <span class="meta-value" id="detail-role">CEO, Product Lead</span>
+                                    </div>
+                                </div>
+                                <div class="meta-row">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Skills</span>
+                                        <span class="meta-value" id="detail-skills">Product Design, Prototyping, Front-end Development, Product Strategy, GTM Strategy, User Research.</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Tools</span>
+                                        <span class="meta-value" id="detail-tools">Cursor, Figma, Perplexity</span>
+                                    </div>
+                                </div>
+                                <div class="meta-row">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Date</span>
+                                        <span class="meta-value" id="detail-date">Ongoing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Content Area -->
+                        <div class="project-content" id="project-content">
+                            <!-- Content pages will be dynamically generated -->
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="project-pagination">
+                            <div class="pagination-dots" id="pagination-dots">
+                                <!-- Pagination dots will be dynamically generated -->
+                            </div>
+                            
+                            <!-- Next Project Link -->
+                            <a href="#" class="next-project-link" id="next-project-link">
+                                <span class="next-project-text">Next Project</span> <span class="next-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Other Projects Row - Professional Product Design -->
+                    <div class="other-projects-row">
+                        <div class="row-label">professional product design</div>
+                        <div class="other-projects-grid">
+                            <div class="other-project-item" data-project="synthetic-archetype">
+                                <span class="other-project-date">September 2025 - Present</span>
+                                <h4 class="other-project-title">01 Synthetic Archetype</h4>
+                                <p class="other-project-desc">Building a tool for product teams to test software with their target customers using generative agents</p>
+                            </div>
+                            <div class="other-project-item" data-project="ai-agent-context">
+                                <span class="other-project-date">July - August 2025</span>
+                                <h4 class="other-project-title">02 AI Agent Context Feature</h4>
+                                <p class="other-project-desc">Onlook (YC W25) Designed and shipped a context-adding feature enabling users to inject contextual information into AI prompts using an intuitive @-mention interface.</p>
+                            </div>
+                            <div class="other-project-item" data-project="growth-design">
+                                <span class="other-project-date">July - August 2025</span>
+                                <h4 class="other-project-title">03 Growth Design</h4>
+                                <p class="other-project-desc">Onlook (YC W25) Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
+                            </div>
+                        </div>
+                        <div class="empty-cell"></div>
+                    </div>
+                    
+                    <!-- Other Projects Row - MDes Projects -->
+                    <div class="other-projects-row">
+                        <div class="row-label">MDes (Design School) Projects</div>
+                        <div class="other-projects-grid mdes-grid">
+                            <div class="other-project-item" data-project="dj-mixing">
+                                <span class="other-project-date">December 2025</span>
+                                <h4 class="other-project-title">04 _filterhaus</h4>
+                                <p class="other-project-desc">UC Berkeley MDes — A new era of music mixing: accessible, mobile, and gestural using computer vision and a custom USB-C controller.</p>
+                            </div>
+                        </div>
+                        <div class="empty-cell"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Default Work List View -->
+            <div class="work-list-view" id="work-list-view">
+                <div class="work-container">
+                    <div class="grid-header">
+                        <div class="section-label" id="my-work-label">my work</div>
+                        <div class="empty-cell"></div>
+                        <div class="empty-cell"></div>
+                        <div class="empty-cell"></div>
+                    </div>
+                    
+                    <div class="work-row">
+                        <div class="row-label">professional product design</div>
+                        <div class="work-item clickable-project" data-project="synthetic-archetype">
+                            <span class="project-date">September 2025 - Present</span>
+                            <h3 class="project-title">01 Synthetic Archetype</h3>
+                            <p class="project-description">Building a tool for product teams to test software with their target customers using generative agents</p>
+                        </div>
+                        <div class="work-item double-item">
+                            <div class="work-sub-item clickable-project" data-project="ai-agent-context">
+                                <span class="project-date">July - August 2025</span>
+                                <h3 class="project-title">02 AI Agent Context Feature</h3>
+                                <p class="project-description">Onlook (YC W25) Designed and shipped a context-adding feature enabling users to inject contextual information into AI prompts using an intuitive @-mention interface.</p>
+                            </div>
+                            <div class="work-sub-item clickable-project" data-project="growth-design">
+                                <span class="project-date">July - August 2025</span>
+                                <h3 class="project-title">03 Growth Design</h3>
+                                <p class="project-description">Onlook (YC W25) Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
+                            </div>
+                        </div>
+                        <div class="empty-cell"></div>
+                    </div>
+                    
+                    <div class="work-row">
+                        <div class="row-label">MDes (Design School) Projects</div>
+                        <div class="work-item clickable-project" data-project="dj-mixing">
+                            <span class="project-date">December 2025</span>
+                            <h3 class="project-title">04 _filterhaus</h3>
+                            <p class="project-description">UC Berkeley MDes — A new era of music mixing: accessible, mobile, and gestural using computer vision and a custom USB-C controller.</p>
+                        </div>
+                        <div class="empty-cell"></div>
+                        <div class="empty-cell"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Section -->
+        <section id="resume" class="resume-section">
+            <div class="resume-container">
+                <div class="grid-header">
+                    <div id="resume-label" class="section-label">Resume</div>
+                    <div class="empty-cell"></div>
+                    <div class="empty-cell"></div>
+                    <div class="empty-cell"></div>
+                </div>
+                
+                <!-- Experience Row -->
+                <div class="resume-row">
+                    <div class="row-label">Experience</div>
+                    <div class="resume-content">
+                        <div class="resume-entry">
+                            <div class="entry-header">
+                                <div class="entry-left">
+                                    <h3 class="company-name">Onlook (YC W25)</h3>
+                                    <div class="entry-role">Product Designer</div>
+                                </div>
+                                <div class="entry-right">
+                                    <span class="location">San Francisco, CA</span>
+                                    <div class="entry-date">July 2025 - September 2025</div>
+                                </div>
+                            </div>
+                            <ul class="entry-bullets">
+                                <li>Led comprehensive growth design effort for an AI design tool startup. Researched, prototyped, and developed a new user onboarding flow and streamlined domain-hosting and project sharing experience, targeting key conversion barriers identified through session analytics – expected to drive improvements in user retention and paid conversion.</li>
+                                <li>Spearheaded the end-to-end research, design, and prototyping of an AI Chat feature, enabling users to seamlessly integrate project context into prompts via a context menu – maintaining the designers flow and increasing the efficacy of AI agent responses.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="resume-entry">
+                            <div class="entry-header">
+                                <div class="entry-left">
+                                    <h3 class="company-name">Slalom</h3>
+                                    <div class="entry-role">Management Consultant, Products & Innovation</div>
+                                </div>
+                                <div class="entry-right">
+                                    <span class="location">San Francisco, CA</span>
+                                    <div class="entry-date">September 2020 - July 2025</div>
+                                </div>
+                            </div>
+                            <ul class="entry-bullets">
+                                <li>Redesigned the user experience of core product features and implemented a new brand design system for the leading brand of a Fortune 500 retailer's content management system (CMS)—optimizing customer experience and accelerating business results, reducing front-end UI time-to-production by 300% and front-end development headcount by 30%</li>
+                                <li>Drove product design and strategy-planning efforts for The Gates Foundation's grant and contract management and agreement processing product handling $9B in transactions annually.</li>
+                                <li>Designed and developed product performance data visualization dashboards in Tableau for the C-suite of a $100B+ multinational video game company reducing time to insights by 50% and increasing data accuracy used for decision making.</li>
+                                <li>Created a service design blueprint for a $60B cloud business. Documented current state sales and renewal processes, identified areas for improvements in efficiency between sales, product, and customer teams, and delivered recommendations for revenue-driving process improvements.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="resume-entry">
+                            <div class="entry-header">
+                                <div class="entry-left">
+                                    <h3 class="company-name">Tableau Software <span class="company-note">(Acquired by Salesforce Inc. in 2019)</span></h3>
+                                    <div class="entry-role">Data Visualization Intern, Customer Success</div>
+                                </div>
+                                <div class="entry-right">
+                                    <span class="location">Seattle, WA</span>
+                                    <div class="entry-date">May 2019 - August 2019</div>
+                                </div>
+                            </div>
+                            <ul class="entry-bullets">
+                                <li>Developed a scalable business intelligence dashboard that proactively flagged high-risk accounts, enabling Customer Success Managers and Product leaders to reduce churn through targeted interventions and data-driven renewal strategies.</li>
+                                <li>Designed and launched a customer health dashboard to monitor key account metrics—product usage, renewal rates, support ticket volume, and churn—empowering cross-functional teams to identify risk factors and optimize client engagement.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="resume-sidebar">
+                        <div class="sidebar-section">
+                            <h4 class="sidebar-title">Design Skills</h4>
+                            <ul class="sidebar-list">
+                                <li>Interaction Design</li>
+                                <li>Prototyping</li>
+                                <li>UX Research</li>
+                                <li>Experience Design</li>
+                                <li>Service Design</li>
+                                <li>Information Architecture</li>
+                                <li>Design Systems</li>
+                                <li>Content Management Systems</li>
+                                <li>Responsive Design Principles (Web)</li>
+                                <li>Human Interface Guidelines (iOS)</li>
+                                <li>HTML, SQL, Python, React.js (learning)</li>
+                            </ul>
+                        </div>
+                        <div class="sidebar-section">
+                            <h4 class="sidebar-title">Tools</h4>
+                            <ul class="sidebar-list">
+                                <li>Cursor</li>
+                                <li>Figma</li>
+                                <li>Adobe Illustrator</li>
+                                <li>Adobe Photoshop</li>
+                                <li>Onlook</li>
+                                <li>GitHub</li>
+                                <li>PowerPoint</li>
+                                <li>Excel</li>
+                                <li>Tableau</li>
+                                <li>PowerBI</li>
+                                <li>Salesforce</li>
+                            </ul>
+                        </div>
+                        <div class="sidebar-section">
+                            <h4 class="sidebar-title">Leadership</h4>
+                            <ul class="sidebar-list">
+                                <li>2022 & 2023 Summer Internship Program Lead (Slalom)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Education Row -->
+                <div class="resume-row">
+                    <div class="row-label">Education</div>
+                    <div class="resume-content">
+                        <div class="resume-entry">
+                            <div class="entry-header">
+                                <div class="entry-left">
+                                    <h3 class="company-name">University of California, Berkeley</h3>
+                                    <div class="entry-role">MS Design (MDes) Candidate</div>
+                                </div>
+                                <div class="entry-right">
+                                    <span class="location">Berkeley, CA</span>
+                                    <div class="entry-date">Graduation Date: December 2026</div>
+                                </div>
+                            </div>
+                            <ul class="entry-bullets">
+                                <li>MDes Distinguished Scholar Award</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="resume-entry">
+                            <div class="entry-header">
+                                <div class="entry-left">
+                                    <h3 class="company-name">Gonzaga University</h3>
+                                    <div class="entry-role">Bachelor of Business Administration, Applied Analytics & Marketing (Cum Laude)</div>
+                                </div>
+                                <div class="entry-right">
+                                    <span class="location">Spokane, WA</span>
+                                    <div class="entry-date">2020</div>
+                                </div>
+                            </div>
+                            <ul class="entry-bullets">
+                                <li>Men's Club Soccer, New Venture Lab Consulting Club, Alpha Kappa Psi, semester abroad in Chile</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="empty-cell"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Double Line Divider -->
+        <div class="double-line-divider"></div>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <span class="footer-label">Contact</span>
+                    <span class="footer-text">bryceparsons@berkeley.edu</span>
+                    <svg class="footer-separator" width="12" height="12" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.7931 23C7.8046 23 7 22.1954 7 21.2069C7 20.5402 7.36782 19.9655 7.87356 19.6667L9.71264 18.6092C10.2184 18.3103 10.5862 17.7356 10.5862 17.069C10.5862 16.7241 10.4943 16.4713 10.4023 16.2644L7.18391 9.5977C7.09195 9.39081 7 9.13793 7 8.7931C7 7.8046 7.8046 7 8.7931 7H21.2069C22.1954 7 23 7.8046 23 8.7931V12.931C23 13.9195 22.2184 14.6322 21.4138 14.7241L16.8621 15.2759C16.0575 15.3678 15.3678 16.0575 15.2759 16.8621L14.7241 21.4138C14.6322 22.2184 13.9195 23 12.931 23H8.7931ZM17.069 14.7241C18.0575 14.7241 18.8621 13.9195 18.8621 12.931C18.8621 11.9425 18.0575 11.1379 17.069 11.1379H12.931C11.9425 11.1379 11.1379 11.9425 11.1379 12.931C11.1379 13.9195 11.9425 14.7241 12.931 14.7241H17.069Z" fill="white"/><circle cx="14.5" cy="14.5" r="13" stroke="white" stroke-width="3"/></svg>
+                    <a href="https://www.linkedin.com/in/brycejparsons" target="_blank" class="footer-link">LinkedIn</a>
+                </div>
+                <div class="footer-section">
+                    <span class="footer-label">My Portfolio</span>
+                    <span class="footer-text">Designed and built by me in Cursor</span>
+                    <svg class="footer-separator" width="12" height="12" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.7931 23C7.8046 23 7 22.1954 7 21.2069C7 20.5402 7.36782 19.9655 7.87356 19.6667L9.71264 18.6092C10.2184 18.3103 10.5862 17.7356 10.5862 17.069C10.5862 16.7241 10.4943 16.4713 10.4023 16.2644L7.18391 9.5977C7.09195 9.39081 7 9.13793 7 8.7931C7 7.8046 7.8046 7 8.7931 7H21.2069C22.1954 7 23 7.8046 23 8.7931V12.931C23 13.9195 22.2184 14.6322 21.4138 14.7241L16.8621 15.2759C16.0575 15.3678 15.3678 16.0575 15.2759 16.8621L14.7241 21.4138C14.6322 22.2184 13.9195 23 12.931 23H8.7931ZM17.069 14.7241C18.0575 14.7241 18.8621 13.9195 18.8621 12.931C18.8621 11.9425 18.0575 11.1379 17.069 11.1379H12.931C11.9425 11.1379 11.1379 11.9425 11.1379 12.931C11.1379 13.9195 11.9425 14.7241 12.931 14.7241H17.069Z" fill="white"/><circle cx="14.5" cy="14.5" r="13" stroke="white" stroke-width="3"/></svg>
+                    <span class="footer-text">Inspired by Atiostudio's "The North Face Red Box" visual identity design</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Active navigation link based on scroll position
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links-cell a');
+            
+            // Make welcome link scroll to the very top of the page
+            const welcomeLink = document.querySelector('.nav-links-cell a[href="#welcome"]');
+            if (welcomeLink) {
+                welcomeLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // Make P logo home button scroll to top
+            const homeButton = document.getElementById('home-button');
+            if (homeButton) {
+                homeButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            
+            // Helper function to scroll to resume section with proper offset
+            function scrollToResume() {
+                const resumeLabel = document.getElementById('resume-label');
+                const nav = document.querySelector('nav.main-grid');
+                if (resumeLabel && nav) {
+                    const navHeight = nav.offsetHeight;
+                    const elementTop = resumeLabel.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({ top: elementTop - navHeight, behavior: 'smooth' });
+                }
+            }
+            
+            // Make resume link scroll so the Resume label is at the top
+            const resumeLink = document.querySelector('.nav-links-cell a[href="#resume"]');
+            if (resumeLink) {
+                resumeLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollToResume();
+                });
+            }
+            
+            // Helper function to scroll to my work section with proper offset
+            function scrollToMyWork() {
+                const myWorkLabel = document.getElementById('my-work-label');
+                const nav = document.querySelector('nav.main-grid');
+                if (myWorkLabel && nav) {
+                    const navHeight = nav.offsetHeight;
+                    const elementTop = myWorkLabel.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({ top: elementTop - navHeight, behavior: 'smooth' });
+                }
+            }
+            
+            // Make my work link scroll so the My Work label row is at the top
+            const myWorkLink = document.querySelector('.nav-links-cell a[href="#my-work"]');
+            if (myWorkLink) {
+                myWorkLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollToMyWork();
+                });
+            }
+            
+            // Make scroll indicator (down arrow) scroll to My Work label row
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (scrollIndicator) {
+                scrollIndicator.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollToMyWork();
+                });
+            }
+            
+            // Function to update active nav link based on scroll position
+            function updateActiveNavLink() {
+                const navHeight = document.querySelector('nav.main-grid').offsetHeight;
+                const scrollPosition = window.scrollY + navHeight + 100; // Add offset for better detection
+                
+                let currentSection = null;
+                
+                // Find which section we're currently in
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                // If we're near the top of the page, default to welcome
+                if (window.scrollY < 100) {
+                    currentSection = 'welcome';
+                }
+                
+                // Update nav links
+                if (currentSection) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + currentSection) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            }
+            
+            // Listen for scroll events with throttling for performance
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                if (scrollTimeout) {
+                    window.cancelAnimationFrame(scrollTimeout);
+                }
+                scrollTimeout = window.requestAnimationFrame(function() {
+                    updateActiveNavLink();
+                });
+            });
+            
+            // Set initial active state
+            updateActiveNavLink();
+            
+            // Section label in-view effect
+            const sectionLabels = document.querySelectorAll('.section-label');
+            
+            const labelObserverOptions = {
+                root: null,
+                rootMargin: '0px 0px -70% 0px',
+                threshold: 0
+            };
+            
+            const labelObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Manage in-view class for list view labels (my-work-label and resume-label)
+                    // Detail view label is managed manually when projects open/close
+                    const isMyWorkLabel = entry.target.id === 'my-work-label';
+                    const isResumeLabel = entry.target.id === 'resume-label';
+                    const isInDetailView = entry.target.closest('.project-detail-view');
+                    
+                    // Skip labels in the detail view - they're managed manually
+                    if (isInDetailView) return;
+                    
+                    if (entry.isIntersecting && (isMyWorkLabel || isResumeLabel)) {
+                        entry.target.classList.add('in-view');
+                    } else if (!entry.isIntersecting || !(isMyWorkLabel || isResumeLabel)) {
+                        entry.target.classList.remove('in-view');
+                    }
+                });
+            }, labelObserverOptions);
+            
+            sectionLabels.forEach(label => {
+                labelObserver.observe(label);
+            });
+            
+            // Project data
+            const projectData = {
+                'synthetic-archetype': {
+                    title: 'Synthetic Archetype',
+                    subtitle: 'Synthetic users to validate product features',
+                    description: 'Building a tool for product teams to test software with their target customers using generative agents',
+                    company: 'Synthetic Archetype',
+                    role: 'CEO, Product Lead',
+                    skills: 'Product Design, Prototyping, Front-end Development, Product Strategy, GTM Strategy, User Research.',
+                    tools: 'Cursor, Figma, Perplexity',
+                    date: 'September 2025 - Present',
+                    pages: [
+                        { 
+                            title: 'Product', 
+                            content: '<h4 class="content-subsection-title">Solution Overview</h4>Synthetic Archetype enables product teams to rigorously validate features before launch by simulating authentic user interactions in a prototype environment. Instead of relying on slow, small-scale user research or guesswork, our platform allows teams to predict discovery, adoption, and monetization outcomes with actionable data.<br><br>With Synthetic Archetype, product managers and designers can:<ul style="margin-left: 20px;"><li>Describe the product and feature they want to test.</li><li>Link to a live prototype or demo.</li><li>Define user personas and testing hypotheses.</li><li>Launch simulations using AI-generated users that embody the selected personas.</li><li>Generate a comprehensive report with insights about user tests</li></ul><h4 class="content-subsection-title">Problem Space</h4>Product development is currently a high-stakes gamble. Teams pour millions into new features without knowing the answers to three critical questions: Will users find it? Can they use it? And will they pay for it?<br><br>While pre-launch validation feedback is a way to mitigate this risk, the current methods are broken. Traditional user research is prohibitively expensive, agonizingly slow, and frequently relies on insufficient data that fails to represent the full breadth of real users. Teams are forced to choose between launching blindly or moving too slowly (and expensively) to compete.'
+                        },
+                        { 
+                            title: 'Technical Solution', 
+                            content: '<h4 class="content-subsection-title">How it works</h4>Our system creates AI-driven, behaviorally-accurate user profiles that interact with your prototype just like real users would. These simulated users explore the feature, make decisions, and even demonstrate willingness to pay or adopt new behaviors. Once the simulation reaches statistical significance, Synthetic Archetype delivers a detailed report comparing your original hypotheses to the actual simulated outcomes, revealing key user behaviors, adoption drivers, and areas for improvement.<br><br><strong>Tech stack:</strong><ul style="margin-left: 20px;"><li>Agentic Simulation: Google Gemini, Browser-use (YC W25) API + Python Playwright, Agentmail (YC S25)</li><li>Persona generation and dimensions: Google Gemini</li><li>Web framework: React + Python Flask + AWS</li></ul>'
+                        },
+                        { 
+                            title: 'Our Pitch', 
+                            content: '<p class="content-text" style="text-align: left;"><strong>Watch:</strong> <a href="https://www.youtube.com/live/hX7JP95TFhI?si=V4xLaJpR4hkk4TtG&t=1852" target="_blank" rel="noopener noreferrer">Collider Cup pitch (YouTube)</a></p><p class="content-image-caption" style="margin-top: 4px; text-align: left;">Synthetic Archetype pitching at UC Berkeley\'s Collider Cup to qualify for SkyDeck\'s accelerator program.</p><br><br><h4 class="content-subsection-title" style="text-align: left;">Contact & Additional Information</h4><p class="content-text" style="text-align: left;"><strong>Website:</strong> <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer">syntheticarchetype.com</a></p><p class="content-text" style="text-align: left;"><strong>Pitch Deck:</strong> <a href="https://docs.google.com/presentation/d/1Hm2fktXzIEd7LRd6lnXZT1vzIVMefcZN/edit?usp=sharing&ouid=106694339205171443961&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer">View on Google Slides</a></p>'
+                        }
+                    ]
+                },
+                'ai-agent-context': {
+                    title: 'AI Agent Context Feature',
+                    description: 'Designed, prototyped, and shipped a context-adding feature for Onlook\'s Design-IDE, enabling users to effortlessly inject contextual information into AI prompts using an intuitive @-mention interface.',
+                    company: 'Onlook (YC W25)',
+                    role: 'Lead Product Designer & Design Engineer',
+                    skills: 'UX Research, Competitor Research, Prototyping',
+                    tools: 'Cursor, Onlook, Figma',
+                    date: 'July - August 2025',
+                    pages: [
+                        { 
+                            title: 'Challenge & Background', 
+                            content: '<h4 class="content-subsection-title">Challenge</h4><strong>To enable users to effortlessly add contextual information to AI agent prompts for more accurate, relevant results in Onlook\'s Design-IDE AI Chat interface.</strong><h4 class="content-subsection-title">Background</h4>While working at Onlook, I relied heavily on Notion, Cursor, and Slack. I became so accustomed to using the \'@\' feature to link context in those tools that I instinctively tried to use it while building prototypes in Onlook. This friction sparked a hypothesis: if I have this muscle memory, our users likely do too.<br><br>Without this capability, users were forced to manually describe or copy-paste code files and design assets. <strong>This broke their creative flow and often resulted in vague prompts and inaccurate AI outputs.</strong><br><br><strong>The opportunity was clear:</strong> create a familiar referencing system that empowers users to provide precise context effortlessly, optimizing both human usability and the AI agent\'s performance.',
+                            image: ''
+                        },
+                        { 
+                            title: 'Problem Discovery & Validation', 
+                            content: '<h4 class="content-subsection-title">Validating the Problem</h4><ul style="margin-left: 20px;"><li>Conducted extensive product testing to understand the current state friction of adding context to prompts</li><li>Interviewed and observed users to understand the most commonly referenced contextual items and their process for adding them</li><li>Surveyed Onlook\'s Discord community to understand current state pain points related to adding context to AI Chats and to understand which context users find most valuable</li></ul><h4 class="content-subsection-title">Current State Experience Example</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120687897?h=7cd34001fa" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div><h4 class="content-subsection-title">Key Findings</h4><ul style="margin-left: 20px;"><li><strong>Primary Context Needs:</strong> Users most frequently need to reference <strong>code components</strong> (e.g., headers) and <strong>brand styles</strong> (colors, fonts).</li><li><strong>Workflow Friction:</strong> Manual retrieval forces users to switch contexts, breaking the flow required for <strong>rapid, iterative prototyping</strong>.</li><li><strong>Expanded Scope:</strong> Users explicitly requested the ability to reference <strong>entire pages</strong>, not just the current view.</li><li><strong>Recency Matters:</strong> To speed up multi-turn prompting, users need quick access to their <strong>most recently used context</strong>.</li></ul>',
+                            image: ''
+                        },
+                        { 
+                            title: 'Solution Exploration', 
+                            content: '<h4 class="content-subsection-title">Design Principles</h4>To translate the key findings into a solution, I established two core principles:<br><br><ul style="margin-left: 20px;"><li><strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.</li><li><strong>Abstract the Complexity:</strong> Create a simple interface for humans while ensuring the AI receives the deep, structured context it needs to perform accurately.</li></ul><h4 class="content-subsection-title">Competitor Research</h4><div class="content-images-side-by-side"><div class="content-image"><img src="@-feature assets/notion-image.jpeg" alt="Notion @-mention interface"></div><div class="content-image"><img src="@-feature assets/cursor-menu.jpeg" alt="Cursor @-mention interface"></div></div>',
+                            image: ''
+                        },
+                        { 
+                            title: 'Prototyping & Implementation', 
+                            content: '<h4 class="content-subsection-title">@ Menu Design Iterations in Figma</h4>Here I designed the following information hierarchy for the menu based on the discovery findings.<br><br><strong>@-Menu Categories:</strong> Recents (3 most recent), Code Items (components, files, pages), Design Elements (brand colors, typography)<br><br><em>(Note to self: place figma iterations here)</em><br><br><h4 class="content-subsection-title">Interaction Design</h4>Here I built an interactive prototype in Onlook to test with and iterate on with users.<br><br><strong>Key interaction design decisions:</strong><ul style="margin-left: 20px;"><li>Keyboard & mouse controls for navigation</li><li>Sub-menu navigation</li><li>Fuzzy search in the @-menu</li></ul><h4 class="content-subsection-title">Onlook Prototype</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120687917?h=d6a71997d7" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div>',
+                            image: ''
+                        },
+                        { 
+                            title: 'Results', 
+                            content: '<h4 class="content-subsection-title">Outcome</h4><strong>AI Agent Context Adding Issue Resolved:</strong> Users now can seamlessly integrate context into AI-agent-prompts without interrupting their flow, resulting in an improved user experience, productivity, and increased agent performance.<br><h4 class="content-subsection-title">Final Solution Demo Built in Cursor</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120704633?h=65654d3961" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div><h4 class="content-subsection-title">Expected Impact</h4><ul style="margin-left: 20px;"><li>Enhanced AI response accuracy through improved contextual prompting</li><li>Streamlined user workflow eliminating manual context retrieval</li><li>Increased user satisfaction and retention through better AI-agent interaction experience</li><li>Sustained competitive advantage and differentiation against AI-design-tooling competitors</li></ul><h4 class="content-subsection-title">Success Metrics Framework</h4><ul style="margin-left: 20px;"><li>AI-agent evaluation performance improvements (e.g., response correctness, code quality, visual fidelity).</li><li>Workflow efficiency gains (e.g., reduced prompt iteration cycles, reduced time on task, increased number of unique coding tasks completed per session)</li><li>Overall user retention and satisfaction scores</li></ul>',
+                            image: ''
+                        }
+                    ]
+                },
+                'growth-design': {
+                    title: 'Growth Design',
+                    subtitle: 'Designing Onlook\'s Onboarding Flow & Growth Enabling Features',
+                    description: 'Led end-to-end research, design, and prototyping of multiple features and enhancements to increase new-user retention at Onlook—driving improvements through a revamped onboarding flow, a streamlined publishing experience, and collaborative sharing features.',
+                    company: 'Onlook (YC W25)',
+                    role: 'Lead Product Designer & Design Engineer',
+                    skills: 'UX Research, Competitor Research, Prototyping',
+                    tools: 'Onlook, Figma',
+                    date: 'July - August 2025',
+                    pages: [
+                        { 
+                            title: 'Challenge & Problem Discovery', 
+                            content: '<h4 class="content-subsection-title">Challenge</h4><strong>Increase new user retention, conversion to paid subscribers, and grow active user base</strong> for Onlook, an AI design tool startup competing in a crowded market with tools like Lovable, Figma, and others.<h4 class="content-subsection-title">Problem Discovery</h4>In-session analytics (PostHog) revealed critical drop-off points where users abandoned their sessions before completing key actions in Onlook\'s product, indicating missed opportunities to demonstrate Onlook\'s unique value over competitors, and failing to convert users to paid subscribers.<br><br><strong>Drop-off Insights:</strong><ul style="margin-left: 20px;"><li>Users abandon sessions before initial site generation is completed due to lack of loading state feedback.</li><li>Limited awareness of Onlook\'s core features—code panel, design panel, brand styles, and infinite canvas—reducing engagement with differentiated product offerings.</li></ul>'
+                        },
+                        { 
+                            title: 'Research & Ideation', 
+                            content: '<h4 class="content-subsection-title">Research Objectives</h4><ul style="margin-left: 20px;"><li>Why do users struggle to discover and adopt Onlook\'s current features?</li><li>Which features are most important for driving growth?</li><li>What are the "core" features which all users should know about?</li></ul><h4 class="content-subsection-title">Findings</h4><ul style="margin-left: 20px;"><li>Onlook does not onboard new users either hands on or with a virtual walkthrough</li><li>Onlook has complex and numerous feature offerings</li><li>Engagement with "Site Publishing" and "Custom Domain Hosting" features leads to user conversion and retention</li><li>Onlook\'s Core Features: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing & Custom Domain Hosting</li></ul><div class="content-image"><img src="growth assets/onboarding-audit.png" alt="Onboarding flow friction audit"></div><p class="content-image-caption">Green = low friction/users navigate smoothly, Yellow = slight friction/users navigate less smoothly, Red = high friction/users drop off.</p><h4 class="content-subsection-title">Solution Ideation</h4><ul style="margin-left: 20px;"><li>How might we make new users aware of Onlook\'s core feature offerings in an intuitive and effective way?</li><li>How might we funnel users to Site "Publishing and Custom Domain Hosting" features to drive conversion?</li></ul>'
+                        },
+                        { 
+                            title: 'Solution Development', 
+                            content: '<h4 class="content-subsection-title">Adoption & Retention</h4>Designed an <strong>interactive onboarding flow</strong>: To address the findings that users are dropping off early in their product experience, are not discovering key features, and thus are not retaining long enough to reach paid-conversion opportunities.<h4 class="content-subsection-title">Growth & Conversion</h4><strong>Redesigned Publish and Custom Domain Flows:</strong> Optimized this critical activation point to reduce friction, <strong>increase conversion probability,</strong> and capitalize on proven paid-conversion trends.<br><br><strong>Designed and prototyped a new sharing and collaboration feature:</strong> To <strong>foster network effects and increase product stickiness,</strong> encouraging organic growth and multi-seat adoption among paying users.<h4 class="content-subsection-title">Prototyping & Development Workflow</h4><ul style="margin-left: 20px;"><li>Designed specific UI components and interactions in Figma.</li><li>Developed high-fidelity, functional prototypes of the new experiences using Onlook\'s own product.</li><li>Implemented the final features by converting the validated prototype into production code using Cursor.</li><li>Created detailed GitHub issues for open-source contributors to help with implementation.</li></ul>',
+                        },
+                        { 
+                            title: 'Implementation', 
+                            content: '<h4 class="content-subsection-title">New Onboarding Flow</h4><ul style="margin-left: 20px;"><li>Flow initializes as the product loads in the background</li><li>Focuses on core-features</li><li>Interactive to encourage user-engagement</li></ul><h4 class="content-subsection-title">Demo Video</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120687908?h=306c39fbc7" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div><h4 class="content-subsection-title">Publish, Custom Domain, and Sharing Features</h4><ul style="margin-left: 20px;"><li>Added attention-grabbing vertical carousel to the publish/share button</li><li>Integrated sharing tab within publish modal</li><li>Enhanced the Publish/Share modal loading states and preview functionality</li><li>Sequenced Custom Domain addition call-to-action to come after the site is published</li></ul><h4 class="content-subsection-title">Demo Video</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120687921?h=5bd1dba5ae" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div>'
+                        },
+                        { 
+                            title: 'Results', 
+                            content: '<h4 class="content-subsection-title">Expected Outcomes</h4><ul style="margin-left: 20px;"><li>Increased new user retention through improved feature awareness and enhanced publish flow</li><li>Increases in revenue due to higher conversion to paid subscriptions via optimized add custom domain flow</li><li>Improved collaboration and user growth through frictionless sharing capabilities</li></ul><h4 class="content-subsection-title">Key Success Metrics Defined</h4><ul style="margin-left: 20px;"><li>User retention rate improvements</li><li>Conversion rate from free to paid plans</li><li>Publish completion rates</li><li>Custom domain addition rates</li><li>User session duration and feature adoption</li><li>Monthly Active Users (MAU)</li></ul><p class="content-text"><em>Note: Quantitative impact assessment pending sufficient data collection period post-implementation.</em></p>',
+                        }
+                    ]
+                },
+                'dj-mixing': {
+                    title: '_filterhaus',
+                    description: 'A new era of music mixing: accessible, mobile, and gestural. Reimagining DJing as a portable, gestural experience using computer vision and a custom USB-C controller.',
+                    company: 'UC Berkeley MDes',
+                    role: 'Student Designer',
+                    skills: 'Physical Prototyping, Interaction Design, Computer Vision, 3D Printing',
+                    tools: 'Arduino, Python, C++, ESP32, YOLOV8, Figma',
+                    date: 'December 2025',
+                    pages: [
+                        { 
+                            title: 'Overview', 
+                            content: '',
+                            image: 'Filterhaus/DJ Mixing Device_slide1.jpg'
+                        },
+                        { 
+                            title: 'Design Process & Iteration', 
+                            content: '',
+                            image: 'Filterhaus/DJ Mixing Device_slide2.jpg'
+                        },
+                        { 
+                            title: 'Product Deep Dive', 
+                            content: '',
+                            image: 'Filterhaus/DJ Mixing Device_slide3.jpg'
+                        },
+                        { 
+                            title: 'Result', 
+                            content: '',
+                            image: 'Filterhaus/DJ Mixing Device_slide4.jpg'
+                        }
+                    ]
+                }
+            };
+            
+            let currentProject = null;
+            let currentPage = 1;
+            
+            const detailView = document.getElementById('project-detail-view');
+            const listView = document.getElementById('work-list-view');
+            const backButton = document.getElementById('back-button');
+            const detailSubtitle = document.getElementById('detail-subtitle');
+            
+            // Open project detail
+            function openProject(projectId) {
+                const project = projectData[projectId];
+                if (!project) return;
+                
+                currentProject = projectId;
+                currentPage = 1;
+                
+                // Update detail view content
+                document.getElementById('detail-title').textContent = project.title;
+                if (project.subtitle) {
+                    detailSubtitle.textContent = project.subtitle;
+                    detailSubtitle.style.display = 'block';
+                } else {
+                    detailSubtitle.textContent = '';
+                    detailSubtitle.style.display = 'none';
+                }
+                document.getElementById('detail-description').textContent = project.description;
+                
+                // Set company name - make it a link for Onlook projects
+                const companyElement = document.getElementById('detail-company');
+                if (project.company && project.company.toLowerCase().includes('onlook')) {
+                    companyElement.innerHTML = `<a href="https://www.onlook.com" target="_blank" rel="noopener noreferrer" class="company-link">${project.company} <span aria-hidden="true">↗</span></a>`;
+                } else {
+                    companyElement.textContent = project.company;
+                }
+                
+                document.getElementById('detail-role').textContent = project.role;
+                document.getElementById('detail-skills').textContent = project.skills;
+                document.getElementById('detail-tools').textContent = project.tools;
+                document.getElementById('detail-date').textContent = project.date;
+                
+                // Dynamically generate content pages
+                const projectContent = document.getElementById('project-content');
+                projectContent.innerHTML = '';
+                
+                project.pages.forEach((page, index) => {
+                    const pageDiv = document.createElement('div');
+                    pageDiv.className = 'content-page' + (index === 0 ? ' active' : '');
+                    pageDiv.dataset.page = index + 1;
+                    
+                    let pageHTML = '';
+                    // Skip title for filterhaus (dj-mixing) project
+                    if (projectId !== 'dj-mixing') {
+                        pageHTML = `<h3 class="content-section-title">${page.title}</h3>`;
+                    }
+                    
+                    // If image has a caption, place image after text
+                    if (page.imageCaption && page.image) {
+                        pageHTML += `<p class="content-text">${page.content}</p>`;
+                        pageHTML += `<div class="content-image"><img src="${page.image}" alt="${page.title}"></div>`;
+                        pageHTML += `<p class="content-image-caption">${page.imageCaption}</p>`;
+                    } else {
+                        // Add image if provided (before text)
+                        if (page.image) {
+                            pageHTML += `<div class="content-image"><img src="${page.image}" alt="${page.title}"></div>`;
+                        }
+                        pageHTML += `<p class="content-text">${page.content}</p>`;
+                    }
+                    pageDiv.innerHTML = pageHTML;
+                    projectContent.appendChild(pageDiv);
+                });
+                
+                // Dynamically generate pagination dots
+                const paginationDots = document.getElementById('pagination-dots');
+                paginationDots.innerHTML = '';
+                
+                project.pages.forEach((page, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'pagination-dot' + (index === 0 ? ' active' : '');
+                    dot.dataset.page = index + 1;
+                    dot.textContent = page.title;
+                    dot.addEventListener('click', function() {
+                        changePage(parseInt(this.dataset.page));
+                    });
+                    paginationDots.appendChild(dot);
+                });
+                
+                // Highlight current project in other projects list
+                const otherProjects = detailView.querySelectorAll('.other-project-item');
+                otherProjects.forEach(item => {
+                    item.classList.remove('current-project');
+                    if (item.dataset.project === projectId) {
+                        item.classList.add('current-project');
+                    }
+                });
+                
+                // Show detail view, hide list view
+                detailView.classList.add('active');
+                listView.classList.add('hidden');
+                
+                // Add in-view class to detail view's section label to maintain blue fill
+                const detailViewLabel = detailView.querySelector('.section-label');
+                if (detailViewLabel) {
+                    detailViewLabel.classList.add('in-view');
+                }
+                
+                // Scroll to work section
+                document.getElementById('my-work').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Close project detail
+            function closeProject() {
+                currentProject = null;
+                detailView.classList.remove('active');
+                listView.classList.remove('hidden');
+            }
+            
+            // Handle page change
+            function changePage(pageNum) {
+                currentPage = pageNum;
+                
+                const contentPages = document.getElementById('project-content').querySelectorAll('.content-page');
+                const paginationDots = document.getElementById('pagination-dots').querySelectorAll('.pagination-dot');
+                
+                contentPages.forEach((page, index) => {
+                    page.classList.remove('active');
+                    if (index === pageNum - 1) page.classList.add('active');
+                });
+                
+                paginationDots.forEach(dot => {
+                    dot.classList.remove('active');
+                    if (parseInt(dot.dataset.page) === pageNum) dot.classList.add('active');
+                });
+            }
+            
+            // Event Listeners
+            
+            // Clickable projects in list view
+            document.querySelectorAll('.clickable-project').forEach(item => {
+                item.addEventListener('click', function() {
+                    openProject(this.dataset.project);
+                });
+            });
+            
+            // Back button
+            backButton.addEventListener('click', closeProject);
+            
+            // Other projects in detail view
+            detailView.querySelectorAll('.other-project-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (!this.classList.contains('current-project')) {
+                        openProject(this.dataset.project);
+                    }
+                });
+            });
+            
+            // Next Project link
+            const projectOrder = ['synthetic-archetype', 'ai-agent-context', 'growth-design', 'dj-mixing'];
+            const nextProjectLink = document.getElementById('next-project-link');
+            
+            nextProjectLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (!currentProject) return;
+                
+                const currentIndex = projectOrder.indexOf(currentProject);
+                const nextIndex = (currentIndex + 1) % projectOrder.length;
+                const nextProjectId = projectOrder[nextIndex];
+                
+                openProject(nextProjectId);
+            });
+        });
+    </script>
+</body>
+</html>
