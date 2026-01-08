@@ -23,7 +23,7 @@
                     <img src="P.svg" alt="P Logo">
                 </a>
             </div>
-            <div class="grid-cell nav-links-cell">
+            <div class="grid-cell nav-links-cell" id="nav-links">
                 <a href="#welcome">welcome</a>
                 <a href="#my-work">my work</a>
                 <a href="#resume">resume</a>
@@ -31,6 +31,11 @@
             <div class="grid-cell location-cell">
                 San Francisco, CA
             </div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
 
         <!-- Spacer with vertical lines -->
@@ -148,7 +153,33 @@
                         
                         <!-- Main Content Area -->
                         <div class="project-content" id="project-content">
+                            <!-- Navigation Arrows - Top -->
+                            <div class="content-nav-arrows content-nav-arrows-top">
+                                <button class="content-nav-arrow arrow-left" id="arrow-left-top" aria-label="Previous page">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button class="content-nav-arrow arrow-right" id="arrow-right-top" aria-label="Next page">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
                             <!-- Content pages will be dynamically generated -->
+                            <!-- Navigation Arrows - Bottom -->
+                            <div class="content-nav-arrows content-nav-arrows-bottom">
+                                <button class="content-nav-arrow arrow-left" id="arrow-left-bottom" aria-label="Previous page">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button class="content-nav-arrow arrow-right" id="arrow-right-bottom" aria-label="Next page">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         
                         <!-- Pagination -->
@@ -425,6 +456,33 @@
         document.addEventListener('DOMContentLoaded', function() {
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-links-cell a');
+            
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navLinksContainer = document.getElementById('nav-links');
+            
+            if (mobileMenuToggle && navLinksContainer) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    navLinksContainer.classList.toggle('mobile-open');
+                });
+                
+                // Close mobile menu when a link is clicked
+                navLinksContainer.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenuToggle.classList.remove('active');
+                        navLinksContainer.classList.remove('mobile-open');
+                    });
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!mobileMenuToggle.contains(e.target) && !navLinksContainer.contains(e.target)) {
+                        mobileMenuToggle.classList.remove('active');
+                        navLinksContainer.classList.remove('mobile-open');
+                    }
+                });
+            }
             
             // Make welcome link scroll to the very top of the page
             const welcomeLink = document.querySelector('.nav-links-cell a[href="#welcome"]');
@@ -804,6 +862,9 @@
                     detailViewLabel.classList.add('in-view');
                 }
                 
+                // Update navigation arrows
+                updateNavArrows();
+                
                 // Scroll to work section
                 document.getElementById('my-work').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
@@ -831,7 +892,54 @@
                     dot.classList.remove('active');
                     if (parseInt(dot.dataset.page) === pageNum) dot.classList.add('active');
                 });
+                
+                // Update navigation arrow states
+                updateNavArrows();
             }
+            
+            // Update navigation arrow disabled states
+            function updateNavArrows() {
+                if (!currentProject) return;
+                
+                const project = projectData[currentProject];
+                const totalPages = project.pages.length;
+                
+                const leftArrows = document.querySelectorAll('.content-nav-arrow.arrow-left');
+                const rightArrows = document.querySelectorAll('.content-nav-arrow.arrow-right');
+                
+                leftArrows.forEach(arrow => {
+                    arrow.disabled = currentPage <= 1;
+                });
+                
+                rightArrows.forEach(arrow => {
+                    arrow.disabled = currentPage >= totalPages;
+                });
+            }
+            
+            // Navigate to previous page
+            function goToPrevPage() {
+                if (currentPage > 1) {
+                    changePage(currentPage - 1);
+                }
+            }
+            
+            // Navigate to next page
+            function goToNextPage() {
+                if (!currentProject) return;
+                const project = projectData[currentProject];
+                if (currentPage < project.pages.length) {
+                    changePage(currentPage + 1);
+                }
+            }
+            
+            // Add event listeners for navigation arrows
+            document.querySelectorAll('.content-nav-arrow.arrow-left').forEach(arrow => {
+                arrow.addEventListener('click', goToPrevPage);
+            });
+            
+            document.querySelectorAll('.content-nav-arrow.arrow-right').forEach(arrow => {
+                arrow.addEventListener('click', goToNextPage);
+            });
             
             // Event Listeners
             
