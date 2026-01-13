@@ -1612,6 +1612,19 @@ nav.main-grid .grid-cell {
    MOBILE BREAKPOINT (<768px) - CLEAN SIMPLE DESIGN
    =========================================== */
 @media (max-width: 768px) {
+    /* Prevent horizontal scrolling on mobile */
+    html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .site-wrapper {
+        overflow-x: hidden;
+        max-width: 100%;
+        width: 100%;
+    }
+    
     /* Clean, simple mobile design - no strokes */
     .site-wrapper::before {
         display: none;
@@ -1628,43 +1641,60 @@ nav.main-grid .grid-cell {
     
     /* Navigation - Mobile */
     nav.main-grid {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px var(--space-md);
-        min-height: 60px;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 60px auto;
+        padding: 0;
+        min-height: auto;
         position: sticky;
         top: 0;
         z-index: 100;
+        background-color: var(--bg-color);
+        border-bottom: 1px solid var(--grid-line);
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
     }
     
+    /* Header row: logo left, location right */
     .logo-cell {
-        padding: 0;
-        min-height: auto;
+        grid-row: 1;
+        grid-column: 1;
+        padding: 12px var(--space-md);
+        min-height: 60px;
+        justify-content: flex-start;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        width: auto;
+        border-bottom: 1px solid var(--grid-line);
     }
     
     .logo-cell img {
         height: 30px;
     }
     
-    /* Hide hamburger menu on mobile - navigation links always visible */
+    /* Hide hamburger menu on mobile */
     .mobile-menu-toggle {
         display: none;
     }
     
+    /* Navigation links - centered vertically in row between header and border line */
     .nav-links-cell {
-        position: static;
+        grid-row: 2;
+        grid-column: 1;
         display: flex;
         flex-direction: row;
+        justify-content: center;
+        align-items: center;
         gap: var(--space-md);
-        padding: 0;
+        padding: 12px var(--space-md);
         background-color: transparent;
-        border-bottom: none;
-        transform: none;
-        opacity: 1;
-        pointer-events: auto;
-        transition: none;
-        z-index: auto;
+        border-bottom: 1px solid var(--grid-line);
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 60px;
     }
     
     .nav-links-cell.mobile-open {
@@ -1679,8 +1709,34 @@ nav.main-grid .grid-cell {
         white-space: nowrap;
     }
     
+    /* Location - far right in header */
     .location-cell {
-        display: none;
+        grid-row: 1;
+        grid-column: 1;
+        display: flex;
+        padding: 12px var(--space-md);
+        min-height: 60px;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: clamp(12px, 2.5vw, 16px);
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 2;
+        width: auto;
+    }
+    
+    /* Ensure all sections and containers fit within viewport */
+    .main-grid,
+    section,
+    .my-work-section,
+    .resume-section,
+    .work-container,
+    .resume-container {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
     }
     
     /* Welcome Section - Mobile */
@@ -1688,6 +1744,9 @@ nav.main-grid .grid-cell {
         display: flex;
         flex-direction: column;
         padding: 0;
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .spacer-row,
@@ -1728,14 +1787,40 @@ nav.main-grid .grid-cell {
     
     .image-cell img {
         width: clamp(120px, 35vw, 180px);
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Ensure all images and media don't overflow */
+    img,
+    video,
+    iframe,
+    embed,
+    object {
+        max-width: 100%;
+        height: auto;
+        box-sizing: border-box;
     }
     
     .content-cell {
         padding: var(--space-lg) var(--space-md);
         border-bottom: 1px solid var(--grid-line);
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .content-wrapper {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+    
+    /* Ensure all text content wraps properly on mobile */
+    p, span, div, a, h1, h2, h3, h4, h5, h6 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
         max-width: 100%;
     }
     
