@@ -1647,37 +1647,36 @@ nav.main-grid .grid-cell {
         height: 30px;
     }
     
-    /* Show hamburger menu on mobile */
+    /* Hide hamburger menu on mobile - navigation links always visible */
     .mobile-menu-toggle {
-        display: block;
+        display: none;
     }
     
     .nav-links-cell {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background-color: var(--bg-color);
-        flex-direction: column;
-        padding: var(--space-lg);
+        position: static;
+        display: flex;
+        flex-direction: row;
         gap: var(--space-md);
-        border-bottom: 1px solid var(--grid-line);
-        transform: translateY(-100%);
-        opacity: 0;
-        pointer-events: none;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        z-index: 99;
+        padding: 0;
+        background-color: transparent;
+        border-bottom: none;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        transition: none;
+        z-index: auto;
     }
     
     .nav-links-cell.mobile-open {
-        transform: translateY(0);
+        transform: none;
         opacity: 1;
         pointer-events: auto;
     }
     
     .nav-links-cell a {
-        font-size: 18px;
-        padding: var(--space-sm) 0;
+        font-size: clamp(12px, 2.5vw, 16px);
+        padding: 0;
+        white-space: nowrap;
     }
     
     .location-cell {
