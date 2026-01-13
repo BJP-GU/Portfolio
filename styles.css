@@ -802,6 +802,18 @@ nav.main-grid .grid-cell {
 .project-detail-view.active .project-content {
     background-color: #000000;
     border-bottom-color: rgba(255, 255, 255, 0.2);
+    overflow: visible;
+}
+
+.project-detail-view.active .content-nav-arrow {
+    border: 1.5px solid #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.project-detail-view.active .content-nav-arrow svg path {
+    fill: #ffffff !important;
+    stroke: none !important;
 }
 
 .project-detail-view.active .content-section-title {
@@ -1003,7 +1015,7 @@ nav.main-grid .grid-cell {
     align-items: flex-start;
     gap: var(--space-sm);
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* Content Navigation Arrows */
@@ -1012,11 +1024,14 @@ nav.main-grid .grid-cell {
     right: var(--inner-col-padding);
     display: flex;
     gap: 8px;
-    z-index: 10;
+    z-index: 1000;
 }
 
 .content-nav-arrows-top {
     top: var(--space-sm);
+    right: var(--inner-col-padding);
+    align-items: center;
+    height: 36px;
 }
 
 .content-nav-arrows-bottom {
@@ -1027,8 +1042,8 @@ nav.main-grid .grid-cell {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid #ffffff;
+    background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
     cursor: pointer;
     display: flex;
@@ -1036,11 +1051,12 @@ nav.main-grid .grid-cell {
     justify-content: center;
     transition: all 0.2s ease;
     backdrop-filter: blur(4px);
+    flex-shrink: 0;
 }
 
 .content-nav-arrow:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.4);
+    border-color: #ffffff;
     transform: scale(1.05);
 }
 
@@ -1061,8 +1077,14 @@ nav.main-grid .grid-cell {
 }
 
 .content-nav-arrow svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.content-nav-arrow svg path {
+    fill: #ffffff;
+    stroke: none;
 }
 
 .content-page {
@@ -1084,6 +1106,8 @@ nav.main-grid .grid-cell {
     margin: 0 0 var(--space-xs) 0;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    position: relative;
+    padding-right: 100px;
 }
 
 .content-text {
@@ -2021,19 +2045,20 @@ nav.main-grid .grid-cell {
         padding: var(--space-md);
         flex-direction: column;
         gap: var(--space-sm);
-        align-items: stretch;
+        align-items: flex-end;
+        justify-content: flex-end;
     }
     
     .pagination-dots {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 4px;
+        display: none;
     }
     
     .pagination-dot {
-        font-size: 11px;
-        padding: 6px 10px;
+        display: none;
+    }
+    
+    .next-project-link {
+        margin-top: 0;
     }
     
     .next-project-link {
