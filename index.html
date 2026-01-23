@@ -175,18 +175,21 @@
                         <div class="other-projects-grid">
                             <div class="other-project-item" data-project="synthetic-archetype">
                                 <span class="other-project-date">September 2025 - Present</span>
-                                <h4 class="other-project-title">01 Synthetic Archetype</h4>
+                                <h4 class="other-project-title">01 Simulated User Testing</h4>
+                                <span class="other-project-company">Synthetic Archetype</span>
                                 <p class="other-project-desc">Building a tool for product teams to test software with their target customers using generative agents</p>
                             </div>
                             <div class="other-project-item" data-project="ai-agent-context">
                                 <span class="other-project-date">July - August 2025</span>
                                 <h4 class="other-project-title">02 AI Agent Context Feature</h4>
-                                <p class="other-project-desc">Onlook (YC W25) Designed and shipped a context-adding feature enabling users to inject contextual information into AI prompts using an intuitive @-mention interface.</p>
+                                <span class="other-project-company">Onlook (YC W25)</span>
+                                <p class="other-project-desc">Designed and shipped a context-adding feature enabling users to inject contextual information into AI prompts using an intuitive @-mention interface.</p>
                             </div>
                             <div class="other-project-item" data-project="growth-design">
                                 <span class="other-project-date">July - August 2025</span>
                                 <h4 class="other-project-title">03 Growth Design</h4>
-                                <p class="other-project-desc">Onlook (YC W25) Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
+                                <span class="other-project-company">Onlook (YC W25)</span>
+                                <p class="other-project-desc">Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
                             </div>
                         </div>
                         <div class="empty-cell"></div>
@@ -199,7 +202,8 @@
                             <div class="other-project-item" data-project="dj-mixing">
                                 <span class="other-project-date">December 2025</span>
                                 <h4 class="other-project-title">04 _filterhaus</h4>
-                                <p class="other-project-desc">UC Berkeley MDes — A new era of music mixing: accessible, mobile, and gestural using computer vision and a custom USB-C controller.</p>
+                                <span class="other-project-company">UC Berkeley MDes</span>
+                                <p class="other-project-desc">A new era of music mixing: accessible, mobile, and gestural using computer vision and a custom USB-C controller.</p>
                             </div>
                         </div>
                         <div class="empty-cell"></div>
@@ -221,19 +225,28 @@
                         <div class="row-label">professional product design</div>
                         <div class="work-item clickable-project" data-project="synthetic-archetype">
                             <span class="project-date">September 2025 - Present</span>
-                            <h3 class="project-title">01 Synthetic Archetype</h3>
+                            <h3 class="project-title">01 Simulated User Testing</h3>
+                            <span class="project-company">Synthetic Archetype</span>
                             <p class="project-description">Building a tool for product teams to test software with their target customers using generative agents</p>
                         </div>
                         <div class="work-item double-item">
-                            <div class="work-sub-item clickable-project" data-project="ai-agent-context">
-                                <span class="project-date">July - August 2025</span>
-                                <h3 class="project-title">02 AI Agent Context Feature</h3>
-                                <p class="project-description">Onlook (YC W25) Designed and shipped a context-adding feature enabling users to inject contextual information into AI prompts using an intuitive @-mention interface.</p>
+                            <div class="work-sub-item clickable-project project-with-hover-image" data-project="ai-agent-context">
+                                <div class="project-text-content">
+                                    <span class="project-date">July - August 2025</span>
+                                    <h3 class="project-title">02 AI Agent Context Feature</h3>
+                                    <span class="project-company">Onlook (YC W25)</span>
+                                    <p class="project-description">Designed and shipped a context-adding feature enabling users to inject contextual information into AI prompts using an intuitive @-mention interface.</p>
+                                </div>
+                                <div class="project-hover-image">
+                                    <img src="@-feature assets/AI Chat Menu.jpg" alt="AI Agent Context Feature Preview">
+                                    <span class="hover-cta"><span class="hover-cta-text">Open</span><span class="hover-cta-arrow">↗</span></span>
+                                </div>
                             </div>
                             <div class="work-sub-item clickable-project" data-project="growth-design">
                                 <span class="project-date">July - August 2025</span>
                                 <h3 class="project-title">03 Growth Design</h3>
-                                <p class="project-description">Onlook (YC W25) Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
+                                <span class="project-company">Onlook (YC W25)</span>
+                                <p class="project-description">Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
                             </div>
                         </div>
                         <div class="empty-cell"></div>
@@ -244,7 +257,8 @@
                         <div class="work-item clickable-project" data-project="dj-mixing">
                             <span class="project-date">December 2025</span>
                             <h3 class="project-title">04 _filterhaus</h3>
-                            <p class="project-description">UC Berkeley MDes — A new era of music mixing: accessible, mobile, and gestural using computer vision and a custom USB-C controller.</p>
+                            <span class="project-company">UC Berkeley MDes</span>
+                            <p class="project-description">A new era of music mixing: accessible, mobile, and gestural using computer vision and a custom USB-C controller.</p>
                         </div>
                         <div class="empty-cell"></div>
                         <div class="empty-cell"></div>
@@ -651,12 +665,12 @@
                         },
                         { 
                             title: 'Solution Exploration', 
-                            content: '<h4 class="content-subsection-title">Design Principles</h4>To translate the key findings into a solution, I established two core principles:<br><br><ul style="margin-left: 20px;"><li><strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.</li><li><strong>Abstract the Complexity:</strong> Create a simple interface for humans while ensuring the AI receives the deep, structured context it needs to perform accurately.</li></ul><h4 class="content-subsection-title">Competitor Research</h4><div class="content-images-side-by-side"><div class="content-image"><img src="@-feature assets/notion-image.jpeg" alt="Notion @-mention interface"></div><div class="content-image"><img src="@-feature assets/cursor-menu.jpeg" alt="Cursor @-mention interface"></div></div>',
+                            content: '<h4 class="content-subsection-title">Design Principles</h4>To translate the key findings into a solution, I established two core principles:<br><br><ul style="margin-left: 20px;"><li><strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.</li><li><strong>Abstract the Complexity:</strong> Create a simple interface for humans while ensuring the AI receives the deep, structured context it needs to perform accurately.</li></ul><h4 class="content-subsection-title">Design Exploration</h4><div class="content-figma-embed"><iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31439&embed-host=share" allowfullscreen></iframe></div>',
                             image: ''
                         },
                         { 
                             title: 'Prototyping & Implementation', 
-                            content: '<h4 class="content-subsection-title">@ Menu Design Iterations in Figma</h4>Here I designed the following information hierarchy for the menu based on the discovery findings.<br><br><strong>@-Menu Categories:</strong> Recents (3 most recent), Code Items (components, files, pages), Design Elements (brand colors, typography)<br><br><em>(Note to self: place figma iterations here)</em><br><br><h4 class="content-subsection-title">Interaction Design</h4>Here I built an interactive prototype in Onlook to test with and iterate on with users.<br><br><strong>Key interaction design decisions:</strong><ul style="margin-left: 20px;"><li>Keyboard & mouse controls for navigation</li><li>Sub-menu navigation</li><li>Fuzzy search in the @-menu</li></ul><h4 class="content-subsection-title">Onlook Prototype</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120687917?h=d6a71997d7" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div>',
+                            content: '<h4 class="content-subsection-title">@ Menu Design Iterations in Figma</h4>Here I defined the following information hierarchy and interactions for the menu based on the discovery findings: <strong>recents, code items, and design items.</strong><br><br><div class="content-image"><img src="@-feature assets/@-Menu Figma.jpg" alt="@-Menu Figma iterations" style="max-width: 70%;"></div><h4 class="content-subsection-title">Functional Prototype</h4>Here I built a <strong>fully functional prototype</strong> of the AI Agent Context Feature in code using Onlook\'s own tool. I then used this prototype to conduct <strong>usability tests</strong> with users.<h4 class="content-subsection-title">Onlook Prototype</h4><div class="content-video"><iframe title="vimeo-player" src="https://player.vimeo.com/video/1120687917?h=d6a71997d7" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe></div>',
                             image: ''
                         },
                         { 
@@ -685,8 +699,12 @@
                             content: '<h4 class="content-subsection-title">Research Objectives</h4><ul style="margin-left: 20px;"><li>Why do users struggle to discover and adopt Onlook\'s current features?</li><li>Which features are most important for driving growth?</li><li>What are the "core" features which all users should know about?</li></ul><h4 class="content-subsection-title">Findings</h4><ul style="margin-left: 20px;"><li>Onlook does not onboard new users either hands on or with a virtual walkthrough</li><li>Onlook has complex and numerous feature offerings</li><li>Engagement with "Site Publishing" and "Custom Domain Hosting" features leads to user conversion and retention</li><li>Onlook\'s Core Features: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing & Custom Domain Hosting</li></ul><div class="content-image"><img src="growth assets/onboarding-audit.png" alt="Onboarding flow friction audit"></div><p class="content-image-caption">Green = low friction/users navigate smoothly, Yellow = slight friction/users navigate less smoothly, Red = high friction/users drop off.</p><h4 class="content-subsection-title">Solution Ideation</h4><ul style="margin-left: 20px;"><li>How might we make new users aware of Onlook\'s core feature offerings in an intuitive and effective way?</li><li>How might we funnel users to Site "Publishing and Custom Domain Hosting" features to drive conversion?</li></ul>'
                         },
                         { 
-                            title: 'Solution Development', 
-                            content: '<h4 class="content-subsection-title">Adoption & Retention</h4>Designed an <strong>interactive onboarding flow</strong>: To address the findings that users are dropping off early in their product experience, are not discovering key features, and thus are not retaining long enough to reach paid-conversion opportunities.<h4 class="content-subsection-title">Growth & Conversion</h4><strong>Redesigned Publish and Custom Domain Flows:</strong> Optimized this critical activation point to reduce friction, <strong>increase conversion probability,</strong> and capitalize on proven paid-conversion trends.<br><br><strong>Designed and prototyped a new sharing and collaboration feature:</strong> To <strong>foster network effects and increase product stickiness,</strong> encouraging organic growth and multi-seat adoption among paying users.<h4 class="content-subsection-title">Prototyping & Development Workflow</h4><ul style="margin-left: 20px;"><li>Designed specific UI components and interactions in Figma.</li><li>Developed high-fidelity, functional prototypes of the new experiences using Onlook\'s own product.</li><li>Implemented the final features by converting the validated prototype into production code using Cursor.</li><li>Created detailed GitHub issues for open-source contributors to help with implementation.</li></ul>',
+                            title: 'Solution Development: Onboarding Flow', 
+                            content: '<h4 class="content-subsection-title">Adoption & Retention</h4>Designed an <strong>interactive onboarding flow</strong>: To address the findings that users are dropping off early in their product experience, are not discovering key features, and thus are not retaining long enough to reach paid-conversion opportunities.<h4 class="content-subsection-title">Solution Exploration and Ideation</h4><div class="content-figma-embed"><iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31440&embed-host=share" allowfullscreen></iframe></div>',
+                        },
+                        { 
+                            title: 'Solution Development: Publish & Share Features', 
+                            content: '<h4 class="content-subsection-title">Growth & Conversion</h4><strong>Redesigned Publish and Custom Domain Flows:</strong> Optimized this critical activation point to reduce friction, <strong>increase conversion probability,</strong> and capitalize on proven paid-conversion trends.<br><br><strong>Designed and prototyped a new sharing and collaboration feature:</strong> To <strong>foster network effects and increase product stickiness,</strong> encouraging organic growth and multi-seat adoption among paying users.<h4 class="content-subsection-title">Solution Exploration and Ideation</h4><div class="content-figma-embed"><iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=58-7942&embed-host=share" allowfullscreen></iframe></div>',
                         },
                         { 
                             title: 'Implementation', 
@@ -829,7 +847,14 @@
                     dot.className = 'pagination-dot' + (index === 0 ? ' active' : '');
                     dot.dataset.page = index + 1;
                     const pageNumber = String(index + 1).padStart(2, '0');
-                    dot.textContent = `${pageNumber} ${page.title}`;
+                    const numberSpan = document.createElement('span');
+                    numberSpan.className = 'pagination-number';
+                    numberSpan.textContent = pageNumber;
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'pagination-title';
+                    titleSpan.textContent = page.title;
+                    dot.appendChild(numberSpan);
+                    dot.appendChild(titleSpan);
                     dot.addEventListener('click', function() {
                         changePage(parseInt(this.dataset.page));
                     });
