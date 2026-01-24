@@ -124,7 +124,7 @@ nav.main-grid .grid-cell {
 
 /* Spacer between nav and welcome */
 .spacer-row {
-    height: clamp(80px, 10vw, 150px);
+    height: clamp(64px, 8vw, 120px);
 }
 
 .spacer-row .empty-cell {
@@ -516,7 +516,7 @@ nav.main-grid .grid-cell {
     
     /* Spacer row - reduce height */
     .spacer-row {
-        height: clamp(60px, 8vw, 100px);
+        height: clamp(48px, 6.4vw, 80px);
     }
     
     /* Main title - slightly smaller */
@@ -679,6 +679,48 @@ nav.main-grid .grid-cell {
     scroll-margin-top: 80px;
 }
 
+#resume-label .section-label-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+#resume-label .section-label-title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    text-transform: lowercase;
+}
+
+#resume-label .section-label-subtext {
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+    color: inherit;
+    text-decoration: underline;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.2s ease;
+}
+
+#resume-label .section-label-subtext:hover {
+    opacity: 0.8;
+}
+
+#resume-label .inline-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-45deg);
+    margin: 0 2px;
+}
+
+#resume-label .inline-arrow svg {
+    width: 14px;
+    height: 14px;
+}
+
 #my-work-label {
     scroll-margin-top: 80px;
 }
@@ -709,7 +751,7 @@ nav.main-grid .grid-cell {
     border-bottom: 1px solid var(--grid-line);
     transition: background-color 0.2s ease;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .work-item.double-item {
@@ -719,14 +761,27 @@ nav.main-grid .grid-cell {
     padding: 0;
 }
 
+.work-item.triple-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    grid-column: 2 / 4;
+}
+
 .work-sub-item {
     padding: var(--space-md) var(--inner-col-padding);
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* Last sub-item in double-item needs extra right padding to clear 80% line */
 .work-item.double-item .work-sub-item:last-child {
+    padding-right: calc(var(--inner-col-padding) + var(--line-inner-clearance));
+}
+
+/* Last sub-item in triple-item needs extra right padding to clear 80% line */
+.work-item.triple-item .work-sub-item:last-child {
     padding-right: calc(var(--inner-col-padding) + var(--line-inner-clearance));
 }
 
@@ -744,10 +799,35 @@ nav.main-grid .grid-cell {
 /* Project hover image effect */
 .project-with-hover-image {
     position: relative;
-    overflow: hidden;
+    overflow: visible !important;
+    cursor: pointer;
 }
 
-.project-with-hover-image .project-text-content {
+/* Description area container - holds both text and image */
+.project-with-hover-image .project-description-area {
+    position: relative;
+    min-height: 120px;
+    overflow: visible;
+    height: auto;
+}
+
+/* Larger description area for standalone work-item projects (like project 04) */
+.work-item.project-with-hover-image .project-description-area {
+    min-height: 320px;
+}
+
+.work-item.project-with-hover-image .project-hover-image {
+    padding: 0;
+    overflow: visible;
+}
+
+.work-item.project-with-hover-image .project-hover-image img {
+    max-width: 100%;
+    max-height: none;
+    height: auto;
+}
+
+.project-with-hover-image .project-description-area .project-description {
     transition: opacity 0.3s ease;
 }
 
@@ -755,57 +835,78 @@ nav.main-grid .grid-cell {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
+    border-radius: 0;
+    overflow: visible;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 12px;
 }
 
 .project-with-hover-image .project-hover-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
+    max-width: 90%;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+    display: block;
+    object-fit: contain;
 }
 
-.project-with-hover-image .project-hover-image .hover-cta {
+/* Blue arrow indicator in top right */
+.project-with-hover-image .hover-arrow-indicator {
     position: absolute;
-    top: 33%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: var(--space-md);
+    right: var(--space-md);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--primary-text);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Cursor tooltip that follows mouse */
+.project-with-hover-image .hover-cursor-tooltip {
+    position: fixed;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10000;
+    transform: translate(15px, 15px);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-sm);
+}
+
+/* Slide counter cursor tooltip for project detail view */
+.slide-counter-tooltip {
+    position: fixed;
     background-color: var(--primary-text);
-    color: #fff;
-    font-size: var(--text-base);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 10001;
+    transform: translate(15px, 15px);
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.5px;
     white-space: nowrap;
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 4px;
-    z-index: 2;
 }
 
-.project-with-hover-image .project-hover-image .hover-cta-text {
-    flex: 1;
-}
-
-.project-with-hover-image .project-hover-image .hover-cta-arrow {
-    font-size: var(--text-lg);
-}
-
-.project-with-hover-image .project-hover-image img {
-    transition: filter 0.3s ease;
-}
-
-.project-with-hover-image:hover .project-hover-image img {
-    filter: blur(0.5px);
-}
-
-.project-with-hover-image:hover .project-text-content {
+/* On hover: hide description text, show preview image */
+.project-with-hover-image:hover .project-description-area .project-description {
     opacity: 0;
 }
 
@@ -813,7 +914,11 @@ nav.main-grid .grid-cell {
     opacity: 1;
 }
 
-/* Hide the arrow on hover for projects with hover image */
+.project-with-hover-image:hover .hover-arrow-indicator {
+    opacity: 1;
+}
+
+/* Hide the default arrow on hover for projects with hover image */
 .project-with-hover-image.clickable-project:hover::after {
     opacity: 0;
 }
@@ -899,6 +1004,7 @@ nav.main-grid .grid-cell {
     background-color: #000000;
     border-bottom-color: rgba(255, 255, 255, 0.2);
     overflow: visible;
+    cursor: pointer;
 }
 
 .project-detail-view.active .content-nav-arrow {
@@ -1241,6 +1347,11 @@ nav.main-grid .grid-cell {
     margin-bottom: var(--space-md);
     border-radius: 8px;
     overflow: hidden;
+}
+
+/* When image is the first element (no title above), add extra top margin to clear nav arrows */
+.content-page .content-image:first-child {
+    margin-top: 56px;
 }
 
 .content-image img {
@@ -1674,6 +1785,29 @@ nav.main-grid .grid-cell {
     margin: 0 0 var(--space-sm) 0;
 }
 
+.sidebar-subtitle {
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: #999;
+    margin: var(--space-sm) 0 4px 0;
+}
+
+.sidebar-subtitle:first-of-type {
+    margin-top: 0;
+}
+
+.sidebar-text {
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--body-text);
+    line-height: 1.5;
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.sidebar-text:last-child {
+    margin-bottom: 0;
+}
+
 .sidebar-list {
     margin: 0;
     padding-left: var(--space-md);
@@ -2050,6 +2184,23 @@ nav.main-grid .grid-cell {
         justify-content: flex-start;
     }
     
+    #resume-label .section-label-content {
+        align-items: flex-start;
+    }
+    
+    #resume-label .section-label-title {
+        font-size: 18px;
+    }
+    
+    #resume-label .section-label-subtext {
+        font-size: 12px;
+    }
+    
+    #resume-label .inline-arrow svg {
+        width: 12px;
+        height: 12px;
+    }
+    
     .work-row {
         display: block;
     }
@@ -2342,6 +2493,11 @@ nav.main-grid .grid-cell {
     
     .sidebar-title {
         font-size: 13px;
+    }
+    
+    .sidebar-subtitle,
+    .sidebar-text {
+        font-size: 12px;
     }
     
     .sidebar-list li {
