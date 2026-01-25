@@ -8,12 +8,52 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.59483 41C2.06178 41 0 38.9382 0 36.4052C0 34.6968 0.942529 33.2241 2.23851 32.4583L6.95115 29.7486C8.24713 28.9828 9.18965 27.5101 9.18965 25.8017C9.18965 24.9181 8.95402 24.2701 8.71839 23.7399L0.471264 6.65661C0.235632 6.12644 0 5.47845 0 4.59483C0 2.06178 2.06178 0 4.59483 0H36.4052C38.9382 0 41 2.06178 41 4.59483V15.1983C41 17.7313 38.9971 19.5575 36.9353 19.7931L25.2716 21.2069C23.2098 21.4425 21.4425 23.2098 21.2069 25.2716L19.7931 36.9353C19.5575 38.9971 17.7313 41 15.1983 41H4.59483ZM25.8017 19.7931C28.3348 19.7931 30.3966 17.7313 30.3966 15.1983C30.3966 12.6652 28.3348 10.6034 25.8017 10.6034H15.1983C12.6652 10.6034 10.6034 12.6652 10.6034 15.1983C10.6034 17.7313 12.6652 19.7931 15.1983 19.7931H25.8017Z" fill="#ffffff"/>
+                </svg>
+            </div>
+            <div class="loading-counter" id="loading-counter">0%</div>
+        </div>
+    </div>
+
     <script>
         // Ensure page loads at the top (Welcome section)
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
         window.scrollTo(0, 0);
+        
+        // Loading animation
+        (function() {
+            const overlay = document.getElementById('loading-overlay');
+            const counter = document.getElementById('loading-counter');
+            const duration = 3000; // 3 seconds
+            const startTime = Date.now();
+            
+            function updateCounter() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const percentage = Math.floor(progress * 100);
+                
+                counter.textContent = percentage + '%';
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    // Animation complete - fade out overlay
+                    overlay.classList.add('fade-out');
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 500);
+                }
+            }
+            
+            requestAnimationFrame(updateCounter);
+        })();
     </script>
     <div class="site-wrapper">
         <!-- Navigation -->
@@ -231,7 +271,7 @@
                                 <div class="project-description-area">
                                     <p class="project-description">Building a tool for product teams to test software with their target customers using generative agents</p>
                                     <div class="project-hover-image">
-                                        <img src="Archetype/ArchetypeCM.jpg" alt="Synthetic Archetype Conceptual Model">
+                                        <img src="Archetype/Synthetic Archetype Concept Map.png" alt="Synthetic Archetype Concept Map">
                                     </div>
                                 </div>
                                 <span class="hover-arrow-indicator" style="transform: rotate(-45deg);"><svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 11.8621C32 10.069 30.7126 8.82759 29.5632 8.45977L4.87356 0.229885C4.50575 0.091954 4.04598 0 3.58621 0C1.6092 0 0 1.6092 0 3.58621C0 5.33333 1.33333 7.03448 3.4023 7.17241L20.3218 8.27586C22.3908 8.41379 23.7241 10.1149 23.7241 11.8621C23.7241 13.2874 22.8966 14.4828 21.7471 15.0805L1.97701 25.1954C0.827587 25.7931 0 26.9885 0 28.4138C0 30.3908 1.6092 32 3.58621 32H11.8621C13.3333 32 14.2529 31.1264 14.4368 30.9425L30.9425 14.4368C31.1264 14.2529 32 13.3333 32 11.8621Z" fill="currentColor"/></svg></span>
@@ -447,6 +487,98 @@
     </div>
 
     <script>
+        // Zoom functionality for images
+        const zoomLevels = {};
+        
+        function zoomImage(containerId, delta) {
+            if (!zoomLevels[containerId]) zoomLevels[containerId] = 1;
+            
+            const newZoom = Math.max(0.5, Math.min(3, zoomLevels[containerId] + delta));
+            zoomLevels[containerId] = newZoom;
+            
+            const container = document.getElementById(containerId);
+            if (container) {
+                const img = container.querySelector('.zoomable-image');
+                const levelDisplay = document.getElementById(containerId + '-level');
+                
+                if (img) img.style.transform = `scale(${newZoom})`;
+                if (levelDisplay) levelDisplay.textContent = Math.round(newZoom * 100) + '%';
+            }
+        }
+        
+        function resetZoom(containerId) {
+            zoomLevels[containerId] = 1;
+            
+            const container = document.getElementById(containerId);
+            if (container) {
+                const img = container.querySelector('.zoomable-image');
+                const levelDisplay = document.getElementById(containerId + '-level');
+                const content = container.querySelector('.zoomable-content');
+                
+                if (img) img.style.transform = 'scale(1)';
+                if (levelDisplay) levelDisplay.textContent = '100%';
+                if (content) {
+                    content.scrollTop = 0;
+                    content.scrollLeft = 0;
+                }
+            }
+        }
+        
+        // Initialize pinch-to-zoom on zoomable containers
+        function initPinchZoom() {
+            document.querySelectorAll('.zoomable-container').forEach(container => {
+                const containerId = container.id;
+                const content = container.querySelector('.zoomable-content');
+                const img = container.querySelector('.zoomable-image');
+                
+                if (content && img) {
+                    content.addEventListener('wheel', function(e) {
+                        // Pinch gesture on trackpad triggers wheel with ctrlKey
+                        if (e.ctrlKey) {
+                            e.preventDefault();
+                            
+                            if (!zoomLevels[containerId]) zoomLevels[containerId] = 1;
+                            const oldZoom = zoomLevels[containerId];
+                            
+                            // Calculate new zoom
+                            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                            const newZoom = Math.max(0.5, Math.min(3, oldZoom + delta));
+                            zoomLevels[containerId] = newZoom;
+                            
+                            // Get cursor position relative to content
+                            const rect = content.getBoundingClientRect();
+                            const cursorX = e.clientX - rect.left + content.scrollLeft;
+                            const cursorY = e.clientY - rect.top + content.scrollTop;
+                            
+                            // Calculate position in image coordinates
+                            const imgX = cursorX / oldZoom;
+                            const imgY = cursorY / oldZoom;
+                            
+                            // Apply new zoom
+                            img.style.transform = `scale(${newZoom})`;
+                            
+                            // Update zoom level display
+                            const levelDisplay = document.getElementById(containerId + '-level');
+                            if (levelDisplay) levelDisplay.textContent = Math.round(newZoom * 100) + '%';
+                            
+                            // Adjust scroll to keep cursor point stationary
+                            const newCursorX = imgX * newZoom;
+                            const newCursorY = imgY * newZoom;
+                            content.scrollLeft = newCursorX - (e.clientX - rect.left);
+                            content.scrollTop = newCursorY - (e.clientY - rect.top);
+                        }
+                    }, { passive: false });
+                }
+            });
+        }
+        
+        // Run after DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPinchZoom);
+        } else {
+            initPinchZoom();
+        }
+        
         // Active navigation link based on scroll position
         document.addEventListener('DOMContentLoaded', function() {
             const sections = document.querySelectorAll('section[id]');
@@ -639,11 +771,15 @@
                     pages: [
                         { 
                             title: 'Product', 
-                            content: '<h4 class="content-subsection-title">Solution Overview</h4>Synthetic Archetype enables product teams to rigorously validate features before launch by simulating authentic user interactions in a prototype environment. Instead of relying on slow, small-scale user research or guesswork, our platform allows teams to predict discovery, adoption, and monetization outcomes with actionable data.<br><br>With Synthetic Archetype, product managers and designers can:<ul style="margin-left: 20px;"><li>Describe the product and feature they want to test.</li><li>Link to a live prototype or demo.</li><li>Define user personas and testing hypotheses.</li><li>Launch simulations using AI-generated users that embody the selected personas.</li><li>Generate a comprehensive report with insights about user tests</li></ul><h4 class="content-subsection-title">Problem Space</h4>Product development is currently a high-stakes gamble. Teams pour millions into new features without knowing the answers to three critical questions: Will users find it? Can they use it? And will they pay for it?<br><br>While pre-launch validation feedback is a way to mitigate this risk, the current methods are broken. Traditional user research is prohibitively expensive, agonizingly slow, and frequently relies on insufficient data that fails to represent the full breadth of real users. Teams are forced to choose between launching blindly or moving too slowly (and expensively) to compete.'
+                            content: '<h4 class="content-subsection-title">Solution Overview</h4>Synthetic Archetype enables product teams to rigorously validate features before launch by simulating authentic user interactions in a prototype environment. Instead of relying on slow, small-scale user research or guesswork, our platform allows teams to predict discovery, adoption, and monetization outcomes with actionable data.<br><br>With Synthetic Archetype, product managers and designers can:<ul style="margin-left: 20px;"><li>Describe the product and feature they want to test.</li><li>Link to a live prototype or demo.</li><li>Define user personas and testing hypotheses.</li><li>Launch simulations using AI-generated users that embody the selected personas.</li><li>Generate a comprehensive report with insights about user tests</li></ul><h4 class="content-subsection-title">Problem Space</h4>The concept map below contrasts the differences between current software viability testing and viability testing with the addition of synthetic users—illustrating the slow-pace, high-cost, and small sample of test subjects using traditional methods.<br><br><iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=1-2&embed-host=share" allowfullscreen></iframe>'
                         },
                         { 
-                            title: 'Technical Solution', 
-                            content: '<h4 class="content-subsection-title">How it works</h4>Our system creates AI-driven, behaviorally-accurate user profiles that interact with your prototype just like real users would. These simulated users explore the feature, make decisions, and even demonstrate willingness to pay or adopt new behaviors. Once the simulation reaches statistical significance, Synthetic Archetype delivers a detailed report comparing your original hypotheses to the actual simulated outcomes, revealing key user behaviors, adoption drivers, and areas for improvement.<br><br><strong>Tech stack:</strong><ul style="margin-left: 20px;"><li>Agentic Simulation: Google Gemini, Browser-use (YC W25) API + Python Playwright, Agentmail (YC S25)</li><li>Persona generation and dimensions: Google Gemini</li><li>Web framework: React + Python Flask + AWS</li></ul>'
+                            title: 'Ideation & Prototyping', 
+                            content: '<h4 class="content-subsection-title">Conceptual Modeling</h4>Collaboratively drafted a conceptual model of a product testing platform with my technical co-founder. The conceptual model served as a foundation for the development of both the backend and front-end of the platform.<br><br><div class="content-figma-embed"><iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=0-1&embed-host=share" allowfullscreen></iframe></div><h4 class="content-subsection-title">Interactive Prototype</h4>Developed a fully interactive prototype of the front-end in code based on the conceptual model.<br><br><img src="Archetype/Archetype Prototypes SVG.svg" alt="Archetype Interactive Prototypes" style="width: 100%; height: auto;">'
+                        },
+                        { 
+                            title: 'Solution Implementation', 
+                            content: '<h4 class="content-subsection-title">How it works</h4>Our system creates AI-driven, behaviorally-accurate user profiles that interact with your prototype just like real users would. These simulated users explore the feature, make decisions, and even demonstrate willingness to pay or adopt new behaviors. Once the simulation reaches statistical significance, Synthetic Archetype delivers a detailed report comparing your original hypotheses to the actual simulated outcomes, revealing key user behaviors, adoption drivers, and areas for improvement.<br><br><strong>Tech stack:</strong><ul style="margin-left: 20px;"><li>Agentic Simulation: Google Gemini, Browser-use (YC W25) API + Python Playwright, Agentmail (YC S25)</li><li>Persona generation and dimensions: Google Gemini</li><li>Web framework: React + Python Flask + AWS</li></ul><br><h4 class="content-subsection-title">Live Product</h4><iframe src="https://www.syntheticarchetype.com/" style="width: 100%; aspect-ratio: 16/10; border: 1px solid rgba(0, 0, 0, 0.1);" frameborder="0"></iframe><br><p style="margin-top: 8px; font-size: 14px;">Brought to you by <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer">Synthetic Archetype</a></p>'
                         },
                         { 
                             title: 'Our Pitch', 
