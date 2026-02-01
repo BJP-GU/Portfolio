@@ -92,8 +92,8 @@
             <div class="grid-cell empty-cell title-row"></div>
             <div class="grid-cell title-cell">
                 <div class="main-title">
-                    <span class="name">Bryce Parsons<img src="Icons/P-circle.svg" alt="P Logo" class="name-logo"></span>
-                    <span class="designer">Designer</span>
+                    <img src="Bryce Parsons Hero.svg" alt="Bryce Parsons" class="hero-name-svg">
+                    <img src="AI Product & Experience Designer.svg" alt="AI Product & Experience Designer" class="hero-title-svg">
                 </div>
             </div>
             <div class="grid-cell empty-cell title-row"></div>
@@ -112,17 +112,24 @@
             <div class="grid-cell empty-cell content-row-side"></div>
             <div class="grid-cell content-cell">
                 <div class="content-wrapper">
-                    <div class="content-row currently">
-                        <span class="label">currently</span>
-                        <div class="text">
-                            studying emerging technology design at <a href="https://mdes.berkeley.edu/" target="_blank" class="link-black">UC Berkeley MDes</a> — focusing on the application of artificial intelligence and the future of human computer interaction.
+                    <!-- Tabbed Interface -->
+                    <div class="hero-tabs">
+                        <div class="hero-tabs-content">
+                            <div class="hero-tab-panel active" id="design-focus">
+                                <p>Exploring human-AI products that responsibly augment human capabilities and enhance how people work, create, and travel.</p>
+                            </div>
+                            <div class="hero-tab-panel" id="current-studies">
+                                <p>Studying emerging technology design at <a href="https://mdes.berkeley.edu/" target="_blank">UC Berkeley (MDes)</a> with focus on human-AI interaction.</p>
+                            </div>
+                            <div class="hero-tab-panel" id="work-experience">
+                                <p>Worked five years in Product Design and Strategy consulting for clients including Microsoft, the Gates Foundation, Nintendo, and Gap Inc.</p>
+                                <p>Angel investor and part-time work at <a href="https://onlook.dev/" target="_blank">Onlook (YC W25)</a>.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="content-row previously">
-                        <span class="label">previously</span>
-                        <div class="text">
-                            <p>worked five years in Product Design and Strategy consulting for clients including Microsoft, the Gates Foundation, Nintendo, and Gap Inc.</p>
-                            <p>Angel investor and part-time work at <a href="https://onlook.dev/" target="_blank">Onlook (YC W25)</a>.</p>
+                        <div class="hero-tabs-nav">
+                            <button class="hero-tab-btn active" data-tab="design-focus">Design Focus</button>
+                            <button class="hero-tab-btn" data-tab="current-studies">Current Studies</button>
+                            <button class="hero-tab-btn" data-tab="work-experience">Work Experience</button>
                         </div>
                     </div>
                 </div>
@@ -610,6 +617,27 @@
                     }
                 });
             }
+            
+            // Hero Tabs Functionality
+            const heroTabBtns = document.querySelectorAll('.hero-tab-btn');
+            const heroTabPanels = document.querySelectorAll('.hero-tab-panel');
+            
+            heroTabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and panels
+                    heroTabBtns.forEach(b => b.classList.remove('active'));
+                    heroTabPanels.forEach(p => p.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding panel
+                    this.classList.add('active');
+                    const targetPanel = document.getElementById(targetTab);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                });
+            });
             
             // Make welcome link scroll to the very top of the page
             const welcomeLink = document.querySelector('.nav-links-cell a[href="#welcome"]');

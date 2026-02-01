@@ -268,42 +268,27 @@ nav.main-grid .grid-cell {
 }
 
 .main-title {
-    /* Font size scales with viewport but constrained to fit within columns 2-3 */
-    /* 60% of viewport (cols 2-3) minus padding, roughly 3.5vw + base works well */
-    font-size: clamp(32px, 3.5vw + 12px, 70px);
-    font-weight: 700;
-    letter-spacing: clamp(-1px, -0.1vw, -2px);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: clamp(6px, 0.8vw, 12px);
-    padding: 0.15em 0;
+    flex-wrap: nowrap;
+    gap: clamp(12px, 2vw, 32px);
+    padding: clamp(4px, 0.5vw, 8px) 0;
     width: 100%;
     max-width: 100%;
-    line-height: 1.1;
-    text-align: center;
 }
 
-.main-title .name {
-    color: var(--primary-text);
+/* Hero SVG images - responsive scaling, always side by side */
+.main-title .hero-name-svg {
+    height: auto;
+    width: clamp(200px, 32vw, 465px);
+    flex-shrink: 1;
 }
 
-.main-title .name-logo {
-    width: 0.45em;
-    height: 0.45em;
-    vertical-align: super;
-    margin-left: 0.05em;
-}
-
-.main-title .separator {
-    color: var(--body-text);
-    font-weight: 300;
-    margin: 0 clamp(5px, 0.7vw, 10px);
-}
-
-.main-title .designer {
-    color: var(--secondary-text);
+.main-title .hero-title-svg {
+    height: auto;
+    width: clamp(140px, 20vw, 296px);
+    flex-shrink: 1;
 }
 
 /* Image row - empty cells on sides get horizontal lines */
@@ -484,6 +469,96 @@ nav.main-grid .grid-cell {
     color: black;
 }
 
+/* Hero Tabs - Welcome Section */
+.hero-tabs {
+    width: 100%;
+    max-width: clamp(500px, 55vw, 800px);
+}
+
+.hero-tabs-nav {
+    display: flex;
+    gap: 0;
+    margin-top: var(--space-md);
+    width: 100%;
+}
+
+.hero-tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: var(--space-xs) 0;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.hero-tab-btn:last-child {
+    border-right: none;
+}
+
+.hero-tab-btn:hover {
+    color: var(--body-text);
+}
+
+.hero-tab-btn.active {
+    color: var(--body-text);
+}
+
+.hero-tabs-content {
+    position: relative;
+    min-height: clamp(80px, 8vw, 120px);
+}
+
+.hero-tab-panel {
+    display: none;
+    opacity: 0;
+    animation: fadeInTab 0.35s ease forwards;
+}
+
+.hero-tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeInTab {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-tab-panel p {
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--body-text);
+    margin-bottom: var(--space-sm);
+    text-align: center;
+}
+
+.hero-tab-panel p:last-child {
+    margin-bottom: 0;
+}
+
+.hero-tab-panel a {
+    color: var(--primary-text);
+    text-decoration: underline;
+    transition: opacity 0.2s ease;
+}
+
+.hero-tab-panel a:hover {
+    opacity: 0.7;
+}
+
 .arrow-cell {
     justify-content: center;
     align-items: center;
@@ -580,9 +655,13 @@ nav.main-grid .grid-cell {
         height: clamp(48px, 6.4vw, 80px);
     }
     
-    /* Main title - slightly smaller */
-    .main-title {
-        font-size: clamp(36px, 5vw, 60px);
+    /* Main title SVGs - slightly smaller */
+    .main-title .hero-name-svg {
+        width: clamp(180px, 30vw, 400px);
+    }
+    
+    .main-title .hero-title-svg {
+        width: clamp(120px, 19vw, 260px);
     }
     
     /* Image adjustments */
@@ -2206,15 +2285,15 @@ nav.main-grid .grid-cell {
     }
     
     .main-title {
-        font-size: clamp(28px, 8vw, 40px);
-        flex-direction: column;
-        gap: 4px;
-        line-height: 1.15;
+        gap: clamp(8px, 2vw, 16px);
     }
     
-    .main-title .name-logo {
-        width: 0.35em;
-        height: 0.35em;
+    .main-title .hero-name-svg {
+        width: clamp(140px, 42vw, 280px);
+    }
+    
+    .main-title .hero-title-svg {
+        width: clamp(100px, 28vw, 180px);
     }
     
     .image-cell {
@@ -2258,6 +2337,28 @@ nav.main-grid .grid-cell {
         box-sizing: border-box;
         overflow-wrap: break-word;
         word-wrap: break-word;
+    }
+    
+    /* Hero Tabs - Mobile */
+    .hero-tabs {
+        max-width: 100%;
+    }
+    
+    .hero-tabs-nav {
+        width: 100%;
+    }
+    
+    .hero-tab-btn {
+        font-size: 10px;
+        letter-spacing: 0.03em;
+    }
+    
+    .hero-tabs-content {
+        min-height: auto;
+    }
+    
+    .hero-tab-panel p {
+        font-size: 18px;
     }
     
     /* Ensure all text content wraps properly on mobile */
@@ -2702,13 +2803,15 @@ nav.main-grid .grid-cell {
    =========================================== */
 @media (max-width: 480px) {
     .main-title {
-        font-size: clamp(24px, 7vw, 32px);
-        gap: 2px;
+        gap: clamp(6px, 2vw, 10px);
     }
     
-    .main-title .name-logo {
-        width: 0.3em;
-        height: 0.3em;
+    .main-title .hero-name-svg {
+        width: clamp(120px, 45vw, 200px);
+    }
+    
+    .main-title .hero-title-svg {
+        width: clamp(80px, 30vw, 140px);
     }
     
     .image-cell img {
@@ -2781,5 +2884,14 @@ nav.main-grid .grid-cell {
     
     .entry-bullets li {
         font-size: 12px;
+    }
+    
+    /* Hero Tabs - Small Mobile */
+    .hero-tab-btn {
+        font-size: 9px;
+    }
+    
+    .hero-tab-panel p {
+        font-size: 16px;
     }
 }
