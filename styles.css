@@ -208,6 +208,7 @@ a:active {
     align-items: center;
     min-height: clamp(60px, 5vw, 80px);
     min-width: 0;
+    background-color: var(--bg-color);
 }
 
 /* Outer columns (1 & 4) need extra padding to clear edge lines */
@@ -240,6 +241,7 @@ nav.main-grid .grid-cell {
 /* Spacer between nav and welcome */
 .spacer-row {
     height: clamp(64px, 8vw, 120px);
+    background-color: var(--bg-color);
 }
 
 .spacer-row .empty-cell {
@@ -307,6 +309,17 @@ nav.main-grid .grid-cell {
 /* Welcome Section */
 #welcome.main-grid {
     border-bottom: none;
+    /* Subtract nav height and spacer height so total welcome page = 100vh */
+    height: calc(100vh - clamp(60px, 5vw, 80px) - clamp(64px, 8vw, 120px));
+    height: calc(100svh - clamp(60px, 5vw, 80px) - clamp(64px, 8vw, 120px)); /* Fallback for mobile */
+    /* Title row: auto, Image row: auto, Content row: expand */
+    grid-template-rows: auto auto 1fr;
+    align-items: stretch;
+}
+
+/* Ensure the welcome section starts after the nav */
+#welcome {
+    scroll-margin-top: 0;
 }
 
 /* Title row - spans center columns */
@@ -314,6 +327,9 @@ nav.main-grid .grid-cell {
     border-top: 1px solid var(--grid-line);
     border-bottom: 1px solid var(--grid-line);
     min-height: auto;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-color);
 }
 
 /* Title cell with all borders */
@@ -324,6 +340,9 @@ nav.main-grid .grid-cell {
     border-top: 1px solid var(--grid-line);
     border-bottom: 1px solid var(--grid-line);
     min-height: auto;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-color);
 }
 
 .main-title {
@@ -355,6 +374,7 @@ nav.main-grid .grid-cell {
     border-bottom: 1px solid var(--grid-line);
     position: relative;
     padding: clamp(10px, 1vw, 14px) var(--inner-col-padding) clamp(11px, 1vw, 15px) var(--inner-col-padding);
+    background-color: var(--bg-color);
 }
 
 /* First image-row (column 1) needs outer left padding */
@@ -393,6 +413,7 @@ nav.main-grid .grid-cell {
     grid-column: 2 / 4;
     border-bottom: 1px solid var(--grid-line);
     position: relative;
+    background-color: var(--bg-color);
 }
 
 /* Double horizontal lines at top and bottom of image section */
@@ -443,16 +464,22 @@ nav.main-grid .grid-cell {
 
 .content-cell {
     padding: var(--space-md) var(--inner-col-padding);
-    align-items: flex-start;
+    padding-bottom: 0;
+    align-items: center;
     justify-content: center;
     grid-column: 2 / 4;
-    border-bottom: 1px solid var(--grid-line);
+    border-bottom: none;
     min-height: auto;
+    display: flex;
+    background-color: var(--bg-color);
 }
 
 .content-row-side {
-    border-bottom: 1px solid var(--grid-line);
+    border-bottom: none;
     min-height: auto;
+    background-color: var(--bg-color);
+    align-items: flex-start;
+    padding-bottom: 0;
 }
 
 .arrow-row-side,
@@ -535,6 +562,7 @@ nav.main-grid .grid-cell {
 .hero-tabs {
     width: 100%;
     max-width: clamp(500px, 55vw, 800px);
+    margin: 0 auto;
 }
 
 .hero-tabs-nav {
@@ -542,13 +570,14 @@ nav.main-grid .grid-cell {
     gap: 0;
     margin-top: var(--space-md);
     width: 100%;
+    justify-content: center;
 }
 
 .hero-tab-btn {
-    flex: 1;
+    flex: 0 1 auto;
     background: none;
     border: none;
-    padding: var(--space-xs) 0;
+    padding: var(--space-xs) var(--space-sm);
     font-family: var(--font-display);
     font-size: var(--text-xs);
     font-weight: var(--font-medium);
@@ -586,6 +615,7 @@ nav.main-grid .grid-cell {
 
 .hero-tab-panel.active {
     display: block;
+    text-align: center;
 }
 
 @keyframes fadeInTab {
@@ -606,6 +636,9 @@ nav.main-grid .grid-cell {
     color: var(--body-text);
     margin-bottom: var(--space-sm);
     text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-tab-panel p:last-child {
@@ -624,10 +657,12 @@ nav.main-grid .grid-cell {
 
 .arrow-cell {
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: var(--space-md) var(--inner-col-padding);
     padding-right: var(--outer-col-padding-left);
-    border-bottom: 1px solid var(--grid-line);
+    padding-bottom: 0;
+    border-bottom: none;
+    background-color: var(--bg-color);
 }
 
 .scroll-indicator {
@@ -810,6 +845,7 @@ nav.main-grid .grid-cell {
     scroll-margin-top: 80px;
     height: auto;
     min-height: auto;
+    border-top: 1px solid var(--grid-line);
 }
 
 .work-container {
