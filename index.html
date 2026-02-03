@@ -56,6 +56,8 @@
         })();
     </script>
     <div class="site-wrapper">
+        <!-- Above-fold wrapper for 100vh -->
+        <div class="above-fold-wrapper">
         <!-- Navigation -->
         <nav class="main-grid">
             <div class="grid-cell logo-cell">
@@ -64,12 +66,8 @@
                 </a>
             </div>
             <div class="grid-cell nav-links-cell" id="nav-links">
-                <a href="#welcome">welcome</a>
                 <a href="#my-work">my work</a>
                 <a href="#resume">resume</a>
-            </div>
-            <div class="grid-cell location-cell">
-                San Francisco, CA
             </div>
             <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -140,6 +138,15 @@
                 </a>
             </div>
         </section>
+
+        <!-- Spacer between Welcome and My Work -->
+        <div class="main-grid welcome-spacer-row">
+            <div class="grid-cell empty-cell"></div>
+            <div class="grid-cell empty-cell"></div>
+            <div class="grid-cell empty-cell"></div>
+            <div class="grid-cell empty-cell"></div>
+        </div>
+        </div><!-- End above-fold-wrapper -->
 
         <!-- My Work Section -->
         <section id="my-work" class="my-work-section">
@@ -639,15 +646,6 @@
                 });
             });
             
-            // Make welcome link scroll to the very top of the page
-            const welcomeLink = document.querySelector('.nav-links-cell a[href="#welcome"]');
-            if (welcomeLink) {
-                welcomeLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-            
             // Make P logo home button scroll to top
             const homeButton = document.getElementById('home-button');
             if (homeButton) {
@@ -722,11 +720,6 @@
                         currentSection = section.getAttribute('id');
                     }
                 });
-                
-                // If we're near the top of the page, default to welcome
-                if (window.scrollY < 100) {
-                    currentSection = 'welcome';
-                }
                 
                 // Update nav links
                 if (currentSection) {

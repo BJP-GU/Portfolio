@@ -174,6 +174,14 @@ a:active {
     width: 100%;
 }
 
+/* Above-fold wrapper - ensures welcome page fills viewport */
+.above-fold-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100svh; /* Fallback for mobile browsers */
+}
+
 /* Continuous vertical lines - applied to a wrapper */
 .site-wrapper {
     position: relative;
@@ -248,6 +256,18 @@ nav.main-grid .grid-cell {
     border-bottom: none;
 }
 
+/* Spacer between welcome and my work */
+.welcome-spacer-row {
+    flex-grow: 1;
+    min-height: clamp(64px, 8vw, 120px);
+    background-color: var(--bg-color);
+}
+
+.welcome-spacer-row .empty-cell {
+    border-top: 1px solid var(--grid-line);
+    border-bottom: 1px solid var(--grid-line);
+}
+
 .logo-cell {
     justify-content: center;
     padding-left: var(--inner-col-padding);
@@ -276,7 +296,7 @@ nav.main-grid .grid-cell {
 .nav-links-cell {
     justify-content: center;
     gap: clamp(20px, 3vw, 50px);
-    grid-column: 2 / 4;
+    grid-column: 4;
 }
 
 .nav-links-cell a {
@@ -298,22 +318,11 @@ nav.main-grid .grid-cell {
     font-weight: var(--font-bold);
 }
 
-.location-cell {
-    justify-content: center;
-    padding-right: var(--inner-col-padding);
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    color: var(--body-text-muted);
-}
-
 /* Welcome Section */
 #welcome.main-grid {
     border-bottom: none;
-    /* Subtract nav height and spacer height so total welcome page = 100vh */
-    height: calc(100vh - clamp(60px, 5vw, 80px) - clamp(64px, 8vw, 120px));
-    height: calc(100svh - clamp(60px, 5vw, 80px) - clamp(64px, 8vw, 120px)); /* Fallback for mobile */
-    /* Title row: auto, Image row: auto, Content row: expand */
-    grid-template-rows: auto auto 1fr;
+    /* Title row: auto, Image row: auto, Content row: auto */
+    grid-template-rows: auto auto auto;
     align-items: stretch;
 }
 
@@ -464,8 +473,8 @@ nav.main-grid .grid-cell {
 
 .content-cell {
     padding: var(--space-md) var(--inner-col-padding);
-    padding-bottom: 0;
-    align-items: center;
+    padding-bottom: var(--space-md);
+    align-items: flex-start;
     justify-content: center;
     grid-column: 2 / 4;
     border-bottom: none;
@@ -479,7 +488,7 @@ nav.main-grid .grid-cell {
     min-height: auto;
     background-color: var(--bg-color);
     align-items: flex-start;
-    padding-bottom: 0;
+    padding-bottom: var(--space-md);
 }
 
 .arrow-row-side,
@@ -660,7 +669,7 @@ nav.main-grid .grid-cell {
     align-items: flex-start;
     padding: var(--space-md) var(--inner-col-padding);
     padding-right: var(--outer-col-padding-left);
-    padding-bottom: 0;
+    padding-bottom: var(--space-md);
     border-bottom: none;
     background-color: var(--bg-color);
 }
@@ -744,13 +753,13 @@ nav.main-grid .grid-cell {
         gap: clamp(15px, 2vw, 30px);
     }
     
-    .location-cell {
-        font-size: var(--text-sm);
-    }
-    
     /* Spacer row - reduce height */
     .spacer-row {
         height: clamp(48px, 6.4vw, 80px);
+    }
+    
+    .welcome-spacer-row {
+        min-height: clamp(48px, 6.4vw, 80px);
     }
     
     /* Main title SVGs - slightly smaller */
@@ -845,7 +854,6 @@ nav.main-grid .grid-cell {
     scroll-margin-top: 80px;
     height: auto;
     min-height: auto;
-    border-top: 1px solid var(--grid-line);
 }
 
 .work-container {
@@ -2390,23 +2398,6 @@ nav.main-grid .grid-cell {
         white-space: nowrap;
     }
     
-    /* Location - far right in header */
-    .location-cell {
-        grid-row: 1;
-        grid-column: 1;
-        display: flex;
-        padding: 12px var(--space-md);
-        min-height: 60px;
-        align-items: center;
-        justify-content: flex-end;
-        font-size: clamp(12px, 2.5vw, 16px);
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 2;
-        width: auto;
-    }
-    
     /* Ensure all sections and containers fit within viewport */
     .main-grid,
     section,
@@ -2431,6 +2422,7 @@ nav.main-grid .grid-cell {
     }
     
     .spacer-row,
+    .welcome-spacer-row,
     .title-row,
     .image-row,
     .content-row-side {
