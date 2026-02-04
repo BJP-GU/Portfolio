@@ -3183,6 +3183,23 @@ a.project-info-link {
         display: block;
     }
     
+    /* Hide work navigation sidebar on mobile */
+    .work-nav-sidebar {
+        display: none;
+    }
+    
+    /* Hide right spacer on mobile */
+    .work-right-spacer {
+        display: none;
+    }
+    
+    /* Adjust main content to span full width on mobile when sidebar is hidden */
+    .work-main-content {
+        grid-column: 1 / -1;
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+    }
+    
     .work-container,
     .work-list-view .work-container,
     .project-detail-view .work-container {
