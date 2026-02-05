@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <noscript>
+        <style>
+            .loading-overlay {
+                display: none !important;
+            }
+        </style>
+    </noscript>
     <!-- Loading Screen -->
     <div class="loading-overlay" id="loading-overlay">
         <div class="loading-content">
             <div class="loading-logo">
-                <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="https://www.w3.org/2000/svg">
                     <path d="M4.59483 41C2.06178 41 0 38.9382 0 36.4052C0 34.6968 0.942529 33.2241 2.23851 32.4583L6.95115 29.7486C8.24713 28.9828 9.18965 27.5101 9.18965 25.8017C9.18965 24.9181 8.95402 24.2701 8.71839 23.7399L0.471264 6.65661C0.235632 6.12644 0 5.47845 0 4.59483C0 2.06178 2.06178 0 4.59483 0H36.4052C38.9382 0 41 2.06178 41 4.59483V15.1983C41 17.7313 38.9971 19.5575 36.9353 19.7931L25.2716 21.2069C23.2098 21.4425 21.4425 23.2098 21.2069 25.2716L19.7931 36.9353C19.5575 38.9971 17.7313 41 15.1983 41H4.59483ZM25.8017 19.7931C28.3348 19.7931 30.3966 17.7313 30.3966 15.1983C30.3966 12.6652 28.3348 10.6034 25.8017 10.6034H15.1983C12.6652 10.6034 10.6034 12.6652 10.6034 15.1983C10.6034 17.7313 12.6652 19.7931 15.1983 19.7931H25.8017Z" fill="#ffffff"/>
                 </svg>
             </div>
@@ -22,59 +34,144 @@
 
     <script>
         // Ensure page loads at the top (Welcome section)
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
+        try {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+        } catch (e) {
+            // Fallback if scrollRestoration is not supported
+            console.warn('scrollRestoration not supported:', e);
         }
-        window.scrollTo(0, 0);
         
         // Loading animation - only show on initial page load or reload
+        // Enhanced with mobile browser compatibility and timeout safety
         (function() {
-            const navigationType = performance.getEntriesByType('navigation')[0]?.type;
-            const hasLoadedInSession = sessionStorage.getItem('hasLoaded');
-            
-            // Show loading only on:
-            // 1. Initial page load (navigate and first time in session)
-            // 2. Page reload
-            // Don't show on navigation between pages (navigate but already loaded in session)
-            const shouldShowLoading = navigationType === 'reload' || 
-                                     (navigationType === 'navigate' && !hasLoadedInSession);
-            
-            if (!shouldShowLoading) {
-                // Hide overlay immediately for navigation between pages
-                const overlay = document.getElementById('loading-overlay');
+            // Safety timeout: always hide overlay after 5 seconds max
+            var safetyTimeout = setTimeout(function() {
+                var overlay = document.getElementById('loading-overlay');
                 if (overlay) {
                     overlay.style.display = 'none';
                 }
-                return;
-            }
+            }, 5000);
             
-            // Mark that we've loaded in this session
-            sessionStorage.setItem('hasLoaded', 'true');
-            
-            const overlay = document.getElementById('loading-overlay');
-            const counter = document.getElementById('loading-counter');
-            const duration = 2000; // 2 seconds
-            const startTime = Date.now();
-            
-            function updateCounter() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const percentage = Math.floor(progress * 100);
+            try {
+                // Safely get navigation type with fallback for mobile browsers
+                let navigationType = null;
+                try {
+                    if (typeof performance !== 'undefined' && performance.getEntriesByType) {
+                        const navEntries = performance.getEntriesByType('navigation');
+                        if (navEntries && navEntries.length > 0 && navEntries[0]) {
+                            navigationType = navEntries[0].type;
+                        }
+                    }
+                } catch (e) {
+                    // Performance API not available, use fallback
+                    navigationType = 'navigate'; // Default to navigate for first load
+                }
                 
-                counter.textContent = percentage + '%';
+                // Safely check sessionStorage with fallback
+                let hasLoadedInSession = false;
+                try {
+                    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem) {
+                        hasLoadedInSession = !!sessionStorage.getItem('hasLoaded');
+                    }
+                } catch (e) {
+                    // sessionStorage not available (e.g., private browsing mode)
+                    hasLoadedInSession = false;
+                }
                 
-                if (progress < 1) {
+                // Show loading only on:
+                // 1. Initial page load (navigate and first time in session)
+                // 2. Page reload
+                // Don't show on navigation between pages (navigate but already loaded in session)
+                const shouldShowLoading = navigationType === 'reload' || 
+                                         (navigationType === 'navigate' && !hasLoadedInSession) ||
+                                         (!navigationType && !hasLoadedInSession); // Fallback for browsers without Performance API
+                
+                if (!shouldShowLoading) {
+                    // Hide overlay immediately for navigation between pages
+                    clearTimeout(safetyTimeout);
+                    const overlay = document.getElementById('loading-overlay');
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                    return;
+                }
+                
+                // Mark that we've loaded in this session
+                try {
+                    if (typeof sessionStorage !== 'undefined' && sessionStorage.setItem) {
+                        sessionStorage.setItem('hasLoaded', 'true');
+                    }
+                } catch (e) {
+                    // sessionStorage not available, continue without it
+                }
+                
+                const overlay = document.getElementById('loading-overlay');
+                const counter = document.getElementById('loading-counter');
+                
+                if (!overlay || !counter) {
+                    // Elements not found, exit early
+                    clearTimeout(safetyTimeout);
+                    return;
+                }
+                
+                const duration = 2000; // 2 seconds
+                const startTime = Date.now();
+                
+                function updateCounter() {
+                    try {
+                        const elapsed = Date.now() - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const percentage = Math.floor(progress * 100);
+                        
+                        if (counter) {
+                            counter.textContent = percentage + '%';
+                        }
+                        
+                        if (progress < 1) {
+                            if (window.requestAnimationFrame) {
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                // Fallback for browsers without requestAnimationFrame
+                                setTimeout(updateCounter, 16);
+                            }
+                        } else {
+                            // Animation complete - fade out overlay
+                            clearTimeout(safetyTimeout);
+                            if (overlay) {
+                                overlay.classList.add('fade-out');
+                                setTimeout(function() {
+                                    if (overlay) {
+                                        overlay.style.display = 'none';
+                                    }
+                                }, 500);
+                            }
+                        }
+                    } catch (e) {
+                        // Error in animation, hide overlay immediately
+                        clearTimeout(safetyTimeout);
+                        if (overlay) {
+                            overlay.style.display = 'none';
+                        }
+                    }
+                }
+                
+                // Start animation with fallback
+                if (window.requestAnimationFrame) {
                     requestAnimationFrame(updateCounter);
                 } else {
-                    // Animation complete - fade out overlay
-                    overlay.classList.add('fade-out');
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                    }, 500);
+                    setTimeout(updateCounter, 16);
+                }
+            } catch (e) {
+                // If anything fails, hide the overlay immediately
+                clearTimeout(safetyTimeout);
+                var overlay = document.getElementById('loading-overlay');
+                if (overlay) {
+                    overlay.style.display = 'none';
                 }
             }
-            
-            requestAnimationFrame(updateCounter);
         })();
     </script>
     <div class="site-wrapper">
@@ -232,7 +329,7 @@
                                 <div class="project-info-section">
                                     <span class="project-info-label">/ website</span>
                                     <div class="project-info-content">
-                                        <a href="https://www.syntheticarchetype.com/" target="_blank" class="project-info-link">Synthetic Archetype <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                        <a href="https://www.syntheticarchetype.com/" target="_blank" class="project-info-link">Synthetic Archetype <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="https://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -347,7 +444,7 @@
                                 <div class="project-info-section">
                                     <span class="project-info-label">/ website</span>
                                     <div class="project-info-content">
-                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="https://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -483,7 +580,7 @@
                                 <div class="project-info-section">
                                     <span class="project-info-label">/ website</span>
                                     <div class="project-info-content">
-                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="https://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -632,13 +729,13 @@
                 <div class="footer-section">
                     <span class="footer-label">Contact</span>
                     <span class="footer-text">bryceparsons@berkeley.edu</span>
-                    <svg class="footer-separator" width="12" height="12" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.7931 23C7.8046 23 7 22.1954 7 21.2069C7 20.5402 7.36782 19.9655 7.87356 19.6667L9.71264 18.6092C10.2184 18.3103 10.5862 17.7356 10.5862 17.069C10.5862 16.7241 10.4943 16.4713 10.4023 16.2644L7.18391 9.5977C7.09195 9.39081 7 9.13793 7 8.7931C7 7.8046 7.8046 7 8.7931 7H21.2069C22.1954 7 23 7.8046 23 8.7931V12.931C23 13.9195 22.2184 14.6322 21.4138 14.7241L16.8621 15.2759C16.0575 15.3678 15.3678 16.0575 15.2759 16.8621L14.7241 21.4138C14.6322 22.2184 13.9195 23 12.931 23H8.7931ZM17.069 14.7241C18.0575 14.7241 18.8621 13.9195 18.8621 12.931C18.8621 11.9425 18.0575 11.1379 17.069 11.1379H12.931C11.9425 11.1379 11.1379 11.9425 11.1379 12.931C11.1379 13.9195 11.9425 14.7241 12.931 14.7241H17.069Z" fill="white"/><circle cx="14.5" cy="14.5" r="13" stroke="white" stroke-width="3"/></svg>
+                    <svg class="footer-separator" width="12" height="12" viewBox="0 0 29 29" fill="none" xmlns="https://www.w3.org/2000/svg"><path d="M8.7931 23C7.8046 23 7 22.1954 7 21.2069C7 20.5402 7.36782 19.9655 7.87356 19.6667L9.71264 18.6092C10.2184 18.3103 10.5862 17.7356 10.5862 17.069C10.5862 16.7241 10.4943 16.4713 10.4023 16.2644L7.18391 9.5977C7.09195 9.39081 7 9.13793 7 8.7931C7 7.8046 7.8046 7 8.7931 7H21.2069C22.1954 7 23 7.8046 23 8.7931V12.931C23 13.9195 22.2184 14.6322 21.4138 14.7241L16.8621 15.2759C16.0575 15.3678 15.3678 16.0575 15.2759 16.8621L14.7241 21.4138C14.6322 22.2184 13.9195 23 12.931 23H8.7931ZM17.069 14.7241C18.0575 14.7241 18.8621 13.9195 18.8621 12.931C18.8621 11.9425 18.0575 11.1379 17.069 11.1379H12.931C11.9425 11.1379 11.1379 11.9425 11.1379 12.931C11.1379 13.9195 11.9425 14.7241 12.931 14.7241H17.069Z" fill="white"/><circle cx="14.5" cy="14.5" r="13" stroke="white" stroke-width="3"/></svg>
                     <a href="https://www.linkedin.com/in/brycejparsons" target="_blank" class="footer-link">LinkedIn</a>
                 </div>
                 <div class="footer-section">
                     <span class="footer-label">My Portfolio</span>
                     <span class="footer-text">Designed and built by me in Cursor</span>
-                    <svg class="footer-separator" width="12" height="12" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.7931 23C7.8046 23 7 22.1954 7 21.2069C7 20.5402 7.36782 19.9655 7.87356 19.6667L9.71264 18.6092C10.2184 18.3103 10.5862 17.7356 10.5862 17.069C10.5862 16.7241 10.4943 16.4713 10.4023 16.2644L7.18391 9.5977C7.09195 9.39081 7 9.13793 7 8.7931C7 7.8046 7.8046 7 8.7931 7H21.2069C22.1954 7 23 7.8046 23 8.7931V12.931C23 13.9195 22.2184 14.6322 21.4138 14.7241L16.8621 15.2759C16.0575 15.3678 15.3678 16.0575 15.2759 16.8621L14.7241 21.4138C14.6322 22.2184 13.9195 23 12.931 23H8.7931ZM17.069 14.7241C18.0575 14.7241 18.8621 13.9195 18.8621 12.931C18.8621 11.9425 18.0575 11.1379 17.069 11.1379H12.931C11.9425 11.1379 11.1379 11.9425 11.1379 12.931C11.1379 13.9195 11.9425 14.7241 12.931 14.7241H17.069Z" fill="white"/><circle cx="14.5" cy="14.5" r="13" stroke="white" stroke-width="3"/></svg>
+                    <svg class="footer-separator" width="12" height="12" viewBox="0 0 29 29" fill="none" xmlns="https://www.w3.org/2000/svg"><path d="M8.7931 23C7.8046 23 7 22.1954 7 21.2069C7 20.5402 7.36782 19.9655 7.87356 19.6667L9.71264 18.6092C10.2184 18.3103 10.5862 17.7356 10.5862 17.069C10.5862 16.7241 10.4943 16.4713 10.4023 16.2644L7.18391 9.5977C7.09195 9.39081 7 9.13793 7 8.7931C7 7.8046 7.8046 7 8.7931 7H21.2069C22.1954 7 23 7.8046 23 8.7931V12.931C23 13.9195 22.2184 14.6322 21.4138 14.7241L16.8621 15.2759C16.0575 15.3678 15.3678 16.0575 15.2759 16.8621L14.7241 21.4138C14.6322 22.2184 13.9195 23 12.931 23H8.7931ZM17.069 14.7241C18.0575 14.7241 18.8621 13.9195 18.8621 12.931C18.8621 11.9425 18.0575 11.1379 17.069 11.1379H12.931C11.9425 11.1379 11.1379 11.9425 11.1379 12.931C11.1379 13.9195 11.9425 14.7241 12.931 14.7241H17.069Z" fill="white"/><circle cx="14.5" cy="14.5" r="13" stroke="white" stroke-width="3"/></svg>
                     <span class="footer-text">Inspired by Atiostudio's "The North Face Red Box" visual identity design</span>
                 </div>
             </div>

@@ -20,6 +20,26 @@
     justify-content: center;
     z-index: 10000;
     transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
+    /* Fallback: Auto-hide after 3 seconds if JavaScript fails */
+    animation: autoHideOverlay 3s ease-in-out forwards;
+}
+
+/* Ensure page content is visible even if loading overlay is stuck */
+.site-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes autoHideOverlay {
+    0%, 90% {
+        opacity: 1;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
 }
 
 .loading-overlay.fade-out {
@@ -2953,6 +2973,51 @@ a.project-info-link {
         display: none;
     }
     
+    /* Add two vertical lines for welcome page on mobile - 16px from edges */
+    .above-fold-wrapper {
+        position: relative;
+        margin-top: 0;
+        padding-top: 0;
+    }
+    
+    .above-fold-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1000;
+        background: 
+            linear-gradient(to right, transparent 15px, var(--grid-line) 15px, var(--grid-line) 16px, transparent 16px),
+            linear-gradient(to right, transparent calc(100% - 16px), var(--grid-line) calc(100% - 16px), var(--grid-line) calc(100% - 15px), transparent calc(100% - 15px));
+    }
+    
+    /* Extend lines up to connect with nav by using negative margin on pseudo-element */
+    nav.main-grid {
+        position: relative;
+    }
+    
+    nav.main-grid::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1000;
+        background: 
+            linear-gradient(to right, transparent 15px, var(--grid-line) 15px, var(--grid-line) 16px, transparent 16px),
+            linear-gradient(to right, transparent calc(100% - 16px), var(--grid-line) calc(100% - 16px), var(--grid-line) calc(100% - 15px), transparent calc(100% - 15px));
+    }
+    
+    .above-fold-wrapper > * {
+        position: relative;
+        z-index: 2;
+    }
+    
     /* Simplified spacing for mobile */
     :root {
         --space-xs: 6px;
@@ -3082,14 +3147,30 @@ a.project-info-link {
     }
     
     .image-cell {
-        padding: var(--space-lg) var(--space-md);
+        padding: 14px var(--space-md) 15px var(--space-md);
         border: none;
         border-bottom: 1px solid var(--grid-line);
+        position: relative;
     }
     
+    /* Horizontal lines framing the image tightly - extend to screen edges */
     .image-cell::before,
     .image-cell::after {
-        display: none;
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: var(--grid-line);
+        display: block;
+    }
+    
+    .image-cell::before {
+        top: 13px;
+    }
+    
+    .image-cell::after {
+        bottom: 14px;
     }
     
     .image-cell img {
