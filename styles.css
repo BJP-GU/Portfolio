@@ -294,7 +294,7 @@ nav.main-grid .grid-cell {
 }
 
 .logo-cell img {
-    height: clamp(35px, 3vw + 10px, 50px);
+    height: clamp(19.69px, 1.69vw + 5.63px, 28.13px);
 }
 
 .home-button {
@@ -324,15 +324,15 @@ nav.main-grid .grid-cell {
     color: var(--body-text);
     text-decoration: none;
     font-family: var(--font-display);
-    font-size: var(--text-sm);
+    font-size: 12px;
     font-weight: var(--font-medium);
-    text-transform: lowercase;
+    text-transform: none;
     letter-spacing: var(--tracking-wide);
     transition: color 0.2s ease;
 }
 
 .nav-links-cell a:hover {
-    opacity: 0.7;
+    font-weight: var(--font-bold);
 }
 
 .nav-links-cell a.active {
@@ -378,7 +378,7 @@ nav.main-grid .grid-cell {
 .main-title {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-wrap: nowrap;
     gap: clamp(12px, 2vw, 32px);
     padding: clamp(4px, 0.5vw, 8px) 0;
@@ -495,7 +495,7 @@ nav.main-grid .grid-cell {
 .content-cell {
     padding: var(--space-md) var(--inner-col-padding);
     padding-bottom: var(--space-md);
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     grid-column: 2 / 4;
     border-bottom: none;
@@ -522,6 +522,7 @@ nav.main-grid .grid-cell {
     max-width: clamp(500px, 55vw, 800px);
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--space-md);
 }
 
@@ -593,14 +594,18 @@ nav.main-grid .grid-cell {
     width: 100%;
     max-width: clamp(500px, 55vw, 800px);
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hero-tabs-nav {
     display: flex;
     gap: 0;
-    margin-top: var(--space-md);
+    margin-top: 16px;
     width: 100%;
     justify-content: center;
+    align-items: center;
 }
 
 .hero-tab-btn {
@@ -614,7 +619,7 @@ nav.main-grid .grid-cell {
     color: var(--body-text-subtle);
     cursor: pointer;
     transition: color 0.2s ease;
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: var(--tracking-wide);
     border-right: 1px solid rgba(25, 25, 25, 0.2);
     text-align: center;
@@ -634,17 +639,25 @@ nav.main-grid .grid-cell {
 
 .hero-tabs-content {
     position: relative;
-    min-height: clamp(80px, 8vw, 120px);
+    min-height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero-tab-panel {
     display: none;
     opacity: 0;
     animation: fadeInTab 0.35s ease forwards;
+    width: 100%;
 }
 
 .hero-tab-panel.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 
@@ -661,7 +674,7 @@ nav.main-grid .grid-cell {
 
 .hero-tab-panel p {
     font-family: var(--font-body);
-    font-size: var(--text-lg);
+    font-size: 16px;
     line-height: var(--leading-relaxed);
     color: var(--body-text);
     margin-bottom: var(--space-sm);
@@ -3060,7 +3073,7 @@ a.project-info-link {
     }
     
     .logo-cell img {
-        height: 30px;
+        height: 16.88px;
     }
     
     /* Hide hamburger menu on mobile */
@@ -3092,7 +3105,7 @@ a.project-info-link {
     }
     
     .nav-links-cell a {
-        font-size: clamp(12px, 2.5vw, 16px);
+        font-size: 12px;
         padding: 0;
         white-space: nowrap;
     }
@@ -3140,10 +3153,12 @@ a.project-info-link {
     
     .main-title .hero-name-svg {
         width: clamp(140px, 42vw, 280px);
+        padding-left: 8px;
     }
     
     .main-title .hero-title-svg {
         width: clamp(100px, 28vw, 180px);
+        padding-right: 8px;
     }
     
     .image-cell {
@@ -3224,7 +3239,7 @@ a.project-info-link {
     }
     
     .hero-tab-panel p {
-        font-size: 18px;
+        font-size: 16px;
     }
     
     /* Ensure all text content wraps properly on mobile */
@@ -3758,10 +3773,12 @@ a.project-info-link {
     
     .main-title .hero-name-svg {
         width: clamp(120px, 45vw, 200px);
+        padding-left: 8px;
     }
     
     .main-title .hero-title-svg {
         width: clamp(80px, 30vw, 140px);
+        padding-right: 8px;
     }
     
     .image-cell img {
