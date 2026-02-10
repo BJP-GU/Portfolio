@@ -294,7 +294,7 @@ nav.main-grid .grid-cell {
 }
 
 .logo-cell img {
-    height: clamp(19.69px, 1.69vw + 5.63px, 28.13px);
+    height: clamp(24.61px, 2.11vw + 7.04px, 35.16px);
 }
 
 .home-button {
@@ -480,17 +480,6 @@ nav.main-grid .grid-cell {
     mix-blend-mode: multiply;
 }
 
-.image-wrapper .hover-img {
-    display: none;
-}
-
-.image-wrapper:hover .default-img {
-    display: none;
-}
-
-.image-wrapper:hover .hover-img {
-    display: block;
-}
 
 .content-cell {
     padding: var(--space-md) var(--inner-col-padding);
@@ -3073,7 +3062,7 @@ a.project-info-link {
     }
     
     .logo-cell img {
-        height: 16.88px;
+        height: 21.1px;
     }
     
     /* Hide hamburger menu on mobile */
