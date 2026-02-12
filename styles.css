@@ -720,35 +720,9 @@ nav.main-grid .grid-cell {
    RESPONSIVE DESIGN - TABLET & MOBILE
    =========================================== */
 
-/* Mobile Menu Toggle Button (hidden by default) */
+/* Mobile Menu Toggle Button (unused) */
 .mobile-menu-toggle {
     display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    z-index: 101;
-}
-
-.mobile-menu-toggle span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background-color: var(--body-text);
-    margin: 5px 0;
-    transition: all 0.3s ease;
-}
-
-.mobile-menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.mobile-menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.mobile-menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
 }
 
 /* ===========================================
@@ -2598,7 +2572,7 @@ nav.main-grid .grid-cell {
     min-height: 100vh;
     padding-left: var(--inner-col-padding);
     padding-right: var(--inner-col-padding);
-    overflow: hidden;
+    overflow: visible;
     box-sizing: border-box;
     min-width: 0;
     justify-self: stretch;
@@ -2614,7 +2588,7 @@ nav.main-grid .grid-cell {
 /* Project Case Study Container */
 .project-case {
     padding: var(--space-xl) 0;
-    overflow: hidden;
+    overflow: visible;
     max-width: 100%;
     box-sizing: border-box;
     word-wrap: break-word;
@@ -2865,7 +2839,7 @@ a.project-info-link {
     font-size: var(--text-sm);
     color: #707072;
     line-height: var(--leading-relaxed);
-    overflow: hidden;
+    overflow: visible;
     max-width: 100%;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -2927,11 +2901,24 @@ a.project-info-link {
     margin-bottom: var(--space-md);
     display: block;
     position: relative;
+    width: 100%;
+}
+
+/* Ensure the inner aspect-ratio div displays fully */
+.video-container-wrapper > div {
+    overflow: visible !important;
+    width: 100%;
+}
+
+/* Ensure iframes inside video wrappers fill the container */
+.video-container-wrapper iframe {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Allow case-section-content to show full video when it contains a video wrapper */
 .case-section-content:has(.video-container-wrapper) {
-    overflow: visible;
+    overflow: visible !important;
     padding-bottom: 0.5rem;
 }
 
@@ -3046,7 +3033,7 @@ a.project-info-link {
         box-sizing: border-box;
     }
     
-    /* Header row: logo left, location right */
+    /* Header row: logo left, menu button right */
     .logo-cell {
         grid-row: 1;
         grid-column: 1;
@@ -3065,32 +3052,27 @@ a.project-info-link {
         height: 21.1px;
     }
     
-    /* Hide hamburger menu on mobile */
+    /* Hide mobile menu toggle */
     .mobile-menu-toggle {
-        display: none;
+        display: none !important;
     }
     
-    /* Navigation links - centered vertically in row between header and border line */
+    /* Navigation links - top right corner on mobile */
     .nav-links-cell {
-        grid-row: 2;
-        grid-column: 1;
-        display: flex;
+        position: absolute;
+        right: var(--space-md);
+        top: 0;
+        display: flex !important;
         flex-direction: row;
-        justify-content: center;
         align-items: center;
         gap: var(--space-md);
-        padding: 12px var(--space-md);
-        background-color: transparent;
-        border-bottom: 1px solid var(--grid-line);
-        width: 100%;
-        box-sizing: border-box;
+        padding: 0;
         min-height: 60px;
-    }
-    
-    .nav-links-cell.mobile-open {
-        transform: none;
-        opacity: 1;
-        pointer-events: auto;
+        background-color: transparent;
+        border: none;
+        border-bottom: none;
+        z-index: 3;
+        width: auto;
     }
     
     .nav-links-cell a {

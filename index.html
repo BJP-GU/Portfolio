@@ -186,11 +186,6 @@
                 <a href="#my-work">My Work</a>
                 <a href="resume.html">Resume</a>
             </div>
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </nav>
         
         <!-- Above-fold wrapper for 100vh -->
@@ -277,7 +272,7 @@
                         <li>
                             <a href="#onlook" class="work-nav-item active"><span class="nav-number">01</span><span class="nav-title">Onlook (YC W25)</span></a>
                             <ul class="work-nav-sublist">
-                                <li><a href="#onlook" class="work-nav-subitem">AI Context</a></li>
+                                <li><a href="#onlook" class="work-nav-subitem">AI Agent Context Feature</a></li>
                                 <li><a href="#growth-design" class="work-nav-subitem">Growth Design</a></li>
                             </ul>
                         </li>
@@ -295,7 +290,7 @@
                         <!-- Project Summary Section -->
                         <div class="project-summary">
                             <div class="project-summary-header">
-                                <h1 class="project-summary-title">AI Context</h1>
+                                <h1 class="project-summary-title">AI Agent Context Feature</h1>
                                 <div class="project-summary-subtitle-row">
                                     <span class="project-summary-subtitle">Onlook (YC W25)</span>
                                     <span class="project-summary-dates">July - August 2025</span>
@@ -321,7 +316,7 @@
                                         </div>
                                         <div class="project-info-subitem">
                                             <span class="project-info-sub-label">tools</span>
-                                            <span class="project-info-sub-content">Cursor, Onlook, Figma.</span>
+                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -342,6 +337,8 @@
                                 <p>To enable users to effortlessly add contextual information to prompts for more accurate, relevant results in Onlook's Design-IDE AI Chat Interface.</p>
                                 
                                 <h4>Context</h4>
+                                <p>Onlook is a Y Combinator-backed company building a visual-first code editor that lets designers and product managers work directly in code.</p>
+                                <br>
                                 <p>While working at Onlook, I relied heavily on Notion, Cursor, and Slack. I became accustomed to using the '@' feature to add context in those tools that I found myself instinctively trying to use it while prompting in Onlook.</p>
                                 <br>
                                 <p><strong>This friction sparked a hypothesis:</strong> <em>if I have this muscle memory, our users likely do too.</em></p>
@@ -376,8 +373,12 @@
                             <div class="case-section-content">
                                 <h4>Design principles</h4>
                                 <ol>
-                                    <li><strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.</li>
-                                    <li><strong>Balance Human-User Needs with Agent Requirements:</strong> Create a simple abstracted interface for users while ensuring the agent receives the deep, structured context it needs to perform accurately.</li>
+                                <ul style="margin-left:0;">
+                                    <strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.
+                                    <br>
+                                    <br>
+                                    <strong>Balance Human-User Needs with Agent Requirements:</strong> Create a simple abstracted interface for users while ensuring the agent receives the deep, structured context it needs to perform accurately.
+                                </ul>
                                 </ol>
                                 
                                 <h4>Design Exploration</h4>
@@ -450,7 +451,7 @@
                                         </div>
                                         <div class="project-info-subitem">
                                             <span class="project-info-sub-label">tools</span>
-                                            <span class="project-info-sub-content">Cursor, Onlook, Figma.</span>
+                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -468,10 +469,11 @@
                             <h2 class="case-section-title">Challenge & Background</h2>
                             <div class="case-section-content">
                                 <h4>Challenge</h4>
-                                <p>Increase new user retention, conversion to paid subscribers, and grow the active user base for Onlook, an AI design tool startup competing in a crowded market with tools like Lovable, Replit, v0, and others.</p>
+                                <p>Increase new user retention, conversion to paid subscribers, and grow Onlook's active user base.</p>
                                 
                                 <h4>Background & Context</h4>
                                 <p>In-session analytics revealed critical drop-off points where users abandoned their sessions and workflows before completing key actions in Onlook's product. This indicated insufficient product onboarding and user experience around key features, resulting in poor business growth metrics.</p>
+                                <br>
                                 <p>Daniel, Onlook's CEO and Product Design Lead, challenged me to address the retention and growth issues through strategic design decisions.</p>
                             </div>
                         </section>
@@ -483,18 +485,18 @@
                                 <ul>
                                     <li>Why do users struggle to discover and adopt Onlook's current features?</li>
                                     <li>What are the "core" features that all users should discover?</li>
-                                    <li>Which features are most important for driving growth? Do they exist?</li>
+                                    <li>Which features are most important for driving growth? Do they exist in the current state?</li>
                                 </ul>
                                 
                                 <h4>Current State UX Friction Points</h4>
-                                <img src="growth assets/onboarding-audit.png" alt="Onboarding User Journey &amp; Friction Analysis">
+                                <img src="growth assets/onboarding-audit.png" alt="Onboarding User Journey &amp; Friction Analysis" style="max-width:100%;height:auto;" />
                                 
                                 <h4>Findings</h4>
                                 <ul>
-                                    <li>Onlook onboards some new users manually but does not have a self-service onboarding flow—something customers requested.</li>
-                                    <li>New users perceive the platform as complex with numerous feature offerings.</li>
-                                    <li>Engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention.</li>
-                                    <li>Onlook's core features: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing, and Custom Domain Hosting.</li>
+                                    <li>Onlook onboards some new users manually but <strong>does not have a self-service onboarding flow</strong>—something users requested.</li>
+                                    <li>New <strong>users perceive the platform as complex </strong> with numerous feature offerings.</li>
+                                    <li>Engagement with <strong>"Site Publishing" </strong> and <strong>"Custom Domain Hosting"</strong> features leads to higher <strong>user conversion and retention.</strong></li>
+                                    <li><strong>Onlook's core features</strong>: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing, and Custom Domain Hosting.</li>
                                 </ul>
                             </div>
                         </section>
@@ -502,8 +504,8 @@
                         <section class="case-section">
                             <h2 class="case-section-title">Solution Ideation: Onboarding Flow</h2>
                             <div class="case-section-content">
-                                <h4>Approach</h4>
-                                <p>Addressing initial findings that there is (1) demand for a self-service onboarding flow and that (2) new users perceive the platform as complex with numerous feature offerings—I ideated on the prompt, <strong>"How might we create an intuitive and informative core-feature onboarding experience to drive adoption and retention?"</strong></p>
+                                <h4><strong>Approach</strong></h4>
+                                <p>Addressing initial findings that there is <strong>demand for a self-service onboarding flow</strong> and that <strong>new users perceive the platform as complex with numerous feature offerings</strong>—I ideated on the prompt, <strong>"How might we create an intuitive and informative core-feature onboarding experience to drive adoption and retention?"</strong></p>
                                 
                                 <h4>Solution Exploration and Ideation</h4>
                                 <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31440&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
@@ -514,7 +516,8 @@
                             <h2 class="case-section-title">Solution Ideation: Publish & Share Features</h2>
                             <div class="case-section-content">
                                 <h4>Approach</h4>
-                                <p>Addressing initial finding (3)—that engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention—I ideated on the prompt, <strong>"How might we encourage discovery and completion of site publishing and custom domain flows?"</strong></p>
+                                <p>Addressing initial finding <strong>that engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention</strong>—I ideated on the prompt, <strong>"How might we encourage discovery and completion of site publishing and custom domain flows?"</strong></p>
+                                <br>
                                 <p>Additionally, <strong>"How might we spur new user growth through strategic design and product decisions?"</strong></p>
                                 
                                 <h4>Solution Exploration and Ideation</h4>
@@ -613,7 +616,7 @@
                                         </div>
                                         <div class="project-info-subitem">
                                             <span class="project-info-sub-label">tools</span>
-                                            <span class="project-info-sub-content">Cursor, Claude Code, Figma.</span>
+                                            <span class="project-info-sub-content">Cursor, Codex, Claude Code, Figma.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -865,32 +868,6 @@
             window.addEventListener('scroll', updateActiveNavItem);
             updateActiveNavItem();
             
-            // Mobile menu toggle
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            const navLinksContainer = document.getElementById('nav-links');
-            
-            if (mobileMenuToggle && navLinksContainer) {
-                mobileMenuToggle.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    navLinksContainer.classList.toggle('mobile-open');
-                });
-                
-                // Close mobile menu when a link is clicked
-                navLinksContainer.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', function() {
-                        mobileMenuToggle.classList.remove('active');
-                        navLinksContainer.classList.remove('mobile-open');
-                    });
-                });
-                
-                // Close mobile menu when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!mobileMenuToggle.contains(e.target) && !navLinksContainer.contains(e.target)) {
-                        mobileMenuToggle.classList.remove('active');
-                        navLinksContainer.classList.remove('mobile-open');
-                    }
-                });
-            }
             
             // Hero Tabs Functionality
             const heroTabBtns = document.querySelectorAll('.hero-tab-btn');
