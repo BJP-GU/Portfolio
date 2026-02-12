@@ -465,57 +465,45 @@
                         
                         <!-- Case Study Sections -->
                         <section class="case-section">
-                            <h2 class="case-section-title">Challenge & Problem Discovery</h2>
+                            <h2 class="case-section-title">Challenge & Background</h2>
                             <div class="case-section-content">
                                 <h4>Challenge</h4>
-                                <p>Increase new user retention, conversion to paid subscribers, and grow active user base for Onlook, an AI design tool startup competing in a crowded market with tools like Lovable, Figma, and others.</p>
+                                <p>Increase new user retention, conversion to paid subscribers, and grow the active user base for Onlook, an AI design tool startup competing in a crowded market with tools like Lovable, Replit, v0, and others.</p>
                                 
-                                <h4>Problem Discovery</h4>
-                                <p>In-session analytics (PostHog) revealed critical drop-off points where users abandoned their sessions before completing key actions in Onlook's product, indicating missed opportunities to demonstrate Onlook's unique value over competitors, and failing to convert users to paid subscribers.</p>
-                                
-                                <h4>Drop-off Insights:</h4>
-                                <ul>
-                                    <li>Users abandon sessions before initial site generation is completed due to lack of loading state feedback.</li>
-                                    <li>Limited awareness of Onlook's core features—code panel, design panel, brand styles, and infinite canvas—reducing engagement with differentiated product offerings.</li>
-                                </ul>
+                                <h4>Background & Context</h4>
+                                <p>In-session analytics revealed critical drop-off points where users abandoned their sessions and workflows before completing key actions in Onlook's product. This indicated insufficient product onboarding and user experience around key features, resulting in poor business growth metrics.</p>
+                                <p>Daniel, Onlook's CEO and Product Design Lead, challenged me to address the retention and growth issues through strategic design decisions.</p>
                             </div>
                         </section>
                         
                         <section class="case-section">
-                            <h2 class="case-section-title">Research & Ideation</h2>
+                            <h2 class="case-section-title">Problem Discovery & Validation</h2>
                             <div class="case-section-content">
                                 <h4>Research Objectives</h4>
                                 <ul>
                                     <li>Why do users struggle to discover and adopt Onlook's current features?</li>
-                                    <li>Which features are most important for driving growth?</li>
-                                    <li>What are the "core" features which all users should know about?</li>
+                                    <li>What are the "core" features that all users should discover?</li>
+                                    <li>Which features are most important for driving growth? Do they exist?</li>
                                 </ul>
+                                
+                                <h4>Current State UX Friction Points</h4>
+                                <img src="growth assets/onboarding-audit.png" alt="Onboarding User Journey &amp; Friction Analysis">
                                 
                                 <h4>Findings</h4>
                                 <ul>
-                                    <li>Onlook does not onboard new users either hands-on or with a virtual walkthrough.</li>
-                                    <li>Onlook has complex and numerous feature offerings.</li>
-                                    <li>Engagement with "Site Publishing" and "Custom Domain Hosting" features leads to user conversion and retention.</li>
-                                    <li>Onlook's Core Features: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing & Custom Domain Hosting.</li>
-                                </ul>
-                                
-                                <h4>User Journey & Friction Analysis</h4>
-                                <p>The diagram below illustrates the user journey through various UI screens, with colored friction indicators showing where users experience difficulty or drop off:</p>
-                                <img src="growth assets/onboarding-audit.png" alt="Onboarding User Journey & Friction Analysis">
-                                
-                                <h4>Solution Ideation</h4>
-                                <ul>
-                                    <li>How might we make new users aware of Onlook's core feature offerings in an intuitive and effective way?</li>
-                                    <li>How might we funnel users to Site "Publishing and Custom Domain Hosting" features to drive conversion?</li>
+                                    <li>Onlook onboards some new users manually but does not have a self-service onboarding flow—something customers requested.</li>
+                                    <li>New users perceive the platform as complex with numerous feature offerings.</li>
+                                    <li>Engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention.</li>
+                                    <li>Onlook's core features: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing, and Custom Domain Hosting.</li>
                                 </ul>
                             </div>
                         </section>
                         
                         <section class="case-section">
-                            <h2 class="case-section-title">Solution Development: Onboarding Flow</h2>
+                            <h2 class="case-section-title">Solution Ideation: Onboarding Flow</h2>
                             <div class="case-section-content">
-                                <h4>Adoption & Retention</h4>
-                                <p>Designed an interactive onboarding flow: To address the findings that users are dropping off early in their product experience, are not discovering key features, and thus are not retaining long enough to reach paid-conversion opportunities.</p>
+                                <h4>Approach</h4>
+                                <p>Addressing initial findings that there is (1) demand for a self-service onboarding flow and that (2) new users perceive the platform as complex with numerous feature offerings—I ideated on the prompt, <strong>"How might we create an intuitive and informative core-feature onboarding experience to drive adoption and retention?"</strong></p>
                                 
                                 <h4>Solution Exploration and Ideation</h4>
                                 <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31440&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
@@ -523,11 +511,11 @@
                         </section>
                         
                         <section class="case-section">
-                            <h2 class="case-section-title">Solution Development: Publish & Share Features</h2>
+                            <h2 class="case-section-title">Solution Ideation: Publish & Share Features</h2>
                             <div class="case-section-content">
-                                <h4>Growth & Conversion</h4>
-                                <p>Redesigned Publish and Custom Domain Flows: Optimized this critical activation point to reduce friction, increase conversion probability, and capitalize on proven paid-conversion trends.</p>
-                                <p>Designed and prototyped a new sharing and collaboration feature: To foster network effects and increase product stickiness, encouraging organic growth and multi-seat adoption among paying users.</p>
+                                <h4>Approach</h4>
+                                <p>Addressing initial finding (3)—that engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention—I ideated on the prompt, <strong>"How might we encourage discovery and completion of site publishing and custom domain flows?"</strong></p>
+                                <p>Additionally, <strong>"How might we spur new user growth through strategic design and product decisions?"</strong></p>
                                 
                                 <h4>Solution Exploration and Ideation</h4>
                                 <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=58-7942&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
@@ -535,29 +523,34 @@
                         </section>
                         
                         <section class="case-section">
-                            <h2 class="case-section-title">Implementation</h2>
+                            <h2 class="case-section-title">Solution Development: Onboarding Flow</h2>
                             <div class="case-section-content">
-                                <h4>New Onboarding Flow</h4>
+                                <h4>Onboarding Feature Overview</h4>
                                 <ul>
                                     <li>Flow initializes as the product loads in the background</li>
                                     <li>Focuses on core-features</li>
                                     <li>Interactive to encourage user-engagement</li>
                                 </ul>
                                 
-                                <h4>Demo Video</h4>
-                                <p>Onboarding - Onlook Prototype by Bryce Joseph Parsons</p>
+                                <h4>Onboarding Prototype Demo</h4>
                                 <div style="padding:64.47% 0 0 0;position:relative;"><iframe data-src="https://player.vimeo.com/video/1120687908?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onboarding - Onlook Prototype" class="lazy-iframe" loading="lazy"></iframe></div>
-                                
-                                <h4>Publish, Custom Domain, and Sharing Features</h4>
+                            </div>
+                        </section>
+                        
+                        <section class="case-section">
+                            <h2 class="case-section-title">Solution Development: Publish & Share Features</h2>
+                            <div class="case-section-content">
+                                <h4>Publish & Custom Domain Features</h4>
                                 <ul>
-                                    <li>Added attention-grabbing vertical carousel to the publish/share button</li>
-                                    <li>Integrated sharing tab within publish modal</li>
-                                    <li>Enhanced the Publish/Share modal loading states and preview functionality</li>
-                                    <li>Sequenced Custom Domain addition call-to-action to come after the site is published</li>
+                                    <li>Added an attention-grabbing vertical carousel to the Publish/Share button to drive feature discovery and engagement.</li>
+                                    <li>Enhanced the Publish/Share modal with improved loading states and preview functionality to increase publish flow completion by boosting user confidence and reducing decision fatigue.</li>
+                                    <li>Sequenced the Custom Domain call-to-action to appear after site publication, capitalizing on completion momentum to drive higher adoption of premium features.</li>
                                 </ul>
                                 
-                                <h4>Demo Video</h4>
-                                <p>Publish and Share - Onlook Prototype by Bryce Joseph Parsons</p>
+                                <h4>Sharing Feature</h4>
+                                <p>Designed a sharing feature integrated into the existing publish modal, drawing on proven design patterns from Figma, Notion, and Framer to create an intuitive experience that encourages viral growth through network effects.</p>
+                                
+                                <h4>Share Feature Prototype Demo</h4>
                                 <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
                                     <div style="padding:63.72% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687921?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Publish and Share - Onlook Prototype" class="lazy-iframe" loading="lazy"></iframe></div>
                                 </div>
@@ -567,11 +560,11 @@
                         <section class="case-section">
                             <h2 class="case-section-title">Results</h2>
                             <div class="case-section-content">
-                                <h4>Expected Outcomes</h4>
+                                <h4>Outcomes</h4>
                                 <ul>
-                                    <li>Increased new user retention through improved feature awareness and enhanced publish flow</li>
-                                    <li>Increases in revenue due to higher conversion to paid subscriptions via optimized add custom domain flow</li>
-                                    <li>Improved collaboration and user growth through frictionless sharing capabilities</li>
+                                    <li><strong>Increased new user retention</strong> through improved feature awareness and enhanced publish flow</li>
+                                    <li><strong>Increased revenue</strong> due to higher conversion to paid subscriptions via optimized add custom domain flow</li>
+                                    <li><strong>Improved collaboration and user growth</strong> through frictionless sharing capabilities</li>
                                 </ul>
                                 
                                 <h4>Key Success Metrics Defined</h4>
@@ -583,8 +576,6 @@
                                     <li>User session duration and feature adoption</li>
                                     <li>Monthly Active Users (MAU)</li>
                                 </ul>
-                                
-                                <p><em>Note: Quantitative impact assessment pending sufficient data collection period post-implementation.</em></p>
                             </div>
                         </section>
                     </article>
