@@ -49,12 +49,16 @@
             return true;
         });
         
-        // Ensure page loads at the top (Welcome section)
+        // Handle scroll restoration and hash navigation
         try {
             if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'manual';
             }
-            window.scrollTo(0, 0);
+            // Only scroll to top if there's no hash fragment
+            // Hash fragments should be handled after page load
+            if (!window.location.hash) {
+                window.scrollTo(0, 0);
+            }
         } catch (e) {
             // Fallback if scrollRestoration is not supported
             console.warn('scrollRestoration not supported:', e);
@@ -101,12 +105,14 @@
                 // 1. Initial page load (navigate and first time in session)
                 // 2. Page reload
                 // Don't show on navigation between pages (navigate but already loaded in session)
-                const shouldShowLoading = navigationType === 'reload' || 
+                // Also hide faster if there's a hash fragment (user wants to see content immediately)
+                const hasHash = window.location.hash && window.location.hash.length > 1;
+                const shouldShowLoading = (navigationType === 'reload' || 
                                          (navigationType === 'navigate' && !hasLoadedInSession) ||
-                                         (!navigationType && !hasLoadedInSession); // Fallback for browsers without Performance API
+                                         (!navigationType && !hasLoadedInSession)) && !hasHash; // Don't show if hash exists
                 
                 if (!shouldShowLoading) {
-                    // Hide overlay immediately for navigation between pages
+                    // Hide overlay immediately for navigation between pages or hash navigation
                     clearTimeout(safetyTimeout);
                     const overlay = document.getElementById('loading-overlay');
                     if (overlay) {
@@ -133,6 +139,7 @@
                     return;
                 }
                 
+                // Duration: shorter if hash exists (user wants to see content immediately)
                 const duration = 2000; // 2 seconds
                 const startTime = Date.now();
                 
@@ -847,63 +854,117 @@
                 });
             });
             
-            // Update active nav item on scroll
+            // Update active nav item on scroll with throttling
+            let scrollTimeout;
+            let isScrolling = false;
+            
             function updateActiveNavItem() {
-                const navHeight = document.querySelector('nav.main-grid').offsetHeight;
-                const scrollPosition = window.scrollY + navHeight + 100;
-                const myWorkSection = document.getElementById('my-work');
-                const myWorkTop = myWorkSection ? myWorkSection.offsetTop : 0;
-                
-                // Check if we're at or past the my-work section
-                if (scrollPosition >= myWorkTop - 50) {
-                    let foundActive = false;
-                    
-                    // Check each project to see if we're within its bounds
-                    projectCases.forEach((project) => {
-                        const projectId = project.getAttribute('id');
-                        const projectTop = project.offsetTop;
-                        const projectBottom = projectTop + project.offsetHeight;
-                        
-                        if (scrollPosition >= projectTop && scrollPosition < projectBottom) {
-                            // Remove all active states
-                            navItems.forEach(item => item.classList.remove('active'));
-                            subNavItems.forEach(item => item.classList.remove('active'));
-                            
-                            // Activate the appropriate nav item
-                            const navIndex = projectIdToNavIndex[projectId];
-                            if (navIndex !== undefined) {
-                                navItems[navIndex].classList.add('active');
-                                
-                                // If it's onlook or growth-design, also activate the sub-nav item
-                                if (projectId === 'onlook' || projectId === 'growth-design') {
-                                    subNavItems.forEach(subItem => {
-                                        const subHref = subItem.getAttribute('href').substring(1);
-                                        if (subHref === projectId) {
-                                            subItem.classList.add('active');
-                                        }
-                                    });
-                                }
-                            }
-                            foundActive = true;
-                        }
-                    });
-                    
-                    // If no project is active but we're in the my-work section, activate the first project
-                    // This handles the case when user is at the top of my-work section
-                    if (!foundActive && projectCases.length > 0) {
-                        navItems.forEach(item => item.classList.remove('active'));
-                        subNavItems.forEach(item => item.classList.remove('active'));
-                        navItems[0].classList.add('active');
+                try {
+                    // Safety checks
+                    if (!navItems || navItems.length === 0 || !projectCases || projectCases.length === 0) {
+                        return;
                     }
-                } else {
-                    // Before my-work section, remove all active states
-                    navItems.forEach(item => item.classList.remove('active'));
-                    subNavItems.forEach(item => item.classList.remove('active'));
+                    
+                    const nav = document.querySelector('nav.main-grid');
+                    if (!nav) return;
+                    
+                    const navHeight = nav.offsetHeight || 0;
+                    const scrollPosition = (window.scrollY || window.pageYOffset || 0) + navHeight + 100;
+                    const myWorkSection = document.getElementById('my-work');
+                    
+                    if (!myWorkSection) return;
+                    
+                    const myWorkTop = myWorkSection.offsetTop || 0;
+                    
+                    // Check if we're at or past the my-work section
+                    if (scrollPosition >= myWorkTop - 50) {
+                        let foundActive = false;
+                        
+                        // Check each project to see if we're within its bounds
+                        projectCases.forEach((project) => {
+                            if (!project) return;
+                            
+                            const projectId = project.getAttribute('id');
+                            if (!projectId) return;
+                            
+                            const projectTop = project.offsetTop || 0;
+                            const projectBottom = projectTop + (project.offsetHeight || 0);
+                            
+                            if (scrollPosition >= projectTop && scrollPosition < projectBottom) {
+                                // Remove all active states
+                                navItems.forEach(item => {
+                                    if (item) item.classList.remove('active');
+                                });
+                                subNavItems.forEach(item => {
+                                    if (item) item.classList.remove('active');
+                                });
+                                
+                                // Activate the appropriate nav item
+                                const navIndex = projectIdToNavIndex[projectId];
+                                if (navIndex !== undefined && navItems[navIndex]) {
+                                    navItems[navIndex].classList.add('active');
+                                    
+                                    // If it's onlook or growth-design, also activate the sub-nav item
+                                    if (projectId === 'onlook' || projectId === 'growth-design') {
+                                        subNavItems.forEach(subItem => {
+                                            if (!subItem) return;
+                                            const subHref = subItem.getAttribute('href');
+                                            if (subHref && subHref.substring(1) === projectId) {
+                                                subItem.classList.add('active');
+                                            }
+                                        });
+                                    }
+                                }
+                                foundActive = true;
+                            }
+                        });
+                        
+                        // If no project is active but we're in the my-work section, activate the first project
+                        if (!foundActive && projectCases.length > 0 && navItems[0]) {
+                            navItems.forEach(item => {
+                                if (item) item.classList.remove('active');
+                            });
+                            subNavItems.forEach(item => {
+                                if (item) item.classList.remove('active');
+                            });
+                            navItems[0].classList.add('active');
+                        }
+                    } else {
+                        // Before my-work section, remove all active states
+                        navItems.forEach(item => {
+                            if (item) item.classList.remove('active');
+                        });
+                        subNavItems.forEach(item => {
+                            if (item) item.classList.remove('active');
+                        });
+                    }
+                } catch (e) {
+                    // Silently handle errors to prevent crashes
+                    console.warn('updateActiveNavItem error:', e);
                 }
             }
             
-            window.addEventListener('scroll', updateActiveNavItem);
-            updateActiveNavItem();
+            // Throttled scroll handler
+            function handleScroll() {
+                if (!isScrolling) {
+                    window.requestAnimationFrame(function() {
+                        updateActiveNavItem();
+                        isScrolling = false;
+                    });
+                    isScrolling = true;
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Only call updateActiveNavItem after a short delay to ensure DOM is ready
+            setTimeout(function() {
+                try {
+                    updateActiveNavItem();
+                } catch (e) {
+                    // Silently handle errors
+                }
+            }, 100);
             
             
             // Hero Tabs Functionality
@@ -938,14 +999,77 @@
             
             // Helper function to scroll to my work section with proper offset
             function scrollToMyWork() {
-                const myWorkSection = document.getElementById('my-work');
-                const nav = document.querySelector('nav.main-grid');
-                if (myWorkSection && nav) {
-                    const navHeight = nav.offsetHeight;
-                    const elementTop = myWorkSection.getBoundingClientRect().top + window.pageYOffset;
-                    window.scrollTo({ top: elementTop - navHeight, behavior: 'smooth' });
+                try {
+                    const myWorkSection = document.getElementById('my-work');
+                    const nav = document.querySelector('nav.main-grid');
+                    if (myWorkSection && nav) {
+                        // Wait for layout to be ready
+                        requestAnimationFrame(function() {
+                            try {
+                                const navHeight = nav.offsetHeight || 0;
+                                const elementTop = myWorkSection.getBoundingClientRect().top + (window.pageYOffset || window.scrollY || 0);
+                                window.scrollTo({ top: Math.max(0, elementTop - navHeight), behavior: 'smooth' });
+                            } catch (e) {
+                                // Fallback to instant scroll if smooth fails
+                                const navHeight = nav.offsetHeight || 0;
+                                const elementTop = myWorkSection.offsetTop || 0;
+                                window.scrollTo(0, Math.max(0, elementTop - navHeight));
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.warn('scrollToMyWork error:', e);
                 }
             }
+            
+            // Handle hash navigation on page load
+            function handleHashNavigation() {
+                try {
+                    const hash = window.location.hash;
+                    if (hash && hash.length > 1) {
+                        const targetId = hash.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            // Wait for page to be fully loaded and rendered
+                            setTimeout(function() {
+                                try {
+                                    if (targetId === 'my-work') {
+                                        scrollToMyWork();
+                                    } else {
+                                        // For other hash targets, scroll to them
+                                        const nav = document.querySelector('nav.main-grid');
+                                        const navHeight = nav ? (nav.offsetHeight || 0) : 0;
+                                        const elementTop = targetElement.getBoundingClientRect().top + (window.pageYOffset || window.scrollY || 0);
+                                        window.scrollTo({ top: Math.max(0, elementTop - navHeight - 20), behavior: 'smooth' });
+                                    }
+                                } catch (e) {
+                                    // Fallback to instant scroll
+                                    const nav = document.querySelector('nav.main-grid');
+                                    const navHeight = nav ? (nav.offsetHeight || 0) : 0;
+                                    const elementTop = targetElement.offsetTop || 0;
+                                    window.scrollTo(0, Math.max(0, elementTop - navHeight - 20));
+                                }
+                            }, 500); // Wait for loading overlay and animations
+                        }
+                    }
+                } catch (e) {
+                    console.warn('handleHashNavigation error:', e);
+                }
+            }
+            
+            // Handle hash navigation after page loads
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', handleHashNavigation);
+            } else {
+                // DOM already loaded
+                setTimeout(handleHashNavigation, 600);
+            }
+            
+            // Also handle hash changes
+            window.addEventListener('hashchange', function() {
+                setTimeout(handleHashNavigation, 100);
+            }, { passive: true });
             
             // Make my work link scroll so the My Work section is at the top
             const myWorkLink = document.querySelector('.nav-links-cell a[href="#my-work"]');
@@ -969,46 +1093,71 @@
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-links-cell a');
             
+            let navLinkScrollTimeout;
+            let isUpdatingNavLink = false;
+            
             function updateActiveNavLink() {
-                const navHeight = document.querySelector('nav.main-grid').offsetHeight;
-                const scrollPosition = window.scrollY + navHeight + 100;
-                
-                let currentSection = null;
-                
-                // Find which section we're currently in
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionBottom = sectionTop + section.offsetHeight;
-                    
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                        currentSection = section.getAttribute('id');
+                try {
+                    if (!sections || sections.length === 0 || !navLinks || navLinks.length === 0) {
+                        return;
                     }
-                });
-                
-                // Update nav links
-                if (currentSection) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === '#' + currentSection) {
-                            link.classList.add('active');
+                    
+                    const nav = document.querySelector('nav.main-grid');
+                    if (!nav) return;
+                    
+                    const navHeight = nav.offsetHeight || 0;
+                    const scrollPosition = (window.scrollY || window.pageYOffset || 0) + navHeight + 100;
+                    
+                    let currentSection = null;
+                    
+                    // Find which section we're currently in
+                    sections.forEach(section => {
+                        if (!section) return;
+                        const sectionTop = section.offsetTop || 0;
+                        const sectionBottom = sectionTop + (section.offsetHeight || 0);
+                        
+                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                            currentSection = section.getAttribute('id');
                         }
                     });
+                    
+                    // Update nav links
+                    if (currentSection) {
+                        navLinks.forEach(link => {
+                            if (!link) return;
+                            link.classList.remove('active');
+                            const href = link.getAttribute('href');
+                            if (href === '#' + currentSection) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.warn('updateActiveNavLink error:', e);
                 }
             }
             
             // Listen for scroll events with throttling for performance
-            let scrollTimeout;
-            window.addEventListener('scroll', function() {
-                if (scrollTimeout) {
-                    window.cancelAnimationFrame(scrollTimeout);
+            function handleNavLinkScroll() {
+                if (!isUpdatingNavLink) {
+                    window.requestAnimationFrame(function() {
+                        updateActiveNavLink();
+                        isUpdatingNavLink = false;
+                    });
+                    isUpdatingNavLink = true;
                 }
-                scrollTimeout = window.requestAnimationFrame(function() {
-                    updateActiveNavLink();
-                });
-            });
+            }
             
-            // Set initial active state
-            updateActiveNavLink();
+            window.addEventListener('scroll', handleNavLinkScroll, { passive: true });
+            
+            // Set initial active state after delay
+            setTimeout(function() {
+                try {
+                    updateActiveNavLink();
+                } catch (e) {
+                    // Silently handle errors
+                }
+            }, 100);
             
             // =============================================
             // LAZY-LOAD IFRAMES (Vimeo, Figma, external)
