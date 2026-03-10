@@ -72,6 +72,7 @@
                 var overlay = document.getElementById('loading-overlay');
                 if (overlay) {
                     overlay.style.display = 'none';
+                    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
                 }
             }, 5000);
             
@@ -161,13 +162,17 @@
                                 setTimeout(updateCounter, 16);
                             }
                         } else {
-                            // Animation complete - fade out overlay
+                            // Animation complete - fade out overlay and remove from DOM
                             clearTimeout(safetyTimeout);
                             if (overlay) {
                                 overlay.classList.add('fade-out');
                                 setTimeout(function() {
                                     if (overlay) {
                                         overlay.style.display = 'none';
+                                        // Remove from DOM entirely to free memory
+                                        if (overlay.parentNode) {
+                                            overlay.parentNode.removeChild(overlay);
+                                        }
                                     }
                                 }, 500);
                             }
@@ -1160,129 +1165,130 @@
             }, 100);
             
             // =============================================
-            // LAZY-LOAD IFRAMES (Vimeo, Figma, external)
-            // Prevents mobile browsers from crashing due to
-            // loading 10+ heavy iframes simultaneously.
+            // SMART IFRAME MANAGER
+            // On mobile: only keeps visible iframes alive.
+            // Iframes are unloaded when they leave the viewport
+            // to prevent memory crashes (16 Figma/Vimeo iframes
+            // will exceed mobile browser memory limits).
+            // On desktop: standard lazy-load (no unloading).
             // =============================================
             (function() {
                 try {
-                    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-                        || (window.innerWidth && window.innerWidth <= 768);
+                    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                        || (window.innerWidth && window.innerWidth <= 768)
+                        || ('ontouchstart' in window);
                     var vimeoScriptLoaded = false;
-                    var activeIframeCount = 0;
-                    var maxConcurrentIframes = isMobile ? 2 : 4; // Limit concurrent iframes on mobile
-                    
+
                     function loadVimeoAPI() {
                         if (vimeoScriptLoaded) return;
                         try {
                             vimeoScriptLoaded = true;
-                            var script = document.createElement('script');
-                            script.src = 'https://player.vimeo.com/api/player.js';
-                            script.async = true;
-                            script.onerror = function() {
-                                // Silently fail if Vimeo API can't load
-                                vimeoScriptLoaded = false;
-                            };
-                            if (document.body) {
-                                document.body.appendChild(script);
-                            }
-                        } catch (e) {
-                            // Silently fail if script loading fails
-                            vimeoScriptLoaded = false;
-                        }
+                            var s = document.createElement('script');
+                            s.src = 'https://player.vimeo.com/api/player.js';
+                            s.async = true;
+                            s.onerror = function() { vimeoScriptLoaded = false; };
+                            if (document.body) document.body.appendChild(s);
+                        } catch (e) { vimeoScriptLoaded = false; }
                     }
-                    
-                    function activateIframe(iframe) {
+
+                    // Load an iframe: move data-src → src
+                    function loadIframe(iframe) {
                         try {
-                            if (!iframe || iframe.src || !iframe.dataset.src) return; // already loaded or invalid
-                            
-                            // Limit concurrent iframes on mobile
-                            if (isMobile && activeIframeCount >= maxConcurrentIframes) {
-                                // Wait a bit before loading more
-                                setTimeout(function() {
-                                    activateIframe(iframe);
-                                }, 1000);
-                                return;
-                            }
-                            
-                            var src = iframe.dataset.src;
-                            if (!src) return;
-                            
-                            // On mobile: remove autoplay and loop from Vimeo URLs to reduce memory usage
+                            if (!iframe) return;
+                            var src = iframe.getAttribute('data-src');
+                            if (!src) return; // already loaded or no source
+                            if (iframe.getAttribute('src') === src) return; // already set
+
+                            // On mobile: strip autoplay & loop from Vimeo to save CPU/memory
                             if (isMobile && src.indexOf('vimeo.com') !== -1) {
                                 src = src.replace(/[&?]autoplay=1/g, '');
                                 src = src.replace(/[&?]loop=1/g, '');
                             }
-                            
-                            activeIframeCount++;
+
                             iframe.src = src;
-                            iframe.removeAttribute('data-src');
-                            
-                            // Handle iframe load errors
-                            iframe.onerror = function() {
-                                activeIframeCount--;
-                                // Hide broken iframe
-                                if (iframe.parentElement) {
-                                    iframe.style.display = 'none';
-                                }
-                            };
-                            
-                            // Decrease count when iframe loads successfully
-                            iframe.onload = function() {
-                                activeIframeCount = Math.max(0, activeIframeCount - 1);
-                            };
-                            
-                            // Load Vimeo API only when a Vimeo iframe is activated
-                            if (src.indexOf('vimeo.com') !== -1) {
-                                loadVimeoAPI();
-                            }
+                            iframe.classList.add('iframe-loaded');
+
+                            if (src.indexOf('vimeo.com') !== -1) loadVimeoAPI();
                         } catch (e) {
-                            // Silently handle errors to prevent page crashes
-                            if (iframe && iframe.parentElement) {
-                                iframe.style.display = 'none';
-                            }
+                            console.warn('loadIframe error:', e);
                         }
                     }
-                    
+
+                    // Unload an iframe: clear src to free memory (mobile only)
+                    function unloadIframe(iframe) {
+                        try {
+                            if (!iframe) return;
+                            // Only unload if it was loaded
+                            if (!iframe.classList.contains('iframe-loaded')) return;
+                            // Save current src to data-src if not already there
+                            // (data-src stays intact since we never removed it)
+                            iframe.src = 'about:blank';
+                            iframe.classList.remove('iframe-loaded');
+                        } catch (e) {
+                            console.warn('unloadIframe error:', e);
+                        }
+                    }
+
                     var lazyIframes = document.querySelectorAll('iframe.lazy-iframe');
                     if (!lazyIframes || lazyIframes.length === 0) return;
-                    
+
                     if ('IntersectionObserver' in window) {
-                        var rootMargin = isMobile ? '50px 0px' : '200px 0px'; // Smaller margin on mobile
-                        var observer = new IntersectionObserver(function(entries) {
-                            entries.forEach(function(entry) {
-                                if (entry.isIntersecting) {
-                                    activateIframe(entry.target);
-                                    observer.unobserve(entry.target);
-                                }
+                        if (isMobile) {
+                            // ── MOBILE: load on enter, UNLOAD on leave ──
+                            // rootMargin is small so we don't pre-load too far ahead
+                            var mobileObserver = new IntersectionObserver(function(entries) {
+                                entries.forEach(function(entry) {
+                                    try {
+                                        if (entry.isIntersecting) {
+                                            loadIframe(entry.target);
+                                        } else {
+                                            // Iframe left viewport → free its memory
+                                            unloadIframe(entry.target);
+                                        }
+                                    } catch (e) {
+                                        console.warn('observer callback error:', e);
+                                    }
+                                });
+                            }, {
+                                rootMargin: '100px 0px',
+                                threshold: 0
                             });
-                        }, {
-                            rootMargin: rootMargin,
-                            threshold: 0
-                        });
-                        
-                        lazyIframes.forEach(function(iframe) {
-                            try {
-                                observer.observe(iframe);
-                            } catch (e) {
-                                // Silently handle observation errors
-                            }
-                        });
+
+                            lazyIframes.forEach(function(iframe) {
+                                try { mobileObserver.observe(iframe); } catch (e) {}
+                            });
+                        } else {
+                            // ── DESKTOP: standard lazy-load, no unloading ──
+                            var desktopObserver = new IntersectionObserver(function(entries) {
+                                entries.forEach(function(entry) {
+                                    if (entry.isIntersecting) {
+                                        loadIframe(entry.target);
+                                        desktopObserver.unobserve(entry.target);
+                                    }
+                                });
+                            }, {
+                                rootMargin: '300px 0px',
+                                threshold: 0
+                            });
+
+                            lazyIframes.forEach(function(iframe) {
+                                try { desktopObserver.observe(iframe); } catch (e) {}
+                            });
+                        }
                     } else {
-                        // Fallback for older browsers: load iframes one at a time with delays
-                        var iframeIndex = 0;
-                        function loadNextIframe() {
-                            if (iframeIndex < lazyIframes.length) {
-                                activateIframe(lazyIframes[iframeIndex]);
-                                iframeIndex++;
-                                setTimeout(loadNextIframe, isMobile ? 2000 : 1000);
+                        // Fallback: load iframes one-by-one with delays
+                        var idx = 0;
+                        function loadNext() {
+                            if (idx < lazyIframes.length) {
+                                loadIframe(lazyIframes[idx]);
+                                idx++;
+                                setTimeout(loadNext, isMobile ? 3000 : 1000);
                             }
                         }
-                        setTimeout(loadNextIframe, 3000);
+                        setTimeout(loadNext, 3000);
                     }
                 } catch (e) {
-                    // Global error handler for iframe loading - prevent page crashes
-                    console.warn('Iframe loading error:', e);
+                    console.warn('Iframe manager error:', e);
                 }
             })();
             } catch (e) {

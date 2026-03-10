@@ -19,9 +19,16 @@
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
-    /* Fallback: Auto-hide after 3 seconds if JavaScript fails */
-    animation: autoHideOverlay 3s ease-in-out forwards;
+    transition: opacity 0.5s ease;
+    /* Fallback: Auto-hide after 4 seconds if JavaScript fails */
+    animation: autoHideOverlay 4s ease-in-out forwards;
+}
+
+/* Once overlay is hidden, remove from rendering tree entirely */
+.loading-overlay[style*="display: none"] {
+    animation: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 /* Ensure page content is visible even if loading overlay is stuck */
@@ -31,7 +38,7 @@
 }
 
 @keyframes autoHideOverlay {
-    0%, 90% {
+    0%, 85% {
         opacity: 1;
         visibility: visible;
     }
@@ -39,6 +46,7 @@
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
+        display: none;
     }
 }
 
@@ -2958,6 +2966,30 @@ a.project-info-link {
         overflow-x: hidden;
         max-width: 100%;
         width: 100%;
+    }
+    
+    /* ── Mobile memory optimisation ──
+       backdrop-filter creates a compositing layer per element
+       and keeps the entire underlying tree in GPU memory.
+       Removing it saves significant RAM on iOS/Android. */
+    .loading-overlay {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background-color: rgba(45, 0, 251, 0.95);
+    }
+    .loading-overlay.fade-out {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    .content-nav-arrow {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(255, 255, 255, 0.35);
+    }
+    
+    /* Reduce iframe dimensions to save memory */
+    iframe.lazy-iframe {
+        max-height: 60vh;
     }
     
     /* Clean, simple mobile design - no strokes */
