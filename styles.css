@@ -2925,6 +2925,7 @@ a.project-info-link {
 .video-container-wrapper iframe {
     width: 100% !important;
     height: 100% !important;
+    margin: 0 !important;
 }
 
 /* Allow case-section-content to show full video when it contains a video wrapper */
@@ -2944,6 +2945,20 @@ a.project-info-link {
     width: 100%;
     height: auto;
     display: block;
+}
+
+/* Caption text under embedded videos/images inside case sections */
+.case-section-caption {
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    color: var(--body-text-muted);
+    font-style: italic;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+    text-align: left;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Problem Space Stats Grid */
