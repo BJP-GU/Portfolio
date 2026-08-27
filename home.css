@@ -239,10 +239,55 @@ body {
     flex: none;
 }
 
-/* Rows #6–#7 are reserved and do not open. */
+/* The open affordance, Figma node 949:4944. A 12px plus held against the far
+   end of the row, drawn as two hairlines rather than an asset so it stays
+   crisp and needs no markup in every row. It keeps its place in the row at
+   rest and only fades in, so the row does not reflow under the pointer, and
+   it stays black while the label turns: the mark is the affordance, the
+   colour is the hover. */
+.acc-header::after {
+    content: '';
+    flex: none;
+    align-self: center;
+    margin-left: auto;
+    width: 12px;
+    height: 12px;
+    background-image:
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000);
+    background-size: 12px 1px, 1px 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.2s ease,
+                transform var(--acc-duration) var(--acc-ease);
+}
+
+.acc-header:hover::after,
+.acc-header:focus-visible::after {
+    opacity: 1;
+}
+
+/* Open, the plus turns into a cross: the same mark, so the row reads as one
+   control the click turns over rather than two icons swapping. It runs on the
+   body's own duration and curve, so the mark turns for exactly as long as the
+   section takes to open. The cross also stops waiting for the pointer — on a
+   closed row the mark answers a hover, but on the open one it is the standing
+   way out of the section, so it has to be there before it is looked for. */
+.acc-panel.is-open > .acc-title > .acc-header::after {
+    transform: rotate(45deg);
+    opacity: 1;
+}
+
+/* Rows #6–#7 are reserved and do not open. Nothing opens, so nothing offers
+   to: they take neither the accent nor the plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
     color: rgba(0, 0, 0, 0.35);
+}
+
+.acc-panel[data-reserved] .acc-header::after {
+    content: none;
 }
 
 /* ==========================================================================
@@ -326,6 +371,11 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
     .acc-body {
+        transition: none;
+    }
+
+    /* The body snaps open here, so the mark snaps over with it. */
+    .acc-header::after {
         transition: none;
     }
 }
