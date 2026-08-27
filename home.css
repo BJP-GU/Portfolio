@@ -1,0 +1,731 @@
+/* ==========================================================================
+   PORTFOLIO SHELL — Figma node 928:4631
+
+   The page is a stack of bordered rows ("#1 HOME", "#2 WORK", ...). One row is
+   open at a time and its body holds that section's content. The stack is a
+   1082px column centred in the viewport, leaving an empty gutter left and
+   right on wide displays.
+
+   The home body is a fixed 1080 x 700 canvas. Every measurement inside it is
+   written in those canvas coordinates and multiplied by --u, which resolves to
+   1px at full width and shrinks proportionally below it.
+   ========================================================================== */
+
+:root {
+    --site-max: 1082px;
+    --site-gutter: 20px;
+
+    --home-bg: #F0EEE9;
+    --home-accent: #E8441F;
+    /* The second half of the role cycle, Figma node 943:4784. */
+    --home-accent-ai: #2D01FB;
+    /* Figma draws 0.25px black hairlines; 1px at 45% reproduces that weight
+       consistently across pixel ratios. */
+    --home-rule: rgba(0, 0, 0, 0.45);
+    --home-font: Helvetica, 'Helvetica Neue', Arial, sans-serif;
+
+    --acc-gap: 10px;
+    --acc-pad: 10px;
+    --acc-text: 11.675px;
+    --acc-duration: 440ms;
+    --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* 41px logo with an 18px inset above and below. Scroll offsets and the
+       sticky work sidebar both read this, so the header can only be resized
+       in one place. */
+    --header-h: 77px;
+}
+
+body {
+    background-color: var(--home-bg);
+}
+
+/* The narrow-screen rules in styles.css guard against horizontal scroll with
+   overflow-x: hidden, which makes each of these a scroll container and so
+   silently cancels every position: sticky inside them — the header, the pinned
+   accordion rows, and the work sidebar. clip suppresses the same horizontal
+   overflow without creating a scroll container. Scoped to styles.css's own
+   768px breakpoint rather than this file's 720px one, so no width is left with
+   the guard applied but the fix missing. */
+@media (max-width: 768px) {
+    body,
+    .site-wrapper,
+    .my-work-section,
+    .resume-section {
+        overflow-x: clip;
+        overflow-y: visible;
+    }
+}
+
+/* The page-grid rules were fixed to the viewport and are no longer used; the
+   home canvas draws its own lines and the work section runs without a grid. */
+.site-wrapper::before {
+    display: none;
+}
+
+/* ==========================================================================
+   STICKY HEADER
+   Tracks the same 1082px column as the accordion, so its background covers
+   every row that scrolls underneath it.
+   ========================================================================== */
+
+.site-wrapper > .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    height: var(--header-h);
+    margin-inline: auto;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    background-color: var(--home-bg);
+    /* Fills the accordion's top gap. Every pinned row masks the channel below
+       itself, and the header is what sits above the first one. */
+    box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
+}
+
+.site-logo {
+    display: block;
+    line-height: 0;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.site-logo:hover {
+    opacity: 0.6;
+}
+
+.site-logo:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 4px;
+}
+
+.site-logo img {
+    display: block;
+    width: 41px;
+    height: 41px;
+}
+
+/* ==========================================================================
+   ACCORDION
+   ========================================================================== */
+
+.accordion {
+    /* A collapsed row is a 13px label with 10px above and below, plus borders.
+       The stack offsets below depend on it, so it is stated once here. */
+    --acc-row: 35px;
+    --acc-step: calc(var(--acc-row) + var(--acc-gap));
+    /* The first pinned row rests exactly where it already sits at scroll 0, so
+       nothing appears to move when the stack takes over. */
+    --acc-stack-top: calc(var(--header-h) + var(--acc-gap));
+
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    margin-inline: auto;
+    padding: var(--acc-gap) 0 calc(var(--acc-gap) * 4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--acc-gap);
+}
+
+.acc-panel {
+    /* Viewport line this panel's own row label pins to, once the rows above it
+       are pinned. Resolves against the panel's --acc-stack, set below. */
+    --acc-stack-clear: calc(var(--acc-stack-top) + var(--acc-stack, 0) * var(--acc-step));
+    /* Viewport line below that pinned label, which is what anything sticky
+       inside the panel's body has to clear. */
+    --acc-content-top: calc(var(--acc-stack-clear) + var(--acc-row));
+
+    border: 1px solid var(--home-rule);
+    background-color: var(--home-bg);
+    /* Panels must not clip: the work body has a sticky sidebar, and an
+       overflow value other than visible would trap it. Clipping happens on
+       .acc-body only, and only while it animates. */
+    overflow: visible;
+}
+
+/* Collapsed rows pin under the header and stack in document order, so the
+   index stays readable and clickable while a long panel scrolls past. The
+   shadow fills the 10px channel below each row; without it, content shows
+   through the gaps in the pinned stack. */
+.acc-panel:not(.is-open) {
+    position: sticky;
+    top: var(--acc-stack-clear);
+    z-index: 2;
+    box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
+}
+
+/* The open panel scrolls normally — pinning the whole panel would freeze its
+   own content; its row label pins on its own below. Rows after it stay in the
+   flow too: pinning them would open gaps in the stack, since the rows between
+   them and the header are not pinned yet. A collapsing panel is still full
+   height for the length of its animation, so it is held out of the stack until
+   it has finished shrinking. */
+.acc-panel.is-open,
+.acc-panel.is-open ~ .acc-panel,
+.acc-panel.is-collapsing {
+    position: relative;
+    top: auto;
+    z-index: 1;
+    box-shadow: none;
+}
+
+/* The open panel's own label pins into the slot the collapsed row would have
+   occupied, so the section stays identified while its body scrolls under it.
+   It travels only as far as the panel's bottom edge, so it leaves with the
+   section rather than colliding with the row that follows. */
+.acc-panel.is-open > .acc-title {
+    position: sticky;
+    top: var(--acc-stack-clear);
+    z-index: 2;
+    background-color: var(--home-bg);
+    /* The panel's own top border scrolls away with the panel, so the label
+       carries the section's top stroke itself. The negative margin lays this
+       border exactly over the panel's, keeping the resting layout and the line
+       weight unchanged. */
+    border-top: 1px solid var(--home-rule);
+    margin-top: -1px;
+}
+
+.accordion > .acc-panel:nth-child(1) { --acc-stack: 0; }
+.accordion > .acc-panel:nth-child(2) { --acc-stack: 1; }
+.accordion > .acc-panel:nth-child(3) { --acc-stack: 2; }
+.accordion > .acc-panel:nth-child(4) { --acc-stack: 3; }
+.accordion > .acc-panel:nth-child(5) { --acc-stack: 4; }
+.accordion > .acc-panel:nth-child(6) { --acc-stack: 5; }
+.accordion > .acc-panel:nth-child(7) { --acc-stack: 6; }
+
+/* The row label is a heading for outline purposes only; it carries no styling
+   of its own so the button inside defines the row box. */
+.acc-title {
+    margin: 0;
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    font-weight: 400;
+    line-height: 13px;
+}
+
+.acc-header {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    gap: var(--acc-gap);
+    width: 100%;
+    padding: var(--acc-pad);
+    cursor: pointer;
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    font-weight: 400;
+    line-height: 13px;
+    letter-spacing: 0;
+    color: #000;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.acc-header:hover,
+.acc-header:focus-visible {
+    color: var(--home-accent);
+}
+
+.acc-header:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: -3px;
+}
+
+.acc-num {
+    flex: none;
+}
+
+/* Rows #6–#7 are reserved and do not open. */
+.acc-panel[data-reserved] .acc-header {
+    cursor: default;
+    color: rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================================================
+   INDEX MARKERS — Figma nodes 945:4868, 945:4872
+   Annotations in the left gutter that name the run of rows they sit above.
+   Each one hangs off the bottom of the panel *before* the row it introduces,
+   so it lands in the 10px channel between the two. Anchoring it to the
+   preceding panel rather than the row it labels is what keeps it drawn: a
+   pinned row masks the channel below itself with a box-shadow, and a child
+   always paints over its own parent's shadow.
+   ========================================================================== */
+
+.acc-marker {
+    position: absolute;
+    /* Centres a 13px line of text in the channel below the panel, measured
+       from the padding box the border leaves behind. */
+    bottom: calc((var(--acc-gap) + 13px) / -2 - 1px);
+    /* Figma runs the rule 125px past the column's left edge, into the
+       channel, and right-aligns the label ahead of it. */
+    right: calc(100% - 124px);
+    /* Reaches to the viewport edge so the rule can give ground on narrower
+       displays before the label does. Halving 100vw overshoots by half a
+       scrollbar, which the inset absorbs. */
+    left: calc((100% - 100vw) / 2 + 24px);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    height: 13px;
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    font-weight: 400;
+    line-height: 13px;
+    color: #000;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* The rule is the only part of the marker meant to enter the column, so it is
+   also the only part allowed to give: it shrinks from its drawn length as the
+   gutter narrows. The floor is the 125px it spends inside the column plus the
+   9px gap, which is what keeps the label itself out of there. */
+.acc-marker::after {
+    content: '';
+    flex: 0 1 147px;
+    min-width: 116px;
+    height: 1px;
+    background-image: repeating-linear-gradient(to right, #000 0 2px, transparent 2px 4px);
+}
+
+/* Below this the gutter is too short to seat the label beside the column at
+   all, so the markers step aside rather than crowd it. */
+@media (max-width: 1439px) {
+    .acc-marker {
+        display: none;
+    }
+}
+
+/* The reel unpins every row and takes them out of the flow's positioning, so
+   the markers would have nothing to hang from for the length of the run. */
+.accordion.is-intro .acc-marker {
+    display: none;
+}
+
+.acc-body {
+    height: 0;
+    overflow: hidden;
+    transition: height var(--acc-duration) var(--acc-ease);
+}
+
+.acc-panel.is-open > .acc-body {
+    height: auto;
+    overflow: visible;
+}
+
+/* The 10px gap Figma places between the row label and the row content. */
+.acc-inner {
+    padding-top: var(--acc-gap);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .acc-body {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   INTRO REEL
+   On first arrival the index runs past the viewport from the bottom of the
+   stack up to #1, which then opens. Every row has to travel for that, so the
+   pinning that normally builds the stacked index is suspended for the length
+   of the run, and the page's smooth scrolling is turned off so the
+   frame-by-frame scroll lands exactly where each frame puts it.
+   ========================================================================== */
+
+.intro-armed,
+.intro-running {
+    scroll-behavior: auto;
+}
+
+/* The reel starts parked at the bottom of the index. The shell is held back
+   until it is parked, or the top of the page shows for a frame first. */
+.intro-armed .site-wrapper {
+    visibility: hidden;
+}
+
+.accordion.is-intro > .acc-panel,
+.accordion.is-intro > .acc-panel > .acc-title {
+    position: static;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   HOME BODY — 1080 x 700 canvas
+   ========================================================================== */
+
+.home-stage {
+    container-type: inline-size;
+}
+
+.home-canvas {
+    --u: calc(100cqw / 1080);
+    --role-fade: 180ms;
+    --role-tint: 600ms;
+    position: relative;
+    width: 100%;
+    height: calc(700 * var(--u));
+    overflow: hidden;
+    font-family: var(--home-font);
+    transition: --home-accent var(--role-tint) var(--acc-ease);
+}
+
+.home-canvas > * {
+    position: absolute;
+    margin: 0;
+}
+
+/* --- Headline ----------------------------------------------------------- */
+
+.home-name,
+.home-role {
+    top: 0;
+    z-index: 1;
+    height: calc(184 * var(--u));
+    font-size: calc(80 * var(--u));
+    font-weight: 700;
+    line-height: calc(92 * var(--u));
+    letter-spacing: 0;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.home-name {
+    left: 0;
+    width: calc(463 * var(--u));
+    text-align: left;
+}
+
+.home-role {
+    left: calc(618 * var(--u));
+    width: calc(462 * var(--u));
+    text-align: right;
+}
+
+/* The role line alternates UX / AI on a timer. The accent word and the dot
+   grid are both painted from --home-accent, so one value change on the canvas
+   recolours both; registering the property is what lets that change tween
+   instead of snap. The override is scoped to the canvas so the accent the rest
+   of the shell hovers on stays fixed. */
+@property --home-accent {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #E8441F;
+}
+
+.home-canvas[data-role='ai'] {
+    --home-accent: var(--home-accent-ai);
+}
+
+.home-role-accent {
+    color: var(--home-accent);
+    transition: opacity var(--role-fade) linear;
+}
+
+/* Held at the bottom of the fade for as long as it takes to rewrite the word,
+   so the two roles are never seen mid-swap. */
+.home-canvas.is-role-swapping .home-role-accent {
+    opacity: 0;
+}
+
+/* --- Rules -------------------------------------------------------------- */
+
+.home-vrule {
+    top: 0;
+    z-index: 2;
+    width: 1px;
+    height: 100%;
+    background-color: var(--home-rule);
+}
+
+.home-vrule--a { left: calc(463 * var(--u)); }
+.home-vrule--b { left: calc(617.5 * var(--u)); }
+
+.home-hrule {
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 1px;
+    background-color: var(--home-rule);
+}
+
+.home-hrule--a { top: calc(325 * var(--u)); }
+.home-hrule--b { top: calc(504 * var(--u)); }
+
+/* --- Portrait ----------------------------------------------------------- */
+
+/* Fills the cell the four rules cut out: 463–617.5 across, 325–504 down. */
+.home-portrait {
+    left: calc(463 * var(--u));
+    top: calc(325 * var(--u));
+    z-index: 3;
+    width: calc(154 * var(--u));
+    height: calc(179 * var(--u));
+    overflow: hidden;
+}
+
+.home-portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+}
+
+/* --- Dot grid ----------------------------------------------------------- */
+
+/* 4 columns x 9 rows of 6px dots, 85px apart across, 50px down. */
+.home-dots {
+    left: calc(409 * var(--u));
+    top: calc(212 * var(--u));
+    z-index: 5;
+    width: calc(261 * var(--u));
+    height: calc(406 * var(--u));
+    pointer-events: none;
+    background-image: radial-gradient(
+        circle at calc(3 * var(--u)) calc(3 * var(--u)),
+        var(--home-accent) 0,
+        var(--home-accent) calc(3 * var(--u)),
+        transparent calc(3 * var(--u) + 0.5px)
+    );
+    background-size: calc(85 * var(--u)) calc(50 * var(--u));
+}
+
+/* --- Credentials -------------------------------------------------------- */
+
+.home-meta {
+    left: calc(153 * var(--u));
+    top: calc(371 * var(--u));
+    z-index: 4;
+    width: calc(158 * var(--u));
+    display: flex;
+    flex-direction: column;
+    gap: calc(24 * var(--u));
+}
+
+.home-meta li {
+    list-style: none;
+    font-size: calc(11.675 * var(--u));
+    font-weight: 400;
+    line-height: calc(13 * var(--u));
+    letter-spacing: 0;
+    color: #000;
+    white-space: nowrap;
+}
+
+/* --- Locations ---------------------------------------------------------- */
+
+.home-places {
+    left: 0;
+    top: 0;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+}
+
+.home-place {
+    position: absolute;
+    top: calc(408 * var(--u));
+    height: calc(13 * var(--u));
+    font-size: calc(11.675 * var(--u));
+    font-weight: 400;
+    line-height: calc(13 * var(--u));
+    letter-spacing: 0;
+    color: #000;
+    white-space: nowrap;
+}
+
+.home-place--sf { left: calc(794 * var(--u)); }
+.home-place--berkeley { left: calc(912 * var(--u)); }
+
+/* ==========================================================================
+   WORK BODY
+   The section keeps its four-column grid, but it now sizes to the panel
+   instead of the viewport, so the outer padding that used to clear the
+   page-grid rules is pulled in.
+   ========================================================================== */
+
+.my-work-section {
+    width: 100%;
+    margin-inline: 0;
+}
+
+.work-main-content {
+    min-height: 0;
+}
+
+.work-nav-sidebar {
+    top: calc(var(--acc-content-top) + 20px);
+    padding-top: 32px;
+    padding-left: 20px;
+    padding-right: 16px;
+}
+
+.project-case:first-child {
+    padding-top: 24px;
+}
+
+/* A work panel with nothing published yet still has to hold the four-column
+   grid open, so the note sits in the same column the cases use. */
+.panel-placeholder {
+    padding: 48px 0 64px;
+}
+
+.panel-placeholder-text {
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.45);
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   ABOUT BODY
+   ========================================================================== */
+
+.about-body .resume-section {
+    min-height: 0;
+}
+
+.about-body .resume-row .row-label {
+    padding-left: 20px;
+}
+
+.about-body .resume-sidebar {
+    padding-right: 20px;
+}
+
+/* ==========================================================================
+   FOOTER
+   Restyled from the standalone blue block into a row that matches the stack.
+   ========================================================================== */
+
+.site-footer {
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    margin: 0 auto calc(var(--acc-gap) * 4);
+    padding: 28px 20px;
+    border: 1px solid var(--home-rule);
+    background-color: var(--home-bg);
+    color: #000;
+    z-index: auto;
+}
+
+.site-footer .footer-label,
+.site-footer .footer-text,
+.site-footer .footer-link {
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    line-height: 1.6;
+    color: #000;
+}
+
+.site-footer .footer-label {
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.45);
+    margin-bottom: 6px;
+}
+
+.site-footer .footer-link:hover {
+    color: var(--home-accent);
+}
+
+.double-line-divider {
+    display: none;
+}
+
+/* ==========================================================================
+   SMALL SCREENS
+   Below this width the canvas would scale type past legibility, so the home
+   body reflows to a single stacked column.
+   ========================================================================== */
+
+@media (max-width: 720px) {
+    :root {
+        --site-gutter: 12px;
+        --header-h: 61px;
+    }
+
+    .site-wrapper > .site-header {
+        padding-left: 16px;
+    }
+
+    .site-logo img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .home-canvas {
+        height: auto;
+        padding: 24px 16px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+    }
+
+    .home-canvas > * {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+
+    .home-name,
+    .home-role {
+        font-size: clamp(38px, 11vw, 68px);
+        line-height: 1.15;
+        text-align: left;
+    }
+
+    .home-vrule,
+    .home-dots,
+    .home-hrule--b {
+        display: none;
+    }
+
+    /* The rules stay architectural: they bleed past the canvas padding to the
+       panel border, the way they run edge to edge on the full-size canvas. */
+    .home-hrule {
+        height: 1px;
+        flex: none;
+        width: calc(100% + 32px);
+        margin-inline: -16px;
+    }
+
+    .home-portrait {
+        height: clamp(240px, 62vw, 340px);
+    }
+
+    .home-meta {
+        gap: 10px;
+    }
+
+    .home-meta li,
+    .home-place {
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: normal;
+    }
+
+    .home-places {
+        display: flex;
+        gap: 20px;
+        height: auto;
+    }
+
+    .home-place {
+        position: static;
+        width: auto;
+        height: auto;
+    }
+
+    .work-nav-sidebar,
+    .about-body .resume-row .row-label,
+    .about-body .resume-sidebar {
+        padding-left: 16px;
+    }
+}

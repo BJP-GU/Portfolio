@@ -8,30 +8,21 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#2D00FB">
+    <meta name="theme-color" content="#F0EEE9">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
     <noscript>
         <style>
-            .loading-overlay {
-                display: none !important;
+            .acc-body {
+                height: auto !important;
+                overflow: visible !important;
             }
         </style>
     </noscript>
-    <!-- Loading Screen -->
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.59483 41C2.06178 41 0 38.9382 0 36.4052C0 34.6968 0.942529 33.2241 2.23851 32.4583L6.95115 29.7486C8.24713 28.9828 9.18965 27.5101 9.18965 25.8017C9.18965 24.9181 8.95402 24.2701 8.71839 23.7399L0.471264 6.65661C0.235632 6.12644 0 5.47845 0 4.59483C0 2.06178 2.06178 0 4.59483 0H36.4052C38.9382 0 41 2.06178 41 4.59483V15.1983C41 17.7313 38.9971 19.5575 36.9353 19.7931L25.2716 21.2069C23.2098 21.4425 21.4425 23.2098 21.2069 25.2716L19.7931 36.9353C19.5575 38.9971 17.7313 41 15.1983 41H4.59483ZM25.8017 19.7931C28.3348 19.7931 30.3966 17.7313 30.3966 15.1983C30.3966 12.6652 28.3348 10.6034 25.8017 10.6034H15.1983C12.6652 10.6034 10.6034 12.6652 10.6034 15.1983C10.6034 17.7313 12.6652 19.7931 15.1983 19.7931H25.8017Z" fill="#ffffff"/>
-                </svg>
-            </div>
-            <div class="loading-counter" id="loading-counter">0%</div>
-        </div>
-    </div>
 
     <script>
         // Global error handler to prevent page crashes on mobile
@@ -41,14 +32,14 @@
             console.warn('Error caught:', e.message, e.filename, e.lineno);
             return true; // Suppress error
         }, true);
-        
+
         // Handle unhandled promise rejections
         window.addEventListener('unhandledrejection', function(e) {
             e.preventDefault();
             console.warn('Unhandled promise rejection:', e.reason);
             return true;
         });
-        
+
         // Handle scroll restoration and hash navigation
         try {
             if ('scrollRestoration' in history) {
@@ -63,721 +54,815 @@
             // Fallback if scrollRestoration is not supported
             console.warn('scrollRestoration not supported:', e);
         }
-        
-        // Loading animation - only show on initial page load or reload
-        // Enhanced with mobile browser compatibility and timeout safety
+
+        // Intro reel gate. The reel itself runs with the accordion script at the
+        // foot of the page, but whether it runs has to be settled before the
+        // shell paints: the reel parks the page at the bottom of the index, and
+        // arming it here is what keeps the top of the page from showing first.
         (function() {
-            // Safety timeout: always hide overlay after 5 seconds max
-            var safetyTimeout = setTimeout(function() {
-                var overlay = document.getElementById('loading-overlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
-                    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-                }
-            }, 5000);
-            
+            var docEl = document.documentElement;
+
             try {
-                // Safely get navigation type with fallback for mobile browsers
-                let navigationType = null;
+                var navigationType = null;
                 try {
                     if (typeof performance !== 'undefined' && performance.getEntriesByType) {
-                        const navEntries = performance.getEntriesByType('navigation');
+                        var navEntries = performance.getEntriesByType('navigation');
                         if (navEntries && navEntries.length > 0 && navEntries[0]) {
                             navigationType = navEntries[0].type;
                         }
                     }
                 } catch (e) {
-                    // Performance API not available, use fallback
-                    navigationType = 'navigate'; // Default to navigate for first load
+                    // Performance API unavailable; treat this as a first load.
+                    navigationType = 'navigate';
                 }
-                
-                // Safely check sessionStorage with fallback
-                let hasLoadedInSession = false;
+
+                var hasLoadedInSession = false;
                 try {
                     if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem) {
                         hasLoadedInSession = !!sessionStorage.getItem('hasLoaded');
                     }
-                } catch (e) {
-                    // sessionStorage not available (e.g., private browsing mode)
-                    hasLoadedInSession = false;
-                }
-                
-                // Show loading only on:
-                // 1. Initial page load (navigate and first time in session)
-                // 2. Page reload
-                // Don't show on navigation between pages (navigate but already loaded in session)
-                // Also hide faster if there's a hash fragment (user wants to see content immediately)
-                const hasHash = window.location.hash && window.location.hash.length > 1;
-                const shouldShowLoading = (navigationType === 'reload' || 
-                                         (navigationType === 'navigate' && !hasLoadedInSession) ||
-                                         (!navigationType && !hasLoadedInSession)) && !hasHash; // Don't show if hash exists
-                
-                if (!shouldShowLoading) {
-                    // Hide overlay immediately for navigation between pages or hash navigation
-                    clearTimeout(safetyTimeout);
-                    const overlay = document.getElementById('loading-overlay');
-                    if (overlay) {
-                        overlay.style.display = 'none';
-                    }
-                    return;
-                }
-                
-                // Mark that we've loaded in this session
-                try {
+                    // Claim the session up front, so coming back from resume.html
+                    // never replays the reel even on the paths that bail below.
                     if (typeof sessionStorage !== 'undefined' && sessionStorage.setItem) {
                         sessionStorage.setItem('hasLoaded', 'true');
                     }
                 } catch (e) {
-                    // sessionStorage not available, continue without it
+                    // Private browsing: no session memory, fall back to the
+                    // navigation type alone.
+                    hasLoadedInSession = false;
                 }
-                
-                const overlay = document.getElementById('loading-overlay');
-                const counter = document.getElementById('loading-counter');
-                
-                if (!overlay || !counter) {
-                    // Elements not found, exit early
-                    clearTimeout(safetyTimeout);
-                    return;
-                }
-                
-                // Duration: shorter if hash exists (user wants to see content immediately)
-                const duration = 2000; // 2 seconds
-                const startTime = Date.now();
-                
-                function updateCounter() {
-                    try {
-                        const elapsed = Date.now() - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-                        const percentage = Math.floor(progress * 100);
-                        
-                        if (counter) {
-                            counter.textContent = percentage + '%';
-                        }
-                        
-                        if (progress < 1) {
-                            if (window.requestAnimationFrame) {
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                // Fallback for browsers without requestAnimationFrame
-                                setTimeout(updateCounter, 16);
-                            }
-                        } else {
-                            // Animation complete - fade out overlay and remove from DOM
-                            clearTimeout(safetyTimeout);
-                            if (overlay) {
-                                overlay.classList.add('fade-out');
-                                setTimeout(function() {
-                                    if (overlay) {
-                                        overlay.style.display = 'none';
-                                        // Remove from DOM entirely to free memory
-                                        if (overlay.parentNode) {
-                                            overlay.parentNode.removeChild(overlay);
-                                        }
-                                    }
-                                }, 500);
-                            }
-                        }
-                    } catch (e) {
-                        // Error in animation, hide overlay immediately
-                        clearTimeout(safetyTimeout);
-                        if (overlay) {
-                            overlay.style.display = 'none';
-                        }
-                    }
-                }
-                
-                // Start animation with fallback
-                if (window.requestAnimationFrame) {
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    setTimeout(updateCounter, 16);
-                }
+
+                var reducedMotion = false;
+                try {
+                    reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+                } catch (e) {}
+
+                // A deep link is a request for a specific section, so it is not
+                // an arrival the reel should take over.
+                var hasHash = window.location.hash && window.location.hash.length > 1;
+                var arriving = navigationType === 'reload' || !hasLoadedInSession;
+
+                if (!arriving || hasHash || reducedMotion) return;
+
+                docEl.classList.add('intro-armed');
+
+                // The reel is decoration. If the accordion script never gets far
+                // enough to start it, the page must not stay hidden.
+                setTimeout(function() {
+                    docEl.classList.remove('intro-armed');
+                }, 4000);
             } catch (e) {
-                // If anything fails, hide the overlay immediately
-                clearTimeout(safetyTimeout);
-                var overlay = document.getElementById('loading-overlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
-                }
+                docEl.classList.remove('intro-armed');
             }
         })();
     </script>
     <div class="site-wrapper">
-        <!-- Navigation -->
-        <nav class="main-grid">
-            <div class="grid-cell logo-cell" style="padding-left: 40px;">
-                <a href="#" class="home-button" id="home-button">
-                    <img src="Icons/P.svg" alt="P Logo" loading="eager" decoding="async">
-                </a>
-            </div>
-            <div class="grid-cell nav-links-cell" id="nav-links">
-                <a href="#my-work">My Work</a>
-                <a href="resume.html">Resume</a>
-            </div>
-        </nav>
-        
-        <!-- Above-fold wrapper for 100vh -->
-        <div class="above-fold-wrapper">
-        <!-- Spacer with vertical lines -->
-        <div class="main-grid spacer-row">
-            <div class="grid-cell empty-cell"></div>
-            <div class="grid-cell empty-cell"></div>
-            <div class="grid-cell empty-cell"></div>
-            <div class="grid-cell empty-cell"></div>
-        </div>
+        <header class="site-header">
+            <a class="site-logo" href="#home" id="home-logo" aria-label="Bryce Parsons — back to home">
+                <img src="Icons/P.svg" alt="" width="41" height="41" decoding="async">
+            </a>
+        </header>
 
-        <!-- Welcome Section -->
-        <section id="welcome" class="main-grid">
-            <!-- Title Row -->
-            <div class="grid-cell empty-cell title-row"></div>
-            <div class="grid-cell title-cell">
-                <div class="main-title">
-                    <img src="Bryce Parsons Hero.svg" alt="Bryce Parsons" class="hero-name-svg" loading="eager" decoding="async">
-                    <img src="hero-title.svg" alt="AI Product & Experience Designer" class="hero-title-svg" loading="eager" decoding="async">
-                </div>
-            </div>
-            <div class="grid-cell empty-cell title-row"></div>
+        <div class="accordion" id="accordion">
 
-            <!-- Image Row -->
-            <div class="grid-cell empty-cell image-row"></div>
-            <div class="grid-cell image-cell">
-                <div class="image-wrapper">
-                    <img src="Homepage/Image (hover).jpg" alt="Bryce Parsons" loading="eager" decoding="async">
-                </div>
-            </div>
-            <div class="grid-cell empty-cell image-row"></div>
+            <!-- ========================================
+                 #1 HOME
+                 ======================================== -->
+            <section class="acc-panel is-open" id="panel-home" data-panel="home">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-home" aria-expanded="true" aria-controls="body-home">
+                        <span class="acc-num">#1</span>
+                        <span class="acc-label">Home</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-home" role="region" aria-labelledby="header-home">
+                    <div class="acc-inner home-stage">
+                        <div class="home-canvas" data-role="ux">
+                            <h1 class="home-name">Bryce Parsons</h1>
+                            <p class="home-role"><span class="home-role-accent">UX</span> Designer</p>
 
-            <!-- Content Row -->
-            <div class="grid-cell content-row-side"></div>
-            <div class="grid-cell content-cell">
-                <div class="content-wrapper">
-                    <!-- Tabbed Interface -->
-                    <div class="hero-tabs">
-                        <div class="hero-tabs-content">
-                            <div class="hero-tab-panel active" id="design-focus">
-                                <p>Exploring human-AI products that responsibly augment human capabilities and enhance how people work, create, and travel.</p>
+                            <span class="home-vrule home-vrule--a" aria-hidden="true"></span>
+                            <span class="home-vrule home-vrule--b" aria-hidden="true"></span>
+                            <span class="home-hrule home-hrule--a" aria-hidden="true"></span>
+                            <span class="home-hrule home-hrule--b" aria-hidden="true"></span>
+
+                            <figure class="home-portrait">
+                                <img src="Homepage/home-portrait.png" alt="Bryce Parsons" loading="eager" decoding="async">
+                            </figure>
+
+                            <span class="home-dots" aria-hidden="true"></span>
+
+                            <ul class="home-meta">
+                                <li>Kleiner Perkins Design Fellow</li>
+                                <li>UC Berkeley Master of Design</li>
+                                <li>Prev. Design @ Glean</li>
+                            </ul>
+
+                            <div class="home-places">
+                                <span class="home-place home-place--sf">[SF]</span>
+                                <span class="home-place home-place--berkeley">[BERKELEY]</span>
                             </div>
-                            <div class="hero-tab-panel" id="current-studies">
-                                <p>Studying emerging technology design at <a href="https://mdes.berkeley.edu/" target="_blank">UC Berkeley (MDes)</a> with focus on human-AI interaction.</p>
-                            </div>
-                            <div class="hero-tab-panel" id="work-experience">
-                                <p>Worked five years in Product Design and Strategy consulting for clients including Microsoft, the Gates Foundation, Nintendo, and Gap Inc.</p>
-                                <p>Angel investor and part-time work at <a href="https://onlook.dev/" target="_blank">Onlook (YC W25)</a>.</p>
-                            </div>
-                        </div>
-                        <div class="hero-tabs-nav">
-                            <button class="hero-tab-btn active" data-tab="design-focus">Design Focus</button>
-                            <button class="hero-tab-btn" data-tab="current-studies">Current Studies</button>
-                            <button class="hero-tab-btn" data-tab="work-experience">Work Experience</button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="grid-cell content-row-side arrow-cell" style="padding-left: 22px;">
-                <a href="#my-work" class="scroll-indicator">
-                    <img src="NEWARROW.svg" alt="Scroll down" loading="lazy" decoding="async">
-                </a>
-            </div>
-        </section>
+            </section>
 
-        <!-- Spacer between Welcome and My Work -->
-        <div class="main-grid welcome-spacer-row">
-            <div class="grid-cell empty-cell"></div>
-            <div class="grid-cell empty-cell"></div>
-            <div class="grid-cell empty-cell"></div>
-            <div class="grid-cell empty-cell"></div>
+            <!-- ========================================
+                 #2 ABOUT
+                 ======================================== -->
+            <section class="acc-panel" id="panel-about" data-panel="about">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-about" aria-expanded="false" aria-controls="body-about">
+                        <span class="acc-num">#2</span>
+                        <span class="acc-label">About</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-about" role="region" aria-labelledby="header-about">
+                    <div class="acc-inner about-body">
+                        <section id="resume" class="resume-section">
+                            <div class="resume-container resume-doc">
+                                <div class="doc-layout">
+                                <!-- Work Experience (main column) -->
+                                <div class="doc-main">
+                                    <h3 class="doc-heading">Work Experience</h3>
+
+                                    <div class="doc-entry">
+                                        <div class="doc-entry-meta">
+                                            <h4 class="doc-org">Glean</h4>
+                                            <div class="doc-date">MAY - AUG 2026</div>
+                                            <div class="doc-location">San Francisco, CA</div>
+                                        </div>
+                                        <div class="doc-entry-detail">
+                                            <div class="doc-role">Product Design Intern, Assistant &amp; Agents</div>
+                                            <ul class="doc-bullets">
+                                                <li>Designed Agents in Assistant, a lightweight agent builder embedded in Glean's chat assistant, enabling users to create, test, and run custom agents; drove 59% adoption in internal trials ahead of GA release to Glean's 1M+ customers</li>
+                                                <li>Redesigned Glean's composer interaction model to support assistant capabilities, including a new affordance menu, keyboard shortcuts, and hierarchy principles for ordering referenced context and invoked actions</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="doc-entry">
+                                        <div class="doc-entry-meta">
+                                            <h4 class="doc-org">Onlook (YC)</h4>
+                                            <div class="doc-date">JUL - SEP 2025</div>
+                                            <div class="doc-location">San Francisco, CA</div>
+                                        </div>
+                                        <div class="doc-entry-detail">
+                                            <div class="doc-role">Product Designer</div>
+                                            <ul class="doc-bullets">
+                                                <li>Led growth design initiatives redesigning lightweight onboarding, domain-hosting, and sharing flows, targeting conversion barriers from session analytics to drive retention and paid conversion</li>
+                                                <li>Designed composer shortcuts enabling users to inject project context into AI prompts, improving agent response quality and user flow</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="doc-entry">
+                                        <div class="doc-entry-meta">
+                                            <h4 class="doc-org">Slalom</h4>
+                                            <div class="doc-date">SEP 2020 - JUL 2025</div>
+                                            <div class="doc-location">San Francisco, CA</div>
+                                        </div>
+                                        <div class="doc-entry-detail">
+                                            <div class="doc-role">Senior Management Consultant, Products &amp; Innovation</div>
+                                            <ul class="doc-bullets">
+                                                <li>Led product design and strategy efforts for The Gates Foundation's grant and contract management platform processing $9B in transactions annually.</li>
+                                                <li>Redesigned the user experience of core product features, implemented core features in their content management system (CMS), and implemented a new brand design system for the leading brand of a Fortune 500 retailer; optimizing user experience and accelerating business results, reducing the time for front-end UI changes by 300%.</li>
+                                                <li>Designed and developed product performance data visualization dashboards in Tableau for the C-suite of a $100B+ multinational video game company; reducing time to insights by 50%.</li>
+                                                <li>Created a service design blueprint for a $60B cloud business; increasing operational sales efficiency and driving customer satisfaction.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="doc-entry">
+                                        <div class="doc-entry-meta">
+                                            <h4 class="doc-org">Tableau Software <span class="doc-org-note">(Acquired by Salesforce Inc.)</span></h4>
+                                            <div class="doc-date">JUN - AUG 2019</div>
+                                            <div class="doc-location">Seattle, WA</div>
+                                        </div>
+                                        <div class="doc-entry-detail">
+                                            <div class="doc-role">Data Visualization Intern, Customer Success</div>
+                                            <ul class="doc-bullets">
+                                                <li>Designed and developed Tableau BI dashboards that identified overlooked accounts at-risk to churn; enabling customer success managers to make data driven decisions 5x faster.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Education, Skills, Tools (sidebar column) -->
+                                <aside class="doc-aside">
+                                    <div class="doc-aside-block">
+                                        <h3 class="doc-heading">Education</h3>
+                                        <div class="doc-aside-entry">
+                                            <h4 class="doc-org">University of California, Berkeley / <span class="doc-degree">Master of Design (MS)</span></h4>
+                                            <div class="doc-aside-meta">
+                                                <span class="doc-date">DEC 2026 (Expected)</span>
+                                                <span class="doc-location">Berkeley, CA</span>
+                                            </div>
+                                            <p class="doc-aside-text">Working with emerging technologies to solve meaningful problems and design human-centered experiences, with a focus on AI native products.</p>
+                                            <p class="doc-aside-text">Distinguished Scholar Award, Career &amp; Alumni Officer, AIEB Accelerator</p>
+                                        </div>
+                                        <div class="doc-aside-entry">
+                                            <h4 class="doc-org">Gonzaga University / <span class="doc-degree">Bachelors of Business Administration (BBA)</span></h4>
+                                            <div class="doc-aside-meta">
+                                                <span class="doc-date">2016 - 2020</span>
+                                                <span class="doc-location">Spokane, WA</span>
+                                            </div>
+                                            <p class="doc-aside-text">Graduated cum laude with focus in Applied Analytics &amp; Marketing.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="doc-aside-block">
+                                        <h3 class="doc-heading">Skills</h3>
+                                        <p class="doc-aside-label">Functional</p>
+                                        <p class="doc-aside-text">Human-AI Interaction Design · User Research &amp; Interviewing · Prototyping · Design Systems &amp; Component Libraries · UX/UI Design · Service Design · Growth Design · Conversational Design · Information Architecture · Usability Testing · Journey Mapping · Product Strategy · Responsive Design Principles (Web) · Human Interface Guidelines (iOS)</p>
+                                        <p class="doc-aside-label">Foundational</p>
+                                        <p class="doc-aside-text">Cross-functional Collaboration · AI-Design Fluency · Prioritization · Executive Presence · Workshop Facilitation · Project Management · Product Management · Stakeholder Management · People Management</p>
+                                    </div>
+
+                                    <div class="doc-aside-block">
+                                        <h3 class="doc-heading">Tools</h3>
+                                        <p class="doc-aside-label">Visual Design</p>
+                                        <p class="doc-aside-text">Figma · Adobe CC · Cosmos</p>
+                                        <p class="doc-aside-label">Prototyping</p>
+                                        <p class="doc-aside-text">Cursor · Magic Patterns · Codex · Claude Code · Onlook · Framer</p>
+                                        <p class="doc-aside-label">Analytical</p>
+                                        <p class="doc-aside-text">Tableau · PowerBI · PostHog · R · Python</p>
+                                        <p class="doc-aside-label">Platforms</p>
+                                        <p class="doc-aside-text">Jira · Notion · Google Suite · Microsoft Suite · Salesforce</p>
+                                    </div>
+                                </aside>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <span class="acc-marker">Work I was paid for</span>
+            </section>
+
+            <!-- ========================================
+                 #3 GLEAN
+                 ======================================== -->
+            <section class="acc-panel" id="panel-glean" data-panel="glean">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-glean" aria-expanded="false" aria-controls="body-glean">
+                        <span class="acc-num">#3</span>
+                        <span class="acc-label">Glean</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-glean" role="region" aria-labelledby="header-glean">
+                    <div class="acc-inner">
+                        <section id="glean-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar">
+                                    <span class="work-nav-label">_glean</span>
+                                </nav>
+
+                                <main class="work-main-content">
+                                    <div class="panel-placeholder">
+                                        <p class="panel-placeholder-text">Case studies in progress.</p>
+                                    </div>
+                                </main>
+
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 #4 ONLOOK (YC)
+                 ======================================== -->
+            <section class="acc-panel" id="panel-onlook" data-panel="onlook">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-onlook" aria-expanded="false" aria-controls="body-onlook">
+                        <span class="acc-num">#4</span>
+                        <span class="acc-label">Onlook (YC)</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-onlook" role="region" aria-labelledby="header-onlook">
+                    <div class="acc-inner">
+                        <section id="my-work" class="my-work-section">
+                            <!-- Long Scroll Portfolio Layout -->
+                            <div class="work-scroll-layout" id="work-scroll-layout">
+                                <!-- Sticky Left Sidebar Label -->
+                                <nav class="work-nav-sidebar">
+                                    <span class="work-nav-label">_onlook</span>
+                                </nav>
+
+                                <!-- Main Content Area with Projects -->
+                                <main class="work-main-content">
+
+                                    <!-- ========================================
+                                         PROJECT 01: AI AGENT CONTEXT FEATURE
+                                         ======================================== -->
+                                    <article class="project-case" id="onlook">
+                                        <!-- Project Summary Section -->
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">AI Agent Context Feature</h1>
+                                                <div class="project-summary-subtitle-row">
+                                                    <span class="project-summary-subtitle">Onlook (YC W25)</span>
+                                                    <span class="project-summary-dates">July - August 2025</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Project Info Grid -->
+                                            <div class="project-info-grid">
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ about onlook</span>
+                                                    <p class="project-info-content">Onlook is building a AI powered visual-first IDE for prototyping—similar to Lovable, Magic Patterns, and Figma Make.</p>
+                                                </div>
+                                                <div class="project-info-section project-info-divider-row">
+                                                    <span class="project-info-label">/ overview</span>
+                                                    <p class="project-info-content project-overview-text">Designed and shipped a context-adding feature in the prompt window enabling users to inject contextual information into AI prompts.</p>
+                                                </div>
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ project info</span>
+                                                    <div class="project-info-subsection">
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">role</span>
+                                                            <span class="project-info-sub-content">Lead Product Designer & Design Engineer</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">collaborators</span>
+                                                            <span class="project-info-sub-content">Primary: Daniel Farrell (CEO), Secondary: Kiet Ho (CTO)</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">skills</span>
+                                                            <span class="project-info-sub-content">Prototyping, Prompt Engineering, UX Research, Competitor Research</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">tools</span>
+                                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ website</span>
+                                                    <div class="project-info-content">
+                                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Case Study Sections: AI Agent Context Feature -->
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Challenge and Background</h2>
+                                            <div class="case-section-content">
+                                                <h4>Challenge</h4>
+                                                <p>To enable users to effortlessly add contextual information to prompts for more accurate, relevant results in Onlook's Design-IDE AI Chat Interface.</p>
+
+                                                <h4>Context</h4>
+                                                <p>While working at Onlook, I relied heavily on Notion, Cursor, and Slack. I became accustomed to using the '@' feature to add context in those tools that I found myself instinctively trying to use it while prompting in Onlook.</p>
+                                                <br>
+                                                <p><strong>This friction sparked a hypothesis:</strong> <em>if I have this muscle memory, our users likely do too.</em></p>
+
+                                                <h4>Concept Map: Initial Problem Space Understanding</h4>
+                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/550; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2614-9120&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Problem Discovery & Validation</h2>
+                                            <div class="case-section-content">
+                                                <h4>Current state experience example</h4>
+                                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:0.75rem;">
+                                                    <div style="padding:62.5% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687897?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;margin:0;" title="Current State Context Adding Example" class="lazy-iframe" loading="lazy"></iframe></div>
+                                                </div>
+                                                <p class="case-section-caption"><em>*another example of adding context in the "current state" includes copying the entire block of code for the header component which adds more specificity, but is a poor UX.</em></p>
+
+                                                <h4>Validating the problem</h4>
+                                                <ul>
+                                                    <li>Conducted extensive product testing to understand the current state friction of adding context to prompts</li>
+                                                    <li>Interviewed and observed users to understand the most commonly referenced contextual items and their process for adding them</li>
+                                                    <li>Surveyed Onlook's Discord community to understand current state pain points related to adding context to AI Chats</li>
+                                                </ul>
+
+                                                <h4>Key findings</h4>
+                                                <ul>
+                                                    <li><strong>Manual retrieval forces users to switch contexts, breaking the flow required for rapid, iterative prototyping.</strong></li>
+                                                    <li>Users most frequently need to reference <strong>code components (e.g., headers) and brand styles (e.g., colors, fonts)</strong>.</li>
+                                                    <li>To speed up multi-turn prompting, <strong>users need quick access to their most recently used context</strong>.</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Solution Ideation</h2>
+                                            <div class="case-section-content">
+                                                <h4>Design principles</h4>
+                                                <ol>
+                                                <ul style="margin-left:0;">
+                                                    <strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.
+                                                    <br>
+                                                    <br>
+                                                    <strong>Balance Human-User Needs with Agent Requirements:</strong> Create a simple abstracted interface for users while ensuring the agent receives the deep, structured context it needs to perform accurately.
+                                                </ul>
+                                                </ol>
+
+                                                <h4>Design Exploration</h4>
+                                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31439&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Prototyping & Testing</h2>
+                                            <div class="case-section-content">
+                                                <h4>Functional Prototype</h4>
+                                                <p>I built a functional prototype of the AI Agent Context Feature in code using Onlook's own tool. I then used this prototype to conduct usability tests with users.</p>
+
+                                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
+                                                    <div style="padding:55.28% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687917?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onlook @ Feature - Onlook Prototype.mp4" class="lazy-iframe" loading="lazy"></iframe></div>
+                                                </div>
+
+                                                <h4>Final Conceptual Model</h4>
+                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/550; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2626-9555&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Results</h2>
+                                            <div class="case-section-content">
+                                                <h4>Outcome</h4>
+                                                <p>AI Agent Context Adding Issue Resolved: Users now can seamlessly integrate context into AI-agent-prompts without interrupting their flow, resulting in an improved user experience, productivity, and increased agent performance.</p>
+
+                                                <h4>Final solution in production</h4>
+                                                <p>Collaborating with Onlook's technical-lead, I implemented the final solution using a combination of Cursor and Codex.</p>
+                                                <div style="padding:55.28% 0 0 0;position:relative;"><iframe data-src="https://player.vimeo.com/video/1120704633?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onlook @ Feature - Cursor Prototype Short Demo" class="lazy-iframe" loading="lazy"></iframe></div>
+
+                                                <h4>Impact</h4>
+                                                <ul>
+                                                    <li>Enhanced AI response accuracy through improved contextual prompting</li>
+                                                    <li>Streamlined user workflow eliminating manual context retrieval</li>
+                                                    <li>Increased user satisfaction and time on project through better AI-agent interaction experience</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    </article>
+
+                                    <!-- ========================================
+                                         PROJECT 02: GROWTH DESIGN
+                                         ======================================== -->
+                                    <article class="project-case" id="growth-design">
+                                        <!-- Project Summary Section -->
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">Growth Design</h1>
+                                                <div class="project-summary-subtitle-row">
+                                                    <span class="project-summary-subtitle">Onlook (YC W25)</span>
+                                                    <span class="project-summary-dates">July - August 2025</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Project Info Grid -->
+                                            <div class="project-info-grid">
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ overview</span>
+                                                    <p class="project-info-content project-overview-text">Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
+                                                </div>
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ project info</span>
+                                                    <div class="project-info-subsection">
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">role</span>
+                                                            <span class="project-info-sub-content">Lead Product Designer & Design Engineer</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">skills</span>
+                                                            <span class="project-info-sub-content">UX Research, Competitor Research, Prototyping</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">tools</span>
+                                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ website</span>
+                                                    <div class="project-info-content">
+                                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Case Study Sections -->
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Challenge & Background</h2>
+                                            <div class="case-section-content">
+                                                <h4>Challenge</h4>
+                                                <p>Increase new user retention, conversion to paid subscribers, and grow Onlook's active user base.</p>
+
+                                                <h4>Background & Context</h4>
+                                                <p>In-session analytics revealed critical drop-off points where users abandoned their sessions and workflows before completing key actions in Onlook's product. This indicated insufficient product onboarding and user experience around key features, resulting in poor business growth metrics.</p>
+                                                <br>
+                                                <p>Daniel, Onlook's CEO and Product Design Lead, challenged me to address the retention and growth issues through strategic design decisions.</p>
+
+                                                <h4>Concept Map: Creating a Shared Mental Model of the Problem Space</h4>
+                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2896-1186&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Problem Discovery & Validation</h2>
+                                            <div class="case-section-content">
+                                                <h4>Research Objectives</h4>
+                                                <ul>
+                                                    <li>Why do users struggle to discover and adopt Onlook's current features?</li>
+                                                    <li>What are the "core" features that all users should discover?</li>
+                                                    <li>Which features are most important for driving growth? Do they exist in the current state?</li>
+                                                </ul>
+
+                                                <h4>Current State UX Friction Points</h4>
+                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2945-1641&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+
+                                                <h4>Findings</h4>
+                                                <ul>
+                                                    <li>Onlook onboards some new users manually but <strong>does not have a self-service onboarding flow</strong>—something users requested.</li>
+                                                    <li>New <strong>users perceive the platform as complex </strong> with numerous feature offerings.</li>
+                                                    <li>Engagement with <strong>"Site Publishing" </strong> and <strong>"Custom Domain Hosting"</strong> features leads to higher <strong>user conversion and retention.</strong></li>
+                                                    <li><strong>Onlook's core features</strong>: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing, and Custom Domain Hosting.</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Solution Ideation: Onboarding Flow</h2>
+                                            <div class="case-section-content">
+                                                <h4><strong>Approach</strong></h4>
+                                                <p>Addressing initial findings that there is <strong>demand for a self-service onboarding flow</strong> and that <strong>new users perceive the platform as complex with numerous feature offerings</strong>—I ideated on the prompt, <strong>"How might we create an intuitive and informative core-feature onboarding experience to drive adoption and retention?"</strong></p>
+
+                                                <h4>Solution Exploration and Ideation</h4>
+                                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31440&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Solution Ideation: Publish & Share Features</h2>
+                                            <div class="case-section-content">
+                                                <h4>Approach</h4>
+                                                <p>Addressing initial finding <strong>that engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention</strong>—I ideated on the prompt, <strong>"How might we encourage discovery and completion of site publishing and custom domain flows?"</strong></p>
+                                                <br>
+                                                <p>Additionally, <strong>"How might we spur new user growth through strategic design and product decisions?"</strong></p>
+
+                                                <h4>Solution Exploration and Ideation</h4>
+                                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=58-7942&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Solution Development: Onboarding Flow</h2>
+                                            <div class="case-section-content">
+                                                <h4>Onboarding Feature Overview</h4>
+                                                <ul>
+                                                    <li>Flow initializes as the product loads in the background</li>
+                                                    <li>Focuses on core-features</li>
+                                                    <li>Interactive to encourage user-engagement</li>
+                                                </ul>
+
+                                                <h4>Onboarding Prototype Demo</h4>
+                                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
+                                                    <div style="padding:64.47% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687908?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onboarding - Onlook Prototype" class="lazy-iframe" loading="lazy"></iframe></div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Solution Development: Publish & Share Features</h2>
+                                            <div class="case-section-content">
+                                                <h4>Publish & Custom Domain Features</h4>
+                                                <ul>
+                                                    <li>Added an attention-grabbing vertical carousel to the Publish/Share button to drive feature discovery and engagement.</li>
+                                                    <li>Enhanced the Publish/Share modal with improved loading states and preview functionality to increase publish flow completion by boosting user confidence and reducing decision fatigue.</li>
+                                                    <li>Sequenced the Custom Domain call-to-action to appear after site publication, capitalizing on completion momentum to drive higher adoption of premium features.</li>
+                                                </ul>
+
+                                                <h4>Sharing Feature</h4>
+                                                <p>Designed a sharing feature integrated into the existing publish modal, drawing on proven design patterns from Figma, Notion, and Framer to create an intuitive experience that encourages viral growth through network effects.</p>
+
+                                                <h4>Share Feature Prototype Demo</h4>
+                                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
+                                                    <div style="padding:63.72% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687921?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Publish and Share - Onlook Prototype" class="lazy-iframe" loading="lazy"></iframe></div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Results</h2>
+                                            <div class="case-section-content">
+                                                <h4>Outcomes</h4>
+                                                <ul>
+                                                    <li><strong>Increased new user retention</strong> through improved feature awareness and enhanced publish flow</li>
+                                                    <li><strong>Increased revenue</strong> due to higher conversion to paid subscriptions via optimized add custom domain flow</li>
+                                                    <li><strong>Improved collaboration and user growth</strong> through frictionless sharing capabilities</li>
+                                                </ul>
+
+                                                <h4>Key Success Metrics Defined</h4>
+                                                <ul>
+                                                    <li>User retention rate improvements</li>
+                                                    <li>Conversion rate from free to paid plans</li>
+                                                    <li>Publish completion rates</li>
+                                                    <li>Custom domain addition rates</li>
+                                                    <li>User session duration and feature adoption</li>
+                                                    <li>Monthly Active Users (MAU)</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    </article>
+
+                                </main>
+
+                                <!-- Right Spacer Column -->
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <span class="acc-marker">Work I did in design school</span>
+            </section>
+
+            <!-- ========================================
+                 #5 ARCHETYPE
+                 ======================================== -->
+            <section class="acc-panel" id="panel-archetype" data-panel="archetype">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-archetype" aria-expanded="false" aria-controls="body-archetype">
+                        <span class="acc-num">#5</span>
+                        <span class="acc-label">Archetype</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-archetype" role="region" aria-labelledby="header-archetype">
+                    <div class="acc-inner">
+                        <section id="archetype-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar">
+                                    <span class="work-nav-label">_archetype</span>
+                                </nav>
+
+                                <main class="work-main-content">
+
+                                    <article class="project-case" id="archetype">
+                                        <!-- Project Summary Section -->
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">Archetype</h1>
+                                                <div class="project-summary-subtitle-row">
+                                                    <span class="project-summary-subtitle">Simulated User Testing</span>
+                                                    <span class="project-summary-dates">September 2025 - Present</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Project Info Grid -->
+                                            <div class="project-info-grid">
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ overview</span>
+                                                    <p class="project-info-content project-overview-text">Building a tool for product teams to test software with their target customers using generative agents</p>
+                                                </div>
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ project info</span>
+                                                    <div class="project-info-subsection">
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">role</span>
+                                                            <span class="project-info-sub-content">Design & Product Lead</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">collaborators</span>
+                                                            <span class="project-info-sub-content">Hanyang Gu (technical-lead)</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">skills</span>
+                                                            <span class="project-info-sub-content">Product Design, Prototyping, Front-end Development, Product Strategy, GTM Strategy, User Research.</span>
+                                                        </div>
+                                                        <div class="project-info-subitem">
+                                                            <span class="project-info-sub-label">tools</span>
+                                                            <span class="project-info-sub-content">Cursor, Codex, Claude Code, Figma.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="project-info-section">
+                                                    <span class="project-info-label">/ website</span>
+                                                    <div class="project-info-content">
+                                                        <a href="https://www.syntheticarchetype.com/" target="_blank" class="project-info-link">Synthetic Archetype <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Case Study Sections -->
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Problem Space</h2>
+                                            <div class="case-section-content">
+
+                                                <p>Companies spend a <strong>quarter million dollars</strong> and <strong>40%</strong> of their team's time on UAT and usability validation testing, yet their insights come from only <strong>5-10 people</strong>—a fraction of who actually uses their product.</p>
+                                                <div class="case-section-image">
+                                                    <img src="Archetype/UAT in the PDLC.svg" alt="UAT in the PDLC" loading="lazy">
+                                                </div>
+
+                                                <h4>Our Thesis</h4>
+                                                <p>Autonomous agents with context of customer personas and historical trace data can conduct UAT at scale, reducing both cost and time while testing across a broader range of user behaviors than traditional methods.</p>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Ideation & Prototyping</h2>
+                                            <div class="case-section-content">
+                                                <h4>Conceptual Modeling</h4>
+                                                <p>Collaboratively drafted a conceptual model of our product testing platform with my two co-founders. This model serves as a boundary object for the product's scope and a foundation for the development of both the frontend and backend of the platform.</p>
+                                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=0-1&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+
+                                                <h4>Interactive Prototype</h4>
+                                                <p>Based on the product's conceptual model, I designed and developed a fully interactive prototype of the front-end. <a href="https://project-archetype-834.magicpatterns.app/" target="_blank" rel="noopener noreferrer">Open in a new tab &#8599;</a></p>
+                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://project-archetype-834.magicpatterns.app/" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Brand Design</h2>
+                                            <div class="case-section-content">
+                                                <h4>Assets</h4>
+                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/450; max-width: 800px;" data-src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=2559-408&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Solution Implementation</h2>
+                                            <div class="case-section-content">
+                                                <h4>Collaborative Implementation</h4>
+                                                <div class="case-section-image">
+                                                    <img src="Archetype/Archetype Collaboration.svg" alt="Archetype Collaboration" loading="lazy">
+                                                </div>
+
+                                                <h4>Result</h4>
+                                                <p>We are <a href="https://www.syntheticarchetype.com/" target="_blank">live</a> and available for demos. Our UAT feature is performing reliably in demos and we're working to make it a self-service solution ASAP.</p>
+                                                <ul>
+                                                    <li>Select the product and feature they want to test.</li>
+                                                    <li>Link to a live prototype.</li>
+                                                    <li>Define tester user persona and UAT testing script.</li>
+                                                    <li>Launch simulations using AI-generated users that embody the selected personas.</li>
+                                                    <li>Generate a comprehensive report with insights about the User Acceptance Test.</li>
+                                                </ul>
+
+                                                <h4>Tech-stack</h4>
+                                                <ul>
+                                                    <li>Agentic Simulation: Google Gemini, Browser-use (YC W25) API + Python Playwright, Agentmail (YC S25)</li>
+                                                    <li>Persona generation and dimensions: Google Gemini</li>
+                                                    <li>Web framework: React + Python Flask + AWS</li>
+                                                </ul>
+
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Reflections</h2>
+                                            <div class="case-section-content">
+                                                <p>I am proud of our work thus far.</p>
+                                                <br>
+                                                <p>In particular, I value the rigorous design process we followed: beginning with a basic concept map to define the problem space, collaboratively developing a conceptual model of the solution (which remains a constant point of reference), and finally, realizing the efficacy of prototyping and designing directly in code.</p>
+                                                <br>
+                                                <p>In retrospect, I wish we had focused more effort upfront on validating the accuracy of the simulated user behaviors. While foundational research like Park et al.'s <em>"Generative Agents: Interactive Simulacra of Human Behavior"</em> confirmed that such simulations were possible, refining our system into a usable product has required significant, ongoing backend changes to the agent architecture.</p>
+
+                                                <h4>Our Journey</h4>
+                                                <div class="case-section-image">
+                                                    <img src="Archetype/Archetype Evolution.svg" alt="Archetype Evolution" loading="lazy">
+                                                </div>
+
+                                                <h4>Additional Information & Resources</h4>
+                                                <ul>
+                                                    <li>Our Collider Cup VC Pitch: <a href="https://www.youtube.com/live/hX7JP95TFhI?si=V4xLaJpR4hkk4TtG&t=1852" target="_blank">Watch on YouTube</a></li>
+                                                    <li>Our Website: <a href="https://www.syntheticarchetype.com/" target="_blank">syntheticarchetype.com</a></li>
+                                                    <li>Our Pitch Deck (December 2025): <a href="https://docs.google.com/presentation/d/1Hm2fktXzIEd7LRd6lnXZT1vzIVMefcZN/edit" target="_blank">View on Google Slides</a></li>
+                                                    <li>Related Papers: <a href="https://arxiv.org/abs/2304.03442" target="_blank"><em>Generative Agents: Interactive Simulacra of Human Behavior</em></a></li>
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    </article>
+
+                                </main>
+
+                                <!-- Right Spacer Column -->
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 #6–#7 RESERVED
+                 ======================================== -->
+            <section class="acc-panel" data-reserved>
+                <h2 class="acc-title">
+                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#6</span><span class="acc-label">???</span></span>
+                </h2>
+            </section>
+            <section class="acc-panel" data-reserved>
+                <h2 class="acc-title">
+                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#7</span><span class="acc-label">???</span></span>
+                </h2>
+            </section>
         </div>
-        </div><!-- End above-fold-wrapper -->
-
-        <!-- My Work Section -->
-        <section id="my-work" class="my-work-section">
-            <!-- Long Scroll Portfolio Layout -->
-            <div class="work-scroll-layout" id="work-scroll-layout">
-                <!-- Sticky Left Sidebar Navigation -->
-                <nav class="work-nav-sidebar">
-                    <span class="work-nav-label">_my work</span>
-                    <ul class="work-nav-list">
-                        <li>
-                            <a href="#onlook" class="work-nav-item active"><span class="nav-number">01</span><span class="nav-title">Onlook (YC W25)</span></a>
-                            <ul class="work-nav-sublist">
-                                <li><a href="#onlook" class="work-nav-subitem">AI Agent Context Feature</a></li>
-                                <li><a href="#growth-design" class="work-nav-subitem">Growth Design</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#archetype" class="work-nav-item"><span class="nav-number">02</span><span class="nav-title">Archetype</span></a></li>
-                    </ul>
-                </nav>
-                
-                <!-- Main Content Area with Projects -->
-                <main class="work-main-content">
-                    
-                    <!-- ========================================
-                         PROJECT 01: ONLOOK
-                         ======================================== -->
-                    <article class="project-case" id="onlook">
-                        <!-- Project Summary Section -->
-                        <div class="project-summary">
-                            <div class="project-summary-header">
-                                <h1 class="project-summary-title">AI Agent Context Feature</h1>
-                                <div class="project-summary-subtitle-row">
-                                    <span class="project-summary-subtitle">Onlook (YC W25)</span>
-                                    <span class="project-summary-dates">July - August 2025</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Info Grid -->
-                            <div class="project-info-grid">
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ about onlook</span>
-                                    <p class="project-info-content">Onlook is building a AI powered visual-first IDE for prototyping—similar to Lovable, Magic Patterns, and Figma Make.</p>
-                                </div>
-                                <div class="project-info-section project-info-divider-row">
-                                    <span class="project-info-label">/ overview</span>
-                                    <p class="project-info-content project-overview-text">Designed and shipped a context-adding feature in the prompt window enabling users to inject contextual information into AI prompts.</p>
-                                </div>
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ project info</span>
-                                    <div class="project-info-subsection">
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">role</span>
-                                            <span class="project-info-sub-content">Lead Product Designer & Design Engineer</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">collaborators</span>
-                                            <span class="project-info-sub-content">Primary: Daniel Farrell (CEO), Secondary: Kiet Ho (CTO)</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">skills</span>
-                                            <span class="project-info-sub-content">Prototyping, Prompt Engineering, UX Research, Competitor Research</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">tools</span>
-                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ website</span>
-                                    <div class="project-info-content">
-                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Case Study Sections: AI Agent Context Feature -->
-                        <section class="case-section">
-                            <h2 class="case-section-title">Challenge and Background</h2>
-                            <div class="case-section-content">
-                                <h4>Challenge</h4>
-                                <p>To enable users to effortlessly add contextual information to prompts for more accurate, relevant results in Onlook's Design-IDE AI Chat Interface.</p>
-                                
-                                <h4>Context</h4>
-                                <p>While working at Onlook, I relied heavily on Notion, Cursor, and Slack. I became accustomed to using the '@' feature to add context in those tools that I found myself instinctively trying to use it while prompting in Onlook.</p>
-                                <br>
-                                <p><strong>This friction sparked a hypothesis:</strong> <em>if I have this muscle memory, our users likely do too.</em></p>
-                                
-                                <h4>Concept Map: Initial Problem Space Understanding</h4>
-                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/550; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2614-9120&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Problem Discovery & Validation</h2>
-                            <div class="case-section-content">
-                                <h4>Current state experience example</h4>
-                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:0.75rem;">
-                                    <div style="padding:62.5% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687897?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;margin:0;" title="Current State Context Adding Example" class="lazy-iframe" loading="lazy"></iframe></div>
-                                </div>
-                                <p class="case-section-caption"><em>*another example of adding context in the "current state" includes copying the entire block of code for the header component which adds more specificity, but is a poor UX.</em></p>
-                                
-                                <h4>Validating the problem</h4>
-                                <ul>
-                                    <li>Conducted extensive product testing to understand the current state friction of adding context to prompts</li>
-                                    <li>Interviewed and observed users to understand the most commonly referenced contextual items and their process for adding them</li>
-                                    <li>Surveyed Onlook's Discord community to understand current state pain points related to adding context to AI Chats</li>
-                                </ul>
-                                
-                                <h4>Key findings</h4>
-                                <ul>
-                                    <li><strong>Manual retrieval forces users to switch contexts, breaking the flow required for rapid, iterative prototyping.</strong></li>
-                                    <li>Users most frequently need to reference <strong>code components (e.g., headers) and brand styles (e.g., colors, fonts)</strong>.</li>
-                                    <li>To speed up multi-turn prompting, <strong>users need quick access to their most recently used context</strong>.</li>
-                                </ul>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Solution Ideation</h2>
-                            <div class="case-section-content">
-                                <h4>Design principles</h4>
-                                <ol>
-                                <ul style="margin-left:0;">
-                                    <strong>Leverage Familiar Patterns:</strong> Minimize the learning curve by adopting the interaction models users already rely on in tools like Cursor, Notion, and Slack.
-                                    <br>
-                                    <br>
-                                    <strong>Balance Human-User Needs with Agent Requirements:</strong> Create a simple abstracted interface for users while ensuring the agent receives the deep, structured context it needs to perform accurately.
-                                </ul>
-                                </ol>
-                                
-                                <h4>Design Exploration</h4>
-                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31439&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Prototyping & Testing</h2>
-                            <div class="case-section-content">
-                                <h4>Functional Prototype</h4>
-                                <p>I built a functional prototype of the AI Agent Context Feature in code using Onlook's own tool. I then used this prototype to conduct usability tests with users.</p>
-                                
-                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
-                                    <div style="padding:55.28% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687917?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onlook @ Feature - Onlook Prototype.mp4" class="lazy-iframe" loading="lazy"></iframe></div>
-                                </div>
-                                
-                                <h4>Final Conceptual Model</h4>
-                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/550; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2626-9555&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Results</h2>
-                            <div class="case-section-content">
-                                <h4>Outcome</h4>
-                                <p>AI Agent Context Adding Issue Resolved: Users now can seamlessly integrate context into AI-agent-prompts without interrupting their flow, resulting in an improved user experience, productivity, and increased agent performance.</p>
-                                
-                                <h4>Final solution in production</h4>
-                                <p>Collaborating with Onlook's technical-lead, I implemented the final solution using a combination of Cursor and Codex.</p>
-                                <div style="padding:55.28% 0 0 0;position:relative;"><iframe data-src="https://player.vimeo.com/video/1120704633?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onlook @ Feature - Cursor Prototype Short Demo" class="lazy-iframe" loading="lazy"></iframe></div>
-                                
-                                <h4>Impact</h4>
-                                <ul>
-                                    <li>Enhanced AI response accuracy through improved contextual prompting</li>
-                                    <li>Streamlined user workflow eliminating manual context retrieval</li>
-                                    <li>Increased user satisfaction and time on project through better AI-agent interaction experience</li>
-                                </ul>
-                            </div>
-                        </section>
-                    </article>
-                    
-                    <!-- ========================================
-                         PROJECT 02: GROWTH DESIGN
-                         ======================================== -->
-                    <article class="project-case" id="growth-design">
-                        <!-- Project Summary Section -->
-                        <div class="project-summary">
-                            <div class="project-summary-header">
-                                <h1 class="project-summary-title">Growth Design</h1>
-                                <div class="project-summary-subtitle-row">
-                                    <span class="project-summary-subtitle">Onlook (YC W25)</span>
-                                    <span class="project-summary-dates">July - August 2025</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Info Grid -->
-                            <div class="project-info-grid">
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ overview</span>
-                                    <p class="project-info-content project-overview-text">Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
-                                </div>
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ project info</span>
-                                    <div class="project-info-subsection">
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">role</span>
-                                            <span class="project-info-sub-content">Lead Product Designer & Design Engineer</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">skills</span>
-                                            <span class="project-info-sub-content">UX Research, Competitor Research, Prototyping</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">tools</span>
-                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ website</span>
-                                    <div class="project-info-content">
-                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Case Study Sections -->
-                        <section class="case-section">
-                            <h2 class="case-section-title">Challenge & Background</h2>
-                            <div class="case-section-content">
-                                <h4>Challenge</h4>
-                                <p>Increase new user retention, conversion to paid subscribers, and grow Onlook's active user base.</p>
-                                
-                                <h4>Background & Context</h4>
-                                <p>In-session analytics revealed critical drop-off points where users abandoned their sessions and workflows before completing key actions in Onlook's product. This indicated insufficient product onboarding and user experience around key features, resulting in poor business growth metrics.</p>
-                                <br>
-                                <p>Daniel, Onlook's CEO and Product Design Lead, challenged me to address the retention and growth issues through strategic design decisions.</p>
-                                
-                                <h4>Concept Map: Creating a Shared Mental Model of the Problem Space</h4>
-                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2896-1186&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Problem Discovery & Validation</h2>
-                            <div class="case-section-content">
-                                <h4>Research Objectives</h4>
-                                <ul>
-                                    <li>Why do users struggle to discover and adopt Onlook's current features?</li>
-                                    <li>What are the "core" features that all users should discover?</li>
-                                    <li>Which features are most important for driving growth? Do they exist in the current state?</li>
-                                </ul>
-                                
-                                <h4>Current State UX Friction Points</h4>
-                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9; max-width: 800px;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=2945-1641&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                                
-                                <h4>Findings</h4>
-                                <ul>
-                                    <li>Onlook onboards some new users manually but <strong>does not have a self-service onboarding flow</strong>—something users requested.</li>
-                                    <li>New <strong>users perceive the platform as complex </strong> with numerous feature offerings.</li>
-                                    <li>Engagement with <strong>"Site Publishing" </strong> and <strong>"Custom Domain Hosting"</strong> features leads to higher <strong>user conversion and retention.</strong></li>
-                                    <li><strong>Onlook's core features</strong>: AI Chat, Design Panel (Brand Styles), Code Window, Design-Preview Toggle, Site Publishing, and Custom Domain Hosting.</li>
-                                </ul>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Solution Ideation: Onboarding Flow</h2>
-                            <div class="case-section-content">
-                                <h4><strong>Approach</strong></h4>
-                                <p>Addressing initial findings that there is <strong>demand for a self-service onboarding flow</strong> and that <strong>new users perceive the platform as complex with numerous feature offerings</strong>—I ideated on the prompt, <strong>"How might we create an intuitive and informative core-feature onboarding experience to drive adoption and retention?"</strong></p>
-                                
-                                <h4>Solution Exploration and Ideation</h4>
-                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=1-31440&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Solution Ideation: Publish & Share Features</h2>
-                            <div class="case-section-content">
-                                <h4>Approach</h4>
-                                <p>Addressing initial finding <strong>that engagement with "Site Publishing" and "Custom Domain Hosting" features leads to higher user conversion and retention</strong>—I ideated on the prompt, <strong>"How might we encourage discovery and completion of site publishing and custom domain flows?"</strong></p>
-                                <br>
-                                <p>Additionally, <strong>"How might we spur new user growth through strategic design and product decisions?"</strong></p>
-                                
-                                <h4>Solution Exploration and Ideation</h4>
-                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/GkFDuU9FpAvL5LT2IpQIEO/Onlook-Work?node-id=58-7942&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Solution Development: Onboarding Flow</h2>
-                            <div class="case-section-content">
-                                <h4>Onboarding Feature Overview</h4>
-                                <ul>
-                                    <li>Flow initializes as the product loads in the background</li>
-                                    <li>Focuses on core-features</li>
-                                    <li>Interactive to encourage user-engagement</li>
-                                </ul>
-                                
-                                <h4>Onboarding Prototype Demo</h4>
-                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
-                                    <div style="padding:64.47% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687908?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Onboarding - Onlook Prototype" class="lazy-iframe" loading="lazy"></iframe></div>
-                                </div>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Solution Development: Publish & Share Features</h2>
-                            <div class="case-section-content">
-                                <h4>Publish & Custom Domain Features</h4>
-                                <ul>
-                                    <li>Added an attention-grabbing vertical carousel to the Publish/Share button to drive feature discovery and engagement.</li>
-                                    <li>Enhanced the Publish/Share modal with improved loading states and preview functionality to increase publish flow completion by boosting user confidence and reducing decision fatigue.</li>
-                                    <li>Sequenced the Custom Domain call-to-action to appear after site publication, capitalizing on completion momentum to drive higher adoption of premium features.</li>
-                                </ul>
-                                
-                                <h4>Sharing Feature</h4>
-                                <p>Designed a sharing feature integrated into the existing publish modal, drawing on proven design patterns from Figma, Notion, and Framer to create an intuitive experience that encourages viral growth through network effects.</p>
-                                
-                                <h4>Share Feature Prototype Demo</h4>
-                                <div class="video-container-wrapper" style="position:relative;width:100%;margin-bottom:1rem;">
-                                    <div style="padding:63.72% 0 0 0;position:relative;width:100%;"><iframe data-src="https://player.vimeo.com/video/1120687921?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;loop=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Publish and Share - Onlook Prototype" class="lazy-iframe" loading="lazy"></iframe></div>
-                                </div>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Results</h2>
-                            <div class="case-section-content">
-                                <h4>Outcomes</h4>
-                                <ul>
-                                    <li><strong>Increased new user retention</strong> through improved feature awareness and enhanced publish flow</li>
-                                    <li><strong>Increased revenue</strong> due to higher conversion to paid subscriptions via optimized add custom domain flow</li>
-                                    <li><strong>Improved collaboration and user growth</strong> through frictionless sharing capabilities</li>
-                                </ul>
-                                
-                                <h4>Key Success Metrics Defined</h4>
-                                <ul>
-                                    <li>User retention rate improvements</li>
-                                    <li>Conversion rate from free to paid plans</li>
-                                    <li>Publish completion rates</li>
-                                    <li>Custom domain addition rates</li>
-                                    <li>User session duration and feature adoption</li>
-                                    <li>Monthly Active Users (MAU)</li>
-                                </ul>
-                            </div>
-                        </section>
-                    </article>
-                    
-                    <!-- ========================================
-                         PROJECT 03: ARCHETYPE
-                         ======================================== -->
-                    <article class="project-case" id="archetype">
-                        <!-- Project Summary Section -->
-                        <div class="project-summary">
-                            <div class="project-summary-header">
-                                <h1 class="project-summary-title">Archetype</h1>
-                                <div class="project-summary-subtitle-row">
-                                    <span class="project-summary-subtitle">Simulated User Testing</span>
-                                    <span class="project-summary-dates">September 2025 - Present</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Info Grid -->
-                            <div class="project-info-grid">
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ overview</span>
-                                    <p class="project-info-content project-overview-text">Building a tool for product teams to test software with their target customers using generative agents</p>
-                                </div>
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ project info</span>
-                                    <div class="project-info-subsection">
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">role</span>
-                                            <span class="project-info-sub-content">Design & Product Lead</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">collaborators</span>
-                                            <span class="project-info-sub-content">Hanyang Gu (technical-lead)</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">skills</span>
-                                            <span class="project-info-sub-content">Product Design, Prototyping, Front-end Development, Product Strategy, GTM Strategy, User Research.</span>
-                                        </div>
-                                        <div class="project-info-subitem">
-                                            <span class="project-info-sub-label">tools</span>
-                                            <span class="project-info-sub-content">Cursor, Codex, Claude Code, Figma.</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="project-info-section">
-                                    <span class="project-info-label">/ website</span>
-                                    <div class="project-info-content">
-                                        <a href="https://www.syntheticarchetype.com/" target="_blank" class="project-info-link">Synthetic Archetype <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Case Study Sections -->
-                        <section class="case-section">
-                            <h2 class="case-section-title">Problem Space</h2>
-                            <div class="case-section-content">
-                                
-                                <p>Companies spend a <strong>quarter million dollars</strong> and <strong>40%</strong> of their team's time on UAT and usability validation testing, yet their insights come from only <strong>5-10 people</strong>—a fraction of who actually uses their product.</p>
-                                <div class="case-section-image">
-                                    <img src="Archetype/UAT in the PDLC.svg" alt="UAT in the PDLC" loading="lazy">
-                                </div>
-                                
-                                <h4>Our Thesis</h4>
-                                <p>Autonomous agents with context of customer personas and historical trace data can conduct UAT at scale, reducing both cost and time while testing across a broader range of user behaviors than traditional methods.</p>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Ideation & Prototyping</h2>
-                            <div class="case-section-content">
-                                <h4>Conceptual Modeling</h4>
-                                <p>Collaboratively drafted a conceptual model of our product testing platform with my two co-founders. This model serves as a boundary object for the product's scope and a foundation for the development of both the frontend and backend of the platform.</p>
-                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=0-1&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                                
-                                <h4>Interactive Prototype</h4>
-                                <p>Based on the product's conceptual model, I designed and developed a fully interactive prototype of the front-end. <a href="https://project-archetype-834.magicpatterns.app/" target="_blank" rel="noopener noreferrer">Open in a new tab &#8599;</a></p>
-                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://project-archetype-834.magicpatterns.app/" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Brand Design</h2>
-                            <div class="case-section-content">
-                                <h4>Assets</h4>
-                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/450; max-width: 800px;" data-src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=2559-408&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Solution Implementation</h2>
-                            <div class="case-section-content">
-                                <h4>Collaborative Implementation</h4>
-                                <div class="case-section-image">
-                                    <img src="Archetype/Archetype Collaboration.svg" alt="Archetype Collaboration" loading="lazy">
-                                </div>
-                                
-                                <h4>Result</h4>
-                                <p>We are <a href="https://www.syntheticarchetype.com/" target="_blank">live</a> and available for demos. Our UAT feature is performing reliably in demos and we're working to make it a self-service solution ASAP.</p>
-                                <ul>
-                                    <li>Select the product and feature they want to test.</li>
-                                    <li>Link to a live prototype.</li>
-                                    <li>Define tester user persona and UAT testing script.</li>
-                                    <li>Launch simulations using AI-generated users that embody the selected personas.</li>
-                                    <li>Generate a comprehensive report with insights about the User Acceptance Test.</li>
-                                </ul>
-                                
-                                <h4>Tech-stack</h4>
-                                <ul>
-                                    <li>Agentic Simulation: Google Gemini, Browser-use (YC W25) API + Python Playwright, Agentmail (YC S25)</li>
-                                    <li>Persona generation and dimensions: Google Gemini</li>
-                                    <li>Web framework: React + Python Flask + AWS</li>
-                                </ul>
-                                
-                            </div>
-                        </section>
-                        
-                        <section class="case-section">
-                            <h2 class="case-section-title">Reflections</h2>
-                            <div class="case-section-content">
-                                <p>I am proud of our work thus far.</p>
-                                <br>
-                                <p>In particular, I value the rigorous design process we followed: beginning with a basic concept map to define the problem space, collaboratively developing a conceptual model of the solution (which remains a constant point of reference), and finally, realizing the efficacy of prototyping and designing directly in code.</p>
-                                <br>
-                                <p>In retrospect, I wish we had focused more effort upfront on validating the accuracy of the simulated user behaviors. While foundational research like Park et al.'s <em>"Generative Agents: Interactive Simulacra of Human Behavior"</em> confirmed that such simulations were possible, refining our system into a usable product has required significant, ongoing backend changes to the agent architecture.</p>
-                                
-                                <h4>Our Journey</h4>
-                                <div class="case-section-image">
-                                    <img src="Archetype/Archetype Evolution.svg" alt="Archetype Evolution" loading="lazy">
-                                </div>
-                                
-                                <h4>Additional Information & Resources</h4>
-                                <ul>
-                                    <li>Our Collider Cup VC Pitch: <a href="https://www.youtube.com/live/hX7JP95TFhI?si=V4xLaJpR4hkk4TtG&t=1852" target="_blank">Watch on YouTube</a></li>
-                                    <li>Our Website: <a href="https://www.syntheticarchetype.com/" target="_blank">syntheticarchetype.com</a></li>
-                                    <li>Our Pitch Deck (December 2025): <a href="https://docs.google.com/presentation/d/1Hm2fktXzIEd7LRd6lnXZT1vzIVMefcZN/edit" target="_blank">View on Google Slides</a></li>
-                                    <li>Related Papers: <a href="https://arxiv.org/abs/2304.03442" target="_blank"><em>Generative Agents: Interactive Simulacra of Human Behavior</em></a></li>
-                                </ul>
-                            </div>
-                        </section>
-                    </article>
-                    
-                </main>
-                
-                <!-- Right Spacer Column -->
-                <div class="work-right-spacer"></div>
-            </div>
-        </section>
-
-        <!-- Double Line Divider -->
-        <div class="double-line-divider"></div>
 
         <!-- Footer -->
         <footer class="site-footer">
@@ -803,394 +888,470 @@
     </div>
 
     <script>
-        // Long-scroll portfolio navigation
         document.addEventListener('DOMContentLoaded', function() {
             try {
-            // Sidebar navigation active state
-            const navItems = document.querySelectorAll('.work-nav-item');
-            const subNavItems = document.querySelectorAll('.work-nav-subitem');
-            const projectCases = document.querySelectorAll('.project-case');
-            
-            // Map project IDs to their indices in the nav
-            const projectIdToNavIndex = {
-                'onlook': 0,
-                'archetype': 1,
-                'growth-design': 0 // Both onlook and growth-design are under nav item 0
-            };
-            
-            // Smooth scroll for nav items
-            navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        // Get the work-nav-label position (sticky sidebar)
-                        const workNavLabel = document.querySelector('.work-nav-label');
-                        const projectTitle = targetElement.querySelector('.project-summary-title');
-                        
-                        if (workNavLabel && projectTitle) {
-                            // Get viewport positions
-                            const workNavLabelRect = workNavLabel.getBoundingClientRect();
-                            const projectTitleRect = projectTitle.getBoundingClientRect();
-                            
-                            // The work-nav-label is sticky, so its viewport position is our target
-                            // Calculate how much we need to scroll to align the title with the label
-                            const positionDifference = projectTitleRect.top - workNavLabelRect.top;
-                            
-                            // Scroll to align them - this ensures all projects align to the same position
-                            const currentScrollY = window.pageYOffset;
-                            const scrollPosition = currentScrollY + positionDifference;
-                            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-                        } else {
-                            // Fallback to original behavior
-                            const navHeight = document.querySelector('nav.main-grid').offsetHeight;
-                            const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                            window.scrollTo({ top: elementTop - navHeight - 20, behavior: 'smooth' });
-                        }
-                    }
-                });
-            });
-            
-            // Smooth scroll for sub-nav items
-            subNavItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        // Get the work-nav-label position (sticky sidebar)
-                        const workNavLabel = document.querySelector('.work-nav-label');
-                        const projectTitle = targetElement.querySelector('.project-summary-title');
-                        
-                        if (workNavLabel && projectTitle) {
-                            // Get viewport positions
-                            const workNavLabelRect = workNavLabel.getBoundingClientRect();
-                            const projectTitleRect = projectTitle.getBoundingClientRect();
-                            
-                            // The work-nav-label is sticky, so its viewport position is our target
-                            // Calculate how much we need to scroll to align the title with the label
-                            const positionDifference = projectTitleRect.top - workNavLabelRect.top;
-                            
-                            // Scroll to align them - this ensures all projects align to the same position
-                            const currentScrollY = window.pageYOffset;
-                            const scrollPosition = currentScrollY + positionDifference;
-                            window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-                        } else {
-                            // Fallback to original behavior
-                            const navHeight = document.querySelector('nav.main-grid').offsetHeight;
-                            const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                            window.scrollTo({ top: elementTop - navHeight - 20, behavior: 'smooth' });
-                        }
-                    }
-                });
-            });
-            
-            // Update active nav item on scroll with throttling
-            let scrollTimeout;
-            let isScrolling = false;
-            
-            function updateActiveNavItem() {
+
+            // =============================================
+            // ACCORDION
+            // One panel is open at a time. Opening a panel collapses whichever
+            // panel is currently open, so the stack of row labels reads as a
+            // single index that expands in place.
+            // =============================================
+            var accordion = document.getElementById('accordion');
+            var panels = accordion ? [].slice.call(accordion.querySelectorAll('.acc-panel[data-panel]')) : [];
+            var DURATION = 440;
+
+            function prefersReducedMotion() {
                 try {
-                    // Safety checks
-                    if (!navItems || navItems.length === 0 || !projectCases || projectCases.length === 0) {
-                        return;
-                    }
-                    
-                    const nav = document.querySelector('nav.main-grid');
-                    if (!nav) return;
-                    
-                    const navHeight = nav.offsetHeight || 0;
-                    const scrollPosition = (window.scrollY || window.pageYOffset || 0) + navHeight + 100;
-                    const myWorkSection = document.getElementById('my-work');
-                    
-                    if (!myWorkSection) return;
-                    
-                    const myWorkTop = myWorkSection.offsetTop || 0;
-                    
-                    // Check if we're at or past the my-work section
-                    if (scrollPosition >= myWorkTop - 50) {
-                        let foundActive = false;
-                        
-                        // Check each project to see if we're within its bounds
-                        projectCases.forEach((project) => {
-                            if (!project) return;
-                            
-                            const projectId = project.getAttribute('id');
-                            if (!projectId) return;
-                            
-                            const projectTop = project.offsetTop || 0;
-                            const projectBottom = projectTop + (project.offsetHeight || 0);
-                            
-                            if (scrollPosition >= projectTop && scrollPosition < projectBottom) {
-                                // Remove all active states
-                                navItems.forEach(item => {
-                                    if (item) item.classList.remove('active');
-                                });
-                                subNavItems.forEach(item => {
-                                    if (item) item.classList.remove('active');
-                                });
-                                
-                                // Activate the appropriate nav item
-                                const navIndex = projectIdToNavIndex[projectId];
-                                if (navIndex !== undefined && navItems[navIndex]) {
-                                    navItems[navIndex].classList.add('active');
-                                    
-                                    // If it's onlook or growth-design, also activate the sub-nav item
-                                    if (projectId === 'onlook' || projectId === 'growth-design') {
-                                        subNavItems.forEach(subItem => {
-                                            if (!subItem) return;
-                                            const subHref = subItem.getAttribute('href');
-                                            if (subHref && subHref.substring(1) === projectId) {
-                                                subItem.classList.add('active');
-                                            }
-                                        });
-                                    }
-                                }
-                                foundActive = true;
-                            }
-                        });
-                        
-                        // If no project is active but we're in the my-work section, activate the first project
-                        if (!foundActive && projectCases.length > 0 && navItems[0]) {
-                            navItems.forEach(item => {
-                                if (item) item.classList.remove('active');
-                            });
-                            subNavItems.forEach(item => {
-                                if (item) item.classList.remove('active');
-                            });
-                            navItems[0].classList.add('active');
-                        }
+                    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            function bodyOf(panel) {
+                return panel.querySelector('.acc-body');
+            }
+
+            function headerOf(panel) {
+                return panel.querySelector('.acc-header');
+            }
+
+            function settle(body, open) {
+                clearTimeout(body._settleTimer);
+                body._settleTimer = setTimeout(function() {
+                    if (open) {
+                        // Hand height back to the content so the panel keeps
+                        // growing as lazy iframes and images resolve, and drop
+                        // the clip so the sticky work sidebar can work.
+                        body.style.height = 'auto';
+                        body.style.overflow = '';
                     } else {
-                        // Before my-work section, remove all active states
-                        navItems.forEach(item => {
-                            if (item) item.classList.remove('active');
-                        });
-                        subNavItems.forEach(item => {
-                            if (item) item.classList.remove('active');
-                        });
+                        body.style.height = '';
+                        body.style.overflow = '';
                     }
-                } catch (e) {
-                    // Silently handle errors to prevent crashes
-                    console.warn('updateActiveNavItem error:', e);
-                }
+                }, DURATION + 20);
             }
-            
-            // Throttled scroll handler
-            function handleScroll() {
-                if (!isScrolling) {
-                    window.requestAnimationFrame(function() {
-                        updateActiveNavItem();
-                        isScrolling = false;
-                    });
-                    isScrolling = true;
+
+            function expand(panel) {
+                var body = bodyOf(panel);
+                var header = headerOf(panel);
+                if (!body || panel.classList.contains('is-open')) return;
+
+                panel.classList.add('is-open');
+                if (header) header.setAttribute('aria-expanded', 'true');
+
+                if (prefersReducedMotion()) {
+                    body.style.height = 'auto';
+                    body.style.overflow = '';
+                    return;
                 }
+
+                body.style.overflow = 'hidden';
+                body.style.height = '0px';
+                var target = body.scrollHeight;
+                void body.offsetHeight; // flush the 0px start before animating
+                body.style.height = target + 'px';
+                settle(body, true);
             }
-            
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            
-            // Only call updateActiveNavItem after a short delay to ensure DOM is ready
-            setTimeout(function() {
-                try {
-                    updateActiveNavItem();
-                } catch (e) {
-                    // Silently handle errors
+
+            function collapse(panel) {
+                var body = bodyOf(panel);
+                var header = headerOf(panel);
+                if (!body || !panel.classList.contains('is-open')) return;
+
+                if (prefersReducedMotion()) {
+                    panel.classList.remove('is-open');
+                    if (header) header.setAttribute('aria-expanded', 'false');
+                    body.style.height = '';
+                    body.style.overflow = '';
+                    return;
                 }
-            }, 100);
-            
-            
-            // Hero Tabs Functionality
-            const heroTabBtns = document.querySelectorAll('.hero-tab-btn');
-            const heroTabPanels = document.querySelectorAll('.hero-tab-panel');
-            
-            heroTabBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const targetTab = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all buttons and panels
-                    heroTabBtns.forEach(b => b.classList.remove('active'));
-                    heroTabPanels.forEach(p => p.classList.remove('active'));
-                    
-                    // Add active class to clicked button and corresponding panel
-                    this.classList.add('active');
-                    const targetPanel = document.getElementById(targetTab);
-                    if (targetPanel) {
-                        targetPanel.classList.add('active');
+
+                body.style.overflow = 'hidden';
+                body.style.height = body.scrollHeight + 'px';
+                void body.offsetHeight;
+
+                panel.classList.remove('is-open');
+                if (header) header.setAttribute('aria-expanded', 'false');
+                body.style.height = '0px';
+                settle(body, false);
+
+                // Keep the panel out of the pinned stack until it has actually
+                // shrunk, or it would pin at full height and freeze mid-collapse.
+                panel.classList.add('is-collapsing');
+                clearTimeout(panel._collapseTimer);
+                panel._collapseTimer = setTimeout(function() {
+                    panel.classList.remove('is-collapsing');
+                }, DURATION + 20);
+            }
+
+            // Anything scrolled to must clear the sticky header. Adding the
+            // accordion's own 10px gap lands the row label exactly where the
+            // design places it below the logo.
+            var siteHeader = document.querySelector('.site-header');
+            var rows = [].slice.call(accordion ? accordion.children : []);
+
+            function headerOffset() {
+                return (siteHeader ? siteHeader.offsetHeight : 0) + accordionGap();
+            }
+
+            function accordionGap() {
+                return parseFloat(getComputedStyle(accordion).rowGap) || 10;
+            }
+
+            // Height of a row label in the pinned stack. A reserved row is never
+            // open, so it always measures a collapsed row.
+            function rowHeight() {
+                var collapsed = accordion.querySelector('.acc-panel[data-reserved]');
+                return collapsed ? collapsed.offsetHeight : 35;
+            }
+
+            function rowStep() {
+                return rowHeight() + accordionGap();
+            }
+
+            // A pinned row reports its pinned rect, not its place in the
+            // document, so positions are summed from the flow instead.
+            function naturalTop(target) {
+                var top = accordion.getBoundingClientRect().top + window.pageYOffset
+                    + parseFloat(getComputedStyle(accordion).paddingTop);
+                var gap = accordionGap();
+
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i] === target) break;
+                    top += rows[i].offsetHeight + gap;
+                }
+
+                return top;
+            }
+
+            // Where the panel's top edge will land once the panel above it has
+            // finished collapsing. Collapsing removes exactly that panel's body
+            // height, so the shift is known before the animation runs and the
+            // scroll can be aimed at the final layout instead of the current one.
+            function projectedTop(target) {
+                var top = naturalTop(target);
+
+                panels.forEach(function(panel) {
+                    if (panel === target || !panel.classList.contains('is-open')) return;
+                    var isAbove = !!(panel.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING);
+                    if (isAbove) {
+                        var body = bodyOf(panel);
+                        if (body) top -= body.offsetHeight;
+                    }
+                });
+
+                return top;
+            }
+
+            // Viewport line the panel's own label settles on: below the header,
+            // below every row pinned above it. Matches the CSS stack offsets.
+            function stackedLabelTop(target) {
+                return headerOffset() + Math.max(0, rows.indexOf(target)) * rowStep();
+            }
+
+            // Viewport line below everything pinned above this panel's content:
+            // the header, the rows stacked above it, and its own pinned label.
+            function contentClearance(panel) {
+                return stackedLabelTop(panel) + rowHeight();
+            }
+
+            // Must be read before any panel is collapsed: a collapsing panel
+            // still measures its full height for the length of its animation.
+            function landingScroll(target) {
+                return Math.max(0, projectedTop(target) - stackedLabelTop(target));
+            }
+
+            function scrollPage(top) {
+                window.scrollTo({
+                    top: top,
+                    behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+                });
+            }
+
+            function openPanel(name, options) {
+                var opts = options || {};
+                var target = null;
+
+                panels.forEach(function(panel) {
+                    if (panel.getAttribute('data-panel') === name) target = panel;
+                });
+
+                if (!target) return null;
+
+                var landing = landingScroll(target);
+
+                panels.forEach(function(panel) {
+                    if (panel !== target) collapse(panel);
+                });
+                expand(target);
+
+                if (opts.scroll !== false) scrollPage(landing);
+
+                return target;
+            }
+
+            panels.forEach(function(panel) {
+                var header = headerOf(panel);
+                if (!header) return;
+                header.addEventListener('click', function() {
+                    if (panel.classList.contains('is-open')) {
+                        var landing = landingScroll(panel);
+                        collapse(panel);
+                        if (landing < window.pageYOffset) scrollPage(landing);
+                    } else {
+                        openPanel(panel.getAttribute('data-panel'));
                     }
                 });
             });
-            
-            // Make P logo home button scroll to top
-            const homeButton = document.getElementById('home-button');
-            if (homeButton) {
-                homeButton.addEventListener('click', function(e) {
+
+            // The logo returns to the top of the stack with Home open.
+            var homeLogo = document.getElementById('home-logo');
+            if (homeLogo) {
+                homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    openPanel('home', { scroll: false });
+                    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
                 });
             }
-            
-            // Helper function to scroll to my work section with proper offset
-            function scrollToMyWork() {
-                try {
-                    const myWorkSection = document.getElementById('my-work');
-                    const nav = document.querySelector('nav.main-grid');
-                    if (myWorkSection && nav) {
-                        // Wait for layout to be ready
-                        requestAnimationFrame(function() {
-                            try {
-                                const navHeight = nav.offsetHeight || 0;
-                                const elementTop = myWorkSection.getBoundingClientRect().top + (window.pageYOffset || window.scrollY || 0);
-                                window.scrollTo({ top: Math.max(0, elementTop - navHeight), behavior: 'smooth' });
-                            } catch (e) {
-                                // Fallback to instant scroll if smooth fails
-                                const navHeight = nav.offsetHeight || 0;
-                                const elementTop = myWorkSection.offsetTop || 0;
-                                window.scrollTo(0, Math.max(0, elementTop - navHeight));
-                            }
-                        });
+
+            // =============================================
+            // INTRO REEL
+            // On first arrival the index runs past the viewport from the bottom
+            // of the stack up to #1, and #1 then opens. The rows that make the
+            // run long enough are filler: they exist only for the length of the
+            // animation and are gone before the page is handed to the visitor,
+            // so the index reads as #1–#7 again the moment it settles.
+            // =============================================
+            (function() {
+                var docEl = document.documentElement;
+                var home = document.getElementById('panel-home');
+                if (!accordion || !home || !docEl.classList.contains('intro-armed')) return;
+
+                var FILLER_ROWS = 100;
+                // Sampled off mschf.com's own load: a beat while the page
+                // settles, a hard acceleration, then a long decay into the
+                // landing. The curve is a fit of that measured scroll.
+                var HOLD = 360;
+                var TRAVEL = 1440;
+                var EASE = [0.36, 0.06, 0, 1];
+
+                var start = 0;
+                var began = 0;
+                var guard = 0;
+                var stopped = false;
+                var done = false;
+
+                // The run is driven a frame at a time, so the curve cannot be
+                // handed to CSS and is solved here instead.
+                function ease(x) {
+                    function axis(a, b, t) {
+                        var u = 1 - t;
+                        return 3 * u * u * t * a + 3 * u * t * t * b + t * t * t;
                     }
-                } catch (e) {
-                    console.warn('scrollToMyWork error:', e);
-                }
-            }
-            
-            // Handle hash navigation on page load
-            function handleHashNavigation() {
-                try {
-                    const hash = window.location.hash;
-                    if (hash && hash.length > 1) {
-                        const targetId = hash.substring(1);
-                        const targetElement = document.getElementById(targetId);
-                        
-                        if (targetElement) {
-                            // Wait for page to be fully loaded and rendered
-                            setTimeout(function() {
-                                try {
-                                    if (targetId === 'my-work') {
-                                        scrollToMyWork();
-                                    } else {
-                                        // For other hash targets, scroll to them
-                                        const nav = document.querySelector('nav.main-grid');
-                                        const navHeight = nav ? (nav.offsetHeight || 0) : 0;
-                                        const elementTop = targetElement.getBoundingClientRect().top + (window.pageYOffset || window.scrollY || 0);
-                                        window.scrollTo({ top: Math.max(0, elementTop - navHeight - 20), behavior: 'smooth' });
-                                    }
-                                } catch (e) {
-                                    // Fallback to instant scroll
-                                    const nav = document.querySelector('nav.main-grid');
-                                    const navHeight = nav ? (nav.offsetHeight || 0) : 0;
-                                    const elementTop = targetElement.offsetTop || 0;
-                                    window.scrollTo(0, Math.max(0, elementTop - navHeight - 20));
-                                }
-                            }, 500); // Wait for loading overlay and animations
-                        }
+                    var lo = 0, hi = 1, t = x;
+                    for (var i = 0; i < 24; i++) {
+                        t = (lo + hi) / 2;
+                        if (axis(EASE[0], EASE[2], t) < x) lo = t; else hi = t;
                     }
-                } catch (e) {
-                    console.warn('handleHashNavigation error:', e);
+                    return axis(EASE[1], EASE[3], t);
                 }
-            }
-            
-            // Handle hash navigation after page loads
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', handleHashNavigation);
-            } else {
-                // DOM already loaded
-                setTimeout(handleHashNavigation, 600);
-            }
-            
-            // Also handle hash changes
-            window.addEventListener('hashchange', function() {
-                setTimeout(handleHashNavigation, 100);
-            }, { passive: true });
-            
-            // Make my work link scroll so the My Work section is at the top
-            const myWorkLink = document.querySelector('.nav-links-cell a[href="#my-work"]');
-            if (myWorkLink) {
-                myWorkLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    scrollToMyWork();
-                });
-            }
-            
-            // Make scroll indicator (down arrow) scroll to My Work section
-            const scrollIndicator = document.querySelector('.scroll-indicator');
-            if (scrollIndicator) {
-                scrollIndicator.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    scrollToMyWork();
-                });
-            }
-            
-            // Function to update active nav link based on scroll position
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-links-cell a');
-            
-            let navLinkScrollTimeout;
-            let isUpdatingNavLink = false;
-            
-            function updateActiveNavLink() {
-                try {
-                    if (!sections || sections.length === 0 || !navLinks || navLinks.length === 0) {
+
+                function fillerRows(count, firstNumber) {
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < count; i++) {
+                        var panel = document.createElement('section');
+                        panel.className = 'acc-panel';
+                        panel.setAttribute('data-reserved', '');
+                        panel.setAttribute('data-intro-filler', '');
+                        panel.setAttribute('aria-hidden', 'true');
+                        panel.innerHTML = '<h2 class="acc-title"><span class="acc-header" aria-disabled="true">'
+                            + '<span class="acc-num">#' + (firstNumber + i) + '</span>'
+                            + '<span class="acc-label">???</span></span></h2>';
+                        frag.appendChild(panel);
+                    }
+                    return frag;
+                }
+
+                function cancel() {
+                    stopped = true;
+                }
+
+                function finish() {
+                    if (done) return;
+                    done = true;
+
+                    clearTimeout(guard);
+                    window.removeEventListener('wheel', cancel);
+                    window.removeEventListener('touchstart', cancel);
+                    window.removeEventListener('keydown', cancel);
+
+                    var extras = accordion.querySelectorAll('[data-intro-filler]');
+                    for (var i = 0; i < extras.length; i++) {
+                        extras[i].parentNode.removeChild(extras[i]);
+                    }
+
+                    accordion.classList.remove('is-intro');
+                    window.scrollTo(0, 0);
+                    docEl.classList.remove('intro-armed');
+                    docEl.classList.remove('intro-running');
+                    expand(home);
+                }
+
+                function frame(now) {
+                    // The guard below can land the reel while animation frames
+                    // are paused. If they resume afterwards this must not grab
+                    // the scroll back from wherever the visitor has gone.
+                    if (done) return;
+                    if (stopped) {
+                        finish();
                         return;
                     }
-                    
-                    const nav = document.querySelector('nav.main-grid');
-                    if (!nav) return;
-                    
-                    const navHeight = nav.offsetHeight || 0;
-                    const scrollPosition = (window.scrollY || window.pageYOffset || 0) + navHeight + 100;
-                    
-                    let currentSection = null;
-                    
-                    // Find which section we're currently in
-                    sections.forEach(section => {
-                        if (!section) return;
-                        const sectionTop = section.offsetTop || 0;
-                        const sectionBottom = sectionTop + (section.offsetHeight || 0);
-                        
-                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                            currentSection = section.getAttribute('id');
-                        }
-                    });
-                    
-                    // Update nav links
-                    if (currentSection) {
-                        navLinks.forEach(link => {
-                            if (!link) return;
-                            link.classList.remove('active');
-                            const href = link.getAttribute('href');
-                            if (href === '#' + currentSection) {
-                                link.classList.add('active');
-                            }
-                        });
+                    if (!began) began = now;
+
+                    var elapsed = now - began - HOLD;
+                    if (elapsed < 0) {
+                        requestAnimationFrame(frame);
+                        return;
                     }
-                } catch (e) {
-                    console.warn('updateActiveNavLink error:', e);
+
+                    var progress = Math.min(elapsed / TRAVEL, 1);
+                    window.scrollTo(0, start * (1 - ease(progress)));
+
+                    if (progress < 1) requestAnimationFrame(frame);
+                    else finish();
                 }
-            }
-            
-            // Listen for scroll events with throttling for performance
-            function handleNavLinkScroll() {
-                if (!isUpdatingNavLink) {
-                    window.requestAnimationFrame(function() {
-                        updateActiveNavLink();
-                        isUpdatingNavLink = false;
-                    });
-                    isUpdatingNavLink = true;
-                }
-            }
-            
-            window.addEventListener('scroll', handleNavLinkScroll, { passive: true });
-            
-            // Set initial active state after delay
-            setTimeout(function() {
+
                 try {
-                    updateActiveNavLink();
+                    // The reel ends on #1 opening, so the index starts closed.
+                    home.classList.remove('is-open');
+                    var homeHeader = headerOf(home);
+                    if (homeHeader) homeHeader.setAttribute('aria-expanded', 'false');
+
+                    accordion.classList.add('is-intro');
+                    accordion.appendChild(fillerRows(FILLER_ROWS, rows.length + 1));
+                    docEl.classList.add('intro-running');
+
+                    // Park on the last row of the index rather than the true
+                    // bottom of the document, so the first frame is full of
+                    // rows instead of footer.
+                    var lastRow = accordion.lastElementChild;
+                    start = lastRow.getBoundingClientRect().bottom + window.pageYOffset - window.innerHeight;
+                    start = Math.max(0, Math.min(start, docEl.scrollHeight - window.innerHeight));
+                    window.scrollTo(0, start);
+
+                    // Parked: the shell can show now.
+                    docEl.classList.remove('intro-armed');
+
+                    if (start < 1) {
+                        finish();
+                        return;
+                    }
+
+                    // A visitor who reaches for the page mid-reel gets the
+                    // landing immediately rather than a fight over the scroll.
+                    window.addEventListener('wheel', cancel, { passive: true });
+                    window.addEventListener('touchstart', cancel, { passive: true });
+                    window.addEventListener('keydown', cancel);
+
+                    // Animation frames stop entirely in a background tab, which
+                    // would leave the page parked at the foot of an index full
+                    // of filler. Timers keep running, so one backs the reel up
+                    // and lands it on time whether or not it was ever drawn.
+                    guard = setTimeout(finish, HOLD + TRAVEL + 1200);
+                    requestAnimationFrame(frame);
                 } catch (e) {
-                    // Silently handle errors
+                    console.warn('Intro reel error:', e);
+                    finish();
                 }
-            }, 100);
-            
+            })();
+
+            // The open panel's height is set to auto, so nothing needs to be
+            // recalculated on resize; only mid-animation panels would be stale.
+
+            // =============================================
+            // ROLE CYCLE
+            // The headline alternates UX / AI. The canvas carries the current
+            // role and the stylesheet paints both the accent word and the dot
+            // grid from it, so the word and the dots turn together.
+            // =============================================
+            (function() {
+                var canvas = document.querySelector('.home-canvas');
+                var accent = canvas ? canvas.querySelector('.home-role-accent') : null;
+                if (!canvas || !accent) return;
+
+                var ROLES = ['ux', 'ai'];
+                var INTERVAL = 5000;
+                // Long enough to clear the accent word's own fade-out.
+                var TROUGH = 200;
+                var index = 0;
+
+                function advance() {
+                    // Text that rewrites itself is motion, so a visitor who has
+                    // asked for less of it keeps whichever role is showing. A
+                    // background tab would only queue swaps nobody sees.
+                    if (prefersReducedMotion() || document.hidden) return;
+
+                    index = (index + 1) % ROLES.length;
+                    canvas.classList.add('is-role-swapping');
+
+                    setTimeout(function() {
+                        accent.textContent = ROLES[index].toUpperCase();
+                        canvas.setAttribute('data-role', ROLES[index]);
+                        canvas.classList.remove('is-role-swapping');
+                    }, TROUGH);
+                }
+
+                setInterval(advance, INTERVAL);
+            })();
+
+            // =============================================
+            // DEEP LINKS
+            // #glean / #about open their panel; an id inside a panel (e.g.
+            // #growth-design) opens the panel that contains it and scrolls to
+            // it. The old #work link still resolves, to the Onlook panel.
+            // =============================================
+            function panelContaining(el) {
+                var node = el;
+                while (node && node !== document.body) {
+                    if (node.classList && node.classList.contains('acc-panel')) return node;
+                    node = node.parentNode;
+                }
+                return null;
+            }
+
+            function handleHash() {
+                var hash = window.location.hash;
+                if (!hash || hash.length < 2) return;
+
+                var id = hash.substring(1);
+                var aliases = { home: 'panel-home', glean: 'panel-glean', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about' };
+                var direct = document.getElementById(aliases[id] || id) || document.getElementById(id);
+                if (!direct) return;
+
+                var panel = panelContaining(direct);
+                if (!panel || !panel.getAttribute('data-panel')) return;
+
+                openPanel(panel.getAttribute('data-panel'), { scroll: false });
+
+                // Wait for the collapse/expand to settle so the target's
+                // position is final before jumping to it.
+                var scrollTarget = (direct === panel) ? panel : direct;
+                setTimeout(function() {
+                    // The panel row lands in its own slot in the stack; anything
+                    // inside it has to clear that pinned row as well.
+                    var offset = (direct === panel) ? stackedLabelTop(panel) : contentClearance(panel);
+                    var top = scrollTarget.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+                }, prefersReducedMotion() ? 0 : DURATION + 40);
+            }
+
+            setTimeout(handleHash, 200);
+            window.addEventListener('hashchange', function() {
+                setTimeout(handleHash, 20);
+            }, { passive: true });
+
             // =============================================
             // SMART IFRAME MANAGER
             // On mobile: only keeps visible iframes alive.
@@ -1247,7 +1408,6 @@
                             if (!iframe) return;
                             // Only unload if it was loaded
                             if (!iframe.classList.contains('iframe-loaded')) return;
-                            // Save current src to data-src if not already there
                             // (data-src stays intact since we never removed it)
                             iframe.src = 'about:blank';
                             iframe.classList.remove('iframe-loaded');
@@ -1321,11 +1481,10 @@
             } catch (e) {
                 // Catch any errors in the main DOMContentLoaded handler
                 console.warn('DOMContentLoaded error:', e);
-                // Ensure loading overlay is hidden even if errors occur
-                var overlay = document.getElementById('loading-overlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
-                }
+                // The reel hides the shell until it has parked the page. If the
+                // script failed before that, show the page anyway.
+                document.documentElement.classList.remove('intro-armed');
+                document.documentElement.classList.remove('intro-running');
             }
         });
     </script>
