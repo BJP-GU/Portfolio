@@ -2920,15 +2920,14 @@ a.project-info-link {
    MOBILE BREAKPOINT (<768px) - CLEAN SIMPLE DESIGN
    =========================================== */
 @media (max-width: 768px) {
-    /* Prevent horizontal scrolling on mobile */
-    html, body {
-        overflow-x: hidden;
-        max-width: 100%;
-        width: 100%;
-    }
-    
+    /* Horizontal overflow is already guarded by the overflow-x on body above,
+       which the root propagates to the viewport, leaving body itself visible.
+       Repeating it on html stops that propagation and makes body a real scroll
+       container instead, which cancels every position: sticky inside it — the
+       header and the whole pinned accordion stack — and takes the page off the
+       compositor's scrolling path. Widths only here. */
+    html, body,
     .site-wrapper {
-        overflow-x: hidden;
         max-width: 100%;
         width: 100%;
     }
@@ -3072,7 +3071,15 @@ a.project-info-link {
         white-space: nowrap;
     }
     
-    /* Ensure all sections and containers fit within viewport */
+    /* Ensure all sections and containers fit within viewport.
+
+       Sizing only: `section` matches every accordion panel and every case
+       section inside them, so an overflow value here turns each one into its
+       own scroll container. That nests a few dozen scrollers down the page,
+       which is what made touch scrolling stutter — each drag has to hit-test
+       and chain through them — and it degrades the sticky rows above to
+       main-thread updates, so they lag behind the content they are meant to
+       cover. Nothing overflows horizontally at these widths anyway. */
     .main-grid,
     section,
     .my-work-section,
@@ -3082,7 +3089,6 @@ a.project-info-link {
         max-width: 100%;
         width: 100%;
         box-sizing: border-box;
-        overflow-x: hidden;
     }
     
     /* Welcome Section - Mobile */
@@ -3534,6 +3540,12 @@ a.project-info-link {
     /* Resume Section - Mobile */
     .resume-container {
         display: block;
+        /* The desktop rule clips this to contain the four-column grid, which
+           also makes it a scroll container. Stacked to a single column there
+           is nothing left to contain, and a scroller here would wrap the whole
+           About body and stutter under touch. clip keeps the containment
+           without the scroller. */
+        overflow: clip;
     }
     
     .resume-row {

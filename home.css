@@ -40,23 +40,6 @@ body {
     background-color: var(--home-bg);
 }
 
-/* The narrow-screen rules in styles.css guard against horizontal scroll with
-   overflow-x: hidden, which makes each of these a scroll container and so
-   silently cancels every position: sticky inside them — the header, the pinned
-   accordion rows, and the work sidebar. clip suppresses the same horizontal
-   overflow without creating a scroll container. Scoped to styles.css's own
-   768px breakpoint rather than this file's 720px one, so no width is left with
-   the guard applied but the fix missing. */
-@media (max-width: 768px) {
-    body,
-    .site-wrapper,
-    .my-work-section,
-    .resume-section {
-        overflow-x: clip;
-        overflow-y: visible;
-    }
-}
-
 /* The page-grid rules were fixed to the viewport and are no longer used; the
    home canvas draws its own lines and the work section runs without a grid. */
 .site-wrapper::before {
@@ -419,6 +402,13 @@ body {
     --role-fade: 180ms;
     --role-tint: 600ms;
     position: relative;
+    /* The layers below (rules, portrait, dots, credentials) are numbered 1–5
+       for each other's benefit only. Without a stacking context here those
+       numbers are read against the panel's own children instead, and anything
+       above 2 outranks the section's pinned row label — so the portrait and the
+       rules scrolled over the top of it rather than under. Stated as 0 so the
+       whole canvas sits below the label and the numbering stays private. */
+    z-index: 0;
     width: 100%;
     height: calc(700 * var(--u));
     overflow: hidden;
