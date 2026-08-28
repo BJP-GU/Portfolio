@@ -15,7 +15,7 @@
     --site-max: 1082px;
     --site-gutter: 20px;
 
-    --home-bg: #F0EEE9;
+    --home-bg: #FAFAFA;
     --home-accent: #E8441F;
     /* The second half of the role cycle, Figma node 943:4784. */
     --home-accent-ai: #2D01FB;
@@ -178,6 +178,8 @@ body {
 .accordion > .acc-panel:nth-child(5) { --acc-stack: 4; }
 .accordion > .acc-panel:nth-child(6) { --acc-stack: 5; }
 .accordion > .acc-panel:nth-child(7) { --acc-stack: 6; }
+.accordion > .acc-panel:nth-child(8) { --acc-stack: 7; }
+.accordion > .acc-panel:nth-child(9) { --acc-stack: 8; }
 
 /* The row label is a heading for outline purposes only; it carries no styling
    of its own so the button inside defines the row box. */
@@ -220,6 +222,20 @@ body {
 
 .acc-num {
     flex: none;
+}
+
+/* The case study a row opens, named beside the company. Set in sentence case
+   against the row's uppercase so the company still reads as the index entry
+   and the case study as its subject. */
+.acc-case {
+    /* The company name is the index entry and holds its width; the case study
+       is the one part of the row that can give ground, so it is the only
+       shrinkable item and clips rather than pushing the row past its panel. */
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: none;
 }
 
 /* The open affordance, Figma node 949:4944. A 12px plus held against the far

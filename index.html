@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#F0EEE9">
+    <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
     <link rel="stylesheet" href="styles.css">
@@ -168,13 +168,13 @@
             </section>
 
             <!-- ========================================
-                 #2 ABOUT
+                 #2 RESUME
                  ======================================== -->
             <section class="acc-panel" id="panel-about" data-panel="about">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-about" aria-expanded="false" aria-controls="body-about">
                         <span class="acc-num">#2</span>
-                        <span class="acc-label">About</span>
+                        <span class="acc-label">Resume</span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-about" role="region" aria-labelledby="header-about">
@@ -300,27 +300,233 @@
             </section>
 
             <!-- ========================================
-                 #3 GLEAN
+                 #3 GLEAN — Composer redesign
                  ======================================== -->
-            <section class="acc-panel" id="panel-glean" data-panel="glean">
+            <section class="acc-panel" id="panel-glean-composer" data-panel="glean-composer">
                 <h2 class="acc-title">
-                    <button class="acc-header" type="button" id="header-glean" aria-expanded="false" aria-controls="body-glean">
+                    <button class="acc-header" type="button" id="header-glean-composer" aria-expanded="false" aria-controls="body-glean-composer">
                         <span class="acc-num">#3</span>
                         <span class="acc-label">Glean</span>
+                        <span class="acc-case">Composer redesign</span>
                     </button>
                 </h2>
-                <div class="acc-body" id="body-glean" role="region" aria-labelledby="header-glean">
+                <div class="acc-body" id="body-glean-composer" role="region" aria-labelledby="header-glean-composer">
                     <div class="acc-inner">
-                        <section id="glean-work" class="my-work-section">
+                        <section id="glean-composer-work" class="my-work-section">
                             <div class="work-scroll-layout">
                                 <nav class="work-nav-sidebar">
                                     <span class="work-nav-label">_glean</span>
                                 </nav>
 
                                 <main class="work-main-content">
-                                    <div class="panel-placeholder">
-                                        <p class="panel-placeholder-text">Case studies in progress.</p>
-                                    </div>
+                                    <article class="project-case" id="glean-composer">
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">Glean</h1>
+                                                <p class="project-summary-tagline">Enterprise AI platform</p>
+                                            </div>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">I lead the redesign of Glean's composer — the front door to the assistant feature.</p>
+                                                </div>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Executive Stakeholders</span>
+                                                                <span class="project-summary-team-value">Christian Ervin, Emrecan Dogan (Head of Product)</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Head of Design</span>
+                                                                <span class="project-summary-team-value">Christian Ervin</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Designers</span>
+                                                                <span class="project-summary-team-value">Bryce Parsons (me), Ana Fucs, Kenji Kaneko</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">PM &amp; Engineering</span>
+                                                                <span class="project-summary-team-value">Selene Kim (PM), Sonia Gu (Eng), Chinmay Goyal (Eng), Daniel Sun (Eng)</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="project-summary-row project-summary-row--site">
+                                                    <span class="project-summary-label">/ COMPANY SITE</span>
+                                                    <div class="project-summary-site">
+                                                        <span class="project-summary-site-name">Glean</span>
+                                                        <a href="https://www.glean.com" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Case Study Sections -->
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Problem + Context</h2>
+                                            <div class="case-section-content">
+                                                <div class="case-section-image">
+                                                    <img src="Glean/Composer Current State Breakdown.png" alt="Annotated breakdown of Glean's composer in its current state" loading="lazy">
+                                                </div>
+                                                <p class="case-section-caption">An illustrative breakdown of Glean's composer in its current state, surfacing the inconsistencies and shortcomings of the existing system.</p>
+
+                                                <h4>Problem</h4>
+                                                <p>Glean's current composer (is):</p>
+                                                <ol>
+                                                    <li><strong>Inconsistent:</strong> Actions, create docs or images, and create skills, all follow different patterns.</li>
+                                                    <li><strong>Doesn't showcase Glean's affordances:</strong> The composer only shows a small subset of the features and tools of the Assistant.</li>
+                                                    <li><strong>Not scalable:</strong> As we build more functionality into assistant (e.g., creating agents) we need a principled approach to scale.</li>
+                                                </ol>
+
+                                                <h4>Context</h4>
+                                                <p>As building with Assistant becomes more common, it is important that we intentionally design the composer to support creating artifacts and using system capabilities such as skills and agents directly within the composer. And as Glean's feature set grows, we need a composer-system that can scale with future capabilities rather than layering on one-off patterns.</p>
+                                                <br>
+                                                <p>This work proposes improvements to better surface the capabilities of Glean within the composer, nudging users to use more of Glean to tackle their work.</p>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Exploration, Ideation, and Insights</h2>
+                                            <div class="case-section-content">
+                                                <h4>Design Principles</h4>
+                                                <ol>
+                                                    <li><strong>Simplicity &amp; consistency:</strong> Unifying the creation experience for all things.</li>
+                                                    <li><strong>In line creation &amp; referencing UI:</strong> Affordances for creating or referencing appear in line.</li>
+                                                    <li><strong>Mutually exclusive, collectively exhaustive:</strong> All affordances of the composer can be enabled via / or @ shortcuts. Each shortcut menu has discrete functions.</li>
+                                                </ol>
+
+                                                <h4>Early Explorations</h4>
+                                                <p>I began by designing the shortcut menus and their interaction model, as shortcuts encourage us to consider all of the potential affordances we might support the user in taking via the composer.</p>
+                                                <div class="case-section-image-row">
+                                                    <div class="case-section-image">
+                                                        <img src="Glean/Shortcut Exploration 1.png" alt="Exploration 1: / for creation of everything, @ for context, running skills and agents" loading="lazy">
+                                                    </div>
+                                                    <div class="case-section-image">
+                                                        <img src="Glean/Shortcut Exploration 2.png" alt="Exploration 2: / for actions such as create and run, @ for adding context" loading="lazy">
+                                                    </div>
+                                                </div>
+                                                <p class="case-section-caption">Two different shortcut models: #1 "/" to create any artifact via Glean's assistant, "@" to invoke an agent or a skill or add any context, #2 "/" to create an artifact or invoke an agent or skill, "@" to add any context</p>
+
+                                                <h4>Findings</h4>
+                                                <ul>
+                                                    <li>Users preferred exploration #2, since they already invoke skills with "/" and see agents as related to skills, so they expected both to live in the same place.</li>
+                                                    <li>Users struggled to understand the difference between agents and skills</li>
+                                                    <li>While "Interactive" artifact adoption is high, users find the artifact name unclear</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Results</h2>
+                                            <div class="case-section-content">
+                                                <h4>Solution Overview</h4>
+                                                <p>This work includes an overhaul of the plus menu, "/" shortcut, and "@" mention shortcut. We also introduce clearer UI components for shortcut-based interactions in the composer, along with a positional framework for organizing information within the composer.</p>
+
+                                                <h4>Solution TL;DR</h4>
+                                                <p>We support both regular users who access the "+" menu as well as power users who tend to rely on keyboard shortcuts.</p>
+                                                <ul>
+                                                    <li><strong>@-shortcut-menu</strong>
+                                                        <ul>
+                                                            <li>Used for referencing (tagging) UGC objects and organizational objects.</li>
+                                                            <li><strong>Maintains:</strong> Tagging documents + people (existing functionality).</li>
+                                                            <li><strong>New functionality:</strong> Ability to tag projects, artifacts, chats, and uploaded files.</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><strong>/shortcut-menu</strong>
+                                                        <ul>
+                                                            <li>Used for quickly running objects (skills, agents), using connectors, and creating UGC.</li>
+                                                            <li><strong>Maintains:</strong> Using a skill.</li>
+                                                            <li><strong>New functionality:</strong>
+                                                                <ul>
+                                                                    <li>Use an agent</li>
+                                                                    <li>Create agent, skill, any artifact, quick actions to composer settings like changing models or reasoning effort</li>
+                                                                    <li>Use a connector</li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><strong>+ Menu:</strong> Representative of all things in the @ and / shortcut menus.</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    </article>
+                                </main>
+
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 #3 GLEAN — Agents in assistant (automations)
+                 ======================================== -->
+            <section class="acc-panel" id="panel-glean-agents" data-panel="glean-agents">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-glean-agents" aria-expanded="false" aria-controls="body-glean-agents">
+                        <span class="acc-num">#3</span>
+                        <span class="acc-label">Glean</span>
+                        <span class="acc-case">Agents in assistant (automations)</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-glean-agents" role="region" aria-labelledby="header-glean-agents">
+                    <div class="acc-inner">
+                        <section id="glean-agents-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar">
+                                    <span class="work-nav-label">_glean</span>
+                                </nav>
+
+                                <main class="work-main-content">
+                                    <article class="project-case" id="glean-agents">
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">Glean</h1>
+                                                <p class="project-summary-tagline">Enterprise AI platform</p>
+                                            </div>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">Contributed to the design &amp; development of Glean's new Agents in Assistant feature.</p>
+                                                </div>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Executive Stakeholders</span>
+                                                                <span class="project-summary-team-value">Christian Ervin, Emrecan Dogan (Head of Product)</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Head of Design</span>
+                                                                <span class="project-summary-team-value">Christian Ervin</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Designers</span>
+                                                                <span class="project-summary-team-value">Bryce Parsons (me), Ana Fucs, Kenji Kaneko</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">PM &amp; Engineering</span>
+                                                                <span class="project-summary-team-value">Selene Kim (PM), Sonia Gu (Eng), Chinmay Goyal (Eng), Daniel Sun (Eng)</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="project-summary-row project-summary-row--site">
+                                                    <span class="project-summary-label">/ COMPANY SITE</span>
+                                                    <div class="project-summary-site">
+                                                        <span class="project-summary-site-name">Glean</span>
+                                                        <a href="https://www.glean.com" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-placeholder">
+                                            <p class="panel-placeholder-text">Case study sections in progress.</p>
+                                        </div>
+                                    </article>
                                 </main>
 
                                 <div class="work-right-spacer"></div>
@@ -360,48 +566,34 @@
                                         <!-- Project Summary Section -->
                                         <div class="project-summary">
                                             <div class="project-summary-header">
-                                                <h1 class="project-summary-title">AI Agent Context Feature</h1>
-                                                <div class="project-summary-subtitle-row">
-                                                    <span class="project-summary-subtitle">Onlook (YC W25)</span>
-                                                    <span class="project-summary-dates">July - August 2025</span>
-                                                </div>
+                                                <h1 class="project-summary-title">Onlook</h1>
+                                                <p class="project-summary-tagline">AI-powered visual-first IDE for prototyping</p>
                                             </div>
-
-                                            <!-- Project Info Grid -->
-                                            <div class="project-info-grid">
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ about onlook</span>
-                                                    <p class="project-info-content">Onlook is building a AI powered visual-first IDE for prototyping—similar to Lovable, Magic Patterns, and Figma Make.</p>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">Designed and shipped a context-adding feature in the prompt window enabling users to inject contextual information into AI prompts.</p>
                                                 </div>
-                                                <div class="project-info-section project-info-divider-row">
-                                                    <span class="project-info-label">/ overview</span>
-                                                    <p class="project-info-content project-overview-text">Designed and shipped a context-adding feature in the prompt window enabling users to inject contextual information into AI prompts.</p>
-                                                </div>
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ project info</span>
-                                                    <div class="project-info-subsection">
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">role</span>
-                                                            <span class="project-info-sub-content">Lead Product Designer & Design Engineer</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">collaborators</span>
-                                                            <span class="project-info-sub-content">Primary: Daniel Farrell (CEO), Secondary: Kiet Ho (CTO)</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">skills</span>
-                                                            <span class="project-info-sub-content">Prototyping, Prompt Engineering, UX Research, Competitor Research</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">tools</span>
-                                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma</span>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Executive Stakeholders</span>
+                                                                <span class="project-summary-team-value">Daniel Farrell (CEO), Kiet Ho (CTO)</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Design</span>
+                                                                <span class="project-summary-team-value">Bryce Parsons (me), Daniel Farrell (CEO)</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ website</span>
-                                                    <div class="project-info-content">
-                                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                <div class="project-summary-row project-summary-row--site">
+                                                    <span class="project-summary-label">/ COMPANY SITE</span>
+                                                    <div class="project-summary-site">
+                                                        <span class="project-summary-site-name">Onlook (YC W25)</span>
+                                                        <a href="https://www.onlook.com" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -509,40 +701,34 @@
                                         <!-- Project Summary Section -->
                                         <div class="project-summary">
                                             <div class="project-summary-header">
-                                                <h1 class="project-summary-title">Growth Design</h1>
-                                                <div class="project-summary-subtitle-row">
-                                                    <span class="project-summary-subtitle">Onlook (YC W25)</span>
-                                                    <span class="project-summary-dates">July - August 2025</span>
-                                                </div>
+                                                <h1 class="project-summary-title">Onlook</h1>
+                                                <p class="project-summary-tagline">AI-powered visual-first IDE for prototyping</p>
                                             </div>
-
-                                            <!-- Project Info Grid -->
-                                            <div class="project-info-grid">
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ overview</span>
-                                                    <p class="project-info-content project-overview-text">Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">Led end-to-end research, design, and prototyping to increase new-user retention through a revamped onboarding flow, streamlined publishing, and collaborative sharing features.</p>
                                                 </div>
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ project info</span>
-                                                    <div class="project-info-subsection">
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">role</span>
-                                                            <span class="project-info-sub-content">Lead Product Designer & Design Engineer</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">skills</span>
-                                                            <span class="project-info-sub-content">UX Research, Competitor Research, Prototyping</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">tools</span>
-                                                            <span class="project-info-sub-content">Cursor, Codex, Onlook, Figma.</span>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Executive Stakeholders</span>
+                                                                <span class="project-summary-team-value">Daniel Farrell (CEO), Kiet Ho (CTO)</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Design</span>
+                                                                <span class="project-summary-team-value">Bryce Parsons (me), Daniel Farrell (CEO)</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ website</span>
-                                                    <div class="project-info-content">
-                                                        <a href="https://www.onlook.com" target="_blank" class="project-info-link">Onlook (YC W25) <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                <div class="project-summary-row project-summary-row--site">
+                                                    <span class="project-summary-label">/ COMPANY SITE</span>
+                                                    <div class="project-summary-site">
+                                                        <span class="project-summary-site-name">Onlook (YC W25)</span>
+                                                        <a href="https://www.onlook.com" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -708,43 +894,33 @@
                                         <div class="project-summary">
                                             <div class="project-summary-header">
                                                 <h1 class="project-summary-title">Archetype</h1>
-                                                <div class="project-summary-subtitle-row">
-                                                    <span class="project-summary-subtitle">Simulated User Testing</span>
-                                                    <span class="project-summary-dates">September 2025 - Present</span>
-                                                </div>
+                                                <p class="project-summary-tagline">Simulated user testing with generative agents</p>
                                             </div>
-
-                                            <!-- Project Info Grid -->
-                                            <div class="project-info-grid">
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ overview</span>
-                                                    <p class="project-info-content project-overview-text">Building a tool for product teams to test software with their target customers using generative agents</p>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">Building a tool for product teams to test software with their target customers using generative agents.</p>
                                                 </div>
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ project info</span>
-                                                    <div class="project-info-subsection">
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">role</span>
-                                                            <span class="project-info-sub-content">Design & Product Lead</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">collaborators</span>
-                                                            <span class="project-info-sub-content">Hanyang Gu (technical-lead)</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">skills</span>
-                                                            <span class="project-info-sub-content">Product Design, Prototyping, Front-end Development, Product Strategy, GTM Strategy, User Research.</span>
-                                                        </div>
-                                                        <div class="project-info-subitem">
-                                                            <span class="project-info-sub-label">tools</span>
-                                                            <span class="project-info-sub-content">Cursor, Codex, Claude Code, Figma.</span>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Role</span>
+                                                                <span class="project-summary-team-value">Design &amp; Product Lead</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Technical Lead</span>
+                                                                <span class="project-summary-team-value">Hanyang Gu</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="project-info-section">
-                                                    <span class="project-info-label">/ website</span>
-                                                    <div class="project-info-content">
-                                                        <a href="https://www.syntheticarchetype.com/" target="_blank" class="project-info-link">Synthetic Archetype <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                <div class="project-summary-row project-summary-row--site">
+                                                    <span class="project-summary-label">/ COMPANY SITE</span>
+                                                    <div class="project-summary-site">
+                                                        <span class="project-summary-site-name">Synthetic Archetype</span>
+                                                        <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1326,7 +1502,7 @@
                 if (!hash || hash.length < 2) return;
 
                 var id = hash.substring(1);
-                var aliases = { home: 'panel-home', glean: 'panel-glean', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about' };
+                var aliases = { home: 'panel-home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about' };
                 var direct = document.getElementById(aliases[id] || id) || document.getElementById(id);
                 if (!direct) return;
 
