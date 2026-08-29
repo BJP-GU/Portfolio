@@ -2735,6 +2735,20 @@ nav.main-grid .grid-cell {
     box-sizing: border-box;
 }
 
+.case-section-content .glean-menu__icon,
+.case-section-content .glean-menu__avatar {
+    width: 16px !important;
+    max-width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    border-radius: 0;
+    object-fit: contain;
+}
+
+.case-section-content .glean-menu__avatar {
+    border-radius: 100px;
+}
+
 .case-section-content iframe {
     width: 100% !important;
     max-width: 100% !important;
@@ -2816,6 +2830,557 @@ nav.main-grid .grid-cell {
 
 .case-section-caption em {
     font-style: normal;
+}
+
+/* Glean composer — inline chip illustration (Figma 28:20446) */
+.glean-composer-fit {
+    --glean-composer-design-width: 750px;
+    --glean-composer-design-height: 56px;
+    --glean-composer-scale: min(1, calc(100cqw / var(--glean-composer-design-width)));
+    container-type: inline-size;
+    width: 100%;
+    height: calc(var(--glean-composer-design-height) * var(--glean-composer-scale));
+    margin: var(--space-md) 0;
+    overflow: hidden;
+}
+
+.glean-composer-fit__inner {
+    width: var(--glean-composer-design-width);
+    transform: scale(var(--glean-composer-scale));
+    transform-origin: top left;
+}
+
+.glean-composer {
+    --glean-composer-font: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 16px;
+    width: var(--glean-composer-design-width);
+    height: var(--glean-composer-design-height);
+    padding: 11px 12px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 28px;
+    color: #1b1b1b;
+    font-family: var(--glean-composer-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+}
+
+.glean-composer__left,
+.glean-composer__right {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 4px;
+    min-width: 0;
+}
+
+.glean-composer__left {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.glean-composer__right {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+.glean-composer__icon-btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 24px;
+}
+
+.glean-composer__field {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 34px;
+    margin: 0;
+    padding: 0;
+    font-family: var(--glean-composer-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.125px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.glean-composer__chip {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+    margin-right: 4px;
+    padding: 0 6px;
+    flex-shrink: 0;
+    background: #f6f6f6;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+}
+
+.glean-composer__chip-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.glean-composer__chip-label {
+    font-family: var(--glean-composer-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.125px;
+    color: #1b1b1b;
+    white-space: nowrap;
+}
+
+.glean-composer__prompt {
+    font-family: var(--glean-composer-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.125px;
+    color: #000000;
+    white-space: nowrap;
+}
+
+.glean-composer__ask {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 8px;
+    width: 103px;
+    height: 34px;
+    padding: 7px 16px;
+    background: #1b1b1b;
+    border: 1px solid #1b1b1b;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.glean-composer__ask-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.glean-composer__ask-label {
+    font-family: var(--glean-composer-font);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.glean-composer__svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+/* Glean composer with + menu open (Figma 28:20186) */
+.glean-composer-open-fit {
+    --glean-composer-open-design-width: 750px;
+    --glean-composer-open-design-height: 552px;
+    --glean-composer-open-scale: min(1, calc(100cqw / var(--glean-composer-open-design-width)));
+    container-type: inline-size;
+    width: 100%;
+    height: calc(var(--glean-composer-open-design-height) * var(--glean-composer-open-scale));
+    margin: var(--space-md) 0;
+    overflow: hidden;
+}
+
+.glean-composer-open-fit__inner {
+    width: var(--glean-composer-open-design-width);
+    transform: scale(var(--glean-composer-open-scale));
+    transform-origin: top left;
+}
+
+.glean-composer-open {
+    --glean-composer-open-font: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: relative;
+    width: var(--glean-composer-open-design-width);
+    height: var(--glean-composer-open-design-height);
+}
+
+.glean-composer-open__composer {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 750px;
+    height: 56px;
+    padding: 12px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 28px;
+    font-family: var(--glean-composer-open-font);
+}
+
+.glean-composer-open__left,
+.glean-composer-open__right {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 4px;
+    min-width: 0;
+}
+
+.glean-composer-open__left {
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.glean-composer-open__right {
+    flex: 0 0 auto;
+}
+
+.glean-composer-open__plus-btn,
+.glean-composer-open__icon-btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    padding: 8px;
+    border-radius: 24px;
+}
+
+.glean-composer-open__plus-btn {
+    background: #e8e8e8;
+}
+
+.glean-composer-open__placeholder {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    font-family: var(--glean-composer-open-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: #1b1b1b;
+    opacity: 0.5;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.glean-composer-open__voice-btn {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    padding: 4.923px 12.308px;
+    background: #1b1b1b;
+    border-radius: 49.231px;
+}
+
+.glean-composer-open__svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.glean-composer-open__svg--plus {
+    width: 11.5px;
+    height: 11.5px;
+}
+
+.glean-composer-open__svg--sliders {
+    width: 13.5px;
+    height: 15px;
+}
+
+.glean-composer-open__svg--voice {
+    width: 17.231px;
+    height: 15.509px;
+}
+
+.glean-composer-open__menu {
+    position: absolute;
+    top: 60px;
+    left: 12px;
+    width: 330px;
+    height: 486px;
+}
+
+.glean-menu--plus-open {
+    height: 486px;
+}
+
+.glean-composer-open .glean-menu__item {
+    align-items: flex-start;
+}
+
+.glean-composer-open .glean-menu__item--chevron {
+    align-items: flex-start;
+}
+
+.glean-composer-open .glean-menu__leading {
+    align-items: flex-start;
+    height: 20px;
+}
+
+.glean-composer-open .glean-menu__leading .glean-menu__icon {
+    margin-top: 2px;
+}
+
+.glean-composer-open .glean-menu__item--chevron-offset > .glean-menu__chevron {
+    margin-top: 2px;
+}
+
+.glean-menu__key--plus {
+    padding: 4px 6px;
+}
+
+/* Glean composer menus — +, /, @ (Figma 28:19772, 28:19849, 28:20152) */
+.glean-menus-fit {
+    --glean-menus-design-width: 1022px;
+    --glean-menus-design-height: 700px;
+    --glean-menus-scale: min(1, calc(100cqw / var(--glean-menus-design-width)));
+    container-type: inline-size;
+    width: 100%;
+    margin: var(--space-md) 0;
+}
+
+.glean-menus-fit__menus {
+    width: 100%;
+    height: calc(var(--glean-menus-design-height) * var(--glean-menus-scale));
+    overflow: hidden;
+}
+
+.glean-menus-fit__inner {
+    width: var(--glean-menus-design-width);
+    transform: scale(var(--glean-menus-scale));
+    transform-origin: top left;
+}
+
+.glean-menus-row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    gap: 16px;
+    width: var(--glean-menus-design-width);
+}
+
+.glean-menus-captions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: calc(16px * var(--glean-menus-scale));
+    width: 100%;
+}
+
+.glean-menu-caption {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: calc(330px * var(--glean-menus-scale));
+    margin-top: var(--space-sm);
+    margin-bottom: 0;
+    padding-inline: var(--space-sm);
+}
+
+.glean-menu {
+    --glean-menu-font: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 330px;
+    padding: 8px;
+    background: #fdfcfc;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    font-family: var(--glean-menu-font);
+    overflow: hidden;
+}
+
+.glean-menu--plus {
+    height: 636px;
+}
+
+.glean-menu--slash {
+    height: 700px;
+}
+
+.glean-menu--at {
+    height: 592px;
+}
+
+.glean-menu__item {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 36px;
+    padding: 8px 16px;
+}
+
+.glean-menu__item--chevron {
+    justify-content: space-between;
+}
+
+.glean-menu__item--chevron .glean-menu__leading {
+    flex: 1;
+    min-width: 0;
+    padding-right: 16px;
+}
+
+.glean-menu__item--chevron > .glean-menu__chevron {
+    flex-shrink: 0;
+}
+
+.glean-menu__item--header {
+    padding: 0;
+}
+
+.glean-menu__header-area {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 36px;
+    padding: 8px 16px;
+}
+
+.glean-menu__leading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.glean-menu__icon,
+.glean-menu__avatar {
+    display: block;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.glean-menu__chevron {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.glean-menu__chevron-svg {
+    display: block;
+    width: 5.5px;
+    height: 9.5px;
+    flex-shrink: 0;
+}
+
+.glean-menu__avatar {
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+.glean-menu__label {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #1b1b1b;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.glean-menu__header-text {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #727272;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.glean-menu__shortcuts {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.glean-menu__key {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 4px;
+    background: #fdfcfc;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 12px;
+    color: #727272;
+    white-space: nowrap;
+}
+
+.glean-menu__key--wide {
+    padding: 4px 8px;
+}
+
+.glean-menu__divider {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 8px;
+    padding: 4px 0;
+    opacity: 0.5;
+}
+
+.glean-menu__divider::before {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: #e5e5e5;
 }
 
 /* Problem Space Stats Grid */
