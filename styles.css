@@ -95,6 +95,10 @@ html {
     scroll-behavior: smooth;
 }
 
+html.nav-scrolling {
+    scroll-behavior: auto !important;
+}
+
 body {
     font-family: var(--font-body);
     font-weight: var(--font-normal);
@@ -751,7 +755,7 @@ nav.main-grid .grid-cell {
     }
     
     .project-summary {
-        --summary-label-col: clamp(100px, 18vw, 160px);
+        --summary-label-col: min(8.5rem, 34%);
     }
 
     /* Footer - Tablet */
@@ -2443,6 +2447,54 @@ nav.main-grid .grid-cell {
     display: block;
 }
 
+.work-nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vw, 12px);
+    width: 100%;
+}
+
+.work-nav-link,
+.work-nav-link:link,
+.work-nav-link:visited,
+.work-nav-link:hover,
+.work-nav-link:active,
+.work-nav-link:focus-visible {
+    font-family: var(--font-body);
+    font-size: clamp(10px, 0.8vw + 6px, 14px);
+    font-weight: var(--font-bold);
+    line-height: 1.35;
+    text-decoration: none;
+    display: block;
+    min-width: 0;
+    overflow-wrap: break-word;
+    transition: color 0.2s ease;
+}
+
+.work-nav-link,
+.work-nav-link:link,
+.work-nav-link:visited,
+.work-nav-link:hover,
+.work-nav-link:active {
+    color: var(--body-text-muted);
+}
+
+.work-nav-link:focus-visible {
+    outline: 1px solid var(--primary-text);
+    outline-offset: 2px;
+}
+
+.work-nav-link.is-active,
+.work-nav-link.is-active:link,
+.work-nav-link.is-active:visited,
+.work-nav-link.is-active:hover,
+.work-nav-link.is-active:active {
+    color: var(--body-text);
+}
+
 /* Main content area for projects */
 .work-main-content {
     grid-column: 2 / 4;
@@ -2479,7 +2531,9 @@ nav.main-grid .grid-cell {
 
 /* Project Summary (Dimitri / Figma overview template) */
 .project-summary {
-    --summary-label-col: clamp(120px, 22vw, 217px);
+    container-type: inline-size;
+    container-name: project-summary;
+    --summary-label-col: min(9rem, 34%);
     --summary-row-gap: clamp(16px, 4vw, 40px);
     --summary-border: rgba(25, 25, 25, 0.15);
     margin-bottom: var(--space-xl);
@@ -2524,7 +2578,9 @@ nav.main-grid .grid-cell {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--case-text-label);
-    white-space: nowrap;
+    line-height: 1.45;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .project-summary-row {
@@ -2572,10 +2628,10 @@ nav.main-grid .grid-cell {
 }
 
 .project-summary-team-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: clamp(16px, 3vw, 32px);
+    display: grid;
+    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(12px, 3vw, 32px);
     padding: 12px 0;
     border-top: 1px solid var(--summary-border);
 }
@@ -2592,7 +2648,9 @@ nav.main-grid .grid-cell {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--case-text-label);
-    flex-shrink: 0;
+    line-height: 1.45;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .project-summary-team-value {
@@ -2641,6 +2699,44 @@ nav.main-grid .grid-cell {
     opacity: 0.7;
 }
 
+/* Stack summary rows when the case column is too narrow for a label + body pair. */
+@container project-summary (max-width: 34rem) {
+    .project-summary {
+        --summary-row-gap: 8px;
+    }
+
+    .project-summary-row,
+    .project-summary-team-grid {
+        grid-template-columns: 1fr;
+        padding-inline: 0;
+    }
+
+    .project-summary-team-grid > .project-summary-label {
+        grid-row: auto;
+        margin-bottom: 4px;
+    }
+
+    .project-summary-team-row {
+        grid-template-columns: 1fr;
+    }
+
+    .project-summary-team-value {
+        text-align: left;
+    }
+
+    .project-summary-site {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+    }
+}
+
+@container project-summary (min-width: 34rem) {
+    .project-summary-team-value {
+        text-align: right;
+    }
+}
+
 .external-link-icon {
     display: inline-flex;
     align-items: center;
@@ -2661,6 +2757,7 @@ nav.main-grid .grid-cell {
 .case-section {
     margin-top: var(--space-xl);
     padding-top: var(--space-lg);
+    scroll-margin-top: 0;
 }
 
 .case-section:not(:first-child) {
@@ -4222,8 +4319,7 @@ nav.main-grid .grid-cell {
     }
 
     .project-summary-team-row {
-        flex-direction: column;
-        align-items: flex-start;
+        grid-template-columns: 1fr;
         gap: 4px;
         padding: var(--space-sm) 0;
     }

@@ -45,11 +45,10 @@
             if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'manual';
             }
-            // Only scroll to top if there's no hash fragment
-            // Hash fragments should be handled after page load
-            if (!window.location.hash) {
-                window.scrollTo(0, 0);
-            }
+            // Only scroll to top on load; hash targets are handled after the
+            // accordion is ready so the browser never gets a chance to jump
+            // twice (native hash scroll, then our offset correction).
+            window.scrollTo(0, 0);
         } catch (e) {
             // Fallback if scrollRestoration is not supported
             console.warn('scrollRestoration not supported:', e);
@@ -137,9 +136,9 @@
                 </h2>
                 <div class="acc-body" id="body-home" role="region" aria-labelledby="header-home">
                     <div class="acc-inner home-stage">
-                        <div class="home-canvas" data-role="ux">
+                        <div class="home-canvas">
                             <h1 class="home-name">Bryce Parsons</h1>
-                            <p class="home-role"><span class="home-role-accent">UX</span> Designer</p>
+                            <p class="home-role"><span class="home-role-accent">Product</span><br>Designer</p>
 
                             <span class="home-vrule home-vrule--a" aria-hidden="true"></span>
                             <span class="home-vrule home-vrule--b" aria-hidden="true"></span>
@@ -314,9 +313,7 @@
                     <div class="acc-inner">
                         <section id="glean-composer-work" class="my-work-section">
                             <div class="work-scroll-layout">
-                                <nav class="work-nav-sidebar">
-                                    <span class="work-nav-label">_glean</span>
-                                </nav>
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
 
                                 <main class="work-main-content">
                                     <article class="project-case" id="glean-composer">
@@ -600,12 +597,12 @@
             </section>
 
             <!-- ========================================
-                 #3 GLEAN — Agents in assistant (automations)
+                 #4 GLEAN — Agents in assistant (automations)
                  ======================================== -->
             <section class="acc-panel" id="panel-glean-agents" data-panel="glean-agents">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-glean-agents" aria-expanded="false" aria-controls="body-glean-agents">
-                        <span class="acc-num">#3</span>
+                        <span class="acc-num">#4</span>
                         <span class="acc-label">Glean</span>
                         <span class="acc-case">Agents in assistant (automations)</span>
                     </button>
@@ -614,9 +611,7 @@
                     <div class="acc-inner">
                         <section id="glean-agents-work" class="my-work-section">
                             <div class="work-scroll-layout">
-                                <nav class="work-nav-sidebar">
-                                    <span class="work-nav-label">_glean</span>
-                                </nav>
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
 
                                 <main class="work-main-content">
                                     <article class="project-case" id="glean-agents">
@@ -676,31 +671,23 @@
             </section>
 
             <!-- ========================================
-                 #4 ONLOOK (YC)
+                 #5 ONLOOK (YC) — AI agent context feature
                  ======================================== -->
             <section class="acc-panel" id="panel-onlook" data-panel="onlook">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-onlook" aria-expanded="false" aria-controls="body-onlook">
-                        <span class="acc-num">#4</span>
+                        <span class="acc-num">#5</span>
                         <span class="acc-label">Onlook (YC)</span>
+                        <span class="acc-case">AI agent context feature</span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-onlook" role="region" aria-labelledby="header-onlook">
                     <div class="acc-inner">
-                        <section id="my-work" class="my-work-section">
-                            <!-- Long Scroll Portfolio Layout -->
-                            <div class="work-scroll-layout" id="work-scroll-layout">
-                                <!-- Sticky Left Sidebar Label -->
-                                <nav class="work-nav-sidebar">
-                                    <span class="work-nav-label">_onlook</span>
-                                </nav>
+                        <section id="onlook-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
 
-                                <!-- Main Content Area with Projects -->
                                 <main class="work-main-content">
-
-                                    <!-- ========================================
-                                         PROJECT 01: AI AGENT CONTEXT FEATURE
-                                         ======================================== -->
                                     <article class="project-case" id="onlook">
                                         <!-- Project Summary Section -->
                                         <div class="project-summary">
@@ -832,10 +819,33 @@
                                             </div>
                                         </section>
                                     </article>
+                                </main>
 
-                                    <!-- ========================================
-                                         PROJECT 02: GROWTH DESIGN
-                                         ======================================== -->
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 #6 ONLOOK (YC) — Growth design
+                 ======================================== -->
+            <section class="acc-panel" id="panel-growth-design" data-panel="growth-design">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-growth-design" aria-expanded="false" aria-controls="body-growth-design">
+                        <span class="acc-num">#6</span>
+                        <span class="acc-label">Onlook (YC)</span>
+                        <span class="acc-case">Growth design</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-growth-design" role="region" aria-labelledby="header-growth-design">
+                    <div class="acc-inner">
+                        <section id="growth-design-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
+
+                                <main class="work-main-content">
                                     <article class="project-case" id="growth-design">
                                         <!-- Project Summary Section -->
                                         <div class="project-summary">
@@ -996,10 +1006,8 @@
                                             </div>
                                         </section>
                                     </article>
-
                                 </main>
 
-                                <!-- Right Spacer Column -->
                                 <div class="work-right-spacer"></div>
                             </div>
                         </section>
@@ -1009,12 +1017,12 @@
             </section>
 
             <!-- ========================================
-                 #5 ARCHETYPE
+                 #7 ARCHETYPE
                  ======================================== -->
             <section class="acc-panel" id="panel-archetype" data-panel="archetype">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-archetype" aria-expanded="false" aria-controls="body-archetype">
-                        <span class="acc-num">#5</span>
+                        <span class="acc-num">#7</span>
                         <span class="acc-label">Archetype</span>
                     </button>
                 </h2>
@@ -1022,9 +1030,7 @@
                     <div class="acc-inner">
                         <section id="archetype-work" class="my-work-section">
                             <div class="work-scroll-layout">
-                                <nav class="work-nav-sidebar">
-                                    <span class="work-nav-label">_archetype</span>
-                                </nav>
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
 
                                 <main class="work-main-content">
 
@@ -1165,16 +1171,16 @@
             </section>
 
             <!-- ========================================
-                 #6–#7 RESERVED
+                 #8–#9 RESERVED
                  ======================================== -->
             <section class="acc-panel" data-reserved>
                 <h2 class="acc-title">
-                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#6</span><span class="acc-label">???</span></span>
+                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#8</span><span class="acc-label">???</span></span>
                 </h2>
             </section>
             <section class="acc-panel" data-reserved>
                 <h2 class="acc-title">
-                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#7</span><span class="acc-label">???</span></span>
+                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#9</span><span class="acc-label">???</span></span>
                 </h2>
             </section>
         </div>
@@ -1235,6 +1241,7 @@
             function settle(body, open) {
                 clearTimeout(body._settleTimer);
                 body._settleTimer = setTimeout(function() {
+                    var panel = body.closest('.acc-panel');
                     if (open) {
                         // Hand height back to the content so the panel keeps
                         // growing as lazy iframes and images resolve, and drop
@@ -1245,6 +1252,8 @@
                         body.style.height = '';
                         body.style.overflow = '';
                     }
+                    if (panel) panel.classList.remove('is-expanding');
+                    scheduleWorkNavUpdate();
                 }, DURATION + 20);
             }
 
@@ -1254,11 +1263,13 @@
                 if (!body || panel.classList.contains('is-open')) return;
 
                 panel.classList.add('is-open');
+                panel.classList.add('is-expanding');
                 if (header) header.setAttribute('aria-expanded', 'true');
 
                 if (prefersReducedMotion()) {
                     body.style.height = 'auto';
                     body.style.overflow = '';
+                    panel.classList.remove('is-expanding');
                     return;
                 }
 
@@ -1385,6 +1396,15 @@
                 });
             }
 
+            function scrollPageInstant(top) {
+                var docEl = document.documentElement;
+                docEl.classList.add('nav-scrolling');
+                window.scrollTo({ top: top, behavior: 'auto' });
+                requestAnimationFrame(function() {
+                    docEl.classList.remove('nav-scrolling');
+                });
+            }
+
             function openPanel(name, options) {
                 var opts = options || {};
                 var target = null;
@@ -1400,11 +1420,33 @@
                 panels.forEach(function(panel) {
                     if (panel !== target) collapse(panel);
                 });
+
+                if (opts.scroll !== false) {
+                    // Instantly sit on the final stack slot, then let the body
+                    // grow down from there. Scrolling after the expand was what
+                    // painted the case study low and snapped it up.
+                    scrollPageInstant(landing);
+                }
+
                 expand(target);
 
-                if (opts.scroll !== false) scrollPage(landing);
+                if (opts.scroll !== false) scheduleWorkNavUpdate();
 
                 return target;
+            }
+
+            function closePanel(panel) {
+                if (!panel || !panel.classList.contains('is-open')) return;
+                var landing = landingScroll(panel);
+                collapse(panel);
+                if (landing < window.pageYOffset) scrollPage(landing);
+            }
+
+            function getOpenPanel() {
+                for (var i = 0; i < panels.length; i++) {
+                    if (panels[i].classList.contains('is-open')) return panels[i];
+                }
+                return null;
             }
 
             panels.forEach(function(panel) {
@@ -1412,13 +1454,30 @@
                 if (!header) return;
                 header.addEventListener('click', function() {
                     if (panel.classList.contains('is-open')) {
-                        var landing = landingScroll(panel);
-                        collapse(panel);
-                        if (landing < window.pageYOffset) scrollPage(landing);
+                        closePanel(panel);
                     } else {
+                        if (window.location.hash && history.replaceState) {
+                            history.replaceState(null, '', window.location.pathname + window.location.search);
+                        }
                         openPanel(panel.getAttribute('data-panel'));
                     }
                 });
+            });
+
+            // Clicking anywhere outside the open section collapses it. Row headers
+            // and the logo keep their own handlers so they can still switch panels
+            // or return to Home.
+            document.addEventListener('click', function(e) {
+                if (!accordion || accordion.classList.contains('is-intro')) return;
+                if (document.documentElement.classList.contains('intro-running')) return;
+
+                var open = getOpenPanel();
+                if (!open) return;
+                if (open.contains(e.target)) return;
+                if (e.target.closest('.acc-panel[data-panel] .acc-header')) return;
+                if (e.target.closest('#home-logo')) return;
+
+                closePanel(open);
             });
 
             // The logo returns to the top of the stack with Home open.
@@ -1437,7 +1496,7 @@
             // of the stack up to #1, and #1 then opens. The rows that make the
             // run long enough are filler: they exist only for the length of the
             // animation and are gone before the page is handed to the visitor,
-            // so the index reads as #1–#7 again the moment it settles.
+            // so the index reads as #1–#9 again the moment it settles.
             // =============================================
             (function() {
                 var docEl = document.documentElement;
@@ -1586,42 +1645,6 @@
             // recalculated on resize; only mid-animation panels would be stale.
 
             // =============================================
-            // ROLE CYCLE
-            // The headline alternates UX / AI. The canvas carries the current
-            // role and the stylesheet paints both the accent word and the dot
-            // grid from it, so the word and the dots turn together.
-            // =============================================
-            (function() {
-                var canvas = document.querySelector('.home-canvas');
-                var accent = canvas ? canvas.querySelector('.home-role-accent') : null;
-                if (!canvas || !accent) return;
-
-                var ROLES = ['ux', 'ai'];
-                var INTERVAL = 5000;
-                // Long enough to clear the accent word's own fade-out.
-                var TROUGH = 200;
-                var index = 0;
-
-                function advance() {
-                    // Text that rewrites itself is motion, so a visitor who has
-                    // asked for less of it keeps whichever role is showing. A
-                    // background tab would only queue swaps nobody sees.
-                    if (prefersReducedMotion() || document.hidden) return;
-
-                    index = (index + 1) % ROLES.length;
-                    canvas.classList.add('is-role-swapping');
-
-                    setTimeout(function() {
-                        accent.textContent = ROLES[index].toUpperCase();
-                        canvas.setAttribute('data-role', ROLES[index]);
-                        canvas.classList.remove('is-role-swapping');
-                    }, TROUGH);
-                }
-
-                setInterval(advance, INTERVAL);
-            })();
-
-            // =============================================
             // DEEP LINKS
             // #glean / #about open their panel; an id inside a panel (e.g.
             // #growth-design) opens the panel that contains it and scrolls to
@@ -1636,36 +1659,224 @@
                 return null;
             }
 
-            function handleHash() {
-                var hash = window.location.hash;
-                if (!hash || hash.length < 2) return;
+            function caseStudyOverview(panel) {
+                return panel.querySelector('.project-case .project-summary')
+                    || panel.querySelector('.project-case');
+            }
 
-                var id = hash.substring(1);
-                var aliases = { home: 'panel-home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about' };
+            function caseSectionScrollTarget(el) {
+                if (el && el.classList && el.classList.contains('case-section')) {
+                    var title = el.querySelector('.case-section-title');
+                    if (title) return title;
+                }
+                return el;
+            }
+
+            function scrollToInPanel(el, panel, immediate, smooth) {
+                var target = caseSectionScrollTarget(el);
+                var isPanel = el === panel || (el.classList && el.classList.contains('acc-panel'));
+                var offset = isPanel ? stackedLabelTop(panel) : contentClearance(panel);
+                var docEl = document.documentElement;
+                var behavior = (smooth && !prefersReducedMotion()) ? 'smooth' : 'auto';
+
+                function performScroll() {
+                    var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    if (behavior === 'auto') {
+                        docEl.classList.add('nav-scrolling');
+                    }
+                    window.scrollTo({ top: Math.max(0, top), behavior: behavior });
+                    if (behavior === 'auto') {
+                        requestAnimationFrame(function() {
+                            docEl.classList.remove('nav-scrolling');
+                        });
+                    }
+                }
+
+                if (immediate) {
+                    performScroll();
+                } else {
+                    requestAnimationFrame(function() {
+                        requestAnimationFrame(performScroll);
+                    });
+                }
+            }
+
+            var workNavTick = null;
+
+            function scheduleWorkNavUpdate() {
+                if (workNavTick) return;
+                workNavTick = requestAnimationFrame(function() {
+                    workNavTick = null;
+                    updateWorkNavActive();
+                });
+            }
+
+            function updateWorkNavActive() {
+                document.querySelectorAll('.work-scroll-layout').forEach(function(layout) {
+                    var nav = layout.querySelector('.work-nav-sidebar');
+                    var main = layout.querySelector('.work-main-content');
+                    if (!nav || nav.hidden || !main) return;
+
+                    var panel = panelContaining(layout);
+                    if (!panel || !panel.classList.contains('is-open')) return;
+
+                    var overview = main.querySelector('.project-case .project-summary');
+                    var sections = main.querySelectorAll('.case-section');
+                    var links = nav.querySelectorAll('.work-nav-link');
+                    if (!sections.length || links.length !== sections.length + 1) return;
+
+                    var clearance = contentClearance(panel);
+                    var activeIndex = 0;
+
+                    for (var i = 0; i < sections.length; i++) {
+                        var marker = sections[i].querySelector('.case-section-title') || sections[i];
+                        if (marker.getBoundingClientRect().top <= clearance + 24) {
+                            activeIndex = i + 1;
+                        }
+                    }
+
+                    links.forEach(function(link, i) {
+                        link.classList.toggle('is-active', i === activeIndex);
+                    });
+                });
+            }
+
+            function navigateToHash(id, options) {
+                var opts = options || {};
+                var aliases = { home: 'panel-home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design' };
                 var direct = document.getElementById(aliases[id] || id) || document.getElementById(id);
                 if (!direct) return;
 
                 var panel = panelContaining(direct);
                 if (!panel || !panel.getAttribute('data-panel')) return;
 
+                var panelWasOpen = panel.classList.contains('is-open');
                 openPanel(panel.getAttribute('data-panel'), { scroll: false });
 
-                // Wait for the collapse/expand to settle so the target's
-                // position is final before jumping to it.
                 var scrollTarget = (direct === panel) ? panel : direct;
-                setTimeout(function() {
-                    // The panel row lands in its own slot in the stack; anything
-                    // inside it has to clear that pinned row as well.
-                    var offset = (direct === panel) ? stackedLabelTop(panel) : contentClearance(panel);
-                    var top = scrollTarget.getBoundingClientRect().top + window.pageYOffset - offset;
-                    window.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
-                }, prefersReducedMotion() ? 0 : DURATION + 40);
+                var delay = panelWasOpen || prefersReducedMotion() ? 0 : DURATION + 40;
+                var smooth = !!opts.smooth;
+
+                function runScroll() {
+                    scrollToInPanel(scrollTarget, panel, !delay, smooth);
+                    scheduleWorkNavUpdate();
+                }
+
+                if (delay) {
+                    setTimeout(runScroll, delay);
+                } else {
+                    runScroll();
+                }
+            }
+
+            function handleHash() {
+                var hash = window.location.hash;
+                if (!hash || hash.length < 2) return;
+                navigateToHash(hash.substring(1));
             }
 
             setTimeout(handleHash, 200);
-            window.addEventListener('hashchange', function() {
-                setTimeout(handleHash, 20);
-            }, { passive: true });
+            window.addEventListener('hashchange', handleHash, { passive: true });
+            window.addEventListener('popstate', handleHash, { passive: true });
+
+            // =============================================
+            // CASE STUDY SECTION NAV
+            // Builds jump links in each work sidebar from the
+            // main .case-section headings in that column.
+            // =============================================
+            function initWorkNav() {
+                function slugify(text) {
+                    return text.toLowerCase()
+                        .replace(/&/g, 'and')
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '');
+                }
+
+                var usedIds = Object.create(null);
+
+                function uniqueId(base) {
+                    var id = base || 'section';
+                    var n = 2;
+                    while (usedIds[id] || document.getElementById(id)) {
+                        id = base + '-' + n;
+                        n++;
+                    }
+                    usedIds[id] = true;
+                    return id;
+                }
+
+                document.querySelectorAll('.work-scroll-layout').forEach(function(layout) {
+                    var main = layout.querySelector('.work-main-content');
+                    var nav = layout.querySelector('.work-nav-sidebar');
+                    if (!main || !nav) return;
+
+                    var article = main.querySelector('.project-case');
+                    if (!article) {
+                        nav.hidden = true;
+                        return;
+                    }
+
+                    var sections = main.querySelectorAll('.case-section');
+                    if (!sections.length) {
+                        nav.hidden = true;
+                        return;
+                    }
+
+                    var overview = article.querySelector('.project-summary') || article;
+                    var prefix = article.id ? article.id + '-' : '';
+                    overview.id = uniqueId(prefix + 'overview');
+
+                    var list = document.createElement('ol');
+                    list.className = 'work-nav-links';
+
+                    var overviewLi = document.createElement('li');
+                    var overviewLink = document.createElement('a');
+                    overviewLink.className = 'work-nav-link is-active';
+                    overviewLink.href = '#' + overview.id;
+                    overviewLink.textContent = 'Overview';
+                    overviewLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if (window.location.hash !== '#' + overview.id) {
+                            history.pushState(null, '', '#' + overview.id);
+                        }
+                        navigateToHash(overview.id, { smooth: true });
+                    });
+                    overviewLi.appendChild(overviewLink);
+                    list.appendChild(overviewLi);
+
+                    sections.forEach(function(section) {
+                        var titleEl = section.querySelector('.case-section-title');
+                        if (!titleEl) return;
+
+                        var article = section.closest('.project-case');
+                        var prefix = article && article.id ? article.id + '-' : '';
+                        section.id = uniqueId(prefix + slugify(titleEl.textContent));
+
+                        var li = document.createElement('li');
+                        var link = document.createElement('a');
+                        link.className = 'work-nav-link';
+                        link.href = '#' + section.id;
+                        link.textContent = titleEl.textContent;
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            var sectionId = section.id;
+                            if (window.location.hash !== '#' + sectionId) {
+                                history.pushState(null, '', '#' + sectionId);
+                            }
+                            navigateToHash(sectionId, { smooth: true });
+                        });
+                        li.appendChild(link);
+                        list.appendChild(li);
+                    });
+
+                    nav.textContent = '';
+                    nav.appendChild(list);
+                });
+            }
+
+            initWorkNav();
+            window.addEventListener('scroll', scheduleWorkNavUpdate, { passive: true });
+            setTimeout(scheduleWorkNavUpdate, 300);
 
             // =============================================
             // SMART IFRAME MANAGER

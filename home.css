@@ -17,8 +17,6 @@
 
     --home-bg: #FAFAFA;
     --home-accent: #E8441F;
-    /* The second half of the role cycle, Figma node 943:4784. */
-    --home-accent-ai: #2D01FB;
     /* Figma draws 0.25px black hairlines; 1px at 45% reproduces that weight
        consistently across pixel ratios. */
     --home-rule: rgba(0, 0, 0, 0.45);
@@ -192,12 +190,18 @@ body {
 }
 
 .acc-header {
+    --acc-icon-size: 11px;
+    --acc-icon-stroke: 1px;
+    --acc-icon-offset: calc((var(--acc-icon-size) - var(--acc-icon-stroke)) / 2);
+
     all: unset;
     box-sizing: border-box;
     display: flex;
     gap: var(--acc-gap);
     width: 100%;
+    position: relative;
     padding: var(--acc-pad);
+    padding-right: calc(var(--acc-pad) + var(--acc-icon-size));
     cursor: pointer;
     font-family: var(--home-font);
     font-size: var(--acc-text);
@@ -236,27 +240,36 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: none;
+    color: var(--case-text-label);
 }
 
-/* The open affordance, Figma node 949:4944. A 12px plus held against the far
+/* The open affordance, Figma node 949:4944. An 11px plus held against the far
    end of the row, drawn as two hairlines rather than an asset so it stays
-   crisp and needs no markup in every row. It keeps its place in the row at
+   crisp and needs no markup in every row. Odd dimensions and integer offsets
+   keep both bars on the pixel grid so the mark stays square at rest and the
+   45deg turn reads as a symmetrical cross. It keeps its place in the row at
    rest and only fades in, so the row does not reflow under the pointer, and
    it stays black while the label turns: the mark is the affordance, the
    colour is the hover. */
 .acc-header::after {
     content: '';
-    flex: none;
-    align-self: center;
-    margin-left: auto;
-    width: 12px;
-    height: 12px;
+    position: absolute;
+    top: 50%;
+    right: var(--acc-pad);
+    width: var(--acc-icon-size);
+    height: var(--acc-icon-size);
+    margin-top: calc(var(--acc-icon-size) / -2);
     background-image:
         linear-gradient(#000, #000),
         linear-gradient(#000, #000);
-    background-size: 12px 1px, 1px 12px;
-    background-position: center;
+    background-size:
+        var(--acc-icon-size) var(--acc-icon-stroke),
+        var(--acc-icon-stroke) var(--acc-icon-size);
+    background-position:
+        0 var(--acc-icon-offset),
+        var(--acc-icon-offset) 0;
     background-repeat: no-repeat;
+    transform-origin: center center;
     opacity: 0;
     transition: opacity 0.2s ease,
                 transform var(--acc-duration) var(--acc-ease);
@@ -278,11 +291,12 @@ body {
     opacity: 1;
 }
 
-/* Rows #6–#7 are reserved and do not open. Nothing opens, so nothing offers
+/* Rows #8–#9 are reserved and do not open. Nothing opens, so nothing offers
    to: they take neither the accent nor the plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
     color: rgba(0, 0, 0, 0.35);
+    padding-right: var(--acc-pad);
 }
 
 .acc-panel[data-reserved] .acc-header::after {
@@ -415,8 +429,17 @@ body {
 
 .home-canvas {
     --u: calc(100cqw / 1080);
-    --role-fade: 180ms;
-    --role-tint: 600ms;
+    --home-accent: var(--primary-text);
+    /* Matches the optical inset created by the left headline's cap sidebearing
+       at 80px, so the role line clears the outer grid line by the same amount. */
+    --home-headline-inset: 6;
+    /* Portrait frame — shared by the rules; the photo sits inside the 1px
+       strokes, not on top of them. */
+    --home-frame-left: 463;
+    --home-frame-right: 617.5;
+    --home-frame-top: 325;
+    --home-frame-bottom: 504;
+    --home-frame-rule: 1;
     position: relative;
     /* The layers below (rules, portrait, dots, credentials) are numbered 1–5
        for each other's benefit only. Without a stacking context here those
@@ -429,7 +452,6 @@ body {
     height: calc(700 * var(--u));
     overflow: hidden;
     font-family: var(--home-font);
-    transition: --home-accent var(--role-tint) var(--acc-ease);
 }
 
 .home-canvas > * {
@@ -455,82 +477,70 @@ body {
 .home-name {
     left: 0;
     width: calc(463 * var(--u));
+    box-sizing: border-box;
     text-align: left;
 }
 
 .home-role {
-    left: calc(618 * var(--u));
-    width: calc(462 * var(--u));
+    left: calc(617.5 * var(--u));
+    width: calc(462.5 * var(--u));
+    box-sizing: border-box;
+    padding-right: calc(var(--home-headline-inset) * var(--u));
     text-align: right;
 }
 
-/* The role line alternates UX / AI on a timer. The accent word and the dot
-   grid are both painted from --home-accent, so one value change on the canvas
-   recolours both; registering the property is what lets that change tween
-   instead of snap. The override is scoped to the canvas so the accent the rest
-   of the shell hovers on stays fixed. */
-@property --home-accent {
-    syntax: '<color>';
-    inherits: true;
-    initial-value: #E8441F;
-}
-
-.home-canvas[data-role='ai'] {
-    --home-accent: var(--home-accent-ai);
-}
-
+/* The accent word and dot grid both use --home-accent, scoped to the canvas
+   so the rest of the shell keeps its own accent. */
 .home-role-accent {
     color: var(--home-accent);
-    transition: opacity var(--role-fade) linear;
-}
-
-/* Held at the bottom of the fade for as long as it takes to rewrite the word,
-   so the two roles are never seen mid-swap. */
-.home-canvas.is-role-swapping .home-role-accent {
-    opacity: 0;
 }
 
 /* --- Rules -------------------------------------------------------------- */
 
 .home-vrule {
     top: 0;
-    z-index: 2;
-    width: 1px;
+    z-index: 4;
+    width: calc(var(--home-frame-rule) * var(--u));
     height: 100%;
     background-color: var(--home-rule);
 }
 
-.home-vrule--a { left: calc(463 * var(--u)); }
-.home-vrule--b { left: calc(617.5 * var(--u)); }
+.home-vrule--a { left: calc(var(--home-frame-left) * var(--u)); }
+.home-vrule--b { left: calc(var(--home-frame-right) * var(--u)); }
 
 .home-hrule {
     left: 0;
-    z-index: 2;
+    z-index: 4;
     width: 100%;
-    height: 1px;
+    height: calc(var(--home-frame-rule) * var(--u));
     background-color: var(--home-rule);
 }
 
-.home-hrule--a { top: calc(325 * var(--u)); }
-.home-hrule--b { top: calc(504 * var(--u)); }
+.home-hrule--a { top: calc(var(--home-frame-top) * var(--u)); }
+.home-hrule--b { top: calc(var(--home-frame-bottom) * var(--u)); }
 
 /* --- Portrait ----------------------------------------------------------- */
 
-/* Fills the cell the four rules cut out: 463–617.5 across, 325–504 down. */
+/* Sits inside the four rules; each edge clears the 1px stroke. */
 .home-portrait {
-    left: calc(463 * var(--u));
-    top: calc(325 * var(--u));
+    left: calc((var(--home-frame-left) + var(--home-frame-rule)) * var(--u));
+    top: calc((var(--home-frame-top) + var(--home-frame-rule)) * var(--u));
     z-index: 3;
-    width: calc(154 * var(--u));
-    height: calc(179 * var(--u));
+    width: calc((var(--home-frame-right) - var(--home-frame-left) - var(--home-frame-rule)) * var(--u));
+    height: calc((var(--home-frame-bottom) - var(--home-frame-top) - var(--home-frame-rule)) * var(--u));
+    margin: 0;
+    padding: 0;
     overflow: hidden;
+    line-height: 0;
 }
 
 .home-portrait img {
     display: block;
     width: 100%;
     height: 100%;
+    max-width: none;
     object-fit: cover;
+    object-position: center center;
     opacity: 0.9;
 }
 
@@ -614,6 +624,12 @@ body {
 
 .work-main-content {
     min-height: 0;
+    grid-column: 2 / -1;
+    padding-right: calc(16px + var(--inner-col-padding));
+}
+
+.work-right-spacer {
+    display: none;
 }
 
 .work-nav-sidebar {
@@ -621,6 +637,15 @@ body {
     padding-top: 32px;
     padding-left: 20px;
     padding-right: 16px;
+}
+
+/* While the body is height-clipped, it becomes a scroll container and sticky
+   jump links pin against it — they drop down the expanding panel, then jump
+   back when overflow is restored. Keep them in flow until the clip lifts. */
+.acc-panel.is-expanding .work-nav-sidebar,
+.acc-panel.is-collapsing .work-nav-sidebar {
+    position: relative;
+    top: auto;
 }
 
 .project-case:first-child {
@@ -735,6 +760,7 @@ body {
         font-size: clamp(38px, 11vw, 68px);
         line-height: 1.15;
         text-align: left;
+        padding-right: 0;
     }
 
     .home-vrule,
