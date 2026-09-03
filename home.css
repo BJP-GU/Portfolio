@@ -567,22 +567,34 @@ body {
 
 .home-meta {
     left: calc(153 * var(--u));
-    top: calc(371 * var(--u));
+    top: calc(376 * var(--u));
     z-index: 4;
-    width: calc(158 * var(--u));
+    width: calc(175 * var(--u));
     display: flex;
     flex-direction: column;
-    gap: calc(24 * var(--u));
+    gap: calc(16 * var(--u));
 }
 
 .home-meta li {
     list-style: none;
+    display: flex;
+    align-items: center;
+    gap: calc(6 * var(--u));
+    height: calc(13 * var(--u));
     font-size: calc(11.675 * var(--u));
     font-weight: 400;
     line-height: calc(13 * var(--u));
     letter-spacing: 0;
     color: #000;
     white-space: nowrap;
+}
+
+.home-meta__icon {
+    display: block;
+    width: calc(12.5 * var(--u));
+    height: calc(12.5 * var(--u));
+    flex-shrink: 0;
+    object-fit: contain;
 }
 
 /* --- Locations ---------------------------------------------------------- */
@@ -608,7 +620,6 @@ body {
 }
 
 .home-place--sf { left: calc(794 * var(--u)); }
-.home-place--berkeley { left: calc(912 * var(--u)); }
 
 /* ==========================================================================
    WORK BODY
@@ -783,7 +794,19 @@ body {
     }
 
     .home-meta {
-        gap: 10px;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .home-meta li {
+        height: auto;
+        gap: 8px;
+        white-space: normal;
+    }
+
+    .home-meta__icon {
+        width: 14px;
+        height: 14px;
     }
 
     .home-meta li,
