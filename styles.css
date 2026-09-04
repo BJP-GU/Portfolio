@@ -2852,7 +2852,7 @@ nav.main-grid .grid-cell {
 }
 
 .case-section-content .glean-menu__icon,
-.case-section-content .glean-menu__avatar {
+.case-section-content .glean-composer-open__chip-icon {
     width: 16px !important;
     max-width: 16px !important;
     height: 16px !important;
@@ -2861,8 +2861,22 @@ nav.main-grid .grid-cell {
     object-fit: contain;
 }
 
-.case-section-content .glean-menu__avatar {
-    border-radius: 100px;
+.case-section-content .glean-composer-open__chip-icon:not(.glean-composer-open__chip-avatar):not(.glean-composer-open__chip-icon--remove) {
+    width: 14px !important;
+    max-width: 14px !important;
+    height: 14px !important;
+}
+
+.case-section-content .glean-menu__avatar,
+.case-section-content .glean-composer-open__chip-icon.glean-composer-open__chip-avatar {
+    width: 16px !important;
+    max-width: 16px !important;
+    height: 16px !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    overflow: hidden;
+    clip-path: circle(50%);
 }
 
 .case-section-content iframe {
@@ -3044,6 +3058,7 @@ nav.main-grid .grid-cell {
     margin-right: 4px;
     padding: 0 6px;
     flex-shrink: 0;
+    overflow: visible;
     background: #f6f6f6;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
@@ -3056,6 +3071,12 @@ nav.main-grid .grid-cell {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
+    overflow: visible;
+}
+
+.glean-composer__chip-icon svg {
+    display: block;
+    overflow: visible;
 }
 
 .glean-composer__chip-label {
@@ -3132,6 +3153,10 @@ nav.main-grid .grid-cell {
     transition: height 0.2s ease;
 }
 
+.glean-composer-open-fit:has(.glean-composer-open.has-plus-tip) {
+    --glean-composer-open-design-height: 96px;
+}
+
 .glean-composer-open-fit:has(.glean-composer-open.is-menu-open),
 .glean-composer-open-fit:has(.glean-composer-open.is-slash-open),
 .glean-composer-open-fit:has(.glean-composer-open.is-at-open) {
@@ -3159,6 +3184,10 @@ nav.main-grid .grid-cell {
     height: 552px;
 }
 
+.glean-composer-open.has-plus-tip:not(.is-menu-open):not(.is-slash-open):not(.is-at-open) {
+    height: 96px;
+}
+
 .glean-composer-open__composer {
     box-sizing: border-box;
     display: flex;
@@ -3184,7 +3213,7 @@ nav.main-grid .grid-cell {
 
 .glean-composer-open__left {
     flex: 1 1 auto;
-    overflow: hidden;
+    overflow: visible;
     gap: 8px;
 }
 
@@ -3223,6 +3252,69 @@ nav.main-grid .grid-cell {
     background: #e8e8e8;
 }
 
+.glean-composer-open__plus {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.glean-composer-open__plus-tip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 3;
+    box-sizing: border-box;
+    display: block;
+    padding: 5px 8px;
+    background: #1b1b1b;
+    border-radius: 6px;
+    color: #ffffff;
+    font-family: var(--glean-composer-open-font);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: -0.1px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0.92;
+    animation: glean-plus-tip-in 0.35s ease 0.6s both;
+}
+
+.glean-composer-open__plus-tip::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 17px;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #1b1b1b;
+}
+
+.glean-composer-open.is-menu-open .glean-composer-open__plus-tip,
+.glean-composer-open.is-slash-open .glean-composer-open__plus-tip,
+.glean-composer-open.is-at-open .glean-composer-open__plus-tip,
+.glean-composer-open:not(.has-plus-tip) .glean-composer-open__plus-tip {
+    display: none;
+}
+
+@keyframes glean-plus-tip-in {
+    from {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+    to {
+        opacity: 0.92;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .glean-composer-open__plus-tip {
+        animation: none;
+        opacity: 0.92;
+    }
+}
+
 .glean-composer-open__field {
     position: relative;
     display: flex;
@@ -3231,6 +3323,7 @@ nav.main-grid .grid-cell {
     gap: 4px;
     min-width: 0;
     height: var(--glean-hint-height);
+    overflow: hidden;
 }
 
 .glean-composer-open__stream {
@@ -3306,6 +3399,63 @@ nav.main-grid .grid-cell {
     text-align: center;
 }
 
+.glean-composer-open__command-mark {
+    flex-shrink: 0;
+    display: inline-block;
+    min-width: 0.75em;
+    text-align: center;
+}
+
+.glean-composer-open.is-slash-open .glean-composer-open__slash-token,
+.glean-composer-open.is-at-open .glean-composer-open__at-token {
+    flex: 0 0 auto;
+    width: max-content;
+    max-width: min(70%, 420px);
+    justify-content: flex-start;
+    padding: 0 6px;
+    gap: 0;
+}
+
+.glean-composer-open.is-slash-open .glean-composer-open__slash-token .glean-composer-open__input-wrap,
+.glean-composer-open.is-at-open .glean-composer-open__at-token .glean-composer-open__input-wrap {
+    flex: 0 0 auto;
+    display: inline-grid;
+    grid-template-columns: max-content;
+    align-items: center;
+    width: max-content;
+    min-width: 1ch;
+    max-width: 100%;
+}
+
+.glean-composer-open.is-slash-open .glean-composer-open__slash-token .glean-composer-open__input-wrap::after,
+.glean-composer-open.is-at-open .glean-composer-open__at-token .glean-composer-open__input-wrap::after {
+    content: attr(data-query) "\00a0";
+    grid-area: 1 / 1;
+    white-space: pre;
+    visibility: hidden;
+    font-family: var(--glean-composer-open-font);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    min-width: 1px;
+    pointer-events: none;
+}
+
+.glean-composer-open.is-slash-open .glean-composer-open__slash-token .glean-composer-open__input,
+.glean-composer-open.is-at-open .glean-composer-open__at-token .glean-composer-open__input {
+    grid-area: 1 / 1;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    field-sizing: content;
+}
+
+.glean-composer-open.is-slash-open .glean-composer-open__hints,
+.glean-composer-open.is-at-open .glean-composer-open__hints {
+    display: none;
+}
+
 .glean-composer-open__chip {
     appearance: none;
     -webkit-appearance: none;
@@ -3317,6 +3467,7 @@ nav.main-grid .grid-cell {
     margin: 0;
     padding: 0 6px;
     flex-shrink: 0;
+    overflow: visible;
     background: #f6f6f6;
     border: 1px solid #e5e5e5;
     border-radius: 8px;
@@ -3343,24 +3494,37 @@ nav.main-grid .grid-cell {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
+    overflow: visible;
 }
 
 .glean-composer-open__chip-icon {
     display: block;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     flex-shrink: 0;
     object-fit: contain;
     object-position: center;
+    overflow: visible;
+}
+
+.glean-composer-open__chip-leading--person {
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 .glean-composer-open__chip-icon.glean-composer-open__chip-avatar {
-    border-radius: 100px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
     object-fit: cover;
+    overflow: hidden;
+    clip-path: circle(50%);
 }
 
 .glean-composer-open__chip-icon--remove {
     display: none;
+    width: 16px;
+    height: 16px;
 }
 
 .glean-composer-open__chip:hover .glean-composer-open__chip-icon--source,
@@ -3377,7 +3541,7 @@ nav.main-grid .grid-cell {
     font-family: var(--glean-composer-open-font);
     font-size: 16px;
     font-weight: 400;
-    line-height: 1;
+    line-height: 24px;
     letter-spacing: -0.125px;
     color: #1b1b1b;
     white-space: nowrap;
@@ -3839,6 +4003,25 @@ nav.main-grid .grid-cell {
     flex-shrink: 0;
 }
 
+.glean-composer-open__slash-menu .glean-menu__item.is-menu-filtered,
+.glean-composer-open__at-menu .glean-menu__item.is-menu-filtered {
+    display: none !important;
+}
+
+.glean-menu__empty {
+    box-sizing: border-box;
+    padding: 12px 16px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #727272;
+}
+
+.glean-menu__empty[hidden] {
+    display: none !important;
+}
+
 .glean-menu__item--header {
     padding: 0;
 }
@@ -3888,8 +4071,9 @@ nav.main-grid .grid-cell {
 }
 
 .glean-menu__avatar {
-    border-radius: 100px;
+    border-radius: 50%;
     object-fit: cover;
+    overflow: hidden;
 }
 
 .glean-menu__label {

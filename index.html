@@ -555,19 +555,22 @@
                                                 <p>We designed a scalable system to organize and surface the many affordances of Glean's assistant within the composer, the feature's front door. As more affordances are added, we're confident they'll fit the model we've proposed: each one is either something to "Use" or "Create" (/), or something to "Tag" (@).</p>
                                                 <div class="glean-composer-open-fit">
                                                     <div class="glean-composer-open-fit__inner">
-                                                        <div class="glean-composer-open" data-glean-composer-proto role="group" aria-label="Glean composer prototype">
+                                                        <div class="glean-composer-open has-plus-tip" data-glean-composer-proto role="group" aria-label="Glean composer prototype">
                                                             <div class="glean-composer-open__composer">
                                                                 <div class="glean-composer-open__left">
-                                                                    <button class="glean-composer-open__plus-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="glean-composer-plus-menu" aria-haspopup="menu">
+                                                                    <div class="glean-composer-open__plus">
+                                                                    <button class="glean-composer-open__plus-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="glean-composer-plus-menu" aria-haspopup="menu" aria-describedby="glean-composer-plus-tip">
                                                                         <svg class="glean-composer-open__svg glean-composer-open__svg--plus" width="11.5" height="11.5" viewBox="0 0 11.5 11.5" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
                                                                             <path d="M5.75 0C6.16421 0 6.5 0.335786 6.5 0.75V5H10.75C11.1642 5 11.5 5.33579 11.5 5.75C11.5 6.16421 11.1642 6.5 10.75 6.5H6.5V10.75C6.5 11.1642 6.16421 11.5 5.75 11.5C5.33579 11.5 5 11.1642 5 10.75V6.5H0.75C0.335786 6.5 0 6.16421 0 5.75C0 5.33579 0.335786 5 0.75 5H5V0.75C5 0.335786 5.33579 0 5.75 0Z" fill="#1B1B1B"/>
                                                                         </svg>
                                                                     </button>
+                                                                    <span class="glean-composer-open__plus-tip" id="glean-composer-plus-tip" role="tooltip">try it out!</span>
+                                                                    </div>
                                                                     <div class="glean-composer-open__field">
                                                                         <div class="glean-composer-open__stream" aria-live="polite"></div>
                                                                         <span class="glean-composer-open__prefix" hidden></span>
-                                                                        <span class="glean-composer-open__slash-token" hidden>/</span>
-                                                                        <span class="glean-composer-open__at-token" hidden>@</span>
+                                                                        <span class="glean-composer-open__slash-token" hidden><span class="glean-composer-open__command-mark">/</span></span>
+                                                                        <span class="glean-composer-open__at-token" hidden><span class="glean-composer-open__command-mark">@</span></span>
                                                                         <div class="glean-composer-open__input-wrap">
                                                                             <div class="glean-composer-open__hints" aria-hidden="true">
                                                                                 <div class="glean-composer-open__hints-viewport">
@@ -586,7 +589,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <input class="glean-composer-open__input" type="text" aria-label="Ask Glean" autocomplete="off" spellcheck="false">
+                                                                            <input class="glean-composer-open__input" type="text" aria-label="Ask Glean" autocomplete="off" spellcheck="false" size="1">
                                                                         </div>
                                                                     </div>
                                                                     <span class="visually-hidden">Create, ask, or search anything. Type / for skills, agents, or to create with Glean. Type @ to tag people, docs, or projects.</span>
@@ -655,6 +658,7 @@
                                                             <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">Chat settings</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="use"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/0cba6cf9e4552fb904a8bc8e73312ed76ec5fec9.svg" alt="" width="16" height="16"><span class="glean-menu__label">Model</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="use"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/8744c97e06bcff10b552d0a52675ef13b4166b5c.svg" alt="" width="16" height="16"><span class="glean-menu__label">Reasoning mode</span></div></div>
+                                                            <div class="glean-menu__empty" hidden>No matching results</div>
                                                             </div>
                                                             <div class="glean-composer-open__at-menu glean-menu glean-menu--at-open" id="glean-composer-at-menu" role="menu" hidden>
                                                             <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">Documents and links</span></div></div>
@@ -673,6 +677,7 @@
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
+                                                            <div class="glean-menu__empty" hidden>No matching results</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1542,10 +1547,17 @@
                 return null;
             }
 
+            var pointerDownInOpenPanel = false;
+
             panels.forEach(function(panel) {
                 var header = headerOf(panel);
                 if (!header) return;
                 header.addEventListener('click', function() {
+                    // A composer menu can close on pointerdown and shrink, so the
+                    // trailing click lands on a different row header. Ignore it.
+                    var open = getOpenPanel();
+                    if (pointerDownInOpenPanel && open && open !== panel) return;
+
                     if (panel.classList.contains('is-open')) {
                         closePanel(panel);
                     } else {
@@ -1560,18 +1572,33 @@
             // Clicking anywhere outside the open section collapses it. Row headers
             // and the logo keep their own handlers so they can still switch panels
             // or return to Home.
+            //
+            // Track the pointerdown target: composer chips and menus remove or
+            // collapse themselves mid-click, so the later `click` can hit a
+            // disconnected node or whatever slid under the cursor (often the
+            // next case-study header). Those still started inside the panel.
+            document.addEventListener('pointerdown', function(e) {
+                var open = getOpenPanel();
+                pointerDownInOpenPanel = !!(open && open.contains(e.target));
+            }, true);
+
             document.addEventListener('click', function(e) {
                 if (!accordion || accordion.classList.contains('is-intro')) return;
                 if (document.documentElement.classList.contains('intro-running')) return;
 
                 var open = getOpenPanel();
                 if (!open) return;
-                if (open.contains(e.target)) return;
-                if (e.target.closest('.acc-panel[data-panel] .acc-header')) return;
-                if (e.target.closest('#home-logo')) return;
+                if (pointerDownInOpenPanel) return;
+                var target = e.target;
+                if (target && target.nodeType !== 1) target = target.parentElement;
+                if (!target || !target.isConnected) return;
+                if (open.contains(target)) return;
+                if (target.closest('.acc-panel[data-panel] .acc-header')) return;
+                if (target.closest('#home-logo')) return;
 
                 closePanel(open);
             });
+
 
             // The logo returns to the top of the stack with Home open.
             var homeLogo = document.getElementById('home-logo');
@@ -2000,6 +2027,8 @@
                     var prefixEl = root.querySelector('.glean-composer-open__prefix');
                     var slashToken = root.querySelector('.glean-composer-open__slash-token');
                     var atToken = root.querySelector('.glean-composer-open__at-token');
+                    var fieldEl = root.querySelector('.glean-composer-open__field');
+                    var inputWrap = root.querySelector('.glean-composer-open__input-wrap');
                     var ctaBtn = root.querySelector('.glean-composer-open__cta');
                     var track = root.querySelector('.glean-composer-open__hints-track');
                     var viewport = root.querySelector('.glean-composer-open__hints-viewport');
@@ -2016,11 +2045,34 @@
                     var index = 0;
                     var itemCount = 0;
 
+                    function focusWithoutScroll(el) {
+                        if (!el) return;
+                        try {
+                            el.focus({ preventScroll: true });
+                        } catch (err) {
+                            el.focus();
+                        }
+                    }
+
+                    function swallowFollowingClick() {
+                        function swallow(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            document.removeEventListener('click', swallow, true);
+                        }
+                        document.addEventListener('click', swallow, true);
+                    }
+
                     function clearTimer() {
                         if (timer) {
                             clearTimeout(timer);
                             timer = null;
                         }
+                    }
+
+                    function dismissPlusTip() {
+                        root.classList.remove('has-plus-tip');
+                        if (plusBtn) plusBtn.removeAttribute('aria-describedby');
                     }
 
                     function shortcutOpen() {
@@ -2066,6 +2118,52 @@
                         atMenu.style.left = '12px';
                     }
 
+                    function syncCommandQuery() {
+                        if (!inputWrap) return;
+                        inputWrap.setAttribute('data-query', input ? input.value : '');
+                    }
+
+                    function restoreInputFocus(rangeStart, rangeEnd) {
+                        if (!input) return;
+                        focusWithoutScroll(input);
+                        if (rangeStart == null) return;
+                        var max = input.value.length;
+                        var start = Math.max(0, Math.min(rangeStart, max));
+                        var end = rangeEnd == null ? start : Math.max(0, Math.min(rangeEnd, max));
+                        input.setSelectionRange(start, end);
+                    }
+
+                    function placeInputInToken(token) {
+                        if (!inputWrap || !token) return;
+                        var start = input ? input.selectionStart : null;
+                        var end = input ? input.selectionEnd : null;
+                        if (inputWrap.parentNode !== token) token.appendChild(inputWrap);
+                        syncCommandQuery();
+                        restoreInputFocus(start, end);
+                    }
+
+                    function placeInputInField() {
+                        if (!inputWrap || !fieldEl) return;
+                        var start = input ? input.selectionStart : null;
+                        var end = input ? input.selectionEnd : null;
+                        if (inputWrap.parentNode !== fieldEl) fieldEl.appendChild(inputWrap);
+                        inputWrap.removeAttribute('data-query');
+                        restoreInputFocus(start, end);
+                    }
+
+                    function endCommandIfSpaced() {
+                        if (!input || !/\s/.test(input.value)) return false;
+                        if (slashOpen) {
+                            setSlashOpen(false, { restore: true, keepSlash: true });
+                            return true;
+                        }
+                        if (atOpen) {
+                            setAtOpen(false, { restore: true, keepAt: true });
+                            return true;
+                        }
+                        return false;
+                    }
+
                     function setSlashOpen(open, options) {
                         var opts = options || {};
                         slashOpen = !!open;
@@ -2076,11 +2174,15 @@
                             if (atOpen) setAtOpen(false, { restore: false });
                             if (slashToken) slashToken.removeAttribute('hidden');
                             if (slashMenu) slashMenu.removeAttribute('hidden');
+                            placeInputInToken(slashToken);
+                            filterCommandMenu(slashMenu, input ? input.value : '');
                             requestAnimationFrame(function() {
                                 positionSlashMenu();
                             });
                         } else {
+                            resetMenuFilter(slashMenu);
                             if (slashMenu) slashMenu.setAttribute('hidden', '');
+                            if (!atOpen) placeInputInField();
                             if (slashToken) slashToken.setAttribute('hidden', '');
                             if (prefixEl) {
                                 if (opts.restore && (slashPrefix || (input && input.value))) {
@@ -2107,11 +2209,15 @@
                             if (slashOpen) setSlashOpen(false, { restore: false });
                             if (atToken) atToken.removeAttribute('hidden');
                             if (atMenu) atMenu.removeAttribute('hidden');
+                            placeInputInToken(atToken);
+                            filterCommandMenu(atMenu, input ? input.value : '');
                             requestAnimationFrame(function() {
                                 positionAtMenu();
                             });
                         } else {
+                            resetMenuFilter(atMenu);
                             if (atMenu) atMenu.setAttribute('hidden', '');
+                            if (!slashOpen) placeInputInField();
                             if (atToken) atToken.setAttribute('hidden', '');
                             if (prefixEl) {
                                 if (opts.restore && (atPrefix || (input && input.value))) {
@@ -2161,7 +2267,7 @@
                         }
                         input.value = after;
                         setSlashOpen(true);
-                        input.focus();
+                        focusWithoutScroll(input);
                         input.setSelectionRange(after.length, after.length);
                     }
 
@@ -2187,7 +2293,7 @@
                         }
                         input.value = after;
                         setAtOpen(true);
-                        input.focus();
+                        focusWithoutScroll(input);
                         input.setSelectionRange(after.length, after.length);
                     }
 
@@ -2215,6 +2321,126 @@
                             return 'Create ' + label.charAt(0).toLowerCase() + label.slice(1);
                         }
                         return label;
+                    }
+
+                    function normalizeMenuQuery(text) {
+                        return String(text || '')
+                            .replace(/^[/]+/, '')
+                            .replace(/^[@]+/, '')
+                            .replace(/\s+/g, ' ')
+                            .trim()
+                            .toLowerCase();
+                    }
+
+                    function fuzzyMatch(query, text) {
+                        if (!query) return true;
+                        text = String(text || '').toLowerCase();
+                        if (!text) return false;
+                        var words = query.split(' ');
+                        for (var w = 0; w < words.length; w++) {
+                            var word = words[w];
+                            if (!word) continue;
+                            if (text.indexOf(word) !== -1) continue;
+                            var qi = 0;
+                            for (var i = 0; i < text.length && qi < word.length; i++) {
+                                if (text.charAt(i) === word.charAt(qi)) qi++;
+                            }
+                            if (qi < word.length) return false;
+                        }
+                        return true;
+                    }
+
+                    function menuItemSearchText(item) {
+                        var parts = [];
+                        var labelEl = item.querySelector('.glean-menu__label');
+                        if (labelEl) parts.push(labelEl.textContent || '');
+                        var chipLabel = chipLabelFor(item);
+                        if (chipLabel) parts.push(chipLabel);
+                        return parts.join(' ');
+                    }
+
+                    function isFilterableMenuItem(el) {
+                        return el.classList.contains('glean-menu__item')
+                            && !el.classList.contains('glean-menu__item--header')
+                            && !el.classList.contains('glean-menu__empty');
+                    }
+
+                    function setMenuNodeFiltered(el, filtered) {
+                        el.classList.toggle('is-menu-filtered', !!filtered);
+                        if (filtered) el.setAttribute('aria-hidden', 'true');
+                        else el.removeAttribute('aria-hidden');
+                    }
+
+                    function resetMenuFilter(menuEl) {
+                        if (!menuEl) return;
+                        Array.prototype.forEach.call(menuEl.children, function(el) {
+                            if (el.classList.contains('glean-menu__empty')) {
+                                el.setAttribute('hidden', '');
+                                return;
+                            }
+                            setMenuNodeFiltered(el, false);
+                        });
+                    }
+
+                    function filterCommandMenu(menuEl, rawQuery) {
+                        if (!menuEl) return;
+                        var query = normalizeMenuQuery(rawQuery);
+                        if (!query) {
+                            resetMenuFilter(menuEl);
+                            return;
+                        }
+
+                        var children = Array.prototype.slice.call(menuEl.children);
+                        var groups = [];
+                        var current = { header: null, items: [] };
+
+                        children.forEach(function(el) {
+                            if (el.classList.contains('glean-menu__empty')) return;
+                            if (el.classList.contains('glean-menu__item--header')) {
+                                groups.push(current);
+                                current = { header: el, items: [] };
+                                return;
+                            }
+                            if (isFilterableMenuItem(el)) current.items.push(el);
+                        });
+                        groups.push(current);
+
+                        var visibleItems = 0;
+                        groups.forEach(function(group) {
+                            var headerText = '';
+                            if (group.header) {
+                                var headerEl = group.header.querySelector('.glean-menu__header-text');
+                                headerText = headerEl ? headerEl.textContent : '';
+                            }
+                            var headerMatch = fuzzyMatch(query, headerText);
+                            var anyVisible = false;
+
+                            group.items.forEach(function(item) {
+                                var match = headerMatch || fuzzyMatch(query, menuItemSearchText(item));
+                                setMenuNodeFiltered(item, !match);
+                                if (match) {
+                                    anyVisible = true;
+                                    visibleItems += 1;
+                                }
+                            });
+
+                            if (group.header) setMenuNodeFiltered(group.header, !anyVisible);
+                        });
+
+                        var emptyEl = menuEl.querySelector('.glean-menu__empty');
+                        if (emptyEl) {
+                            if (visibleItems) emptyEl.setAttribute('hidden', '');
+                            else emptyEl.removeAttribute('hidden');
+                        }
+                    }
+
+                    function firstVisibleMenuItem(menuEl) {
+                        if (!menuEl) return null;
+                        var items = menuEl.querySelectorAll('[data-glean-menu-action="chip"]');
+                        for (var i = 0; i < items.length; i++) {
+                            if (!items[i].classList.contains('is-menu-filtered')) return items[i];
+                        }
+                        return null;
                     }
 
                     function appendStreamText(text) {
@@ -2248,13 +2474,17 @@
                         if (icon && icon.getAttribute('src')) {
                             var chipIcon = document.createElement('img');
                             chipIcon.className = 'glean-composer-open__chip-icon glean-composer-open__chip-icon--source';
-                            if (icon.classList.contains('glean-menu__avatar')) {
-                                chipIcon.classList.add('glean-composer-open__chip-avatar');
-                            }
                             chipIcon.src = icon.getAttribute('src');
                             chipIcon.alt = '';
-                            chipIcon.width = 16;
-                            chipIcon.height = 16;
+                            if (icon.classList.contains('glean-menu__avatar')) {
+                                chipIcon.classList.add('glean-composer-open__chip-avatar');
+                                leading.classList.add('glean-composer-open__chip-leading--person');
+                                chipIcon.width = 16;
+                                chipIcon.height = 16;
+                            } else {
+                                chipIcon.width = 14;
+                                chipIcon.height = 14;
+                            }
                             leading.appendChild(chipIcon);
                         }
 
@@ -2273,12 +2503,17 @@
                         chipLabel.textContent = label;
                         chip.appendChild(chipLabel);
 
+                        chip.addEventListener('mousedown', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+
                         chip.addEventListener('click', function(e) {
                             e.preventDefault();
                             e.stopPropagation();
+                            focusWithoutScroll(input);
                             if (chip.parentNode) chip.parentNode.removeChild(chip);
                             syncContentState();
-                            if (input) input.focus();
                         });
 
                         return chip;
@@ -2294,7 +2529,7 @@
 
                         if (slashOpen) {
                             beforeText = slashPrefix || '';
-                            afterText = input ? input.value : '';
+                            afterText = '';
                             setSlashOpen(false, { restore: false });
                             if (prefixEl) {
                                 prefixEl.textContent = '';
@@ -2303,7 +2538,7 @@
                             slashPrefix = '';
                         } else if (atOpen) {
                             beforeText = atPrefix || '';
-                            afterText = input ? input.value : '';
+                            afterText = '';
                             setAtOpen(false, { restore: false });
                             if (prefixEl) {
                                 prefixEl.textContent = '';
@@ -2321,13 +2556,13 @@
                         streamEl.appendChild(chip);
                         if (input) {
                             input.value = afterText;
-                            input.focus();
+                            focusWithoutScroll(input);
                             input.setSelectionRange(0, 0);
                         }
 
                         syncContentState();
                         setMenuOpen(false);
-                        if (input) input.focus();
+                        focusWithoutScroll(input);
                     }
 
                     function triggerAtShortcut() {
@@ -2355,7 +2590,7 @@
                         setMenuOpen(false);
                         if (slashOpen) setSlashOpen(false, { restore: false });
                         setAtOpen(true);
-                        input.focus();
+                        focusWithoutScroll(input);
                         input.setSelectionRange(after.length, after.length);
                     }
 
@@ -2402,6 +2637,7 @@
                     if (plusBtn && menu) {
                         plusBtn.addEventListener('click', function(e) {
                             e.stopPropagation();
+                            dismissPlusTip();
                             if (slashOpen) setSlashOpen(false, { restore: true, keepSlash: true });
                             if (atOpen) setAtOpen(false, { restore: true, keepAt: true });
                             setMenuOpen(!menuOpen);
@@ -2442,6 +2678,7 @@
                         function selectSlashItem(e) {
                             var item = e.target.closest('[data-glean-menu-action="chip"]');
                             if (!item || !slashMenu.contains(item)) return;
+                            if (item.classList.contains('is-menu-filtered')) return;
                             e.preventDefault();
                             e.stopPropagation();
                             insertChip(item);
@@ -2449,6 +2686,9 @@
 
                         slashMenu.addEventListener('pointerdown', function(e) {
                             if (e.button != null && e.button !== 0) return;
+                            var item = e.target.closest('[data-glean-menu-action="chip"]');
+                            if (!item || !slashMenu.contains(item)) return;
+                            swallowFollowingClick();
                             selectSlashItem(e);
                         });
 
@@ -2462,6 +2702,7 @@
                         function selectAtItem(e) {
                             var item = e.target.closest('[data-glean-menu-action="chip"]');
                             if (!item || !atMenu.contains(item)) return;
+                            if (item.classList.contains('is-menu-filtered')) return;
                             e.preventDefault();
                             e.stopPropagation();
                             insertChip(item);
@@ -2469,6 +2710,9 @@
 
                         atMenu.addEventListener('pointerdown', function(e) {
                             if (e.button != null && e.button !== 0) return;
+                            var item = e.target.closest('[data-glean-menu-action="chip"]');
+                            if (!item || !atMenu.contains(item)) return;
+                            swallowFollowingClick();
                             selectAtItem(e);
                         });
 
@@ -2479,7 +2723,10 @@
                     }
 
                     document.addEventListener('click', function(e) {
-                        if (!root.contains(e.target)) {
+                        var target = e.target;
+                        if (target && target.nodeType !== 1) target = target.parentElement;
+                        if (!target || !target.isConnected) return;
+                        if (!root.contains(target)) {
                             if (menuOpen) setMenuOpen(false);
                             if (slashOpen) setSlashOpen(false, { restore: true, keepSlash: true });
                             if (atOpen) setAtOpen(false, { restore: true, keepAt: true });
@@ -2490,32 +2737,52 @@
                         if (e.key !== 'Escape') return;
                         if (atOpen) {
                             setAtOpen(false, { restore: true, keepAt: true });
-                            if (input) input.focus();
+                            focusWithoutScroll(input);
                             return;
                         }
                         if (slashOpen) {
                             setSlashOpen(false, { restore: true, keepSlash: true });
-                            if (input) input.focus();
+                            focusWithoutScroll(input);
                             return;
                         }
                         if (menuOpen) {
                             setMenuOpen(false);
-                            if (plusBtn) plusBtn.focus();
+                            focusWithoutScroll(plusBtn);
                         }
                     });
 
                     if (input) {
                         input.addEventListener('input', function() {
-                            if (!slashOpen && !atOpen) {
+                            if (slashOpen || atOpen) {
+                                if (endCommandIfSpaced()) {
+                                    syncContentState();
+                                    return;
+                                }
+                                syncCommandQuery();
+                                if (slashOpen) {
+                                    filterCommandMenu(slashMenu, input.value);
+                                    positionSlashMenu();
+                                } else {
+                                    filterCommandMenu(atMenu, input.value);
+                                    positionAtMenu();
+                                }
+                            } else {
                                 activateSlashFromInput();
                                 activateAtFromInput();
                             }
                             syncContentState();
-                            if (slashOpen) positionSlashMenu();
-                            if (atOpen) positionAtMenu();
                         });
 
                         input.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' && (slashOpen || atOpen)) {
+                                var menuEl = slashOpen ? slashMenu : atMenu;
+                                var match = firstVisibleMenuItem(menuEl);
+                                if (match) {
+                                    e.preventDefault();
+                                    insertChip(match);
+                                }
+                                return;
+                            }
                             if (e.key !== 'Backspace' || input.value) return;
                             if (slashOpen) {
                                 e.preventDefault();
