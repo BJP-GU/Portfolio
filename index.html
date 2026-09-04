@@ -557,41 +557,33 @@
                                                     <div class="glean-composer-open-fit__inner">
                                                         <div class="glean-composer-open has-plus-tip" data-glean-composer-proto role="group" aria-label="Glean composer prototype">
                                                             <div class="glean-composer-open__composer">
-                                                                <div class="glean-composer-open__left">
-                                                                    <div class="glean-composer-open__plus">
+                                                                <div class="glean-composer-open__plus">
                                                                     <button class="glean-composer-open__plus-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="glean-composer-plus-menu" aria-haspopup="menu" aria-describedby="glean-composer-plus-tip">
                                                                         <svg class="glean-composer-open__svg glean-composer-open__svg--plus" width="11.5" height="11.5" viewBox="0 0 11.5 11.5" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
                                                                             <path d="M5.75 0C6.16421 0 6.5 0.335786 6.5 0.75V5H10.75C11.1642 5 11.5 5.33579 11.5 5.75C11.5 6.16421 11.1642 6.5 10.75 6.5H6.5V10.75C6.5 11.1642 6.16421 11.5 5.75 11.5C5.33579 11.5 5 11.1642 5 10.75V6.5H0.75C0.335786 6.5 0 6.16421 0 5.75C0 5.33579 0.335786 5 0.75 5H5V0.75C5 0.335786 5.33579 0 5.75 0Z" fill="#1B1B1B"/>
                                                                         </svg>
                                                                     </button>
                                                                     <span class="glean-composer-open__plus-tip" id="glean-composer-plus-tip" role="tooltip">try it out!</span>
-                                                                    </div>
-                                                                    <div class="glean-composer-open__field">
-                                                                        <div class="glean-composer-open__stream" aria-live="polite"></div>
-                                                                        <span class="glean-composer-open__prefix" hidden></span>
-                                                                        <span class="glean-composer-open__slash-token" hidden><span class="glean-composer-open__command-mark">/</span></span>
-                                                                        <span class="glean-composer-open__at-token" hidden><span class="glean-composer-open__command-mark">@</span></span>
-                                                                        <div class="glean-composer-open__input-wrap">
-                                                                            <div class="glean-composer-open__hints" aria-hidden="true">
-                                                                                <div class="glean-composer-open__hints-viewport">
-                                                                                    <div class="glean-composer-open__hints-track">
-                                                                                        <div class="glean-composer-open__hint">
-                                                                                            <span class="glean-composer-open__hint-text">Create, ask, or search anything</span>
-                                                                                        </div>
-                                                                                        <div class="glean-composer-open__hint">
-                                                                                            <span class="glean-composer-open__hint-key">/</span>
-                                                                                            <span class="glean-composer-open__hint-text">for skills, agents, or to create with Glean</span>
-                                                                                        </div>
-                                                                                        <div class="glean-composer-open__hint">
-                                                                                            <span class="glean-composer-open__hint-key">@</span>
-                                                                                            <span class="glean-composer-open__hint-text">to tag people, docs, or projects</span>
-                                                                                        </div>
-                                                                                    </div>
+                                                                </div>
+                                                                <div class="glean-composer-open__field">
+                                                                    <div class="glean-composer-open__hints" aria-hidden="true">
+                                                                        <div class="glean-composer-open__hints-viewport">
+                                                                            <div class="glean-composer-open__hints-track">
+                                                                                <div class="glean-composer-open__hint">
+                                                                                    <span class="glean-composer-open__hint-text">Create, ask, or search anything</span>
+                                                                                </div>
+                                                                                <div class="glean-composer-open__hint">
+                                                                                    <span class="glean-composer-open__hint-key">/</span>
+                                                                                    <span class="glean-composer-open__hint-text">for skills, agents, or to create with Glean</span>
+                                                                                </div>
+                                                                                <div class="glean-composer-open__hint">
+                                                                                    <span class="glean-composer-open__hint-key">@</span>
+                                                                                    <span class="glean-composer-open__hint-text">to tag people, docs, or projects</span>
                                                                                 </div>
                                                                             </div>
-                                                                            <input class="glean-composer-open__input" type="text" aria-label="Ask Glean" autocomplete="off" spellcheck="false" size="1">
                                                                         </div>
                                                                     </div>
+                                                                    <div class="glean-composer-open__editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Ask Glean" spellcheck="false"></div>
                                                                     <span class="visually-hidden">Create, ask, or search anything. Type / for skills, agents, or to create with Glean. Type @ to tag people, docs, or projects.</span>
                                                                 </div>
                                                                 <div class="glean-composer-open__right">
@@ -2007,12 +1999,14 @@
 
             // =============================================
             // GLEAN COMPOSER PROTOTYPE
-            // Zero-state hint reel, plus menu, slash menu.
+            // Zero-state hint reel, plus/slash/@ menus,
+            // contenteditable field with selectable chips.
             // =============================================
             (function initGleanComposerPrototype() {
                 var HOLD_MS = 2800;
                 var ROLL_MS = 420;
                 var MENU_GAP = 4;
+                var CHIP_MARK = '\uFFFC';
                 var roots = document.querySelectorAll('[data-glean-composer-proto]');
                 if (!roots.length) return;
 
@@ -2021,29 +2015,28 @@
                     var menu = root.querySelector('.glean-composer-open__menu');
                     var slashMenu = root.querySelector('.glean-composer-open__slash-menu');
                     var atMenu = root.querySelector('.glean-composer-open__at-menu');
-                    var input = root.querySelector('.glean-composer-open__input');
-                    var streamEl = root.querySelector('.glean-composer-open__stream');
-                    var chipsEl = streamEl; // inline stream holds text + chips in sentence order
-                    var prefixEl = root.querySelector('.glean-composer-open__prefix');
-                    var slashToken = root.querySelector('.glean-composer-open__slash-token');
-                    var atToken = root.querySelector('.glean-composer-open__at-token');
+                    var editor = root.querySelector('.glean-composer-open__editor');
                     var fieldEl = root.querySelector('.glean-composer-open__field');
-                    var inputWrap = root.querySelector('.glean-composer-open__input-wrap');
+                    var composerEl = root.querySelector('.glean-composer-open__composer');
+                    var fitEl = root.closest('.glean-composer-open-fit');
                     var ctaBtn = root.querySelector('.glean-composer-open__cta');
                     var track = root.querySelector('.glean-composer-open__hints-track');
                     var viewport = root.querySelector('.glean-composer-open__hints-viewport');
                     var menuOpen = false;
                     var slashOpen = false;
                     var atOpen = false;
-                    var slashPrefix = '';
-                    var atPrefix = '';
+                    var slashTriggerIndex = -1;
+                    var atTriggerIndex = -1;
                     var hasValue = false;
                     var hasChips = false;
+                    var isMultiline = false;
+                    var layoutFrame = null;
                     var timer = null;
                     var rolling = false;
                     var visible = false;
                     var index = 0;
                     var itemCount = 0;
+                    var suppressInput = false;
 
                     function focusWithoutScroll(el) {
                         if (!el) return;
@@ -2073,6 +2066,7 @@
                     function dismissPlusTip() {
                         root.classList.remove('has-plus-tip');
                         if (plusBtn) plusBtn.removeAttribute('aria-describedby');
+                        scheduleLayoutSync();
                     }
 
                     function shortcutOpen() {
@@ -2081,6 +2075,202 @@
 
                     function canRotate() {
                         return !!(track && visible && !hasValue && !hasChips && !shortcutOpen() && !prefersReducedMotion());
+                    }
+
+                    function selectionInEditor() {
+                        var sel = window.getSelection();
+                        if (!sel || !sel.rangeCount || !editor) return null;
+                        var range = sel.getRangeAt(0);
+                        if (!editor.contains(range.commonAncestorContainer)) return null;
+                        return sel;
+                    }
+
+                    function placeCaretAtEnd() {
+                        if (!editor) return;
+                        focusWithoutScroll(editor);
+                        var sel = window.getSelection();
+                        if (!sel) return;
+                        var range = document.createRange();
+                        range.selectNodeContents(editor);
+                        range.collapse(false);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+
+                    function placeCaretAfterNode(node) {
+                        if (!editor || !node) return;
+                        focusWithoutScroll(editor);
+                        var sel = window.getSelection();
+                        if (!sel) return;
+                        var range = document.createRange();
+                        range.setStartAfter(node);
+                        range.collapse(true);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+
+                    function serializeEditor(upToCaret) {
+                        var text = '';
+                        var caretIndex = 0;
+                        var foundCaret = !upToCaret;
+                        var sel = upToCaret ? selectionInEditor() : null;
+                        var caretNode = null;
+                        var caretOffset = 0;
+                        if (sel) {
+                            caretNode = sel.focusNode;
+                            caretOffset = sel.focusOffset;
+                        }
+
+                        function walk(node) {
+                            if (foundCaret && upToCaret) return;
+                            if (node.nodeType === 3) {
+                                var value = node.nodeValue || '';
+                                if (upToCaret && node === caretNode) {
+                                    text += value.slice(0, caretOffset);
+                                    caretIndex = text.length;
+                                    foundCaret = true;
+                                    return;
+                                }
+                                text += value;
+                                return;
+                            }
+                            if (node.nodeType !== 1) return;
+                            if (node.classList && node.classList.contains('glean-composer-open__chip')) {
+                                if (upToCaret && (node === caretNode || node.contains(caretNode))) {
+                                    text += CHIP_MARK;
+                                    caretIndex = text.length;
+                                    foundCaret = true;
+                                    return;
+                                }
+                                text += CHIP_MARK;
+                                return;
+                            }
+                            if (node === editor && upToCaret && caretNode === editor) {
+                                var children = Array.prototype.slice.call(editor.childNodes);
+                                var limit = Math.min(caretOffset, children.length);
+                                for (var i = 0; i < limit; i++) walk(children[i]);
+                                caretIndex = text.length;
+                                foundCaret = true;
+                                return;
+                            }
+                            var child = node.firstChild;
+                            while (child) {
+                                walk(child);
+                                if (foundCaret && upToCaret) return;
+                                child = child.nextSibling;
+                            }
+                        }
+
+                        if (editor) walk(editor);
+                        if (!upToCaret) caretIndex = text.length;
+                        return { text: text, caret: caretIndex };
+                    }
+
+                    function typedText() {
+                        return serializeEditor(false).text.replace(new RegExp(CHIP_MARK, 'g'), '');
+                    }
+
+                    function editorIsEmpty() {
+                        if (!editor) return true;
+                        if (editor.querySelector('.glean-composer-open__chip')) return false;
+                        return !typedText().replace(/\u00a0/g, ' ').trim();
+                    }
+
+                    function deleteSerializedRange(start, end) {
+                        if (!editor || start >= end) return;
+                        var nodes = [];
+                        var pos = 0;
+
+                        function walk(node) {
+                            if (node.nodeType === 3) {
+                                var value = node.nodeValue || '';
+                                var next = pos + value.length;
+                                if (end > pos && start < next) {
+                                    nodes.push({
+                                        node: node,
+                                        start: Math.max(0, start - pos),
+                                        end: Math.min(value.length, end - pos)
+                                    });
+                                }
+                                pos = next;
+                                return;
+                            }
+                            if (node.nodeType !== 1) return;
+                            if (node.classList && node.classList.contains('glean-composer-open__chip')) {
+                                if (end > pos && start <= pos) {
+                                    nodes.push({ node: node, chip: true });
+                                }
+                                pos += 1;
+                                return;
+                            }
+                            var child = node.firstChild;
+                            while (child) {
+                                var nextSibling = child.nextSibling;
+                                walk(child);
+                                child = nextSibling;
+                            }
+                        }
+
+                        walk(editor);
+                        if (!nodes.length) return;
+
+                        var range = document.createRange();
+                        var first = nodes[0];
+                        var last = nodes[nodes.length - 1];
+                        if (first.chip) range.setStartBefore(first.node);
+                        else range.setStart(first.node, first.start);
+                        if (last.chip) range.setEndAfter(last.node);
+                        else range.setEnd(last.node, last.end);
+
+                        var sel = window.getSelection();
+                        try {
+                            range.deleteContents();
+                            if (sel) {
+                                sel.removeAllRanges();
+                                var caret = document.createRange();
+                                caret.setStart(range.startContainer, range.startOffset);
+                                caret.collapse(true);
+                                sel.addRange(caret);
+                            }
+                        } catch (err) {}
+                    }
+
+                    function insertNodeAtCaret(node) {
+                        if (!editor || !node) return;
+                        focusWithoutScroll(editor);
+                        var sel = selectionInEditor();
+                        var range;
+                        if (sel && sel.rangeCount) {
+                            range = sel.getRangeAt(0);
+                            range.deleteContents();
+                        } else {
+                            range = document.createRange();
+                            range.selectNodeContents(editor);
+                            range.collapse(false);
+                        }
+                        range.insertNode(node);
+                        // Ensure a text anchor after chips so caret/selection stay editable.
+                        if (!node.nextSibling || node.nextSibling.nodeType !== 3) {
+                            node.parentNode.insertBefore(document.createTextNode(''), node.nextSibling);
+                        }
+                        range.setStartAfter(node);
+                        range.collapse(true);
+                        if (sel) {
+                            sel.removeAllRanges();
+                            sel.addRange(range);
+                        }
+                    }
+
+                    function normalizeEditor() {
+                        if (!editor) return;
+                        // Remove leftover empty elements browsers insert.
+                        Array.prototype.slice.call(editor.querySelectorAll('br')).forEach(function(br, i, all) {
+                            if (all.length === 1 && editorIsEmpty()) return;
+                            if (!br.nextSibling && !br.previousSibling) return;
+                        });
+                        if (!editor.childNodes.length) {
+                            editor.appendChild(document.createTextNode(''));
+                        }
                     }
 
                     function setMenuOpen(open) {
@@ -2095,141 +2285,136 @@
                             else menu.setAttribute('hidden', '');
                         }
                         if (menuOpen) {
-                            if (slashOpen) setSlashOpen(false, { restore: true });
-                            if (atOpen) setAtOpen(false, { restore: true });
+                            if (slashOpen) setSlashOpen(false);
+                            if (atOpen) setAtOpen(false);
                         }
+                        syncShellHeight();
                     }
 
-                    function positionSlashMenu() {
-                        if (!slashMenu || !slashToken || slashToken.hasAttribute('hidden')) return;
+                    function positionMenus() {
+                        var composerHeight = composerEl ? composerEl.offsetHeight : 56;
+                        var top = (composerHeight + MENU_GAP) + 'px';
+                        if (menu) menu.style.top = top;
+                        if (slashOpen) positionSlashMenu(composerHeight);
+                        if (atOpen) positionAtMenu(composerHeight);
+                    }
+
+                    function caretClientRect() {
+                        var sel = selectionInEditor();
+                        if (!sel || !sel.rangeCount) return null;
+                        var range = sel.getRangeAt(0).cloneRange();
+                        range.collapse(true);
+                        var rects = range.getClientRects();
+                        if (rects.length) return rects[0];
+                        return range.getBoundingClientRect();
+                    }
+
+                    function positionSlashMenu(composerHeight) {
+                        if (!slashMenu) return;
                         var rootRect = root.getBoundingClientRect();
-                        var tokenRect = slashToken.getBoundingClientRect();
+                        var caretRect = caretClientRect();
                         var scale = rootRect.width / root.offsetWidth || 1;
-                        var left = (tokenRect.left - rootRect.left) / scale;
+                        var left = caretRect ? (caretRect.left - rootRect.left) / scale : 12;
                         var maxLeft = Math.max(0, root.offsetWidth - slashMenu.offsetWidth);
-                        slashMenu.style.top = (56 + MENU_GAP) + 'px';
+                        var top = ((typeof composerHeight === 'number' ? composerHeight : (composerEl ? composerEl.offsetHeight : 56)) + MENU_GAP);
+                        slashMenu.style.top = top + 'px';
                         slashMenu.style.left = Math.max(0, Math.min(left, maxLeft)) + 'px';
                     }
 
-                    function positionAtMenu() {
+                    function positionAtMenu(composerHeight) {
                         if (!atMenu) return;
-                        // Always render below the composer, left-aligned like the + menu.
-                        atMenu.style.top = (56 + MENU_GAP) + 'px';
+                        var top = ((typeof composerHeight === 'number' ? composerHeight : (composerEl ? composerEl.offsetHeight : 56)) + MENU_GAP);
+                        atMenu.style.top = top + 'px';
                         atMenu.style.left = '12px';
                     }
 
-                    function syncCommandQuery() {
-                        if (!inputWrap) return;
-                        inputWrap.setAttribute('data-query', input ? input.value : '');
-                    }
+                    function syncShellHeight() {
+                        var composerHeight = composerEl ? composerEl.offsetHeight : 56;
+                        var shellHeight = composerHeight;
 
-                    function restoreInputFocus(rangeStart, rangeEnd) {
-                        if (!input) return;
-                        focusWithoutScroll(input);
-                        if (rangeStart == null) return;
-                        var max = input.value.length;
-                        var start = Math.max(0, Math.min(rangeStart, max));
-                        var end = rangeEnd == null ? start : Math.max(0, Math.min(rangeEnd, max));
-                        input.setSelectionRange(start, end);
-                    }
-
-                    function placeInputInToken(token) {
-                        if (!inputWrap || !token) return;
-                        var start = input ? input.selectionStart : null;
-                        var end = input ? input.selectionEnd : null;
-                        if (inputWrap.parentNode !== token) token.appendChild(inputWrap);
-                        syncCommandQuery();
-                        restoreInputFocus(start, end);
-                    }
-
-                    function placeInputInField() {
-                        if (!inputWrap || !fieldEl) return;
-                        var start = input ? input.selectionStart : null;
-                        var end = input ? input.selectionEnd : null;
-                        if (inputWrap.parentNode !== fieldEl) fieldEl.appendChild(inputWrap);
-                        inputWrap.removeAttribute('data-query');
-                        restoreInputFocus(start, end);
-                    }
-
-                    function endCommandIfSpaced() {
-                        if (!input || !/\s/.test(input.value)) return false;
-                        if (slashOpen) {
-                            setSlashOpen(false, { restore: true, keepSlash: true });
-                            return true;
+                        if (menuOpen || slashOpen || atOpen) {
+                            shellHeight = composerHeight + MENU_GAP + 486;
+                        } else if (root.classList.contains('has-plus-tip')) {
+                            shellHeight = Math.max(composerHeight + 40, isMultiline ? composerHeight + 40 : 96);
                         }
-                        if (atOpen) {
-                            setAtOpen(false, { restore: true, keepAt: true });
-                            return true;
+
+                        root.style.setProperty('--glean-composer-shell-height', shellHeight + 'px');
+                        if (fitEl) {
+                            fitEl.style.setProperty('--glean-composer-open-design-height', shellHeight + 'px');
                         }
+                        positionMenus();
+                    }
+
+                    function measureNeedsMultiline() {
+                        if (!fieldEl || !editor) return false;
+                        var line = hintHeight();
+                        if (editor.scrollWidth > editor.clientWidth + 1) return true;
+                        if (editor.scrollHeight > line + 2) return true;
+                        if (fieldEl.scrollWidth > fieldEl.clientWidth + 1) return true;
+                        if (fieldEl.scrollHeight > line + 2) return true;
                         return false;
                     }
 
-                    function setSlashOpen(open, options) {
-                        var opts = options || {};
+                    function syncMultilineLayout() {
+                        if (!fieldEl || !composerEl) {
+                            syncShellHeight();
+                            return;
+                        }
+                        root.classList.remove('is-multiline');
+                        isMultiline = false;
+                        void fieldEl.offsetWidth;
+                        isMultiline = measureNeedsMultiline();
+                        root.classList.toggle('is-multiline', isMultiline);
+                        syncShellHeight();
+                    }
+
+                    function scheduleLayoutSync() {
+                        if (layoutFrame) cancelAnimationFrame(layoutFrame);
+                        layoutFrame = requestAnimationFrame(function() {
+                            layoutFrame = null;
+                            syncMultilineLayout();
+                        });
+                    }
+
+                    function commandQuery() {
+                        var serial = serializeEditor(true);
+                        var text = serial.text;
+                        var caret = serial.caret;
+                        var triggerIndex = slashOpen ? slashTriggerIndex : atTriggerIndex;
+                        if (triggerIndex < 0 || triggerIndex >= caret) return '';
+                        return text.slice(triggerIndex + 1, caret).replace(new RegExp(CHIP_MARK, 'g'), '');
+                    }
+
+                    function setSlashOpen(open) {
                         slashOpen = !!open;
                         root.classList.toggle('is-slash-open', slashOpen);
-
                         if (slashOpen) {
                             if (menuOpen) setMenuOpen(false);
-                            if (atOpen) setAtOpen(false, { restore: false });
-                            if (slashToken) slashToken.removeAttribute('hidden');
+                            if (atOpen) setAtOpen(false);
                             if (slashMenu) slashMenu.removeAttribute('hidden');
-                            placeInputInToken(slashToken);
-                            filterCommandMenu(slashMenu, input ? input.value : '');
-                            requestAnimationFrame(function() {
-                                positionSlashMenu();
-                            });
+                            filterCommandMenu(slashMenu, commandQuery());
+                            requestAnimationFrame(function() { positionSlashMenu(); });
                         } else {
                             resetMenuFilter(slashMenu);
                             if (slashMenu) slashMenu.setAttribute('hidden', '');
-                            if (!atOpen) placeInputInField();
-                            if (slashToken) slashToken.setAttribute('hidden', '');
-                            if (prefixEl) {
-                                if (opts.restore && (slashPrefix || (input && input.value))) {
-                                    var query = input ? input.value : '';
-                                    if (input) input.value = slashPrefix + (opts.keepSlash ? '/' : '') + query;
-                                }
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
-                            } else if (opts.restore && input) {
-                                input.value = slashPrefix + (opts.keepSlash ? '/' : '') + input.value;
-                            }
-                            slashPrefix = '';
+                            slashTriggerIndex = -1;
                         }
                         syncContentState();
                     }
 
-                    function setAtOpen(open, options) {
-                        var opts = options || {};
+                    function setAtOpen(open) {
                         atOpen = !!open;
                         root.classList.toggle('is-at-open', atOpen);
-
                         if (atOpen) {
                             if (menuOpen) setMenuOpen(false);
-                            if (slashOpen) setSlashOpen(false, { restore: false });
-                            if (atToken) atToken.removeAttribute('hidden');
+                            if (slashOpen) setSlashOpen(false);
                             if (atMenu) atMenu.removeAttribute('hidden');
-                            placeInputInToken(atToken);
-                            filterCommandMenu(atMenu, input ? input.value : '');
-                            requestAnimationFrame(function() {
-                                positionAtMenu();
-                            });
+                            filterCommandMenu(atMenu, commandQuery());
+                            requestAnimationFrame(function() { positionAtMenu(); });
                         } else {
                             resetMenuFilter(atMenu);
                             if (atMenu) atMenu.setAttribute('hidden', '');
-                            if (!slashOpen) placeInputInField();
-                            if (atToken) atToken.setAttribute('hidden', '');
-                            if (prefixEl) {
-                                if (opts.restore && (atPrefix || (input && input.value))) {
-                                    var query = input ? input.value : '';
-                                    if (input) input.value = atPrefix + (opts.keepAt ? '@' : '') + query;
-                                }
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
-                            } else if (opts.restore && input) {
-                                input.value = atPrefix + (opts.keepAt ? '@' : '') + input.value;
-                            }
-                            atPrefix = '';
+                            atTriggerIndex = -1;
                         }
                         syncContentState();
                     }
@@ -2239,71 +2424,54 @@
                         var pos = typeof caret === 'number' ? caret : value.length;
                         for (var i = pos - 1; i >= 0; i--) {
                             if (value.charAt(i) !== ch) continue;
-                            if (i === 0 || /\s/.test(value.charAt(i - 1))) return i;
+                            if (i === 0 || /\s/.test(value.charAt(i - 1)) || value.charAt(i - 1) === CHIP_MARK) return i;
                             return -1;
                         }
                         return -1;
                     }
 
-                    function activateSlashFromInput() {
-                        if (!input || slashOpen || atOpen) return;
-                        var value = input.value;
-                        var caret = input.selectionStart == null ? value.length : input.selectionStart;
-                        var slashIndex = findTriggerChar(value, caret, '/');
+                    function activateSlashFromEditor() {
+                        if (!editor || slashOpen || atOpen) return;
+                        var serial = serializeEditor(true);
+                        var slashIndex = findTriggerChar(serial.text, serial.caret, '/');
                         if (slashIndex < 0) return;
-                        if (caret < slashIndex + 1) return;
-                        var after = value.slice(slashIndex + 1);
-                        if (/\s/.test(after)) return;
-
-                        slashPrefix = value.slice(0, slashIndex);
-                        if (prefixEl) {
-                            if (slashPrefix) {
-                                prefixEl.textContent = slashPrefix;
-                                prefixEl.removeAttribute('hidden');
-                            } else {
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
-                            }
-                        }
-                        input.value = after;
+                        var after = serial.text.slice(slashIndex + 1, serial.caret);
+                        if (/\s/.test(after) || after.indexOf(CHIP_MARK) !== -1) return;
+                        slashTriggerIndex = slashIndex;
                         setSlashOpen(true);
-                        focusWithoutScroll(input);
-                        input.setSelectionRange(after.length, after.length);
                     }
 
-                    function activateAtFromInput() {
-                        if (!input || atOpen || slashOpen) return;
-                        var value = input.value;
-                        var caret = input.selectionStart == null ? value.length : input.selectionStart;
-                        var atIndex = findTriggerChar(value, caret, '@');
+                    function activateAtFromEditor() {
+                        if (!editor || atOpen || slashOpen) return;
+                        var serial = serializeEditor(true);
+                        var atIndex = findTriggerChar(serial.text, serial.caret, '@');
                         if (atIndex < 0) return;
-                        if (caret < atIndex + 1) return;
-                        var after = value.slice(atIndex + 1);
-                        if (/\s/.test(after)) return;
-
-                        atPrefix = value.slice(0, atIndex);
-                        if (prefixEl) {
-                            if (atPrefix) {
-                                prefixEl.textContent = atPrefix;
-                                prefixEl.removeAttribute('hidden');
-                            } else {
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
-                            }
-                        }
-                        input.value = after;
+                        var after = serial.text.slice(atIndex + 1, serial.caret);
+                        if (/\s/.test(after) || after.indexOf(CHIP_MARK) !== -1) return;
+                        atTriggerIndex = atIndex;
                         setAtOpen(true);
-                        focusWithoutScroll(input);
-                        input.setSelectionRange(after.length, after.length);
+                    }
+
+                    function endCommandIfSpaced() {
+                        var query = commandQuery();
+                        if (!/\s/.test(query)) return false;
+                        if (slashOpen) {
+                            setSlashOpen(false);
+                            return true;
+                        }
+                        if (atOpen) {
+                            setAtOpen(false);
+                            return true;
+                        }
+                        return false;
                     }
 
                     function syncContentState() {
-                        var hasStream = !!(streamEl && streamEl.children.length);
-                        hasValue = !!(input && input.value.length) || shortcutOpen() || !!(prefixEl && prefixEl.textContent) || hasStream;
-                        hasChips = !!(streamEl && streamEl.querySelector('.glean-composer-open__chip'));
-                        var hasContent = hasValue || hasChips || shortcutOpen() || hasStream;
-                        root.classList.toggle('is-typing', !!(input && input.value.length) || shortcutOpen() || !!(prefixEl && prefixEl.textContent) || hasStream);
-                        root.classList.toggle('has-chips', hasChips || hasStream);
+                        hasChips = !!(editor && editor.querySelector('.glean-composer-open__chip'));
+                        hasValue = !editorIsEmpty() || shortcutOpen();
+                        var hasContent = hasValue || hasChips || shortcutOpen();
+                        root.classList.toggle('is-typing', !editorIsEmpty() || shortcutOpen());
+                        root.classList.toggle('has-chips', hasChips);
                         root.classList.toggle('has-content', hasContent);
                         if (ctaBtn) {
                             ctaBtn.setAttribute('data-cta', hasContent ? 'ask' : 'voice');
@@ -2311,6 +2479,7 @@
                         }
                         if (hasContent) clearTimer();
                         else scheduleNext();
+                        scheduleLayoutSync();
                     }
 
                     function chipLabelFor(item) {
@@ -2397,33 +2566,26 @@
                         children.forEach(function(el) {
                             if (el.classList.contains('glean-menu__empty')) return;
                             if (el.classList.contains('glean-menu__item--header')) {
-                                groups.push(current);
+                                if (current.header || current.items.length) groups.push(current);
                                 current = { header: el, items: [] };
                                 return;
                             }
                             if (isFilterableMenuItem(el)) current.items.push(el);
+                            else setMenuNodeFiltered(el, false);
                         });
-                        groups.push(current);
+                        if (current.header || current.items.length) groups.push(current);
 
                         var visibleItems = 0;
                         groups.forEach(function(group) {
-                            var headerText = '';
-                            if (group.header) {
-                                var headerEl = group.header.querySelector('.glean-menu__header-text');
-                                headerText = headerEl ? headerEl.textContent : '';
-                            }
-                            var headerMatch = fuzzyMatch(query, headerText);
                             var anyVisible = false;
-
                             group.items.forEach(function(item) {
-                                var match = headerMatch || fuzzyMatch(query, menuItemSearchText(item));
+                                var match = fuzzyMatch(query, menuItemSearchText(item));
                                 setMenuNodeFiltered(item, !match);
                                 if (match) {
                                     anyVisible = true;
                                     visibleItems += 1;
                                 }
                             });
-
                             if (group.header) setMenuNodeFiltered(group.header, !anyVisible);
                         });
 
@@ -2443,29 +2605,17 @@
                         return null;
                     }
 
-                    function appendStreamText(text) {
-                        if (!streamEl || !text) return;
-                        var last = streamEl.lastElementChild;
-                        if (last && last.classList.contains('glean-composer-open__text')) {
-                            last.textContent += text;
-                            return;
-                        }
-                        var span = document.createElement('span');
-                        span.className = 'glean-composer-open__text';
-                        span.textContent = text;
-                        streamEl.appendChild(span);
-                    }
-
                     function buildChip(item) {
                         var icon = item.querySelector('.glean-menu__icon, .glean-menu__avatar');
                         var label = chipLabelFor(item);
                         if (!label) return null;
 
-                        var chip = document.createElement('button');
-                        chip.type = 'button';
+                        var chip = document.createElement('span');
                         chip.className = 'glean-composer-open__chip';
                         chip.setAttribute('data-chip', label);
-                        chip.setAttribute('aria-label', 'Remove ' + label);
+                        chip.setAttribute('aria-label', label);
+                        chip.setAttribute('contenteditable', 'false');
+                        chip.setAttribute('role', 'img');
 
                         var leading = document.createElement('span');
                         leading.className = 'glean-composer-open__chip-leading';
@@ -2476,6 +2626,7 @@
                             chipIcon.className = 'glean-composer-open__chip-icon glean-composer-open__chip-icon--source';
                             chipIcon.src = icon.getAttribute('src');
                             chipIcon.alt = '';
+                            chipIcon.draggable = false;
                             if (icon.classList.contains('glean-menu__avatar')) {
                                 chipIcon.classList.add('glean-composer-open__chip-avatar');
                                 leading.classList.add('glean-composer-open__chip-leading--person');
@@ -2494,8 +2645,8 @@
                         removeIcon.alt = '';
                         removeIcon.width = 16;
                         removeIcon.height = 16;
+                        removeIcon.draggable = false;
                         leading.appendChild(removeIcon);
-
                         chip.appendChild(leading);
 
                         var chipLabel = document.createElement('span');
@@ -2504,15 +2655,23 @@
                         chip.appendChild(chipLabel);
 
                         chip.addEventListener('mousedown', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
+                            chip._pointerDown = { x: e.clientX, y: e.clientY };
                         });
 
                         chip.addEventListener('click', function(e) {
+                            var down = chip._pointerDown;
+                            chip._pointerDown = null;
+                            if (down && (Math.abs(e.clientX - down.x) > 4 || Math.abs(e.clientY - down.y) > 4)) {
+                                return;
+                            }
+                            var onRemove = e.target.closest('.glean-composer-open__chip-icon--remove')
+                                || e.target.closest('.glean-composer-open__chip-leading');
+                            if (!onRemove) return;
                             e.preventDefault();
                             e.stopPropagation();
-                            focusWithoutScroll(input);
                             if (chip.parentNode) chip.parentNode.removeChild(chip);
+                            normalizeEditor();
+                            placeCaretAtEnd();
                             syncContentState();
                         });
 
@@ -2520,78 +2679,108 @@
                     }
 
                     function insertChip(item) {
-                        if (!streamEl) return;
+                        if (!editor) return;
                         var chip = buildChip(item);
                         if (!chip) return;
 
-                        var beforeText = '';
-                        var afterText = '';
-
-                        if (slashOpen) {
-                            beforeText = slashPrefix || '';
-                            afterText = '';
-                            setSlashOpen(false, { restore: false });
-                            if (prefixEl) {
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
+                        suppressInput = true;
+                        if (slashOpen || atOpen) {
+                            var triggerIndex = slashOpen ? slashTriggerIndex : atTriggerIndex;
+                            var serial = serializeEditor(true);
+                            if (triggerIndex >= 0 && serial.caret > triggerIndex) {
+                                deleteSerializedRange(triggerIndex, serial.caret);
                             }
-                            slashPrefix = '';
-                        } else if (atOpen) {
-                            beforeText = atPrefix || '';
-                            afterText = '';
-                            setAtOpen(false, { restore: false });
-                            if (prefixEl) {
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
-                            }
-                            atPrefix = '';
-                        } else if (input) {
-                            var value = input.value;
-                            var caret = input.selectionStart == null ? value.length : input.selectionStart;
-                            beforeText = value.slice(0, caret);
-                            afterText = value.slice(caret);
+                            setSlashOpen(false);
+                            setAtOpen(false);
                         }
 
-                        appendStreamText(beforeText);
-                        streamEl.appendChild(chip);
-                        if (input) {
-                            input.value = afterText;
-                            focusWithoutScroll(input);
-                            input.setSelectionRange(0, 0);
-                        }
+                        insertNodeAtCaret(chip);
+                        // trailing space after chip for natural typing
+                        var space = document.createTextNode(' ');
+                        insertNodeAtCaret(space);
+                        placeCaretAfterNode(space);
+                        suppressInput = false;
 
+                        normalizeEditor();
                         syncContentState();
                         setMenuOpen(false);
-                        focusWithoutScroll(input);
+                        focusWithoutScroll(editor);
                     }
 
                     function triggerAtShortcut() {
-                        if (!input) return;
-                        var value = input.value;
-                        var caret = input.selectionStart == null ? value.length : input.selectionStart;
-                        var before = value.slice(0, caret);
-                        var after = value.slice(caret);
-
-                        // Match typing "@": keep preceding sentence text as the prefix.
-                        if (before && !/\s$/.test(before)) before += ' ';
-
-                        atPrefix = before;
-                        if (prefixEl) {
-                            if (atPrefix) {
-                                prefixEl.textContent = atPrefix;
-                                prefixEl.removeAttribute('hidden');
-                            } else {
-                                prefixEl.textContent = '';
-                                prefixEl.setAttribute('hidden', '');
-                            }
+                        if (!editor) return;
+                        focusWithoutScroll(editor);
+                        var serial = serializeEditor(true);
+                        var before = serial.text.slice(0, serial.caret);
+                        if (before && !/\s$/.test(before) && before.slice(-1) !== CHIP_MARK) {
+                            insertNodeAtCaret(document.createTextNode(' '));
+                            serial = serializeEditor(true);
                         }
-                        input.value = after;
-
+                        insertNodeAtCaret(document.createTextNode('@'));
+                        serial = serializeEditor(true);
+                        atTriggerIndex = serial.caret - 1;
                         setMenuOpen(false);
-                        if (slashOpen) setSlashOpen(false, { restore: false });
+                        if (slashOpen) setSlashOpen(false);
                         setAtOpen(true);
-                        focusWithoutScroll(input);
-                        input.setSelectionRange(after.length, after.length);
+                        focusWithoutScroll(editor);
+                    }
+
+                    function closestChip(node) {
+                        if (!node) return null;
+                        if (node.nodeType === 3) node = node.parentElement;
+                        return node && node.closest ? node.closest('.glean-composer-open__chip') : null;
+                    }
+
+                    function expandRangeAcrossChips(range) {
+                        if (!range) return range;
+                        var startChip = closestChip(range.startContainer);
+                        var endChip = closestChip(range.endContainer);
+                        if (startChip && editor.contains(startChip)) range.setStartBefore(startChip);
+                        if (endChip && editor.contains(endChip)) range.setEndAfter(endChip);
+                        return range;
+                    }
+
+                    function deleteSelectionOrChip(e) {
+                        var sel = selectionInEditor();
+                        if (!sel || !sel.rangeCount) return false;
+
+                        // Non-collapsed selection: delete chips + text together.
+                        if (!sel.isCollapsed) {
+                            e.preventDefault();
+                            var range = expandRangeAcrossChips(sel.getRangeAt(0).cloneRange());
+                            range.deleteContents();
+                            sel.removeAllRanges();
+                            var caret = document.createRange();
+                            caret.setStart(range.startContainer, range.startOffset);
+                            caret.collapse(true);
+                            sel.addRange(caret);
+                            normalizeEditor();
+                            syncContentState();
+                            return true;
+                        }
+
+                        if (e.key !== 'Backspace') return false;
+
+                        if (slashOpen && !commandQuery()) {
+                            e.preventDefault();
+                            setSlashOpen(false);
+                            var serial = serializeEditor(true);
+                            if (serial.caret > 0) deleteSerializedRange(serial.caret - 1, serial.caret);
+                            normalizeEditor();
+                            syncContentState();
+                            return true;
+                        }
+                        if (atOpen && !commandQuery()) {
+                            e.preventDefault();
+                            setAtOpen(false);
+                            var serialAt = serializeEditor(true);
+                            if (serialAt.caret > 0) deleteSerializedRange(serialAt.caret - 1, serialAt.caret);
+                            normalizeEditor();
+                            syncContentState();
+                            return true;
+                        }
+
+                        return false;
                     }
 
                     function hintHeight() {
@@ -2638,8 +2827,8 @@
                         plusBtn.addEventListener('click', function(e) {
                             e.stopPropagation();
                             dismissPlusTip();
-                            if (slashOpen) setSlashOpen(false, { restore: true, keepSlash: true });
-                            if (atOpen) setAtOpen(false, { restore: true, keepAt: true });
+                            if (slashOpen) setSlashOpen(false);
+                            if (atOpen) setAtOpen(false);
                             setMenuOpen(!menuOpen);
                         });
 
@@ -2728,21 +2917,21 @@
                         if (!target || !target.isConnected) return;
                         if (!root.contains(target)) {
                             if (menuOpen) setMenuOpen(false);
-                            if (slashOpen) setSlashOpen(false, { restore: true, keepSlash: true });
-                            if (atOpen) setAtOpen(false, { restore: true, keepAt: true });
+                            if (slashOpen) setSlashOpen(false);
+                            if (atOpen) setAtOpen(false);
                         }
                     });
 
                     document.addEventListener('keydown', function(e) {
                         if (e.key !== 'Escape') return;
                         if (atOpen) {
-                            setAtOpen(false, { restore: true, keepAt: true });
-                            focusWithoutScroll(input);
+                            setAtOpen(false);
+                            focusWithoutScroll(editor);
                             return;
                         }
                         if (slashOpen) {
-                            setSlashOpen(false, { restore: true, keepSlash: true });
-                            focusWithoutScroll(input);
+                            setSlashOpen(false);
+                            focusWithoutScroll(editor);
                             return;
                         }
                         if (menuOpen) {
@@ -2751,80 +2940,89 @@
                         }
                     });
 
-                    if (input) {
-                        input.addEventListener('input', function() {
+                    if (fieldEl && editor) {
+                        fieldEl.addEventListener('click', function(e) {
+                            if (e.target.closest('.glean-composer-open__chip')) return;
+                            if (e.target === editor || editor.contains(e.target)) return;
+                            placeCaretAtEnd();
+                        });
+                    }
+
+                    if (editor) {
+                        editor.addEventListener('input', function() {
+                            if (suppressInput) return;
+                            normalizeEditor();
                             if (slashOpen || atOpen) {
                                 if (endCommandIfSpaced()) {
                                     syncContentState();
                                     return;
                                 }
-                                syncCommandQuery();
                                 if (slashOpen) {
-                                    filterCommandMenu(slashMenu, input.value);
+                                    filterCommandMenu(slashMenu, commandQuery());
                                     positionSlashMenu();
                                 } else {
-                                    filterCommandMenu(atMenu, input.value);
+                                    filterCommandMenu(atMenu, commandQuery());
                                     positionAtMenu();
                                 }
                             } else {
-                                activateSlashFromInput();
-                                activateAtFromInput();
+                                activateSlashFromEditor();
+                                activateAtFromEditor();
                             }
                             syncContentState();
                         });
 
-                        input.addEventListener('keydown', function(e) {
-                            if (e.key === 'Enter' && (slashOpen || atOpen)) {
-                                var menuEl = slashOpen ? slashMenu : atMenu;
-                                var match = firstVisibleMenuItem(menuEl);
-                                if (match) {
+                        editor.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                if (slashOpen || atOpen) {
+                                    var menuEl = slashOpen ? slashMenu : atMenu;
+                                    var match = firstVisibleMenuItem(menuEl);
                                     e.preventDefault();
-                                    insertChip(match);
+                                    if (match) insertChip(match);
+                                    return;
                                 }
-                                return;
-                            }
-                            if (e.key !== 'Backspace' || input.value) return;
-                            if (slashOpen) {
                                 e.preventDefault();
-                                setSlashOpen(false, { restore: true, keepSlash: false });
-                                if (input) {
-                                    var nextSlash = input.value;
-                                    input.setSelectionRange(nextSlash.length, nextSlash.length);
-                                }
                                 return;
                             }
-                            if (atOpen) {
-                                e.preventDefault();
-                                setAtOpen(false, { restore: true, keepAt: false });
-                                if (input) {
-                                    var nextAt = input.value;
-                                    input.setSelectionRange(nextAt.length, nextAt.length);
-                                }
+
+                            if ((e.key === 'Backspace' || e.key === 'Delete') && deleteSelectionOrChip(e)) {
                                 return;
                             }
-                            if (!streamEl || !streamEl.lastElementChild) return;
-                            e.preventDefault();
-                            var last = streamEl.lastElementChild;
-                            if (last.classList.contains('glean-composer-open__text')) {
-                                var text = last.textContent || '';
-                                streamEl.removeChild(last);
-                                input.value = text;
-                                input.setSelectionRange(text.length, text.length);
-                            } else if (last.classList.contains('glean-composer-open__chip')) {
-                                streamEl.removeChild(last);
-                            }
-                            syncContentState();
+
+                            // Cmd/Ctrl + A already selects within contenteditable, including chips.
                         });
 
-                        input.addEventListener('click', function() {
+                        editor.addEventListener('keyup', function() {
                             if (slashOpen) positionSlashMenu();
                             if (atOpen) positionAtMenu();
                         });
 
+                        editor.addEventListener('mouseup', function() {
+                            if (slashOpen) positionSlashMenu();
+                            if (atOpen) positionAtMenu();
+                        });
+
+                        editor.addEventListener('cut', function() {
+                            // Native cut removes selected chips + text together.
+                            requestAnimationFrame(function() {
+                                normalizeEditor();
+                                syncContentState();
+                            });
+                        });
+
+                        editor.addEventListener('paste', function(e) {
+                            e.preventDefault();
+                            var text = (e.clipboardData || window.clipboardData).getData('text/plain') || '';
+                            text = text.replace(/\r\n?/g, '\n');
+                            document.execCommand('insertText', false, text);
+                            syncContentState();
+                        });
+
+                        normalizeEditor();
                         syncContentState();
                     }
 
                     window.addEventListener('resize', function() {
+                        scheduleLayoutSync();
                         if (slashOpen) positionSlashMenu();
                         if (atOpen) positionAtMenu();
                     }, { passive: true });

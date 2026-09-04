@@ -3153,7 +3153,7 @@ nav.main-grid .grid-cell {
     transition: height 0.2s ease;
 }
 
-.glean-composer-open-fit:has(.glean-composer-open.has-plus-tip) {
+.glean-composer-open-fit:has(.glean-composer-open.has-plus-tip:not(.is-multiline):not(.is-menu-open):not(.is-slash-open):not(.is-at-open)) {
     --glean-composer-open-design-height: 96px;
 }
 
@@ -3173,52 +3173,67 @@ nav.main-grid .grid-cell {
     --glean-composer-open-font: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
     --glean-hint-height: 24px;
     --glean-hint-roll-duration: 420ms;
+    --glean-composer-shell-height: 56px;
     position: relative;
     width: var(--glean-composer-open-design-width);
-    height: 56px;
+    height: var(--glean-composer-shell-height);
 }
 
 .glean-composer-open.is-menu-open,
 .glean-composer-open.is-slash-open,
 .glean-composer-open.is-at-open {
-    height: 552px;
+    --glean-composer-shell-height: 552px;
 }
 
-.glean-composer-open.has-plus-tip:not(.is-menu-open):not(.is-slash-open):not(.is-at-open) {
-    height: 96px;
+.glean-composer-open.has-plus-tip:not(.is-menu-open):not(.is-slash-open):not(.is-at-open):not(.is-multiline) {
+    --glean-composer-shell-height: 96px;
 }
 
 .glean-composer-open__composer {
     box-sizing: border-box;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "plus field right";
     align-items: center;
-    gap: 16px;
+    column-gap: 8px;
     width: 750px;
+    min-height: 56px;
     height: 56px;
-    padding: 12px;
+    padding: 11px 12px;
     background: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 28px;
     font-family: var(--glean-composer-open-font);
 }
 
-.glean-composer-open__left,
+.glean-composer-open.is-multiline .glean-composer-open__composer {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "field field"
+        "plus right";
+    row-gap: 12px;
+    column-gap: 0;
+    height: auto;
+    min-height: 56px;
+    padding: 12px;
+    border-radius: 24px;
+    align-items: center;
+}
+
 .glean-composer-open__right {
+    grid-area: right;
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
     gap: 4px;
-    min-width: 0;
-}
-
-.glean-composer-open__left {
-    flex: 1 1 auto;
-    overflow: visible;
-    gap: 8px;
-}
-
-.glean-composer-open__right {
     flex: 0 0 auto;
+    min-width: 0;
+    margin-left: 8px;
+}
+
+.glean-composer-open.is-multiline .glean-composer-open__right {
+    margin-left: 0;
+    justify-self: end;
 }
 
 .glean-composer-open__plus-btn,
@@ -3255,6 +3270,7 @@ nav.main-grid .grid-cell {
 .glean-composer-open__plus {
     position: relative;
     flex-shrink: 0;
+    grid-area: plus;
 }
 
 .glean-composer-open__plus-tip {
@@ -3317,47 +3333,67 @@ nav.main-grid .grid-cell {
 
 .glean-composer-open__field {
     position: relative;
+    grid-area: field;
     display: flex;
     align-items: center;
     flex: 1 1 auto;
+    flex-wrap: nowrap;
     gap: 4px;
     min-width: 0;
+    min-height: var(--glean-hint-height);
     height: var(--glean-hint-height);
     overflow: hidden;
 }
 
-.glean-composer-open__stream {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    flex-shrink: 1;
-    gap: 4px;
+.glean-composer-open.is-multiline .glean-composer-open__field {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    min-height: var(--glean-hint-height);
+    overflow: visible;
+}
+
+.glean-composer-open__editor {
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    flex: 1 1 auto;
     min-width: 0;
-    max-width: min(75%, 520px);
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.glean-composer-open__stream::-webkit-scrollbar {
-    display: none;
-}
-
-.glean-composer-open__stream:empty {
-    display: none;
-}
-
-.glean-composer-open__text {
-    flex-shrink: 0;
+    width: 100%;
+    min-height: var(--glean-hint-height);
     margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    overflow: hidden;
+    background: transparent;
     font-family: var(--glean-composer-open-font);
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
     letter-spacing: -0.125px;
     color: #1b1b1b;
-    white-space: pre;
+    caret-color: #1b1b1b;
+    white-space: nowrap;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.glean-composer-open.is-multiline .glean-composer-open__editor {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    overflow: visible;
+    height: auto;
+}
+
+.glean-composer-open__editor:focus {
+    outline: none;
+}
+
+.glean-composer-open__editor .glean-composer-open__text {
+    white-space: pre-wrap;
 }
 
 .glean-composer-open__prefix {
@@ -3464,7 +3500,7 @@ nav.main-grid .grid-cell {
     align-items: center;
     gap: 4px;
     height: 24px;
-    margin: 0;
+    margin: 0 1px;
     padding: 0 6px;
     flex-shrink: 0;
     overflow: visible;
@@ -3477,6 +3513,8 @@ nav.main-grid .grid-cell {
     text-align: left;
     transition: background-color 0.12s ease, border-color 0.12s ease;
     vertical-align: middle;
+    -webkit-user-select: text;
+    user-select: text;
 }
 
 .glean-composer-open__chip:hover,
@@ -3547,47 +3585,24 @@ nav.main-grid .grid-cell {
     white-space: nowrap;
 }
 
-.glean-composer-open__input-wrap {
-    position: relative;
-    flex: 1 1 auto;
-    min-width: 40px;
-    height: var(--glean-hint-height);
+.glean-composer-open__chip::selection,
+.glean-composer-open__chip *::selection {
+    background: Highlight;
+    color: HighlightText;
 }
 
 .glean-composer-open__hints {
     position: absolute;
     inset: 0;
+    z-index: 0;
     pointer-events: none;
 }
 
 .glean-composer-open.is-typing .glean-composer-open__hints,
-.glean-composer-open.has-chips .glean-composer-open__hints {
+.glean-composer-open.has-chips .glean-composer-open__hints,
+.glean-composer-open.is-slash-open .glean-composer-open__hints,
+.glean-composer-open.is-at-open .glean-composer-open__hints {
     visibility: hidden;
-}
-
-.glean-composer-open__input {
-    box-sizing: border-box;
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    height: var(--glean-hint-height);
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: none;
-    background: transparent;
-    font-family: var(--glean-composer-open-font);
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: -0.125px;
-    color: #1b1b1b;
-    caret-color: #1b1b1b;
-}
-
-.glean-composer-open__input:focus {
-    outline: none;
 }
 
 .glean-composer-open__cta {
