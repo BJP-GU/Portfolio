@@ -2465,7 +2465,7 @@ nav.main-grid .grid-cell {
 .work-nav-link:focus-visible {
     font-family: var(--font-body);
     font-size: clamp(10px, 0.8vw + 6px, 14px);
-    font-weight: var(--font-bold);
+    font-weight: var(--font-normal);
     line-height: 1.35;
     text-decoration: none;
     display: block;
@@ -2493,6 +2493,7 @@ nav.main-grid .grid-cell {
 .work-nav-link.is-active:hover,
 .work-nav-link.is-active:active {
     color: var(--body-text);
+    font-weight: var(--font-bold);
 }
 
 /* Main content area for projects */
