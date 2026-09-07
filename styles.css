@@ -2860,6 +2860,29 @@ nav.main-grid .grid-cell {
     border-radius: 0 !important;
 }
 
+/* The blanket margin reset above is !important, so any deliberate offset on an
+   image inside a mockup has to be re-declared here to outweigh it. */
+.case-section-content .glean-agents-deck .glean-agents-chrome__traffic {
+    margin-bottom: 14.5px !important;
+}
+
+.case-section-content .glean-agents-deck .glean-agents-chrome__tab-plus {
+    margin-bottom: 7px !important;
+}
+
+.case-section-content .glean-agents-deck .glean-agents-chatp__count img:last-child,
+.case-section-content .glean-agents-deck .glean-agents-cap__knowledge-lead img:last-child {
+    margin-left: 4px !important;
+}
+
+.case-section-content .glean-agents-deck .glean-agents-tile__avatar {
+    margin-right: 2px !important;
+}
+
+.case-section-content .glean-agents-deck .glean-agents-tile__insights {
+    margin-left: 2px !important;
+}
+
 .case-section-content .glean-menu__icon,
 .case-section-content .glean-composer-open__chip-icon {
     width: 16px !important;
@@ -5262,7 +5285,6 @@ nav.main-grid .grid-cell {
 .glean-agents-chrome__traffic {
     width: 52px !important;
     height: 12px !important;
-    margin-bottom: 14px;
     flex-shrink: 0;
 }
 
@@ -5298,7 +5320,6 @@ nav.main-grid .grid-cell {
 .glean-agents-chrome__tab-plus {
     width: 20px !important;
     height: 20px !important;
-    margin-bottom: 7px;
 }
 
 .glean-agents-chrome__urlbar {
@@ -6741,13 +6762,11 @@ nav.main-grid .grid-cell {
     width: 16px !important;
     height: 16px !important;
     border-radius: 50%;
-    margin-right: 2px;
 }
 
 .glean-agents-tile__insights {
     width: 12px !important;
     height: 12px !important;
-    margin-left: 2px;
 }
 
 .glean-agents-tile__dot {
@@ -7013,31 +7032,6 @@ nav.main-grid .grid-cell {
     color: var(--glean-agents-muted);
 }
 
-.glean-agents-view-setup {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    height: 34px;
-    padding: 4px 16px;
-    margin-top: 4px;
-    border: 0;
-    border-radius: 24px;
-    background: transparent;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: -0.125px;
-    color: var(--glean-agents-text);
-    cursor: default;
-}
-
-.glean-agents-view-setup img {
-    width: 16px !important;
-    height: 16px !important;
-}
-
 .glean-agents-history--runs {
     padding-bottom: 16px;
 }
@@ -7106,4 +7100,1923 @@ nav.main-grid .grid-cell {
 
 .glean-agents-deck__arrow svg {
     display: block;
+}
+
+/* Editing agents with the simplified builder — chat + canvas screens */
+.glean-agents-slide--builder {
+    flex-direction: row;
+    padding: 0;
+    background: #ffffff;
+}
+
+/* Chat panel (shared by every slide in the deck) */
+.glean-agents-chatp {
+    position: relative;
+    flex: 0 0 450px;
+    width: 450px;
+    margin-left: 1px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.glean-agents-chatp__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px 8px;
+    background: #ffffff;
+}
+
+.glean-agents-chatp__count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-chatp__count img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-chatp__collapse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 24px;
+}
+
+.glean-agents-chatp__collapse img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-chatp__log {
+    position: absolute;
+    top: 87px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 386px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.glean-agents-chatp__user {
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 120px;
+}
+
+.glean-agents-chatp__bubble {
+    max-width: 328px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 20px;
+    border-radius: 24px;
+    background: #f6f6f6;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+}
+
+.glean-agents-chatp__bubble p {
+    margin: 0;
+}
+
+.glean-agents-chatp__a {
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-chatp__reply {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.glean-agents-chatp__reasoning {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-chatp__reasoning img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-chatp__body {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-chatp__body p {
+    margin: 0;
+}
+
+.glean-agents-chatp__body p + p {
+    margin-top: 24px;
+}
+
+.glean-agents-chatp__tile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Figma pins the outer height, so lock it and keep the design padding */
+    height: 64px;
+    padding: 12px 16px;
+    border: 1px solid var(--glean-agents-border-dark);
+    border-radius: 16px;
+}
+
+.glean-agents-chatp__tile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #d4efff;
+    flex-shrink: 0;
+}
+
+.glean-agents-chatp__tile-icon img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-chatp__tile-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.glean-agents-chatp__tile-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.glean-agents-chatp__tile-meta {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-chatp__dot {
+    font-size: 14px;
+}
+
+.glean-agents-chatp__tile-more {
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0;
+}
+
+.glean-agents-chatp__composer-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px 32px;
+    background: #ffffff;
+}
+
+.glean-agents-chatp__composer {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    height: 56px;
+    padding: 12px;
+    border: 1px solid var(--glean-agents-border-dark);
+    border-radius: 24px;
+    background: #ffffff;
+}
+
+.glean-agents-chatp__composer-left {
+    flex: 1;
+    min-width: 0;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.glean-agents-chatp__icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 24px;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.glean-agents-chatp__icon-btn img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-chatp__placeholder {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: rgba(114, 114, 114, 0.5);
+}
+
+.glean-agents-chatp__composer-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.glean-agents-chatp__voice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-left: 3px;
+    border-radius: 16px;
+    background: #1b1b1b;
+    flex-shrink: 0;
+}
+
+.glean-agents-chatp__voice img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Agent canvas */
+.glean-agents-canvas {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: #ffffff;
+    border-left: 1px solid var(--glean-agents-border);
+    overflow: hidden;
+}
+
+.glean-agents-canvas__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    height: 58px;
+    padding: 12px 8px 12px 15px;
+}
+
+.glean-agents-canvas__id {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glean-agents-canvas__app-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #d4efff;
+    flex-shrink: 0;
+}
+
+.glean-agents-canvas__app-icon img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-canvas__app-name {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: #333333;
+}
+
+.glean-agents-canvas__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.glean-agents-canvas__icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+}
+
+.glean-agents-canvas__icon-btn img {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.glean-agents-canvas__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+}
+
+.glean-agents-canvas__btn img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-canvas__btn--share {
+    border: 1px solid var(--glean-agents-border-dark);
+    background: #ffffff;
+    color: var(--glean-agents-text);
+    opacity: 0.5;
+}
+
+.glean-agents-canvas__btn--save {
+    border: 1px solid #1b1b1b;
+    background: #1b1b1b;
+    color: #ffffff;
+}
+
+.glean-agents-canvas__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+}
+
+.glean-agents-canvas__close img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-canvas__rule {
+    flex-shrink: 0;
+    margin-top: 2px;
+    border-top: 1px solid var(--glean-agents-border);
+}
+
+.glean-agents-canvas__body {
+    flex: 1;
+    min-height: 0;
+    padding: 39px 80px 0 79px;
+    overflow: hidden;
+}
+
+.glean-agents-canvas__titleblock {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.glean-agents-canvas__title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: -1px;
+    color: #333333;
+}
+
+.glean-agents-canvas__subtitle {
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 32px;
+}
+
+.glean-agents-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Instructions block sits on a 12px rhythm in Figma */
+.glean-agents-fields > .glean-agents-field:nth-child(3) {
+    gap: 12px;
+}
+
+.glean-agents-field__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.glean-agents-field__label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-field__icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    flex-shrink: 0;
+}
+
+.glean-agents-field__icon-btn img {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.glean-agents-field__mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-field__mode img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Triggers */
+.glean-agents-trig {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    height: 42px;
+    padding: 8px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 12px;
+}
+
+.glean-agents-trig__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glean-agents-trig__cal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.glean-agents-trig__cal img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-trig__parts {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.glean-agents-trig__select {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 22px;
+    margin: 2px 0;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--glean-agents-border);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-trig__select > span {
+    padding-right: 8px;
+}
+
+.glean-agents-trig__select img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-trig__select--daily {
+    width: 79px;
+}
+
+.glean-agents-trig__at {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+/* Capabilities */
+.glean-agents-cap__mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__mode img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    height: 44px;
+    padding: 8px 16px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 12px;
+}
+
+.glean-agents-cap__row-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glean-agents-cap__row-text {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-cap__sources {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.glean-agents-cap__sources img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.glean-agents-cap__stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-cap__stat-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+    border-radius: 24px;
+    background: #ffffff;
+}
+
+.glean-agents-cap__stat-value--plain {
+    border-radius: 0;
+    background: transparent;
+}
+
+.glean-agents-cap__stat-value img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 8px 12px 16px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 12px;
+}
+
+.glean-agents-cap__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.glean-agents-cap__body--narrow {
+    width: 572px;
+}
+
+.glean-agents-cap__panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.glean-agents-cap__panel-text {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-cap__groups {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.glean-agents-cap__groups--filled {
+    gap: 24px;
+    width: 100%;
+}
+
+.glean-agents-cap__groups--filled > .glean-agents-cap__group:first-child {
+    gap: 8px;
+}
+
+.glean-agents-cap__group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.glean-agents-cap__group--wide {
+    width: 100%;
+}
+
+.glean-agents-cap__group-label {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-cap__group-items {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glean-agents-cap__group-items--wrap {
+    flex-wrap: wrap;
+}
+
+.glean-agents-cap__group-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+.glean-agents-cap__add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 8px 12px;
+    border: 1px dashed var(--glean-agents-border);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+    flex-shrink: 0;
+}
+
+.glean-agents-cap__add img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__connector {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.glean-agents-cap__connector-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.glean-agents-cap__connector-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__connector-title img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__trash {
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0;
+}
+
+.glean-agents-cap__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.glean-agents-cap__actions-label {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__input {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 12px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.glean-agents-cap__pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background: #f6f6f6;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__pill img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #343ced;
+    border-radius: 4px;
+    background: #343ced;
+    flex-shrink: 0;
+}
+
+.glean-agents-cap__check img {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.glean-agents-cap__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 4px 12px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__chip img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.glean-agents-cap__rule {
+    height: 0;
+    border-top: 1px solid var(--glean-agents-border);
+}
+
+.glean-agents-cap__knowledge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 575px;
+}
+
+.glean-agents-cap__knowledge-lead {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-cap__knowledge-lead img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-cap__knowledge-note {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+/* Instructions */
+.glean-agents-instr {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-instr p {
+    margin: 0;
+}
+
+.glean-agents-instr p + p {
+    margin-top: 20px;
+}
+
+/* Open "Let Glean decide / Custom settings" menu on slide 1 */
+.glean-agents-menu {
+    position: absolute;
+    top: 321px;
+    left: 485px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 88px;
+    padding: 8px;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 16px;
+    background: #fdfcfc;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+}
+
+.glean-agents-menu__option {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 36px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-menu__option.is-hovered {
+    background: #f0f0f0;
+}
+
+
+/* =========================================================
+   Promotion deck (Figma 1:43458 / 1:43974 / 1:43601)
+   ========================================================= */
+.glean-agents-deck--promo .glean-agents-slide {
+    flex-direction: row;
+    padding: 0;
+}
+
+/* Collapsed home rail (Figma 1:43501) */
+.glean-agents-prail {
+    position: relative;
+    flex: 0 0 64px;
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 12px;
+    background: #fdfcfc;
+    overflow: hidden;
+}
+
+.glean-agents-prail__top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 40px;
+}
+
+.glean-agents-prail__toggle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+}
+
+.glean-agents-prail__toggle img {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.glean-agents-prail__items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+}
+
+.glean-agents-prail__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    padding: 5px 12px;
+    border-radius: 8px;
+}
+
+.glean-agents-prail__item--lg {
+    height: 30px;
+}
+
+.glean-agents-prail__item.is-active {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.glean-agents-prail__item img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-prail__footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 58px;
+    background: #f9f9f9;
+}
+
+.glean-agents-prail__avatar {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    background: #c7c7c7;
+    overflow: hidden;
+}
+
+/* Home screen behind the promos */
+.glean-agents-phome {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    background: #ffffff;
+    border-radius: 16px 0 0 16px;
+    overflow: hidden;
+}
+
+.glean-agents-phome__header {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    height: 72px;
+    padding: 18px 24px 0;
+    background: #ffffff;
+}
+
+.glean-agents-phome__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 16px;
+    background: #f6f6f6;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-phome__pill img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-phome__spacer {
+    flex-shrink: 0;
+    width: 386px;
+    height: 110px;
+}
+
+.glean-agents-phome__greeting {
+    flex-shrink: 0;
+    margin: 0;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: -1px;
+    color: #000000;
+}
+
+/* Slide 1 — homepage modal promo (Figma 1:43522 / 1:43523) */
+.glean-agents-pscrim {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 64px;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 2;
+}
+
+.glean-agents-pmodal {
+    position: absolute;
+    top: 92px;
+    left: 320px;
+    width: 695px;
+    height: 545px;
+    border-radius: 24px;
+    z-index: 3;
+}
+
+.glean-agents-pmodal__hero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 695px;
+    height: 278px;
+    padding: 12px 24px;
+    background: linear-gradient(180deg, #ebfea4 0%, #c3ff9e 100%);
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+}
+
+.glean-agents-pmodal__close {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.glean-agents-pmodal__close img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-pmodal__preview {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 524px;
+    background: #ffffff;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+}
+
+.glean-agents-pmodal__block {
+    flex-shrink: 0;
+    width: 193px;
+    height: 90px;
+    background: #ffffff;
+}
+
+.glean-agents-pmodal__greeting {
+    flex-shrink: 0;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: -0.5px;
+    color: #000000;
+}
+
+.glean-agents-pmodal__composer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 375px;
+    height: 28px;
+    /* Figma draws strokes inside the box, so padding sheds the border width. */
+    padding: 5.5px;
+    background: #ffffff;
+    border: 0.5px solid var(--glean-agents-border-dark);
+    border-radius: 28px;
+}
+
+.glean-agents-pmodal__composer-left {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.glean-agents-pmodal__composer-right {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.glean-agents-pmodal__mini-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 12px;
+}
+
+/* Outranks the deck-wide `width: auto !important` image reset. */
+.case-section-content .glean-agents-deck .glean-agents-pmodal__mini-btn img {
+    width: 7px !important;
+    height: 7px !important;
+}
+
+.glean-agents-pmodal__mini-btn--lg {
+    width: 17px;
+    height: 17px;
+}
+
+.case-section-content .glean-agents-deck .glean-agents-pmodal__mini-btn--lg img {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.glean-agents-pmodal__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    height: 12px;
+    overflow: hidden;
+}
+
+.glean-agents-pmodal__placeholder {
+    font-size: 8px;
+    line-height: 12px;
+    letter-spacing: -0.125px;
+    color: rgba(114, 114, 114, 0.5);
+}
+
+.glean-agents-pmodal__typed {
+    display: none;
+    align-items: center;
+    gap: 1px;
+    font-size: 8px;
+    line-height: 12px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+    white-space: nowrap;
+}
+
+.glean-agents-pmodal__composer.is-typing .glean-agents-pmodal__placeholder {
+    display: none;
+}
+
+.glean-agents-pmodal__composer.is-typing .glean-agents-pmodal__typed {
+    display: flex;
+}
+
+.glean-agents-pmodal__caret {
+    flex-shrink: 0;
+    width: 1px;
+    height: 9px;
+    background: var(--glean-agents-text);
+    animation: glean-agents-pmodal-caret 1.06s infinite;
+}
+
+@keyframes glean-agents-pmodal-caret {
+    0%, 55% { opacity: 1; }
+    56%, 100% { opacity: 0; }
+}
+
+/* Half-scale twin of the composer-redesign CTA: mic circle grows into Ask. */
+.glean-agents-pmodal__composer-cta {
+    position: relative;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    padding: 0;
+    overflow: hidden;
+    background: #1b1b1b;
+    border-radius: 24.6px;
+    transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                padding 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                border-radius 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glean-agents-pmodal__composer.is-typing .glean-agents-pmodal__composer-cta {
+    width: 51.5px;
+    padding: 3.5px 8px;
+    border-radius: 12px;
+}
+
+.glean-agents-pmodal__composer-cta-voice,
+.glean-agents-pmodal__composer-cta-ask {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: opacity 0.18s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.glean-agents-pmodal__composer-cta-voice {
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.glean-agents-pmodal__composer-cta-ask {
+    opacity: 0;
+    transform: scale(0.92);
+    white-space: nowrap;
+}
+
+.glean-agents-pmodal__composer.is-typing .glean-agents-pmodal__composer-cta-voice {
+    opacity: 0;
+    transform: scale(0.85);
+}
+
+.glean-agents-pmodal__composer.is-typing .glean-agents-pmodal__composer-cta-ask {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.glean-agents-pmodal__composer-ask-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8px;
+    height: 8px;
+}
+
+.glean-agents-pmodal__composer-ask-label {
+    font-size: 7px;
+    font-weight: 500;
+    line-height: 10px;
+    letter-spacing: -0.0625px;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .glean-agents-pmodal__caret {
+        animation: none;
+    }
+
+    .glean-agents-pmodal__composer-cta,
+    .glean-agents-pmodal__composer-cta-voice,
+    .glean-agents-pmodal__composer-cta-ask {
+        transition: none;
+    }
+}
+
+.glean-agents-pmodal__body {
+    position: absolute;
+    top: 278px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 695px;
+    height: 267px;
+    padding: 48px 64px;
+    background: #ffffff;
+    border-radius: 0 0 24px 24px;
+    filter: drop-shadow(0 -2px 5px rgba(0, 0, 0, 0.05));
+}
+
+.glean-agents-pmodal__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.glean-agents-pmodal__title {
+    margin: 0;
+    font-size: 24px;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pmodal__sub {
+    width: 293px;
+    margin: 16px 0 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    text-align: center;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-pmodal__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 4px 16px;
+    background: var(--glean-agents-text);
+    border: 1px solid var(--glean-agents-text);
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #ffffff;
+}
+
+/* Slide 2 — interactive composer card promo (Figma 1:44037) */
+.glean-agents-pcard {
+    flex-shrink: 0;
+    width: 564px;
+    height: 150px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.glean-agents-pcard__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 564px;
+    height: 150px;
+    padding: 16px 15px 15px;
+    border: 1px solid var(--glean-agents-border);
+    border-top: 0;
+    border-radius: 0 0 24px 24px;
+    overflow: hidden;
+}
+
+.glean-agents-pcard__copy {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 253px;
+}
+
+.glean-agents-pcard__title {
+    width: 100%;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pcard__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 4px 16px;
+    background: var(--glean-agents-text);
+    border: 1px solid var(--glean-agents-text);
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #ffffff;
+}
+
+/* The thumbnail is a 1x chat screen scaled down, the way Figma builds it. */
+.glean-agents-pcard__thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 253.327px;
+    height: 101.331px;
+    background: linear-gradient(180deg, #ebfea4 0%, #c3ff9e 100%);
+    border-radius: 8.748px 8.748px 0 0;
+    overflow: hidden;
+}
+
+.glean-agents-pcard__scale {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1263.6px;
+    height: 505.5px;
+    transform: scale(0.2004747);
+    transform-origin: top left;
+}
+
+.glean-agents-pcard__sheet {
+    position: absolute;
+    top: 74.5px;
+    left: 107.8px;
+    width: 1048px;
+    height: 680px;
+    background: #ffffff;
+    border-right: 2px solid var(--glean-agents-border);
+    border-radius: 48px 48px 0 0;
+}
+
+.glean-agents-pcard__mini {
+    position: absolute;
+    top: 106.6px;
+    left: 256.8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 750px;
+    height: 548px;
+    overflow: hidden;
+}
+
+.glean-agents-pcard__mini-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.glean-agents-pcard__mini-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 363px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-pcard__mini-step img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-pcard__mini-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pcard__artifact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.glean-agents-pcard__artifact-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 16px 8px 8px;
+    border-radius: 12px;
+}
+
+.glean-agents-pcard__artifact-lead {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding-left: 4px;
+}
+
+.glean-agents-pcard__artifact-id {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glean-agents-pcard__artifact-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #d4efff;
+    border-radius: 10px;
+}
+
+.glean-agents-pcard__artifact-icon img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-pcard__artifact-meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.glean-agents-pcard__artifact-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pcard__artifact-sub {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-pcard__artifact-bullet {
+    font-size: 14px;
+}
+
+.glean-agents-pcard__artifact-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-pcard__artifact-cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 34px;
+    padding: 4px 16px;
+    background: var(--glean-agents-text);
+    border: 1px solid var(--glean-agents-text);
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #ffffff;
+}
+
+.glean-agents-pcard__artifact-cta img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-pcard__artifact-rule {
+    flex-shrink: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--glean-agents-border);
+}
+
+.glean-agents-pcard__artifact-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    padding: 16px 24px;
+}
+
+.glean-agents-pcard__artifact-label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-muted);
+}
+
+.glean-agents-pcard__artifact-text {
+    height: 122px;
+    margin: 0;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pcard__mini-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.glean-agents-pcard__mini-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+}
+
+.glean-agents-pcard__mini-action img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Slide 3 — in-chat recommendation promo (Figma 1:43668 / 1:43875) */
+.glean-agents-pchat {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.glean-agents-thread--promo {
+    padding-top: 32px;
+}
+
+.glean-agents-bubble--promo {
+    width: 600px;
+    padding: 12px 20px;
+    background: #f6f6f6;
+    border-radius: 24px;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+.glean-agents-ai--promo {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.glean-agents-ai--promo .glean-agents-ai__fade {
+    background: linear-gradient(90deg, #737373 0%, #bcbcbc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.glean-agents-step--promo {
+    font-weight: 500;
+    color: #d9d9d9;
+}
+
+.glean-agents-pbanner {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    height: 88px;
+    padding: 11px;
+    background: #ffffff;
+    border: 1px solid var(--glean-agents-border);
+    border-radius: 16px;
+}
+
+.glean-agents-pbanner__lead {
+    flex: 1;
+    min-width: 0;
+    align-self: stretch;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding-left: 4px;
+}
+
+.glean-agents-pbanner__icon-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 4px 0;
+}
+
+.glean-agents-pbanner__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(-33.976543deg, #ffe5f7 0.348%, #fbf3d7 30.517%, #f6f6f6 69.192%);
+    overflow: hidden;
+}
+
+.glean-agents-pbanner__icon img {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.glean-agents-pbanner__copy {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.glean-agents-pbanner__title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pbanner__sub {
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pbanner__actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+.glean-agents-pbanner__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 8px 16px;
+    background: #f0f0f0;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: var(--glean-agents-text);
+}
+
+.glean-agents-pbanner__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 24px;
+}
+
+.glean-agents-pbanner__close img {
+    width: 16px !important;
+    height: 16px !important;
 }

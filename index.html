@@ -1529,7 +1529,6 @@
                                                                                                 <p class="glean-agents-manage__instructions-heading">Billing and Counting Rules</p>
                                                                                                 <p><strong>Read first</strong> — apply these rules to every hours calculation in this workflow. Do not deviate.</p>
                                                                                             </div>
-                                                                                            <button type="button" class="glean-agents-view-setup" tabindex="-1"><img src="Glean/agents-explore/assets/view-setup-icon.svg" alt="" draggable="false"><span>View agent setup</span></button>
                                                                                         </div>
                                                                                         <div class="glean-agents-manage__section">
                                                                                             <p class="glean-agents-manage__label">Agent permissions</p>
@@ -1601,6 +1600,515 @@
                                                 </div>
 
                                                 <h4>Editing agents with the simplified builder</h4>
+                                                <p>The simplified builder progressively discloses complexity to the user, rather than showing all of the complex configurations up front like the current agent builder.</p>
+
+                                                <div class="glean-agents-deck glean-agents-deck--builder" data-glean-agents-deck>
+                                                    <div class="glean-agents-fit">
+                                                        <div class="glean-agents-fit__inner">
+                                                            <div class="glean-agents-frame" role="img" aria-label="Glean Agents simplified builder slide deck">
+                                                                <div class="glean-agents-chrome" aria-hidden="true">
+                                                                    <div class="glean-agents-chrome__tabs">
+                                                                        <img src="Glean/agents-explore/assets/browser-controls.svg" alt="" draggable="false" class="glean-agents-chrome__traffic">
+                                                                        <div class="glean-agents-chrome__tab">
+                                                                            <img src="Glean/agents-explore/assets/tab-favicon.svg" alt="" draggable="false" class="glean-agents-chrome__favicon">
+                                                                            <span class="glean-agents-chrome__tab-title">Welcome! | Glean</span>
+                                                                            <img src="Glean/agents-explore/assets/tab-close.svg" alt="" draggable="false" class="glean-agents-chrome__tab-close">
+                                                                        </div>
+                                                                        <img src="Glean/agents-explore/assets/tab-plus.svg" alt="" draggable="false" class="glean-agents-chrome__tab-plus">
+                                                                    </div>
+                                                                    <div class="glean-agents-chrome__urlbar">
+                                                                        <div class="glean-agents-chrome__nav-icons">
+                                                                            <img src="Glean/agents-explore/assets/nav-back.svg" alt="" draggable="false">
+                                                                            <img src="Glean/agents-explore/assets/nav-forward.svg" alt="" draggable="false">
+                                                                            <img src="Glean/agents-explore/assets/nav-refresh.svg" alt="" draggable="false">
+                                                                            <img src="Glean/agents-explore/assets/nav-home.svg" alt="" draggable="false">
+                                                                        </div>
+                                                                        <div class="glean-agents-chrome__url">
+                                                                            <img src="Glean/agents-explore/assets/secure.svg" alt="" draggable="false" class="glean-agents-chrome__secure">
+                                                                            <img src="Glean/agents-explore/assets/favorite.svg" alt="" draggable="false" class="glean-agents-chrome__fav">
+                                                                        </div>
+                                                                        <div class="glean-agents-chrome__right">
+                                                                            <img src="Glean/agents-explore/assets/people.svg" alt="" draggable="false">
+                                                                            <img src="Glean/agents-explore/assets/icon-more.svg" alt="" draggable="false">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="glean-agents-app">
+                                                                    <aside class="glean-agents-rail">
+                                                                        <div class="glean-agents-rail__top">
+                                                                            <div class="glean-agents-rail__logo"><img src="Glean/agents-explore/assets/rail-logo.svg" alt="" draggable="false"></div>
+                                                                            <div class="glean-agents-rail__items">
+                                                                                <span class="glean-agents-rail__item is-active"><img src="Glean/agents-explore/assets/b-rail-home.svg" alt="" draggable="false"></span>
+                                                                                <span class="glean-agents-rail__item"><img src="Glean/agents-explore/assets/rail-search.svg" alt="" draggable="false"></span>
+                                                                                <span class="glean-agents-rail__item"><img src="Glean/agents-explore/assets/b-rail-agents.svg" alt="" draggable="false"></span>
+                                                                                <span class="glean-agents-rail__item"><img src="Glean/agents-explore/assets/b-rail-users.svg" alt="" draggable="false"></span>
+                                                                                <span class="glean-agents-rail__item"><img src="Glean/agents-explore/assets/b-rail-layers.svg" alt="" draggable="false"></span>
+                                                                                <span class="glean-agents-rail__item"><img src="Glean/agents-explore/assets/rail-history.svg" alt="" draggable="false"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="glean-agents-rail__bottom">
+                                                                            <span class="glean-agents-rail__item"><img src="Glean/agents-explore/assets/rail-tool.svg" alt="" draggable="false"></span>
+                                                                            <div class="glean-agents-rail__wordmark"><img src="Glean/agents-explore/assets/rail-wordmark.svg" alt="" draggable="false"></div>
+                                                                        </div>
+                                                                    </aside>
+                                                                    <div class="glean-agents-chatp">
+                                                                        <div class="glean-agents-chatp__header">
+                                                                            <div class="glean-agents-chatp__count">
+                                                                                <img src="Glean/agents-explore/assets/b-agents-head.svg" alt="" draggable="false">
+                                                                                <span>1</span>
+                                                                                <img src="Glean/agents-explore/assets/b-chevron-down.svg" alt="" draggable="false">
+                                                                            </div>
+                                                                            <span class="glean-agents-chatp__collapse"><img src="Glean/agents-explore/assets/b-chevrons-left.svg" alt="" draggable="false"></span>
+                                                                        </div>
+                                                                        <div class="glean-agents-chatp__log">
+                                                                            <div class="glean-agents-chatp__user">
+                                                                                <div class="glean-agents-chatp__bubble">
+                                                                                    <p class="glean-agents-chatp__a">I want to edit my Daily Focus Reminder agent</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="glean-agents-chatp__reply">
+                                                                                <div class="glean-agents-chatp__reasoning"><span>Show reasoning</span><img src="Glean/agents-explore/assets/chevron-right.svg" alt="" draggable="false"></div>
+                                                                                <div class="glean-agents-chatp__body">
+                                                                                    <p>Sure thing. Opening that agent for you in the simplified agent builder. Make edits yourself in the builder or ask me to do it for you.</p>
+                                                                                    <p>Here's your daily reminder agent:</p>
+                                                                                </div>
+                                                                                <div class="glean-agents-chatp__tile">
+                                                                                    <span class="glean-agents-chatp__tile-icon"><img src="Glean/agents-explore/assets/bell-blue.svg" alt="" draggable="false"></span>
+                                                                                    <div class="glean-agents-chatp__tile-text">
+                                                                                        <p class="glean-agents-chatp__tile-title">Design UX Decisions Q&amp;A</p>
+                                                                                        <p class="glean-agents-chatp__tile-meta"><span>Agent</span><span class="glean-agents-chatp__dot">•</span><span>Daily at 9:00 AM</span></p>
+                                                                                    </div>
+                                                                                    <img src="Glean/agents-explore/assets/b-more-vertical.svg" alt="" draggable="false" class="glean-agents-chatp__tile-more">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="glean-agents-chatp__composer-wrap">
+                                                                            <div class="glean-agents-chatp__composer">
+                                                                                <div class="glean-agents-chatp__composer-left">
+                                                                                    <span class="glean-agents-chatp__icon-btn"><img src="Glean/agents-explore/assets/b-composer-plus.svg" alt="" draggable="false"></span>
+                                                                                    <span class="glean-agents-chatp__placeholder">Ask anything</span>
+                                                                                </div>
+                                                                                <div class="glean-agents-chatp__composer-right">
+                                                                                    <span class="glean-agents-chatp__icon-btn"><img src="Glean/agents-explore/assets/b-composer-configure.svg" alt="" draggable="false"></span>
+                                                                                    <span class="glean-agents-chatp__icon-btn"><img src="Glean/agents-explore/assets/b-composer-mic.svg" alt="" draggable="false"></span>
+                                                                                    <span class="glean-agents-chatp__voice"><img src="Glean/agents-explore/assets/b-voice.svg" alt="" draggable="false"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="glean-agents-main">
+                                                                        <div class="glean-agents-slide glean-agents-slide--builder is-active" data-slide="0" data-caption="Viewing the agent in the simplified builder" role="group" aria-label="Slide 1 of 5: Capabilities set to let Glean decide, with the settings menu open">
+                                                                            <div class="glean-agents-canvas">
+                                                                                <div class="glean-agents-canvas__header">
+                                                                                    <div class="glean-agents-canvas__id">
+                                                                                        <span class="glean-agents-canvas__app-icon"><img src="Glean/agents-explore/assets/rocket-icon.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__app-name">Daily focus time reminder</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-canvas__actions">
+                                                                                        <span class="glean-agents-canvas__icon-btn"><img src="Glean/agents-explore/assets/b-more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--share"><img src="Glean/agents-explore/assets/lock-share.svg" alt="" draggable="false"><span>Share</span></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--save"><span>Save</span></span>
+                                                                                        <span class="glean-agents-canvas__close"><img src="Glean/agents-explore/assets/b-close-x.svg" alt="" draggable="false"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-canvas__rule"></div>
+                                                                                <div class="glean-agents-canvas__body">
+                                                                                    <div class="glean-agents-canvas__titleblock">
+                                                                                        <p class="glean-agents-canvas__title">Daily focus time reminder</p>
+                                                                                        <p class="glean-agents-canvas__subtitle">Helps you find focus time</p>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-fields">
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Triggers</span>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-add-plus.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-trig">
+                                                                                                <div class="glean-agents-trig__left">
+                                                                                                    <span class="glean-agents-trig__cal"><img src="Glean/agents-explore/assets/calendar.svg" alt="" draggable="false"></span>
+                                                                                                    <div class="glean-agents-trig__parts">
+                                                                                                        <span class="glean-agents-trig__select glean-agents-trig__select--daily"><span>Daily</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__at">at</span>
+                                                                                                        <span class="glean-agents-trig__select"><span>09:00 am</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__select"><span>(UTC+05:30) Kolkata</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-row-more.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Capabilities</span>
+                                                                                                <span class="glean-agents-cap__mode"><span>Let Glean decide</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-cap__row">
+                                                                                                <div class="glean-agents-cap__row-left">
+                                                                                                    <span class="glean-agents-cap__row-text">Write actions</span>
+                                                                                                    <span class="glean-agents-cap__sources"><img src="Glean/agents-explore/assets/b-slack.svg" alt="" draggable="false"></span>
+                                                                                                </div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-chevron-right.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Instructions</span>
+                                                                                                <span class="glean-agents-field__mode"><img src="Glean/agents-explore/assets/b-auto-mode.svg" alt="" draggable="false"><span>Auto</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-instr">
+                                                                                                <p>Check Ana Fucs's calendar for the current day and find the best available 60-minute slot for deep work, prioritizing the earliest reasonable open block after the reminder time and avoiding conflicts. Send a concise reminder to block time for high-priority and deep-thinking tasks.</p>
+                                                                                                <p>Include:<br>1) the recommended 60-minute slot,<br>2) a short note if the day looks especially fragmented or already protected,<br>3) a one-click action to create a Google Calendar event titled 'Focus time' in that suggested slot.</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="glean-agents-menu">
+                                                                                <span class="glean-agents-menu__option">Let Glean decide</span>
+                                                                                <span class="glean-agents-menu__option is-hovered">Custom settings</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="glean-agents-slide glean-agents-slide--builder" data-slide="1" data-caption="Adding custom capabilities" hidden role="group" aria-label="Slide 2 of 5: Custom capability settings, nothing configured yet">
+                                                                            <div class="glean-agents-canvas">
+                                                                                <div class="glean-agents-canvas__header">
+                                                                                    <div class="glean-agents-canvas__id">
+                                                                                        <span class="glean-agents-canvas__app-icon"><img src="Glean/agents-explore/assets/rocket-icon.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__app-name">Daily focus time reminder</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-canvas__actions">
+                                                                                        <span class="glean-agents-canvas__icon-btn"><img src="Glean/agents-explore/assets/b-more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--share"><img src="Glean/agents-explore/assets/lock-share.svg" alt="" draggable="false"><span>Share</span></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--save"><span>Save</span></span>
+                                                                                        <span class="glean-agents-canvas__close"><img src="Glean/agents-explore/assets/b-close-x.svg" alt="" draggable="false"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-canvas__rule"></div>
+                                                                                <div class="glean-agents-canvas__body">
+                                                                                    <div class="glean-agents-canvas__titleblock">
+                                                                                        <p class="glean-agents-canvas__title">Daily focus time reminder</p>
+                                                                                        <p class="glean-agents-canvas__subtitle">Helps you find focus time</p>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-fields">
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Triggers</span>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-add-plus.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-trig">
+                                                                                                <div class="glean-agents-trig__left">
+                                                                                                    <span class="glean-agents-trig__cal"><img src="Glean/agents-explore/assets/calendar.svg" alt="" draggable="false"></span>
+                                                                                                    <div class="glean-agents-trig__parts">
+                                                                                                        <span class="glean-agents-trig__select glean-agents-trig__select--daily"><span>Daily</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__at">at</span>
+                                                                                                        <span class="glean-agents-trig__select"><span>09:00 am</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__select"><span>(UTC+05:30) Kolkata</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-row-more.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Capabilities</span>
+                                                                                                <span class="glean-agents-cap__mode"><span>Custom settings</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-cap__panel">
+                                                                                                <div class="glean-agents-cap__body glean-agents-cap__body--narrow">
+                                                                                                    <div class="glean-agents-cap__panel-head">
+                                                                                                        <span class="glean-agents-cap__panel-text">Specify the capabilities this agent should use</span>
+                                                                                                        <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-chevron-down-2.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                    <div class="glean-agents-cap__groups">
+                                                                                                        <div class="glean-agents-cap__group">
+                                                                                                            <span class="glean-agents-cap__group-label">Tools</span>
+                                                                                                            <div class="glean-agents-cap__group-items"><span class="glean-agents-cap__add"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"><span>Add</span></span></div>
+                                                                                                        </div>
+                                                                                                        <div class="glean-agents-cap__group">
+                                                                                                            <span class="glean-agents-cap__group-label">Skills</span>
+                                                                                                            <div class="glean-agents-cap__group-items"><span class="glean-agents-cap__add"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"><span>Add</span></span></div>
+                                                                                                        </div>
+                                                                                                        <div class="glean-agents-cap__group">
+                                                                                                            <span class="glean-agents-cap__group-label">Sub-agents</span>
+                                                                                                            <div class="glean-agents-cap__group-items"><span class="glean-agents-cap__add"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"><span>Add</span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="glean-agents-cap__footer">
+                                                                                                    <div class="glean-agents-cap__rule"></div>
+                                                                                                    <div class="glean-agents-cap__knowledge">
+                                                                                                        <span class="glean-agents-cap__knowledge-lead"><img src="Glean/agents-explore/assets/b-building.svg" alt="" draggable="false"><span>Company knowledge</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-cap__knowledge-note">The agent uses all sources available in your company</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Instructions</span>
+                                                                                                <span class="glean-agents-field__mode"><img src="Glean/agents-explore/assets/b-auto-mode.svg" alt="" draggable="false"><span>Auto</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-instr">
+                                                                                                <p>Check Ana Fucs's calendar for the current day and find the best available 60-minute slot for deep work, prioritizing the earliest reasonable open block after the reminder time and avoiding conflicts. Send a concise reminder to block time for high-priority and deep-thinking tasks.</p>
+                                                                                                <p>Include:<br>1) the recommended 60-minute slot,<br>2) a short note if the day looks especially fragmented or already protected,<br>3) a one-click action to create a Google Calendar event titled 'Focus time' in that suggested slot.</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="glean-agents-slide glean-agents-slide--builder" data-slide="2" data-caption="Adding Slack as a tool" hidden role="group" aria-label="Slide 3 of 5: Custom capability settings with a Slack tool and skills added">
+                                                                            <div class="glean-agents-canvas">
+                                                                                <div class="glean-agents-canvas__header">
+                                                                                    <div class="glean-agents-canvas__id">
+                                                                                        <span class="glean-agents-canvas__app-icon"><img src="Glean/agents-explore/assets/rocket-icon.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__app-name">Daily focus time reminder</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-canvas__actions">
+                                                                                        <span class="glean-agents-canvas__icon-btn"><img src="Glean/agents-explore/assets/b-more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--share"><img src="Glean/agents-explore/assets/lock-share.svg" alt="" draggable="false"><span>Share</span></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--save"><span>Save</span></span>
+                                                                                        <span class="glean-agents-canvas__close"><img src="Glean/agents-explore/assets/b-close-x.svg" alt="" draggable="false"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-canvas__rule"></div>
+                                                                                <div class="glean-agents-canvas__body">
+                                                                                    <div class="glean-agents-canvas__titleblock">
+                                                                                        <p class="glean-agents-canvas__title">Daily focus time reminder</p>
+                                                                                        <p class="glean-agents-canvas__subtitle">Helps you find focus time</p>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-fields">
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Triggers</span>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-add-plus.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-trig">
+                                                                                                <div class="glean-agents-trig__left">
+                                                                                                    <span class="glean-agents-trig__cal"><img src="Glean/agents-explore/assets/calendar.svg" alt="" draggable="false"></span>
+                                                                                                    <div class="glean-agents-trig__parts">
+                                                                                                        <span class="glean-agents-trig__select glean-agents-trig__select--daily"><span>Daily</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__at">at</span>
+                                                                                                        <span class="glean-agents-trig__select"><span>09:00 am</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__select"><span>(UTC+05:30) Kolkata</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-row-more.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Capabilities</span>
+                                                                                                <span class="glean-agents-cap__mode"><span>Custom settings</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-cap__panel">
+                                                                                                <div class="glean-agents-cap__body">
+                                                                                                    <div class="glean-agents-cap__panel-head">
+                                                                                                        <span class="glean-agents-cap__panel-text">Specify the capabilities this agent should use</span>
+                                                                                                        <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-chevron-down-2.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                    <div class="glean-agents-cap__groups glean-agents-cap__groups--filled">
+                                                                                                        <div class="glean-agents-cap__group glean-agents-cap__group--wide">
+                                                                                                            <span class="glean-agents-cap__group-label">Tools</span>
+                                                                                                            <div class="glean-agents-cap__group-stack">
+                                                                                                                <div class="glean-agents-cap__connector">
+                                                                                                                    <div class="glean-agents-cap__connector-head">
+                                                                                                                        <span class="glean-agents-cap__connector-title"><img src="Glean/agents-explore/assets/b-slack.svg" alt="" draggable="false"><span>Slack</span></span>
+                                                                                                                        <img src="Glean/agents-explore/assets/b-trash.svg" alt="" draggable="false" class="glean-agents-cap__trash">
+                                                                                                                    </div>
+                                                                                                                    <div class="glean-agents-cap__actions">
+                                                                                                                        <span class="glean-agents-cap__actions-label">Read actions (1)</span>
+                                                                                                                        <div class="glean-agents-cap__input"><span class="glean-agents-cap__pill"><span>Search Slack channels</span><img src="Glean/agents-explore/assets/b-pill-x.svg" alt="" draggable="false"></span></div>
+                                                                                                                    </div>
+                                                                                                                    <div class="glean-agents-cap__actions">
+                                                                                                                        <span class="glean-agents-cap__actions-label">Write actions (2)</span>
+                                                                                                                        <div class="glean-agents-cap__input"><span class="glean-agents-cap__pill"><span>Send message to a channel</span><img src="Glean/agents-explore/assets/b-pill-x.svg" alt="" draggable="false"></span><span class="glean-agents-cap__pill"><span>Send message to a user</span><img src="Glean/agents-explore/assets/b-pill-x.svg" alt="" draggable="false"></span></div>
+                                                                                                                    </div>
+                                                                                                                    <div class="glean-agents-cap__checkbox">
+                                                                                                                        <span class="glean-agents-cap__check"><img src="Glean/agents-explore/assets/b-check.svg" alt="" draggable="false"></span>
+                                                                                                                        <span>Always allow write actions without approval</span>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <span class="glean-agents-cap__add"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"><span>Add</span></span>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="glean-agents-cap__group glean-agents-cap__group--wide">
+                                                                                                            <span class="glean-agents-cap__group-label">Skills</span>
+                                                                                                            <div class="glean-agents-cap__group-items glean-agents-cap__group-items--wrap"><span class="glean-agents-cap__chip"><img src="Glean/agents-explore/assets/b-skill.svg" alt="" draggable="false"><span>my-skill</span></span><span class="glean-agents-cap__chip"><img src="Glean/agents-explore/assets/b-skill.svg" alt="" draggable="false"><span>write-doc</span></span><span class="glean-agents-cap__chip"><img src="Glean/agents-explore/assets/b-skill.svg" alt="" draggable="false"><span>artifact-gen</span></span><span class="glean-agents-cap__chip"><img src="Glean/agents-explore/assets/b-skill.svg" alt="" draggable="false"><span>data-analysis</span></span><span class="glean-agents-cap__add"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"><span>Add</span></span></div>
+                                                                                                        </div>
+                                                                                                        <div class="glean-agents-cap__group">
+                                                                                                            <span class="glean-agents-cap__group-label">Sub-agents</span>
+                                                                                                            <div class="glean-agents-cap__group-items"><span class="glean-agents-cap__add"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"><span>Add</span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="glean-agents-cap__footer">
+                                                                                                    <div class="glean-agents-cap__rule"></div>
+                                                                                                    <div class="glean-agents-cap__knowledge">
+                                                                                                        <span class="glean-agents-cap__knowledge-lead"><img src="Glean/agents-explore/assets/b-building.svg" alt="" draggable="false"><span>Company knowledge</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-cap__knowledge-note">The agent uses all sources available in your company</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Instructions</span>
+                                                                                                <span class="glean-agents-field__mode"><img src="Glean/agents-explore/assets/b-auto-mode.svg" alt="" draggable="false"><span>Auto</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-instr">
+                                                                                                <p>Check Ana Fucs's calendar for the current day and find the best available 60-minute slot for deep work, prioritizing the earliest reasonable open block after the reminder time and avoiding conflicts. Send a concise reminder to block time for high-priority and deep-thinking tasks.</p>
+                                                                                                <p>Include:<br>1) the recommended 60-minute slot,<br>2) a short note if the day looks especially fragmented or already protected,<br>3) a one-click action to create a Google Calendar event titled 'Focus time' in that suggested slot.</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="glean-agents-slide glean-agents-slide--builder" data-slide="3" data-caption="Collapsed custom settings view" hidden role="group" aria-label="Slide 4 of 5: Capabilities collapsed to a summary of tools, skills and sub-agents">
+                                                                            <div class="glean-agents-canvas">
+                                                                                <div class="glean-agents-canvas__header">
+                                                                                    <div class="glean-agents-canvas__id">
+                                                                                        <span class="glean-agents-canvas__app-icon"><img src="Glean/agents-explore/assets/rocket-icon.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__app-name">Daily focus time reminder</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-canvas__actions">
+                                                                                        <span class="glean-agents-canvas__icon-btn"><img src="Glean/agents-explore/assets/b-more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--share"><img src="Glean/agents-explore/assets/lock-share.svg" alt="" draggable="false"><span>Share</span></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--save"><span>Save</span></span>
+                                                                                        <span class="glean-agents-canvas__close"><img src="Glean/agents-explore/assets/b-close-x.svg" alt="" draggable="false"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-canvas__rule"></div>
+                                                                                <div class="glean-agents-canvas__body">
+                                                                                    <div class="glean-agents-canvas__titleblock">
+                                                                                        <p class="glean-agents-canvas__title">Daily focus time reminder</p>
+                                                                                        <p class="glean-agents-canvas__subtitle">Helps you find focus time</p>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-fields">
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Triggers</span>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-add-plus.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-trig">
+                                                                                                <div class="glean-agents-trig__left">
+                                                                                                    <span class="glean-agents-trig__cal"><img src="Glean/agents-explore/assets/calendar.svg" alt="" draggable="false"></span>
+                                                                                                    <div class="glean-agents-trig__parts">
+                                                                                                        <span class="glean-agents-trig__select glean-agents-trig__select--daily"><span>Daily</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__at">at</span>
+                                                                                                        <span class="glean-agents-trig__select"><span>09:00 am</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__select"><span>(UTC+05:30) Kolkata</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-row-more.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Capabilities</span>
+                                                                                                <span class="glean-agents-cap__mode"><span>Custom settings</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-cap__row">
+                                                                                                <div class="glean-agents-cap__summary"><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Tools</span><span class="glean-agents-cap__stat-value glean-agents-cap__stat-value--plain"><img src="Glean/agents-explore/assets/b-slack.svg" alt="" draggable="false"><span>(2 write actions)</span></span></span><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Skills</span><span class="glean-agents-cap__stat-value"><img src="Glean/agents-explore/assets/b-skill.svg" alt="" draggable="false"><span>51</span></span></span><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Sub-agents</span><span class="glean-agents-cap__stat-value"><img src="Glean/agents-explore/assets/b-agents-head.svg" alt="" draggable="false"><span>2</span></span></span></div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-chevron-right.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Instructions</span>
+                                                                                                <span class="glean-agents-field__mode"><img src="Glean/agents-explore/assets/b-auto-mode.svg" alt="" draggable="false"><span>Auto</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-instr">
+                                                                                                <p>Check Ana Fucs's calendar for the current day and find the best available 60-minute slot for deep work, prioritizing the earliest reasonable open block after the reminder time and avoiding conflicts. Send a concise reminder to block time for high-priority and deep-thinking tasks.</p>
+                                                                                                <p>Include:<br>1) the recommended 60-minute slot,<br>2) a short note if the day looks especially fragmented or already protected,<br>3) a one-click action to create a Google Calendar event titled 'Focus time' in that suggested slot.</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="glean-agents-slide glean-agents-slide--builder" data-slide="4" data-caption="Extreme example of custom settings" hidden role="group" aria-label="Slide 5 of 5: Capability summary including a second tool and files">
+                                                                            <div class="glean-agents-canvas">
+                                                                                <div class="glean-agents-canvas__header">
+                                                                                    <div class="glean-agents-canvas__id">
+                                                                                        <span class="glean-agents-canvas__app-icon"><img src="Glean/agents-explore/assets/rocket-icon.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__app-name">Daily focus time reminder</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-canvas__actions">
+                                                                                        <span class="glean-agents-canvas__icon-btn"><img src="Glean/agents-explore/assets/b-more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--share"><img src="Glean/agents-explore/assets/lock-share.svg" alt="" draggable="false"><span>Share</span></span>
+                                                                                        <span class="glean-agents-canvas__btn glean-agents-canvas__btn--save"><span>Save</span></span>
+                                                                                        <span class="glean-agents-canvas__close"><img src="Glean/agents-explore/assets/b-close-x.svg" alt="" draggable="false"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-canvas__rule"></div>
+                                                                                <div class="glean-agents-canvas__body">
+                                                                                    <div class="glean-agents-canvas__titleblock">
+                                                                                        <p class="glean-agents-canvas__title">Daily focus time reminder</p>
+                                                                                        <p class="glean-agents-canvas__subtitle">Helps you find focus time</p>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-fields">
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Triggers</span>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-add-plus.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-trig">
+                                                                                                <div class="glean-agents-trig__left">
+                                                                                                    <span class="glean-agents-trig__cal"><img src="Glean/agents-explore/assets/calendar.svg" alt="" draggable="false"></span>
+                                                                                                    <div class="glean-agents-trig__parts">
+                                                                                                        <span class="glean-agents-trig__select glean-agents-trig__select--daily"><span>Daily</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__at">at</span>
+                                                                                                        <span class="glean-agents-trig__select"><span>09:00 am</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                        <span class="glean-agents-trig__select"><span>(UTC+05:30) Kolkata</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-row-more.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Capabilities</span>
+                                                                                                <span class="glean-agents-cap__mode"><span>Custom settings</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-cap__row">
+                                                                                                <div class="glean-agents-cap__summary"><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Tools</span><span class="glean-agents-cap__stat-value glean-agents-cap__stat-value--plain"><img src="Glean/agents-explore/assets/b-slack.svg" alt="" draggable="false"><img src="Glean/agents-explore/assets/b-jira.svg" alt="" draggable="false"><span>(7 write actions)</span></span></span><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Skills</span><span class="glean-agents-cap__stat-value"><img src="Glean/agents-explore/assets/b-skill.svg" alt="" draggable="false"><span>51</span></span></span><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Sub-agents</span><span class="glean-agents-cap__stat-value"><img src="Glean/agents-explore/assets/b-agents-head.svg" alt="" draggable="false"><span>2</span></span></span><span class="glean-agents-cap__stat"><span class="glean-agents-cap__stat-label">Files</span><span class="glean-agents-cap__stat-value"><img src="Glean/agents-explore/assets/b-file-text.svg" alt="" draggable="false"><span>4</span></span></span></div>
+                                                                                                <span class="glean-agents-field__icon-btn"><img src="Glean/agents-explore/assets/b-chevron-right.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-field">
+                                                                                            <div class="glean-agents-field__head">
+                                                                                                <span class="glean-agents-field__label">Instructions</span>
+                                                                                                <span class="glean-agents-field__mode"><img src="Glean/agents-explore/assets/b-auto-mode.svg" alt="" draggable="false"><span>Auto</span><img src="Glean/agents-explore/assets/caret-downward.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-instr">
+                                                                                                <p>Check Ana Fucs's calendar for the current day and find the best available 60-minute slot for deep work, prioritizing the earliest reasonable open block after the reminder time and avoiding conflicts. Send a concise reminder to block time for high-priority and deep-thinking tasks.</p>
+                                                                                                <p>Include:<br>1) the recommended 60-minute slot,<br>2) a short note if the day looks especially fragmented or already protected,<br>3) a one-click action to create a Google Calendar event titled 'Focus time' in that suggested slot.</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="glean-agents-deck__controls" role="group" aria-label="Editing agents with the simplified builder slide navigation">
+                                                        <div class="glean-agents-deck__meta">
+                                                            <p class="glean-agents-deck__counter" data-agents-counter aria-live="polite">1 / 5</p>
+                                                            <p class="glean-agents-deck__caption" data-agents-caption>Viewing the agent in the simplified builder</p>
+                                                        </div>
+                                                        <div class="glean-agents-deck__arrows">
+                                                            <button type="button" class="glean-agents-deck__arrow" data-agents-prev aria-label="Previous slide" disabled>
+                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                            </button>
+                                                            <button type="button" class="glean-agents-deck__arrow" data-agents-next aria-label="Next slide">
+                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </section>
 
@@ -1610,6 +2118,312 @@
                                                 <h2 class="case-section-title">Headline forthcoming</h2>
                                             </header>
                                             <div class="case-section-content">
+                                                <h4>Promotion Framework</h4>
+                                                <ol>
+                                                    <li><strong>Homepage Modal Animation (Primary Promo):</strong> All users who have access to create agents see the Homepage Modal on page load one time.</li>
+                                                    <li>
+                                                        <strong>Interactive Composer Card (Secondary Promo):</strong>
+                                                        <ul>
+                                                            <li>If a user exists out of Homepage Promo without building an agent, show them the Psychic Card Promo on next app load (persists for two session loads).</li>
+                                                            <li>If a user clicks through Homepage Promo and completes building an agent via assistant, do not show them this Psychic Card.</li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><strong>In-chat recommendation banner (Tertiary):</strong> Served to all users, dependent on chat context.</li>
+                                                </ol>
+
+                                                    <div class="glean-agents-deck glean-agents-deck--promo" data-glean-agents-deck>
+                                                        <div class="glean-agents-fit">
+                                                            <div class="glean-agents-fit__inner">
+                                                                <div class="glean-agents-frame" role="img" aria-label="Glean Agents promotion slide deck">
+                                                                    <div class="glean-agents-chrome" aria-hidden="true">
+                                                                        <div class="glean-agents-chrome__tabs">
+                                                                            <img src="Glean/agents-explore/assets/browser-controls.svg" alt="" draggable="false" class="glean-agents-chrome__traffic">
+                                                                            <div class="glean-agents-chrome__tab">
+                                                                                <img src="Glean/agents-explore/assets/tab-favicon.svg" alt="" draggable="false" class="glean-agents-chrome__favicon">
+                                                                                <span class="glean-agents-chrome__tab-title">Welcome! | Glean</span>
+                                                                                <img src="Glean/agents-explore/assets/tab-close.svg" alt="" draggable="false" class="glean-agents-chrome__tab-close">
+                                                                            </div>
+                                                                            <img src="Glean/agents-explore/assets/tab-plus.svg" alt="" draggable="false" class="glean-agents-chrome__tab-plus">
+                                                                        </div>
+                                                                        <div class="glean-agents-chrome__urlbar">
+                                                                            <div class="glean-agents-chrome__nav-icons">
+                                                                                <img src="Glean/agents-explore/assets/nav-back.svg" alt="" draggable="false">
+                                                                                <img src="Glean/agents-explore/assets/nav-forward.svg" alt="" draggable="false">
+                                                                                <img src="Glean/agents-explore/assets/nav-refresh.svg" alt="" draggable="false">
+                                                                                <img src="Glean/agents-explore/assets/nav-home.svg" alt="" draggable="false">
+                                                                            </div>
+                                                                            <div class="glean-agents-chrome__url">
+                                                                                <img src="Glean/agents-explore/assets/secure.svg" alt="" draggable="false" class="glean-agents-chrome__secure">
+                                                                                <img src="Glean/agents-explore/assets/favorite.svg" alt="" draggable="false" class="glean-agents-chrome__fav">
+                                                                            </div>
+                                                                            <div class="glean-agents-chrome__right">
+                                                                                <img src="Glean/agents-explore/assets/people.svg" alt="" draggable="false">
+                                                                                <img src="Glean/agents-explore/assets/icon-more.svg" alt="" draggable="false">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="glean-agents-app">
+                                                                        <div class="glean-agents-main">
+                                                                            <div class="glean-agents-slide glean-agents-slide--promo is-active" data-slide="0" data-caption="Homepage Modal Promo" role="group" aria-label="Slide 1 of 3: Homepage promo modal over the Glean home screen">
+                                                                                <aside class="glean-agents-prail">
+                                                                                    <div class="glean-agents-prail__top">
+                                                                                        <span class="glean-agents-prail__toggle"><img src="Glean/agents-explore/assets/p-rail-sidebar.svg" alt="" draggable="false"></span>
+                                                                                        <div class="glean-agents-prail__items">
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg is-active"><img src="Glean/agents-explore/assets/p-rail-compose.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/search.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg"><img src="Glean/agents-explore/assets/library.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-pin.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-folder.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-feather.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg"><img src="Glean/agents-explore/assets/p-rail-message.svg" alt="" draggable="false"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-prail__footer">
+                                                                                        <img src="Glean/agents-explore/assets/avatar-default.svg" alt="" draggable="false" class="glean-agents-prail__avatar">
+                                                                                    </div>
+                                                                                </aside>
+                                                                                <div class="glean-agents-phome">
+                                                                                    <div class="glean-agents-phome__header">
+                                                                                        <span class="glean-agents-phome__pill">
+                                                                                            <img src="Glean/agents-explore/assets/p-glean-mark.svg" alt="" draggable="false">
+                                                                                            <span>Glean</span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-phome__spacer"></div>
+                                                                                    <p class="glean-agents-phome__greeting">Morning, Bryce</p>
+                                                                                <div class="glean-agents-composer">
+                                                                                    <div class="glean-agents-composer__left">
+                                                                                        <img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false" class="glean-agents-composer__plus">
+                                                                                        <span class="glean-agents-composer__placeholder">Ask anything</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-composer__right">
+                                                                                        <img src="Glean/agents-explore/assets/sliders.svg" alt="" draggable="false" class="glean-agents-composer__sliders">
+                                                                                        <img src="Glean/agents-explore/assets/voice-cta.svg" alt="" draggable="false" class="glean-agents-composer__cta">
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-pscrim"></div>
+                                                                                <div class="glean-agents-pmodal">
+                                                                                    <div class="glean-agents-pmodal__hero">
+                                                                                        <div class="glean-agents-pmodal__close">
+                                                                                            <img src="Glean/agents-explore/assets/b-pill-x.svg" alt="" draggable="false">
+                                                                                        </div>
+                                                                                        <div class="glean-agents-pmodal__preview">
+                                                                                            <div class="glean-agents-pmodal__block"></div>
+                                                                                            <p class="glean-agents-pmodal__greeting">Morning, Bryce</p>
+                                                                                            <div class="glean-agents-pmodal__composer" data-pmodal-composer>
+                                                                                                <div class="glean-agents-pmodal__composer-left">
+                                                                                                    <span class="glean-agents-pmodal__mini-btn"><img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false"></span>
+                                                                                                    <span class="glean-agents-pmodal__field">
+                                                                                                        <span class="glean-agents-pmodal__placeholder">Ask anything</span>
+                                                                                                        <span class="glean-agents-pmodal__typed" aria-hidden="true"><span data-pmodal-typed></span><span class="glean-agents-pmodal__caret"></span></span>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <div class="glean-agents-pmodal__composer-right">
+                                                                                                    <span class="glean-agents-pmodal__mini-btn glean-agents-pmodal__mini-btn--lg"><img src="Glean/agents-explore/assets/configure.svg" alt="" draggable="false"></span>
+                                                                                                    <span class="glean-agents-pmodal__composer-cta">
+                                                                                                        <span class="glean-agents-pmodal__composer-cta-voice" aria-hidden="true">
+                                                                                                            <svg width="8.615" height="7.754" viewBox="0 0 18.9538 17.2307" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                                                                                                <path d="M0.861537 6.89229V9.47691M4.30768 3.44615V12.9231M7.75383 0.861537V16.3692M11.2 5.16922V11.2M14.6461 2.58461V13.7846M18.0923 6.89229V9.47691" stroke="white" stroke-width="1.72307" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                                                            </svg>
+                                                                                                        </span>
+                                                                                                        <span class="glean-agents-pmodal__composer-cta-ask" aria-hidden="true">
+                                                                                                            <span class="glean-agents-pmodal__composer-ask-icon">
+                                                                                                                <svg width="8" height="8" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                                                                                                                    <path d="M8.66113 7.10602C8.68569 7.22061 8.77603 7.31094 8.89063 7.3355L11 7.99658L8.89063 8.65767C8.77603 8.68222 8.68569 8.77256 8.66113 8.88715L8 10.9964L7.33887 8.88715C7.31431 8.77256 7.22397 8.68222 7.10937 8.65767L5 7.99658L7.10937 7.3355C7.22397 7.31094 7.31431 7.22061 7.33887 7.10602L8 4.99679L8.66113 7.10602Z" fill="white"/>
+                                                                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 1C11.866 1 15 4.13476 15 8.00049C14.9997 11.866 11.8658 15 8 15H2.73145L2.55469 14.9912C1.68163 14.9028 1.00025 14.1649 1 13.2687V8.00049C1 4.13476 4.13401 1 8 1ZM8 2.50087C4.96243 2.50087 2.5 4.96313 2.5 8.00049V13.2687C2.50026 13.3962 2.60389 13.5001 2.73145 13.5001H8C11.0374 13.5001 13.4997 11.0376 13.5 8.00049C13.5 4.96313 11.0376 2.50087 8 2.50087Z" fill="white"/>
+                                                                                                                </svg>
+                                                                                                            </span>
+                                                                                                            <span class="glean-agents-pmodal__composer-ask-label">Ask</span>
+                                                                                                        </span>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-pmodal__block"></div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-pmodal__body">
+                                                                                        <div class="glean-agents-pmodal__copy">
+                                                                                            <p class="glean-agents-pmodal__title">Build agents right from chat</p>
+                                                                                            <p class="glean-agents-pmodal__sub">Describe a goal. Glean builds an agent that runs on a schedule or when your content changes.</p>
+                                                                                        </div>
+                                                                                        <span class="glean-agents-pmodal__cta">Try it out</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="glean-agents-slide glean-agents-slide--promo" data-slide="1" data-caption="Interactive Composer Card Promo" hidden role="group" aria-label="Slide 2 of 3: Interactive composer card promo below the home composer">
+                                                                                <aside class="glean-agents-prail">
+                                                                                    <div class="glean-agents-prail__top">
+                                                                                        <span class="glean-agents-prail__toggle"><img src="Glean/agents-explore/assets/p-rail-sidebar.svg" alt="" draggable="false"></span>
+                                                                                        <div class="glean-agents-prail__items">
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg is-active"><img src="Glean/agents-explore/assets/p-rail-compose.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/search.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg"><img src="Glean/agents-explore/assets/library.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-pin.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-folder.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-feather.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg"><img src="Glean/agents-explore/assets/p-rail-message.svg" alt="" draggable="false"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-prail__footer">
+                                                                                        <img src="Glean/agents-explore/assets/avatar-default.svg" alt="" draggable="false" class="glean-agents-prail__avatar">
+                                                                                    </div>
+                                                                                </aside>
+                                                                                <div class="glean-agents-phome">
+                                                                                    <div class="glean-agents-phome__header">
+                                                                                        <span class="glean-agents-phome__pill">
+                                                                                            <img src="Glean/agents-explore/assets/p-glean-mark.svg" alt="" draggable="false">
+                                                                                            <span>Glean</span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-phome__spacer"></div>
+                                                                                    <p class="glean-agents-phome__greeting">Morning, Bryce</p>
+                                                                                <div class="glean-agents-composer">
+                                                                                    <div class="glean-agents-composer__left">
+                                                                                        <img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false" class="glean-agents-composer__plus">
+                                                                                        <span class="glean-agents-composer__placeholder">Ask anything</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-composer__right">
+                                                                                        <img src="Glean/agents-explore/assets/sliders.svg" alt="" draggable="false" class="glean-agents-composer__sliders">
+                                                                                        <img src="Glean/agents-explore/assets/voice-cta.svg" alt="" draggable="false" class="glean-agents-composer__cta">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="glean-agents-pcard">
+                                                                                    <div class="glean-agents-pcard__inner">
+                                                                                        <div class="glean-agents-pcard__copy">
+                                                                                            <p class="glean-agents-pcard__title">Agents can now be created in assistant</p>
+                                                                                            <span class="glean-agents-pcard__cta">Try it out</span>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-pcard__thumb">
+                                                                                            <div class="glean-agents-pcard__scale">
+                                                                                                <div class="glean-agents-pcard__sheet"></div>
+                                                                                                <div class="glean-agents-pcard__mini">
+                                                                                                    <div class="glean-agents-pcard__mini-block">
+                                                                                                        <div class="glean-agents-pcard__mini-step">
+                                                                                                            <span>Show reasoning</span>
+                                                                                                            <img src="Glean/agents-explore/assets/p-thumb-chevron.svg" alt="" draggable="false">
+                                                                                                        </div>
+                                                                                                        <p class="glean-agents-pcard__mini-text">I’ll use sensible defaults: your calendar, deadlines, tasks, messages, and recent project activity, delivered in Assistant chat at 9 AM Pacific each day.</p>
+                                                                                                    </div>
+                                                                                                    <div class="glean-agents-pcard__mini-block">
+                                                                                                        <div class="glean-agents-pcard__artifact">
+                                                                                                            <div class="glean-agents-pcard__artifact-bar">
+                                <div class="glean-agents-pcard__artifact-lead">
+                                    <div class="glean-agents-pcard__artifact-id">
+                                        <span class="glean-agents-pcard__artifact-icon"><img src="Glean/agents-explore/assets/p-thumb-bell.svg" alt="" draggable="false"></span>
+                                        <div class="glean-agents-pcard__artifact-meta">
+                                            <p class="glean-agents-pcard__artifact-name">Daily focus time reminder</p>
+                                            <p class="glean-agents-pcard__artifact-sub"><span>Agent</span><span class="glean-agents-pcard__artifact-bullet">•</span><span>Daily at 9:00 AM</span></p>
+                                        </div>
+                                    </div>
+                                    <span class="glean-agents-pcard__artifact-tag">DRAFT</span>
+                                </div>
+                                                                                                                <span class="glean-agents-pcard__artifact-cta"><img src="Glean/agents-explore/assets/p-thumb-create-icon.svg" alt="" draggable="false"><span>Create</span></span>
+                                                                                                            </div>
+                                                                                                            <div class="glean-agents-pcard__artifact-rule"></div>
+                                                                                                            <div class="glean-agents-pcard__artifact-body">
+                                                                                                                <p class="glean-agents-pcard__artifact-label">Instructions</p>
+                                                                                                                <p class="glean-agents-pcard__artifact-text">Prioritize Bryce Parsons's workday using available enterprise context. Review today's calendar, upcoming deadlines, assigned tasks, unread or action-needed email and messages, and recent activity across active projects. Produce a concise ranked list of the 3-5 highest-impact actions, with a brief reason, urgency, expected effort, and suggested time block for each. Flag conflicts, overdue items, dependencies, and anything that needs clarification. Separate must-do items from nice-to-have items. Do not invent deadlines or commitments; link to supporting sources when available. Deliver the result as a readable Assistant chat briefing.</p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="glean-agents-pcard__mini-actions">
+                                                                                                            <span class="glean-agents-pcard__mini-action"><img src="Glean/agents-explore/assets/p-thumb-copy.svg" alt="" draggable="false"></span>
+                                                                                                            <span class="glean-agents-pcard__mini-action"><img src="Glean/agents-explore/assets/p-thumb-thumbs-up.svg" alt="" draggable="false"></span>
+                                                                                                            <span class="glean-agents-pcard__mini-action"><img src="Glean/agents-explore/assets/p-thumb-thumbs-down.svg" alt="" draggable="false"></span>
+                                                                                                            <span class="glean-agents-pcard__mini-action"><img src="Glean/agents-explore/assets/p-thumb-share.svg" alt="" draggable="false"></span>
+                                                                                                            <span class="glean-agents-pcard__mini-action"><img src="Glean/agents-explore/assets/p-thumb-repeat.svg" alt="" draggable="false"></span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="glean-agents-slide glean-agents-slide--promo" data-slide="2" data-caption="In-Chat Recommendation Promo" hidden role="group" aria-label="Slide 3 of 3: In-chat agent recommendation banner">
+                                                                                <aside class="glean-agents-prail">
+                                                                                    <div class="glean-agents-prail__top">
+                                                                                        <span class="glean-agents-prail__toggle"><img src="Glean/agents-explore/assets/p-rail-sidebar.svg" alt="" draggable="false"></span>
+                                                                                        <div class="glean-agents-prail__items">
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg is-active"><img src="Glean/agents-explore/assets/p-rail-compose.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/search.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg"><img src="Glean/agents-explore/assets/library.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/more-horizontal.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-pin.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-folder.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item"><img src="Glean/agents-explore/assets/p-rail-feather.svg" alt="" draggable="false"></span>
+                                                                                                <span class="glean-agents-prail__item glean-agents-prail__item--lg"><img src="Glean/agents-explore/assets/p-rail-message.svg" alt="" draggable="false"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-prail__footer">
+                                                                                        <img src="Glean/agents-explore/assets/avatar-default.svg" alt="" draggable="false" class="glean-agents-prail__avatar">
+                                                                                    </div>
+                                                                                </aside>
+                                                                                <div class="glean-agents-pchat">
+                                                                                    <div class="glean-agents-header">
+                                                                                        <div class="glean-agents-header__right">
+                                                                                            <img src="Glean/agents-explore/assets/header-more.svg" alt="" draggable="false" class="glean-agents-header__more">
+                                                                                            <span class="glean-agents-header__share"><img src="Glean/agents-explore/assets/lock-share.svg" alt="" draggable="false"><span>Share</span></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-thread glean-agents-thread--promo">
+                                                                                        <div class="glean-agents-bubble glean-agents-bubble--promo">Review my calendar, email, and slack and tell me what my top priorities are for the day.</div>
+                                                                                        <div class="glean-agents-ai glean-agents-ai--promo">
+                                                                                            <p>I'm checking your calendar to figure out which meetings you have for today.</p>
+                                                                                            <button type="button" class="glean-agents-step glean-agents-step--promo" tabindex="-1">Looked at your calendar <img src="Glean/agents-explore/assets/chevron-right.svg" alt="" draggable="false"></button>
+                                                                                            <p class="glean-agents-ai__fade">I found some meetings throughout the morning as well as some free time in the afternoon.</p>
+                                                                                        </div>
+                                                                                        <div class="glean-agents-pbanner">
+                                                                                            <div class="glean-agents-pbanner__lead">
+                                                                                                <div class="glean-agents-pbanner__icon-wrap">
+                                                                                                    <span class="glean-agents-pbanner__icon"><img src="Glean/agents-explore/assets/p-lightbulb.svg" alt="" draggable="false"></span>
+                                                                                                </div>
+                                                                                                <div class="glean-agents-pbanner__copy">
+                                                                                                    <p class="glean-agents-pbanner__title">Let an agent do this for you</p>
+                                                                                                    <p class="glean-agents-pbanner__sub">Agents work in the background, running tasks like this on a schedule or when something change</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="glean-agents-pbanner__actions">
+                                                                                                <span class="glean-agents-pbanner__cta">Try it out</span>
+                                                                                                <span class="glean-agents-pbanner__close"><img src="Glean/agents-explore/assets/p-banner-x.svg" alt="" draggable="false"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                <div class="glean-agents-composer">
+                                                                                    <div class="glean-agents-composer__left">
+                                                                                        <img src="Glean/agents-explore/assets/composer-plus.svg" alt="" draggable="false" class="glean-agents-composer__plus">
+                                                                                        <span class="glean-agents-composer__placeholder">Ask anything</span>
+                                                                                    </div>
+                                                                                    <div class="glean-agents-composer__right">
+                                                                                        <img src="Glean/agents-explore/assets/sliders.svg" alt="" draggable="false" class="glean-agents-composer__sliders">
+                                                                                        <img src="Glean/agents-explore/assets/voice-cta.svg" alt="" draggable="false" class="glean-agents-composer__cta">
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="glean-agents-deck__controls" role="group" aria-label="Promotion slide navigation">
+                                                            <div class="glean-agents-deck__meta">
+                                                                <p class="glean-agents-deck__counter" data-agents-counter aria-live="polite">1 / 3</p>
+                                                                <p class="glean-agents-deck__caption" data-agents-caption>Homepage Modal Promo</p>
+                                                            </div>
+                                                            <div class="glean-agents-deck__arrows">
+                                                                <button type="button" class="glean-agents-deck__arrow" data-agents-prev aria-label="Previous slide" disabled>
+                                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                                </button>
+                                                                <button type="button" class="glean-agents-deck__arrow" data-agents-next aria-label="Next slide">
+                                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             </div>
                                         </section>
 
@@ -1619,23 +2433,18 @@
                                                 <h2 class="case-section-title">Headline forthcoming</h2>
                                             </header>
                                             <div class="case-section-content">
-                                                <h4>[Result theme forthcoming]</h4>
-                                                <p>[Results content forthcoming]</p>
-                                                <div class="case-section-image">
-                                                    <p class="panel-placeholder-text">[Media placeholder]</p>
-                                                </div>
+                                                <h4>Internal Trial at Glean</h4>
+                                                <p>Starting in July 2026, we ran a six-week internal study, releasing personal agent-building capabilities via Assistant to Glean's roughly 1,000 employees. Results were overwhelmingly positive: users adopted the feature in greater-than-expected numbers despite minimal promotion.</p>
 
-                                                <h4>[Result theme forthcoming]</h4>
-                                                <p>[Results content forthcoming]</p>
-                                                <div class="case-section-image">
-                                                    <p class="panel-placeholder-text">[Media placeholder]</p>
-                                                </div>
+                                                <h4>Concurrent Beta Test</h4>
+                                                <p>We beta-launched the Agents in Assistant feature with a select group of Glean customers. Feedback was positive, particularly around the ease of use and accuracy of agent generation.</p>
 
-                                                <h4>[Result theme forthcoming]</h4>
-                                                <p>[Results content forthcoming]</p>
-                                                <div class="case-section-image">
-                                                    <p class="panel-placeholder-text">[Media placeholder]</p>
-                                                </div>
+                                                <h4>Critical Feedback</h4>
+                                                <p>Two issues surfaced during testing:</p>
+                                                <ul>
+                                                    <li>Placing active agents (automations) in a left-navigation field called "Active" was confusing to the user's mental model and cluttered the navigation panel. This was later addressed by adding the Active section back to the Agent Library.</li>
+                                                    <li>Invoking agents via Assistant (the assistant harness) was difficult without a direct-manipulation way to select an agent by name; users had to recall the agent's name and instruct Assistant to run it. This was addressed by new affordances introduced as part of the Composer Redesign.</li>
+                                                </ul>
                                             </div>
                                         </section>
                                     </article>
@@ -4127,6 +4936,79 @@
 
                         show(0);
                     });
+                })();
+
+                // Types the prompt into the promo modal's mini composer once the
+                // slide is on screen, and morphs the mic CTA into Ask as it goes.
+                (function initGleanAgentsPromoTyping() {
+                    var composer = document.querySelector('[data-pmodal-composer]');
+                    if (!composer) return;
+
+                    var out = composer.querySelector('[data-pmodal-typed]');
+                    var slide = composer.closest('.glean-agents-slide');
+                    var deck = composer.closest('[data-glean-agents-deck]');
+                    if (!out || !slide || !deck) return;
+
+                    var TEXT = 'Create an agent that gives me a morning briefing each day at 9 AM.';
+                    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    var timer = null;
+                    var running = false;
+
+                    function reset() {
+                        clearTimeout(timer);
+                        timer = null;
+                        running = false;
+                        out.textContent = '';
+                        composer.classList.remove('is-typing');
+                    }
+
+                    function start() {
+                        if (running) return;
+                        running = true;
+
+                        if (reduced) {
+                            out.textContent = TEXT;
+                            composer.classList.add('is-typing');
+                            return;
+                        }
+
+                        var i = 0;
+                        function step() {
+                            // The class lands with the first character, so the
+                            // placeholder holds until there is text to replace it.
+                            composer.classList.add('is-typing');
+                            out.textContent = TEXT.slice(0, ++i);
+                            if (i < TEXT.length) timer = setTimeout(step, 26 + Math.random() * 40);
+                        }
+                        timer = setTimeout(step, 620);
+                    }
+
+                    function onScreen(entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting && deck.getAttribute('data-slide') === '0') start();
+                            else if (!entry.isIntersecting) reset();
+                        });
+                    }
+
+                    if (!('IntersectionObserver' in window)) {
+                        start();
+                        return;
+                    }
+
+                    var observer = new IntersectionObserver(onScreen, { threshold: 0.4 });
+                    observer.observe(slide);
+
+                    // Replay whenever the deck comes back to the promo modal.
+                    new MutationObserver(function () {
+                        if (deck.getAttribute('data-slide') === '0') {
+                            if (slide.classList.contains('is-active')) {
+                                observer.unobserve(slide);
+                                observer.observe(slide);
+                            }
+                        } else {
+                            reset();
+                        }
+                    }).observe(deck, { attributes: true, attributeFilter: ['data-slide'] });
                 })();
             } catch (e) {
                 // Catch any errors in the main DOMContentLoaded handler
