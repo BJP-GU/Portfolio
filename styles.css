@@ -2919,6 +2919,34 @@ nav.main-grid .grid-cell {
     box-sizing: border-box;
 }
 
+.case-embed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0;
+}
+
+.case-embed iframe {
+    margin: 0;
+}
+
+.case-embed-link {
+    align-self: flex-end;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: var(--font-normal);
+    color: var(--case-text-heading);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.case-embed-link:hover {
+    opacity: 0.7;
+}
+
 /* Ensure responsive video containers are not truncated */
 .video-container-wrapper {
     overflow: visible !important;

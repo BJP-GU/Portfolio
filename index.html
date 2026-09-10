@@ -2826,12 +2826,12 @@
                                         <div class="project-summary">
                                             <div class="project-summary-header">
                                                 <h1 class="project-summary-title">Archetype</h1>
-                                                <p class="project-summary-tagline">Simulated user testing with generative agents</p>
+                                                <p class="project-summary-tagline">Simulated user testing with synthetic users</p>
                                             </div>
                                             <div class="project-summary-grid">
                                                 <div class="project-summary-row project-summary-row--summary">
                                                     <span class="project-summary-label">/ SUMMARY</span>
-                                                    <p class="project-summary-text">Building a tool for product teams to test software with their target customers using generative agents.</p>
+                                                    <p class="project-summary-text">Building a tool for product teams to test software with their target customers using synthetic users.</p>
                                                 </div>
                                                 <div class="project-summary-team-group">
                                                     <div class="project-summary-team-grid">
@@ -2858,88 +2858,34 @@
                                             </div>
                                         </div>
 
-                                        <!-- Case Study Sections -->
                                         <section class="case-section">
-                                            <h2 class="case-section-title">Problem Space</h2>
+                                            <h2 class="case-section-title">About</h2>
                                             <div class="case-section-content">
-
-                                                <p>Companies spend a <strong>quarter million dollars</strong> and <strong>40%</strong> of their team's time on UAT and usability validation testing, yet their insights come from only <strong>5-10 people</strong>—a fraction of who actually uses their product.</p>
-                                                <div class="case-section-image">
-                                                    <img src="Archetype/UAT in the PDLC.svg" alt="UAT in the PDLC" loading="lazy">
-                                                </div>
-
-                                                <h4>Our Thesis</h4>
-                                                <p>Autonomous agents with context of customer personas and historical trace data can conduct UAT at scale, reducing both cost and time while testing across a broader range of user behaviors than traditional methods.</p>
-                                            </div>
-                                        </section>
-
-                                        <section class="case-section">
-                                            <h2 class="case-section-title">Ideation & Prototyping</h2>
-                                            <div class="case-section-content">
-                                                <h4>Conceptual Modeling</h4>
-                                                <p>Collaboratively drafted a conceptual model of our product testing platform with my two co-founders. This model serves as a boundary object for the product's scope and a foundation for the development of both the frontend and backend of the platform.</p>
-                                                <iframe style="border: 1px solid rgba(25, 25, 25, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=0-1&embed-host=share&hide_ui=1&hide-ui=1&hotspot-hints=0&scaling=scale-down-width" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-
-                                                <h4>Interactive Prototype</h4>
-                                                <p>Based on the product's conceptual model, I designed and developed a fully interactive prototype of the front-end. <a href="https://project-archetype-834.magicpatterns.app/" target="_blank" rel="noopener noreferrer">Open in a new tab &#8599;</a></p>
-                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://project-archetype-834.magicpatterns.app/" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                                            </div>
-                                        </section>
-
-                                        <section class="case-section">
-                                            <h2 class="case-section-title">Brand Design</h2>
-                                            <div class="case-section-content">
-                                                <h4>Assets</h4>
-                                                <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 800/450; max-width: 800px;" data-src="https://embed.figma.com/design/uksdrupFRTgJBSntjeruwW/Synthetic-Archetype-Case?node-id=2559-408&embed-host=share" allowfullscreen class="lazy-iframe" loading="lazy"></iframe>
-                                            </div>
-                                        </section>
-
-                                        <section class="case-section">
-                                            <h2 class="case-section-title">Solution Implementation</h2>
-                                            <div class="case-section-content">
-                                                <h4>Collaborative Implementation</h4>
-                                                <div class="case-section-image">
-                                                    <img src="Archetype/Archetype Collaboration.svg" alt="Archetype Collaboration" loading="lazy">
-                                                </div>
-
-                                                <h4>Result</h4>
-                                                <p>We are <a href="https://www.syntheticarchetype.com/" target="_blank">live</a> and available for demos. Our UAT feature is performing reliably in demos and we're working to make it a self-service solution ASAP.</p>
-                                                <ul>
-                                                    <li>Select the product and feature they want to test.</li>
-                                                    <li>Link to a live prototype.</li>
-                                                    <li>Define tester user persona and UAT testing script.</li>
-                                                    <li>Launch simulations using AI-generated users that embody the selected personas.</li>
-                                                    <li>Generate a comprehensive report with insights about the User Acceptance Test.</li>
-                                                </ul>
-
-                                                <h4>Tech-stack</h4>
-                                                <ul>
-                                                    <li>Agentic Simulation: Google Gemini, Browser-use (YC W25) API + Python Playwright, Agentmail (YC S25)</li>
-                                                    <li>Persona generation and dimensions: Google Gemini</li>
-                                                    <li>Web framework: React + Python Flask + AWS</li>
-                                                </ul>
-
-                                            </div>
-                                        </section>
-
-                                        <section class="case-section">
-                                            <h2 class="case-section-title">Reflections</h2>
-                                            <div class="case-section-content">
-                                                <p>I am proud of our work thus far.</p>
+                                                <p>Archetype is a product and design research tool that models synthetic users based on your product's exact customers. This work addresses the opportunity space for synthetic users to effectively model usability studies on coded prototypes. Synthetic personas are initially derived from user behavior frameworks, then continually refined based on session recordings that expose real user behaviors through the PostHog API. The Archetype platform consists of a web app for managing synthetic personas and a plug-in for the CLI tool, Claude Code, enabling software builders to quickly run experiments on prototypes as they build.</p>
                                                 <br>
-                                                <p>In particular, I value the rigorous design process we followed: beginning with a basic concept map to define the problem space, collaboratively developing a conceptual model of the solution (which remains a constant point of reference), and finally, realizing the efficacy of prototyping and designing directly in code.</p>
-                                                <br>
-                                                <p>In retrospect, I wish we had focused more effort upfront on validating the accuracy of the simulated user behaviors. While foundational research like Park et al.'s <em>"Generative Agents: Interactive Simulacra of Human Behavior"</em> confirmed that such simulations were possible, refining our system into a usable product has required significant, ongoing backend changes to the agent architecture.</p>
-
-                                                <h4>Our Journey</h4>
-                                                <div class="case-section-image">
-                                                    <img src="Archetype/Archetype Evolution.svg" alt="Archetype Evolution" loading="lazy">
+                                                <p>As of September 2026, I am no longer working on Synthetic Archetype.</p>
+                                                <div class="case-embed">
+                                                    <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://www.syntheticarchetype.com/" allowfullscreen class="lazy-iframe" loading="lazy" title="Synthetic Archetype website"></iframe>
+                                                    <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer" class="case-embed-link">Open Website <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
                                                 </div>
+                                            </div>
+                                        </section>
 
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Achievements</h2>
+                                            <div class="case-section-content">
+                                                <ul>
+                                                    <li>Accepted into Berkeley Skydeck's Pad-13 Accelerator Program (Summer 2026)</li>
+                                                    <li>Top 10% of applicants for YC W25</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <div class="case-section-content">
                                                 <h4>Additional Information & Resources</h4>
                                                 <ul>
                                                     <li>Our Collider Cup VC Pitch: <a href="https://www.youtube.com/live/hX7JP95TFhI?si=V4xLaJpR4hkk4TtG&t=1852" target="_blank">Watch on YouTube</a></li>
-                                                    <li>Our Website: <a href="https://www.syntheticarchetype.com/" target="_blank">syntheticarchetype.com</a></li>
                                                     <li>Our Pitch Deck (December 2025): <a href="https://docs.google.com/presentation/d/1Hm2fktXzIEd7LRd6lnXZT1vzIVMefcZN/edit" target="_blank">View on Google Slides</a></li>
                                                     <li>Related Papers: <a href="https://arxiv.org/abs/2304.03442" target="_blank"><em>Generative Agents: Interactive Simulacra of Human Behavior</em></a></li>
                                                 </ul>
@@ -3531,8 +3477,13 @@
                     var panel = panelContaining(layout);
                     if (!panel || !panel.classList.contains('is-open')) return;
 
-                    var overview = main.querySelector('.project-case .project-summary');
-                    var sections = main.querySelectorAll('.case-section');
+                    var sections = Array.prototype.filter.call(
+                        main.querySelectorAll('.case-section'),
+                        function(section) {
+                            return section.querySelector('.case-section-eyebrow')
+                                || section.querySelector('.case-section-title');
+                        }
+                    );
                     var links = nav.querySelectorAll('.work-nav-link');
                     if (!sections.length || links.length !== sections.length + 1) return;
 
