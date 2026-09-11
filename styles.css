@@ -4581,7 +4581,8 @@ nav.main-grid .grid-cell {
     .glean-composer-fit__inner,
     .glean-composer-open-fit__inner,
     .glean-menus-fit__inner,
-    .glean-agents-fit__inner {
+    .glean-agents-fit__inner,
+    .glean-agents-pcard__scale {
         max-width: none;
     }
     
@@ -8686,6 +8687,7 @@ nav.main-grid .grid-cell {
     top: 0;
     left: 0;
     width: 1263.6px;
+    max-width: none;
     height: 505.5px;
     transform: scale(0.2004747);
     transform-origin: top left;
