@@ -795,22 +795,27 @@ body {
     }
 
     .home-vrule,
-    .home-dots,
-    .home-hrule--b {
+    .home-dots {
         display: none;
     }
 
-    /* The rules stay architectural: they bleed past the canvas padding to the
-       panel border, the way they run edge to edge on the full-size canvas. */
-    .home-hrule {
+    /* Beat `.home-canvas > *` and the mobile `span { max-width: 100% }` so the
+       rules can bleed past the canvas padding to the panel edges. */
+    .home-canvas > .home-hrule {
         height: 1px;
         flex: none;
         width: calc(100% + 32px);
+        max-width: none;
         margin-inline: -16px;
     }
 
+    /* Same framed crop as the desktop canvas (153.5 × 178). */
     .home-portrait {
-        height: clamp(240px, 62vw, 340px);
+        height: auto;
+        aspect-ratio: calc(
+            (var(--home-frame-right) - var(--home-frame-left) - var(--home-frame-rule))
+            / (var(--home-frame-bottom) - var(--home-frame-top) - var(--home-frame-rule))
+        );
     }
 
     .home-meta {

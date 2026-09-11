@@ -3036,6 +3036,7 @@ nav.main-grid .grid-cell {
 
 .glean-composer-fit__inner {
     width: var(--glean-composer-design-width);
+    max-width: none;
     transform: scale(var(--glean-composer-scale));
     transform-origin: top left;
 }
@@ -3225,6 +3226,7 @@ nav.main-grid .grid-cell {
 
 .glean-composer-open-fit__inner {
     width: var(--glean-composer-open-design-width);
+    max-width: none;
     transform: scale(var(--glean-composer-open-scale));
     transform-origin: top left;
 }
@@ -3963,6 +3965,7 @@ nav.main-grid .grid-cell {
 
 .glean-menus-fit__inner {
     width: var(--glean-menus-design-width);
+    max-width: none;
     transform: scale(var(--glean-menus-scale));
     transform-origin: top left;
 }
@@ -4565,11 +4568,20 @@ nav.main-grid .grid-cell {
         font-size: 16px;
     }
     
-    /* Ensure all text content wraps properly on mobile */
+    /* Ensure all text content wraps properly on mobile.
+       Scaled design canvases keep a fixed px width and must not inherit this,
+       or they shrink and then scale down a second time. */
     p, span, div, a, h1, h2, h3, h4, h5, h6 {
         word-wrap: break-word;
         overflow-wrap: break-word;
         max-width: 100%;
+    }
+
+    .glean-composer-fit__inner,
+    .glean-composer-open-fit__inner,
+    .glean-menus-fit__inner,
+    .glean-agents-fit__inner {
+        max-width: none;
     }
     
     .content-row {
@@ -5264,6 +5276,7 @@ nav.main-grid .grid-cell {
 
 .glean-agents-fit__inner {
     width: var(--glean-agents-design-width);
+    max-width: none;
     height: var(--glean-agents-design-height);
     transform: scale(var(--glean-agents-scale));
     transform-origin: top left;
