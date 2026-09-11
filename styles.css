@@ -5004,6 +5004,10 @@ nav.main-grid .grid-cell {
         display: block;
         margin-bottom: var(--space-lg);
     }
+
+    .doc-heading + .doc-entry {
+        padding-top: var(--space-lg);
+    }
     
     .doc-entry:last-child {
         margin-bottom: 0;

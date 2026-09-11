@@ -1,10 +1,10 @@
 /* ==========================================================================
    PORTFOLIO SHELL — Figma node 928:4631
 
-   The page is a stack of bordered rows ("#1 HOME", "#2 WORK", ...). One row is
-   open at a time and its body holds that section's content. The stack is a
-   1082px column centred in the viewport, leaving an empty gutter left and
-   right on wide displays.
+   The page is a stack of bordered rows ("#1 RESUME", "#2 GLEAN", ...). One row
+   is open at a time and its body holds that section's content. Home sits
+   above the stack and is always open. The stack is a 1082px column centred
+   in the viewport, leaving an empty gutter left and right on wide displays.
 
    The home body is a fixed 1080 x 700 canvas. Every measurement inside it is
    written in those canvas coordinates and multiplied by --u, which resolves to
@@ -291,7 +291,7 @@ body {
     opacity: 1;
 }
 
-/* Rows #8–#9 are reserved and do not open. Nothing opens, so nothing offers
+/* Rows #7–#8 are reserved and do not open. Nothing opens, so nothing offers
    to: they take neither the accent nor the plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
@@ -399,9 +399,9 @@ body {
 /* ==========================================================================
    INTRO REEL
    On first arrival the index runs past the viewport from the bottom of the
-   stack up to #1, which then opens. Every row has to travel for that, so the
-   pinning that normally builds the stacked index is suspended for the length
-   of the run, and the page's smooth scrolling is turned off so the
+   stack up to Home, which is already open. Every row has to travel for that,
+   so the pinning that normally builds the stacked index is suspended for the
+   length of the run, and the page's smooth scrolling is turned off so the
    frame-by-frame scroll lands exactly where each frame puts it.
    ========================================================================== */
 
@@ -420,6 +420,30 @@ body {
 .accordion.is-intro > .acc-panel > .acc-title {
     position: static;
     box-shadow: none;
+}
+
+/* ==========================================================================
+   HOME — always open above the accordion
+   ========================================================================== */
+
+.site-wrapper > .home-hero {
+    box-sizing: border-box;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    max-width: none;
+    margin: var(--acc-gap) auto 0;
+    border: 1px solid var(--home-rule);
+    background-color: var(--home-bg);
+}
+
+.home-lede {
+    display: none;
+}
+
+.home-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* ==========================================================================
@@ -526,6 +550,7 @@ body {
 
 /* Sits inside the four rules; each edge clears the 1px stroke. */
 .home-portrait {
+    position: absolute;
     left: calc((var(--home-frame-left) + var(--home-frame-rule)) * var(--u));
     top: calc((var(--home-frame-top) + var(--home-frame-rule)) * var(--u));
     z-index: 3;
@@ -549,18 +574,22 @@ body {
 
 /* --- Dot grid ----------------------------------------------------------- */
 
-/* 4 columns x 8 rows of 6px dots, 85px apart across, 50px down.
-   The whole field is the hover target; JS sets --dot-s from cursor
-   distance so a region of dots swells without per-dot hit testing. */
+/* 4 columns x 6 rows of 6px dots, 85px apart across, 50px down.
+   Dropped one row above and below the 8-row field so the portrait
+   still sits in the middle. The whole field is the hover target; JS
+   sets --dot-s from cursor distance so a region of dots swells
+   without per-dot hit testing. */
 .home-dots {
+    position: absolute;
     left: calc(409 * var(--u));
-    top: calc(200 * var(--u));
+    top: calc(250 * var(--u));
     z-index: 5;
     width: calc(261 * var(--u));
-    height: calc(356 * var(--u));
+    height: calc(256 * var(--u));
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(4, calc(6 * var(--u)));
-    grid-template-rows: repeat(8, calc(6 * var(--u)));
+    grid-template-rows: repeat(6, calc(6 * var(--u)));
     column-gap: calc(79 * var(--u));
     row-gap: calc(44 * var(--u));
     pointer-events: auto;
@@ -752,32 +781,46 @@ body {
 }
 
 /* ==========================================================================
-   SMALL SCREENS
-   Below this width the canvas would scale type past legibility, so the home
-   body reflows to a single stacked column.
+   SMALL SCREENS — Figma node 1015:454
+   Home is a stacked column (lede, credentials, 4×6 dots around the
+   portrait) and the accordion starts at Resume. The 390 frame insets
+   12px, then 12px of padding, so the hero and the index share a 342px
+   content width.
    ========================================================================== */
 
 @media (max-width: 720px) {
     :root {
         --site-gutter: 12px;
-        --header-h: 61px;
+        --header-h: 65px;
+        --acc-gap: 12px;
     }
 
     .site-wrapper > .site-header {
-        padding-left: 16px;
+        padding-left: 12px;
     }
 
     .site-logo img {
-        width: 34px;
-        height: 34px;
+        width: 41px;
+        height: 41px;
+    }
+
+    .site-wrapper > .home-hero {
+        border: none;
+        padding: 12px;
+    }
+
+    .accordion,
+    .site-footer {
+        padding-inline: 12px;
     }
 
     .home-canvas {
         height: auto;
-        padding: 24px 16px 32px;
+        padding: 0;
         display: flex;
         flex-direction: column;
-        gap: 28px;
+        gap: 24px;
+        overflow: visible;
     }
 
     .home-canvas > * {
@@ -786,71 +829,103 @@ body {
         height: auto;
     }
 
-    .home-name,
-    .home-role {
-        font-size: clamp(38px, 11vw, 68px);
-        line-height: 1.15;
-        text-align: left;
-        padding-right: 0;
+    .home-lede {
+        display: block;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: 0;
+        color: #000;
+        text-transform: uppercase;
     }
 
+    .home-name {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .home-role,
     .home-vrule,
-    .home-dots {
+    .home-hrule,
+    .home-places {
         display: none;
     }
 
-    /* Beat `.home-canvas > *` and the mobile `span { max-width: 100% }` so the
-       rules can bleed past the canvas padding to the panel edges. */
-    .home-canvas > .home-hrule {
-        height: 1px;
-        flex: none;
-        width: calc(100% + 32px);
+    /* Beat `.home-canvas > * { height: auto }` so this band keeps
+       the 328px Figma frame. Otherwise the box collapses to the
+       portrait and the dots overflow into the headline and
+       credentials. */
+    .home-canvas > .home-photo {
+        position: relative;
+        inset: auto;
+        z-index: 0;
+        display: grid;
+        place-items: center;
+        width: 100%;
         max-width: none;
-        margin-inline: -16px;
+        height: 328px;
+        pointer-events: auto;
     }
 
-    /* Same framed crop as the desktop canvas (153.5 × 178). */
     .home-portrait {
-        height: auto;
-        aspect-ratio: calc(
-            (var(--home-frame-right) - var(--home-frame-left) - var(--home-frame-rule))
-            / (var(--home-frame-bottom) - var(--home-frame-top) - var(--home-frame-rule))
-        );
+        position: relative;
+        left: auto;
+        top: auto;
+        grid-area: 1 / 1;
+        z-index: 3;
+        width: 154px;
+        height: 179px;
+        max-width: none;
+    }
+
+    /* Same 4×6 / 85×50 field as the desktop canvas, stacked on the
+       portrait so both share the centre of the 328px band. */
+    .home-dots {
+        position: relative;
+        left: auto;
+        top: auto;
+        grid-area: 1 / 1;
+        z-index: 5;
+        display: grid;
+        width: 261px;
+        height: 256px;
+        max-width: none;
+        grid-template-columns: repeat(4, 6px);
+        grid-template-rows: repeat(6, 6px);
+        column-gap: 79px;
+        row-gap: 44px;
+    }
+
+    .home-dot {
+        width: 6px;
+        height: 6px;
+        max-width: none;
     }
 
     .home-meta {
-        gap: 12px;
+        gap: 16px;
         width: 100%;
     }
 
     .home-meta li {
-        height: auto;
-        gap: 8px;
-        white-space: normal;
+        height: 13px;
+        gap: 6px;
+        font-size: 11.675px;
+        font-weight: 400;
+        line-height: 13px;
+        white-space: nowrap;
     }
 
     .home-meta__icon {
-        width: 14px;
-        height: 14px;
-    }
-
-    .home-meta li,
-    .home-place {
-        font-size: 13px;
-        line-height: 1.5;
-        white-space: normal;
-    }
-
-    .home-places {
-        display: flex;
-        gap: 20px;
-        height: auto;
-    }
-
-    .home-place {
-        position: static;
-        width: auto;
-        height: auto;
+        width: 12.5px;
+        height: 12.5px;
     }
 
     .work-nav-sidebar,
