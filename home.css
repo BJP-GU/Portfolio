@@ -20,6 +20,9 @@
     /* Figma draws 0.25px black hairlines; 1px at 45% reproduces that weight
        consistently across pixel ratios. */
     --home-rule: rgba(0, 0, 0, 0.45);
+    /* Softens the section strokes; kept small so the stack still reads as a
+       set of ruled rows rather than cards. */
+    --home-radius: 4px;
     --home-font: Helvetica, 'Helvetica Neue', Arial, sans-serif;
 
     --acc-gap: 10px;
@@ -119,6 +122,7 @@ body {
     --acc-content-top: calc(var(--acc-stack-clear) + var(--acc-row));
 
     border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
     background-color: var(--home-bg);
     /* Panels must not clip: the work body has a sticky sidebar, and an
        overflow value other than visible would trap it. Clipping happens on
@@ -164,8 +168,10 @@ body {
     /* The panel's own top border scrolls away with the panel, so the label
        carries the section's top stroke itself. The negative margin lays this
        border exactly over the panel's, keeping the resting layout and the line
-       weight unchanged. */
+       weight unchanged. Top corners match the panel so the stroke stays soft
+       while the label is pinned. */
     border-top: 1px solid var(--home-rule);
+    border-radius: var(--home-radius) var(--home-radius) 0 0;
     margin-top: -1px;
 }
 
@@ -208,7 +214,7 @@ body {
     font-weight: 400;
     line-height: 13px;
     letter-spacing: 0;
-    color: #000;
+    color: #1A1A1A;
     text-transform: uppercase;
     white-space: nowrap;
     transition: color 0.2s ease;
@@ -260,8 +266,8 @@ body {
     height: var(--acc-icon-size);
     margin-top: calc(var(--acc-icon-size) / -2);
     background-image:
-        linear-gradient(#000, #000),
-        linear-gradient(#000, #000);
+        linear-gradient(#1A1A1A, #1A1A1A),
+        linear-gradient(#1A1A1A, #1A1A1A);
     background-size:
         var(--acc-icon-size) var(--acc-icon-stroke),
         var(--acc-icon-stroke) var(--acc-icon-size);
@@ -335,7 +341,7 @@ body {
     font-size: var(--acc-text);
     font-weight: 400;
     line-height: 13px;
-    color: #000;
+    color: #1A1A1A;
     white-space: nowrap;
     pointer-events: none;
 }
@@ -349,7 +355,7 @@ body {
     flex: 0 1 147px;
     min-width: 116px;
     height: 1px;
-    background-image: repeating-linear-gradient(to right, #000 0 2px, transparent 2px 4px);
+    background-image: repeating-linear-gradient(to right, #1A1A1A 0 2px, transparent 2px 4px);
 }
 
 /* Below this the gutter is too short to seat the label beside the column at
@@ -432,6 +438,7 @@ body {
     max-width: none;
     margin: var(--acc-gap) auto 0;
     border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
     background-color: var(--home-bg);
 }
 
@@ -497,7 +504,7 @@ body {
     font-weight: 700;
     line-height: calc(92 * var(--u));
     letter-spacing: 0;
-    color: #000;
+    color: #1A1A1A;
     text-transform: uppercase;
 }
 
@@ -514,12 +521,81 @@ body {
     box-sizing: border-box;
     padding-right: calc(var(--home-headline-inset) * var(--u));
     text-align: right;
+    /* Above the places positioning frame so the accent word can receive hover. */
+    z-index: 5;
 }
 
 /* The accent word and dot grid both use --home-accent, scoped to the canvas
    so the rest of the shell keeps its own accent. */
 .home-role-accent {
+    --home-role-band: calc((462.5 - var(--home-headline-inset) - var(--home-frame-rule)) * var(--u));
+    position: relative;
+    display: inline-block;
     color: var(--home-accent);
+}
+
+/* Stretch the hover target across the role column so the extended
+   Interaction band does not drop hover when the pointer leaves "Product". */
+.home-role-accent::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    /* Cover the stroke-to-edge band and the wider Interaction label. */
+    width: max(var(--home-role-band), calc(548 * var(--u)));
+    height: calc(92 * var(--u));
+}
+
+.home-role-accent__default {
+    transition: opacity 240ms var(--acc-ease);
+}
+
+/* Desktop: swap Product → Interaction on hover (Figma 1023:1175).
+   Band runs from the inner vertical stroke to the role's right inset;
+   the label stays end-aligned inside it. */
+.home-role-accent__alt {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    /* At least to the inner vertical stroke; grow if the label is longer. */
+    min-width: var(--home-role-band);
+    width: max-content;
+    height: calc(92 * var(--u));
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    /* Figma 1023:1175 — #f3feab on #1A1A1A, Helvetica Bold 80px */
+    color: #f3feab;
+    background-color: #1A1A1A;
+    transition: opacity 240ms var(--acc-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .home-role-accent {
+        cursor: default;
+    }
+
+    .home-role-accent:hover .home-role-accent__default,
+    .home-role-accent:focus-visible .home-role-accent__default {
+        opacity: 0;
+    }
+
+    .home-role-accent:hover .home-role-accent__alt,
+    .home-role-accent:focus-visible .home-role-accent__alt {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-role-accent__default,
+    .home-role-accent__alt {
+        transition: none;
+    }
 }
 
 /* --- Rules -------------------------------------------------------------- */
@@ -634,7 +710,7 @@ body {
     font-weight: 400;
     line-height: calc(13 * var(--u));
     letter-spacing: 0;
-    color: #000;
+    color: #1A1A1A;
     white-space: nowrap;
 }
 
@@ -654,6 +730,9 @@ body {
     z-index: 4;
     width: 100%;
     height: 100%;
+    /* Full-canvas positioning frame for the SF label only — must not
+       steal hover from the headline (Product → Interaction swap). */
+    pointer-events: none;
 }
 
 .home-place {
@@ -664,7 +743,7 @@ body {
     font-weight: 400;
     line-height: calc(13 * var(--u));
     letter-spacing: 0;
-    color: #000;
+    color: #1A1A1A;
     white-space: nowrap;
 }
 
@@ -752,8 +831,9 @@ body {
     margin: 0 auto calc(var(--acc-gap) * 4);
     padding: 28px 20px;
     border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
     background-color: var(--home-bg);
-    color: #000;
+    color: #1A1A1A;
     z-index: auto;
 }
 
@@ -763,7 +843,7 @@ body {
     font-family: var(--home-font);
     font-size: var(--acc-text);
     line-height: 1.6;
-    color: #000;
+    color: #1A1A1A;
 }
 
 .site-footer .footer-label {
@@ -835,7 +915,7 @@ body {
         font-weight: 700;
         line-height: normal;
         letter-spacing: 0;
-        color: #000;
+        color: #1A1A1A;
         text-transform: uppercase;
     }
 

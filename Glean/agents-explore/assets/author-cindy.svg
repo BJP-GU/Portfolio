@@ -1,6 +1,6 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="8" cy="8" r="8" fill="#D4EFFF"/>
-  <g clip-path="url(#author-clip)" fill="#1B1B1B" fill-opacity="0.35">
+  <g clip-path="url(#author-clip)" fill="#1A1A1A" fill-opacity="0.35">
     <circle cx="8" cy="6.3" r="2.6"/>
     <ellipse cx="8" cy="14.6" rx="5.1" ry="4.7"/>
   </g>

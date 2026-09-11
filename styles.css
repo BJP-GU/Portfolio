@@ -17,13 +17,13 @@
     --bg-color: #FAFAFA;
     --primary-text: #2D00FB;
     --secondary-text: #E8441F;
-    --body-text: #191919;
-    --body-text-muted: rgba(25, 25, 25, 0.55);
-    --body-text-subtle: rgba(25, 25, 25, 0.35);
-    --grid-line: #191919;
+    --body-text: #1A1A1A;
+    --body-text-muted: rgba(26, 26, 26, 0.55);
+    --body-text-subtle: rgba(26, 26, 26, 0.35);
+    --grid-line: #1A1A1A;
 
     /* Case study text hierarchy (dimitriknight.com) */
-    --case-text-heading: #191919;
+    --case-text-heading: #1A1A1A;
     --case-text-body: #707072;
     --case-text-label: #969696;
     --case-text-caption: #C2C2C2;
@@ -477,7 +477,7 @@ nav.main-grid .grid-cell {
 }
 
 .previously .text {
-    color: #191919;
+    color: #1A1A1A;
 }
 
 .content-row .text {
@@ -505,11 +505,11 @@ nav.main-grid .grid-cell {
 }
 
 .currently .text a.link-black {
-    color: #191919;
+    color: #1A1A1A;
 }
 
 .previously .text a {
-    color: #191919;
+    color: #1A1A1A;
 }
 
 /* Hero Tabs - Welcome Section */
@@ -544,7 +544,7 @@ nav.main-grid .grid-cell {
     transition: color 0.2s ease;
     text-transform: none;
     letter-spacing: var(--tracking-wide);
-    border-right: 1px solid rgba(25, 25, 25, 0.2);
+    border-right: 1px solid rgba(26, 26, 26, 0.2);
     text-align: center;
 }
 
@@ -847,7 +847,7 @@ nav.main-grid .grid-cell {
     font-size: var(--text-xl);
     font-weight: var(--font-bold);
     letter-spacing: var(--tracking-tight);
-    color: #191919;
+    color: #1A1A1A;
     border-bottom: 1px solid var(--grid-line);
     text-transform: lowercase;
     display: flex;
@@ -1170,7 +1170,7 @@ nav.main-grid .grid-cell {
 
 /* Dark theme for project detail row only (sidebar, content, pagination) */
 .project-detail-view.active .project-sidebar {
-    background-color: #191919;
+    background-color: #1A1A1A;
     border-bottom-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -1199,7 +1199,7 @@ nav.main-grid .grid-cell {
 }
 
 .project-detail-view.active .project-content {
-    background-color: #191919;
+    background-color: #1A1A1A;
     border-bottom-color: rgba(255, 255, 255, 0.2);
     overflow: visible;
     cursor: pointer;
@@ -1229,7 +1229,7 @@ nav.main-grid .grid-cell {
 }
 
 .project-detail-view.active .project-pagination {
-    background-color: #191919;
+    background-color: #1A1A1A;
     border-bottom-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -1434,7 +1434,7 @@ nav.main-grid .grid-cell {
     grid-column: 2 / 4;
     padding: var(--space-sm) var(--inner-col-padding) var(--space-lg);
     border-bottom: 1px solid var(--grid-line);
-    background-color: rgba(25, 25, 25, 0.03);
+    background-color: rgba(26, 26, 26, 0.03);
     min-height: clamp(300px, 26vw, 400px);
     position: relative;
     display: flex;
@@ -1598,8 +1598,8 @@ nav.main-grid .grid-cell {
 .content-image-placeholder {
     width: 100%;
     height: 200px;
-    background: linear-gradient(135deg, rgba(25, 25, 25, 0.03) 0%, rgba(25, 25, 25, 0.06) 100%);
-    border: 2px dashed rgba(25, 25, 25, 0.1);
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.03) 0%, rgba(26, 26, 26, 0.06) 100%);
+    border: 2px dashed rgba(26, 26, 26, 0.1);
     border-radius: 8px;
     margin-bottom: var(--space-md);
     display: flex;
@@ -1667,7 +1667,7 @@ nav.main-grid .grid-cell {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     overflow: hidden;
-    background: rgba(25, 25, 25, 0.2);
+    background: rgba(26, 26, 26, 0.2);
 }
 
 .zoom-controls {
@@ -1675,7 +1675,7 @@ nav.main-grid .grid-cell {
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    background: rgba(25, 25, 25, 0.4);
+    background: rgba(26, 26, 26, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -1750,7 +1750,7 @@ nav.main-grid .grid-cell {
 
 .pagination-label {
     font-size: var(--text-sm);
-    color: rgba(25, 25, 25, 0.4);
+    color: rgba(26, 26, 26, 0.4);
 }
 
 .pagination-dots {
@@ -2536,7 +2536,7 @@ nav.main-grid .grid-cell {
     container-name: project-summary;
     --summary-label-col: min(9rem, 34%);
     --summary-row-gap: clamp(16px, 4vw, 40px);
-    --summary-border: rgba(25, 25, 25, 0.15);
+    --summary-border: rgba(26, 26, 26, 0.15);
     margin-bottom: var(--space-xl);
 }
 
@@ -2744,7 +2744,7 @@ nav.main-grid .grid-cell {
     justify-content: center;
     width: 20px;
     height: 20px;
-    border: 1px solid rgba(25, 25, 25, 0.2);
+    border: 1px solid rgba(26, 26, 26, 0.2);
     border-radius: 3px;
     color: inherit;
 }
@@ -3054,7 +3054,7 @@ nav.main-grid .grid-cell {
     background: #ffffff;
     border: 1px solid #cccccc;
     border-radius: 28px;
-    color: #1b1b1b;
+    color: #1A1A1A;
     font-family: var(--glean-composer-font);
     font-size: 16px;
     font-weight: 400;
@@ -3105,7 +3105,7 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 1;
     letter-spacing: -0.125px;
-    color: #000000;
+    color: #1A1A1A;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -3146,7 +3146,7 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 1;
     letter-spacing: -0.125px;
-    color: #1b1b1b;
+    color: #1A1A1A;
     white-space: nowrap;
 }
 
@@ -3156,7 +3156,7 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 1;
     letter-spacing: -0.125px;
-    color: #000000;
+    color: #1A1A1A;
     white-space: nowrap;
 }
 
@@ -3170,8 +3170,8 @@ nav.main-grid .grid-cell {
     width: 103px;
     height: 34px;
     padding: 7px 16px;
-    background: #1b1b1b;
-    border: 1px solid #1b1b1b;
+    background: #1A1A1A;
+    border: 1px solid #1A1A1A;
     border-radius: 24px;
     overflow: hidden;
 }
@@ -3343,7 +3343,7 @@ nav.main-grid .grid-cell {
     box-sizing: border-box;
     display: block;
     padding: 5px 8px;
-    background: #1b1b1b;
+    background: #1A1A1A;
     border-radius: 6px;
     color: #ffffff;
     font-family: var(--glean-composer-open-font);
@@ -3365,7 +3365,7 @@ nav.main-grid .grid-cell {
     transform: translateX(-50%);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid #1b1b1b;
+    border-bottom: 5px solid #1A1A1A;
 }
 
 .glean-composer-open.is-menu-open .glean-composer-open__plus-tip,
@@ -3435,8 +3435,8 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 24px;
     letter-spacing: -0.125px;
-    color: #1b1b1b;
-    caret-color: #1b1b1b;
+    color: #1A1A1A;
+    caret-color: #1A1A1A;
     white-space: nowrap;
     -webkit-user-select: text;
     user-select: text;
@@ -3466,7 +3466,7 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 24px;
     letter-spacing: -0.125px;
-    color: #1b1b1b;
+    color: #1A1A1A;
     white-space: pre;
 }
 
@@ -3493,8 +3493,9 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 24px;
     letter-spacing: -0.125px;
-    color: #1b1b1b;
+    color: #1A1A1A;
     text-align: center;
+    vertical-align: top;
 }
 
 .glean-composer-open__command-mark {
@@ -3574,7 +3575,7 @@ nav.main-grid .grid-cell {
     color: inherit;
     text-align: left;
     transition: background-color 0.12s ease, border-color 0.12s ease;
-    vertical-align: middle;
+    vertical-align: top;
     -webkit-user-select: text;
     user-select: text;
 }
@@ -3641,9 +3642,9 @@ nav.main-grid .grid-cell {
     font-family: var(--glean-composer-open-font);
     font-size: 16px;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 1;
     letter-spacing: -0.125px;
-    color: #1b1b1b;
+    color: #1A1A1A;
     white-space: nowrap;
 }
 
@@ -3678,8 +3679,8 @@ nav.main-grid .grid-cell {
     height: 34px;
     padding: 0;
     overflow: hidden;
-    background: #1b1b1b;
-    border: 1px solid #1b1b1b;
+    background: #1A1A1A;
+    border: 1px solid #1A1A1A;
     border-radius: 49.231px;
     color: #ffffff;
     transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
@@ -4161,7 +4162,7 @@ nav.main-grid .grid-cell {
     font-weight: 400;
     line-height: 20px;
     letter-spacing: -0.125px;
-    color: #1b1b1b;
+    color: #1A1A1A;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -5255,7 +5256,7 @@ nav.main-grid .grid-cell {
    ========================================================= */
 .glean-agents-deck {
     --glean-agents-font: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --glean-agents-text: #1b1b1b;
+    --glean-agents-text: #1A1A1A;
     --glean-agents-muted: #727272;
     --glean-agents-sidebar: #f5f5f6;
     --glean-agents-border: #e5e5e5;
@@ -5959,9 +5960,9 @@ nav.main-grid .grid-cell {
     gap: 8px;
     height: 32px;
     padding: 0 12px;
-    border: 1px solid #1b1b1b;
+    border: 1px solid #1A1A1A;
     border-radius: 24px;
-    background: #1b1b1b;
+    background: #1A1A1A;
     color: #ffffff;
     font-size: 14px;
     font-weight: 500;
@@ -6089,8 +6090,8 @@ nav.main-grid .grid-cell {
 }
 
 .glean-agents-card__btn--primary {
-    background: #1b1b1b;
-    border: 1px solid #1b1b1b;
+    background: #1A1A1A;
+    border: 1px solid #1A1A1A;
     color: #ffffff;
 }
 
@@ -6250,7 +6251,7 @@ nav.main-grid .grid-cell {
     height: 34px;
     padding: 0 16px;
     border-radius: 24px;
-    background: #1b1b1b;
+    background: #1A1A1A;
     color: #ffffff;
     font-size: 14px;
     font-weight: 500;
@@ -6459,9 +6460,9 @@ nav.main-grid .grid-cell {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1.5px solid #1b1b1b;
+    border: 1.5px solid #1A1A1A;
     background: #ffffff;
-    color: #1b1b1b;
+    color: #1A1A1A;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -6592,8 +6593,8 @@ nav.main-grid .grid-cell {
     height: 36px;
     padding: 4px 16px;
     border-radius: 24px;
-    background: #1b1b1b;
-    border: 1px solid #1b1b1b;
+    background: #1A1A1A;
+    border: 1px solid #1A1A1A;
     color: #ffffff;
     font-size: 14px;
     font-weight: 510;
@@ -7412,7 +7413,7 @@ nav.main-grid .grid-cell {
     height: 32px;
     margin-left: 3px;
     border-radius: 16px;
-    background: #1b1b1b;
+    background: #1A1A1A;
     flex-shrink: 0;
 }
 
@@ -7520,8 +7521,8 @@ nav.main-grid .grid-cell {
 }
 
 .glean-agents-canvas__btn--save {
-    border: 1px solid #1b1b1b;
-    background: #1b1b1b;
+    border: 1px solid #1A1A1A;
+    background: #1A1A1A;
     color: #ffffff;
 }
 
@@ -8278,7 +8279,7 @@ nav.main-grid .grid-cell {
     font-weight: 500;
     line-height: 36px;
     letter-spacing: -1px;
-    color: #000000;
+    color: #1A1A1A;
 }
 
 /* Slide 1 — homepage modal promo (Figma 1:43522 / 1:43523) */
@@ -8357,7 +8358,7 @@ nav.main-grid .grid-cell {
     font-weight: 500;
     line-height: 18px;
     letter-spacing: -0.5px;
-    color: #000000;
+    color: #1A1A1A;
 }
 
 .glean-agents-pmodal__composer {
@@ -8476,7 +8477,7 @@ nav.main-grid .grid-cell {
     height: 17px;
     padding: 0;
     overflow: hidden;
-    background: #1b1b1b;
+    background: #1A1A1A;
     border-radius: 24.6px;
     transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
                 padding 0.28s cubic-bezier(0.22, 1, 0.36, 1),
