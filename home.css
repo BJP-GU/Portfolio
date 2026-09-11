@@ -25,8 +25,8 @@
     --acc-gap: 10px;
     --acc-pad: 10px;
     --acc-text: 11.675px;
-    --acc-duration: 440ms;
-    --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --acc-duration: 600ms;
+    --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
     /* 41px logo with an 18px inset above and below. Scroll offsets and the
        sticky work sidebar both read this, so the header can only be resized
@@ -372,7 +372,10 @@ body {
     transition: height var(--acc-duration) var(--acc-ease);
 }
 
-.acc-panel.is-open > .acc-body {
+/* height: auto cannot be interpolated, so it is applied only after JS has
+   finished the pixel-height run. Applying it on .is-open alone snapped the
+   drawer open on the first frame. */
+.acc-panel.is-open:not(.is-expanding) > .acc-body {
     height: auto;
     overflow: visible;
 }
@@ -437,8 +440,8 @@ body {
        strokes, not on top of them. */
     --home-frame-left: 463;
     --home-frame-right: 617.5;
-    --home-frame-top: 325;
-    --home-frame-bottom: 504;
+    --home-frame-top: 288;
+    --home-frame-bottom: 467;
     --home-frame-rule: 1;
     position: relative;
     /* The layers below (rules, portrait, dots, credentials) are numbered 1–5
@@ -546,28 +549,45 @@ body {
 
 /* --- Dot grid ----------------------------------------------------------- */
 
-/* 4 columns x 9 rows of 6px dots, 85px apart across, 50px down. */
+/* 4 columns x 8 rows of 6px dots, 85px apart across, 50px down.
+   The whole field is the hover target; JS sets --dot-s from cursor
+   distance so a region of dots swells without per-dot hit testing. */
 .home-dots {
     left: calc(409 * var(--u));
-    top: calc(212 * var(--u));
+    top: calc(200 * var(--u));
     z-index: 5;
     width: calc(261 * var(--u));
-    height: calc(406 * var(--u));
+    height: calc(356 * var(--u));
+    display: grid;
+    grid-template-columns: repeat(4, calc(6 * var(--u)));
+    grid-template-rows: repeat(8, calc(6 * var(--u)));
+    column-gap: calc(79 * var(--u));
+    row-gap: calc(44 * var(--u));
+    pointer-events: auto;
+}
+
+.home-dot {
+    width: calc(6 * var(--u));
+    height: calc(6 * var(--u));
+    border-radius: 50%;
+    background-color: var(--home-accent);
     pointer-events: none;
-    background-image: radial-gradient(
-        circle at calc(3 * var(--u)) calc(3 * var(--u)),
-        var(--home-accent) 0,
-        var(--home-accent) calc(3 * var(--u)),
-        transparent calc(3 * var(--u) + 0.5px)
-    );
-    background-size: calc(85 * var(--u)) calc(50 * var(--u));
+    transform: scale(var(--dot-s, 1));
+    transform-origin: center;
+    transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-dot {
+        transition: none;
+    }
 }
 
 /* --- Credentials -------------------------------------------------------- */
 
 .home-meta {
     left: calc(153 * var(--u));
-    top: calc(376 * var(--u));
+    top: calc(339 * var(--u));
     z-index: 4;
     width: calc(175 * var(--u));
     display: flex;
@@ -609,7 +629,7 @@ body {
 
 .home-place {
     position: absolute;
-    top: calc(408 * var(--u));
+    top: calc(371 * var(--u));
     height: calc(13 * var(--u));
     font-size: calc(11.675 * var(--u));
     font-weight: 400;

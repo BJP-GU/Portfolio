@@ -149,7 +149,16 @@
                                 <img src="Homepage/home-portrait.png" alt="Bryce Parsons" loading="eager" decoding="async">
                             </figure>
 
-                            <span class="home-dots" aria-hidden="true"></span>
+                            <span class="home-dots" aria-hidden="true">
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                                <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
+                            </span>
 
                             <ul class="home-meta">
                                 <li>
@@ -2953,7 +2962,7 @@
             // =============================================
             var accordion = document.getElementById('accordion');
             var panels = accordion ? [].slice.call(accordion.querySelectorAll('.acc-panel[data-panel]')) : [];
-            var DURATION = 440;
+            var DURATION = 600;
 
             function prefersReducedMotion() {
                 try {
@@ -2995,8 +3004,8 @@
                 var header = headerOf(panel);
                 if (!body || panel.classList.contains('is-open')) return;
 
-                panel.classList.add('is-open');
                 panel.classList.add('is-expanding');
+                panel.classList.add('is-open');
                 if (header) header.setAttribute('aria-expanded', 'true');
 
                 if (prefersReducedMotion()) {
@@ -3258,7 +3267,8 @@
                 var home = document.getElementById('panel-home');
                 if (!accordion || !home || !docEl.classList.contains('intro-armed')) return;
 
-                var FILLER_ROWS = 100;
+                var LAST_NUMBER = 100;
+                var FILLER_ROWS = Math.max(0, LAST_NUMBER - rows.length);
                 // Sampled off mschf.com's own load: a beat while the page
                 // settles, a hard acceleration, then a long decay into the
                 // landing. The curve is a fit of that measured scroll.
@@ -4961,6 +4971,94 @@
                         }
                     }).observe(deck, { attributes: true, attributeFilter: ['data-slide'] });
                 })();
+
+            // =============================================
+            // HOME DOTS — regional hover
+            // The whole 4×8 field is the hit target. Pointer position is
+            // mapped into grid-cell space so the nearest dots grow most
+            // (up to 2×) and the ring around them eases down to rest.
+            // One rAF + one getBoundingClientRect per move; no layout
+            // reads on the dots themselves.
+            // =============================================
+            (function initHomeDotRegion() {
+                var root = document.querySelector('.home-dots');
+                if (!root) return;
+
+                var COLS = 4;
+                var DESIGN_W = 261;
+                var DESIGN_H = 356;
+                var COL_STEP = 85;
+                var ROW_STEP = 50;
+                var DOT_R = 3;
+                var REACH = 1.85;
+                var dots = [].slice.call(root.querySelectorAll('.home-dot'));
+                var last = new Float32Array(dots.length);
+                var px = 0;
+                var py = 0;
+                var raf = 0;
+                var live = false;
+
+                function reset() {
+                    for (var i = 0; i < dots.length; i++) {
+                        if (last[i] === 1) continue;
+                        last[i] = 1;
+                        dots[i].style.removeProperty('--dot-s');
+                    }
+                }
+
+                function paint() {
+                    raf = 0;
+                    if (!live) {
+                        reset();
+                        return;
+                    }
+
+                    var rect = root.getBoundingClientRect();
+                    var sx = rect.width / DESIGN_W;
+                    var sy = rect.height / DESIGN_H;
+                    var lx = px - rect.left;
+                    var ly = py - rect.top;
+                    var reach2 = REACH * REACH;
+
+                    for (var i = 0; i < dots.length; i++) {
+                        var dx = (lx - (DOT_R + (i % COLS) * COL_STEP) * sx) / (COL_STEP * sx);
+                        var dy = (ly - (DOT_R + ((i / COLS) | 0) * ROW_STEP) * sy) / (ROW_STEP * sy);
+                        var d2 = dx * dx + dy * dy;
+                        var s = 1;
+                        if (d2 < reach2) {
+                            var t = 1 - Math.sqrt(d2) / REACH;
+                            t = t * t * (3 - 2 * t);
+                            s = 1 + t;
+                        }
+                        if (Math.abs(s - last[i]) < 0.012) continue;
+                        last[i] = s;
+                        if (s <= 1.012) dots[i].style.removeProperty('--dot-s');
+                        else dots[i].style.setProperty('--dot-s', s.toFixed(3));
+                    }
+                }
+
+                function schedule() {
+                    if (!raf) raf = requestAnimationFrame(paint);
+                }
+
+                root.addEventListener('pointerenter', function (e) {
+                    live = true;
+                    px = e.clientX;
+                    py = e.clientY;
+                    schedule();
+                });
+
+                root.addEventListener('pointermove', function (e) {
+                    px = e.clientX;
+                    py = e.clientY;
+                    if (live) schedule();
+                });
+
+                root.addEventListener('pointerleave', function () {
+                    live = false;
+                    schedule();
+                });
+            })();
             } catch (e) {
                 // Catch any errors in the main DOMContentLoaded handler
                 console.warn('DOMContentLoaded error:', e);
