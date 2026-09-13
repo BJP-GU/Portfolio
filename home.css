@@ -156,23 +156,76 @@ body {
     box-shadow: none;
 }
 
+/* Open panel: one 1px rule on every edge. The sticky label overlaps the top
+   of that frame so weight stays uniform, and remasks the gap above so
+   side-rules cannot spike past the rounded corner. */
+.acc-panel.is-open,
+.acc-panel.is-collapsing {
+    border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
+    background-color: var(--home-bg);
+}
+
 /* The open panel's own label pins into the slot the collapsed row would have
    occupied, so the section stays identified while its body scrolls under it.
    It travels only as far as the panel's bottom edge, so it leaves with the
    section rather than colliding with the row that follows. */
-.acc-panel.is-open > .acc-title {
+.acc-panel.is-open > .acc-title,
+.acc-panel.is-collapsing > .acc-title {
     position: sticky;
     top: var(--acc-stack-clear);
     z-index: 2;
+    box-sizing: border-box;
+    /* Pull over the panel's 1px frame so label + panel share one stroke path. */
+    width: calc(100% + 2px);
+    margin: -1px -1px 0;
     background-color: var(--home-bg);
-    /* The panel's own top border scrolls away with the panel, so the label
-       carries the section's top stroke itself. The negative margin lays this
-       border exactly over the panel's, keeping the resting layout and the line
-       weight unchanged. Top corners match the panel so the stroke stays soft
-       while the label is pinned. */
-    border-top: 1px solid var(--home-rule);
+    border: none;
+    border-radius: 0;
+}
+
+/* Gap mask only — ends above the label so it cannot paint over the top stroke. */
+.acc-panel.is-open > .acc-title::before,
+.acc-panel.is-collapsing > .acc-title::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    top: calc(-1 * var(--acc-gap) - 1px);
+    height: var(--acc-gap);
+    background-color: var(--home-bg);
+    pointer-events: none;
+}
+
+/* Top + side stroke on the label, same 1px rule as the panel. Painted above
+   the gap mask so the top edge keeps full weight. */
+.acc-panel.is-open > .acc-title::after,
+.acc-panel.is-collapsing > .acc-title::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    border: 1px solid var(--home-rule);
+    border-bottom: none;
     border-radius: var(--home-radius) var(--home-radius) 0 0;
-    margin-top: -1px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.acc-panel.is-open > .acc-title > .acc-header,
+.acc-panel.is-collapsing > .acc-title > .acc-header {
+    position: relative;
+    z-index: 1;
+}
+
+/* No extra chrome — the panel owns left/right/bottom below the label. */
+.acc-panel.is-open > .acc-body,
+.acc-panel.is-collapsing > .acc-body {
+    position: relative;
+    z-index: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
 }
 
 .accordion > .acc-panel:nth-child(1) { --acc-stack: 0; }

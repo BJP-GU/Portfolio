@@ -3852,6 +3852,27 @@ nav.main-grid .grid-cell {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+    z-index: 4;
+}
+
+.glean-composer-open__submenu {
+    position: absolute;
+    top: 60px;
+    left: 350px;
+    width: max-content;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    z-index: 6;
+}
+
+.glean-composer-open__submenu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -12px;
+    width: 12px;
 }
 
 .glean-composer-open__slash-menu {
@@ -3883,6 +3904,7 @@ nav.main-grid .grid-cell {
 }
 
 .glean-composer-open__menu[hidden],
+.glean-composer-open__submenu[hidden],
 .glean-composer-open__slash-menu[hidden],
 .glean-composer-open__at-menu[hidden] {
     display: none !important;
@@ -3912,6 +3934,7 @@ nav.main-grid .grid-cell {
 
 .glean-composer-open__menu.glean-menu,
 .glean-composer-open .glean-menu--plus-open,
+.glean-composer-open__submenu.glean-menu,
 .glean-composer-open__slash-menu.glean-menu,
 .glean-composer-open .glean-menu--slash-open,
 .glean-composer-open__at-menu.glean-menu,
@@ -3921,6 +3944,29 @@ nav.main-grid .grid-cell {
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+}
+
+.glean-composer-open__submenu.glean-menu {
+    width: max-content;
+    max-height: none;
+    overflow: visible;
+}
+
+.glean-composer-open__submenu .glean-menu__item {
+    width: auto;
+    align-self: stretch;
+}
+
+.glean-composer-open__submenu .glean-menu__leading {
+    flex: 0 0 auto;
+    min-width: auto;
+    overflow: visible;
+}
+
+.glean-composer-open__submenu .glean-menu__label {
+    flex: 0 0 auto;
+    min-width: auto;
+    overflow: visible;
 }
 
 .glean-composer-open .glean-menu__item {
@@ -4034,7 +4080,9 @@ nav.main-grid .grid-cell {
 }
 
 .glean-composer-open__menu .glean-menu__item[data-glean-menu-action="chip"],
+.glean-composer-open__menu .glean-menu__item[data-glean-menu-action="submenu"],
 .glean-composer-open__menu .glean-menu__item[data-glean-menu-action="at-shortcut"],
+.glean-composer-open__submenu .glean-menu__item[data-glean-menu-action="chip"],
 .glean-composer-open__slash-menu .glean-menu__item[data-glean-menu-action="chip"],
 .glean-composer-open__at-menu .glean-menu__item[data-glean-menu-action="chip"] {
     cursor: pointer;
@@ -4044,8 +4092,13 @@ nav.main-grid .grid-cell {
 
 .glean-composer-open__menu .glean-menu__item[data-glean-menu-action="chip"]:hover,
 .glean-composer-open__menu .glean-menu__item[data-glean-menu-action="chip"]:focus-visible,
+.glean-composer-open__menu .glean-menu__item[data-glean-menu-action="submenu"]:hover,
+.glean-composer-open__menu .glean-menu__item[data-glean-menu-action="submenu"]:focus-visible,
+.glean-composer-open__menu .glean-menu__item[data-glean-menu-action="submenu"].is-submenu-open,
 .glean-composer-open__menu .glean-menu__item[data-glean-menu-action="at-shortcut"]:hover,
 .glean-composer-open__menu .glean-menu__item[data-glean-menu-action="at-shortcut"]:focus-visible,
+.glean-composer-open__submenu .glean-menu__item[data-glean-menu-action="chip"]:hover,
+.glean-composer-open__submenu .glean-menu__item[data-glean-menu-action="chip"]:focus-visible,
 .glean-composer-open__slash-menu .glean-menu__item[data-glean-menu-action="chip"]:hover,
 .glean-composer-open__slash-menu .glean-menu__item[data-glean-menu-action="chip"]:focus-visible,
 .glean-composer-open__at-menu .glean-menu__item[data-glean-menu-action="chip"]:hover,
