@@ -156,12 +156,13 @@ body {
     box-shadow: none;
 }
 
-/* Open panel: one 1px rule on every edge. The sticky label overlaps the top
-   of that frame so weight stays uniform, and remasks the gap above so
-   side-rules cannot spike past the rounded corner. */
+/* Open panel: no frame on the panel itself. A full-height side rule would
+   keep painting above the sticky label as the body scrolls, and show through
+   the gaps in the pinned stack. The label draws the top and sides; the body
+   draws the sides and bottom below it. */
 .acc-panel.is-open,
 .acc-panel.is-collapsing {
-    border: 1px solid var(--home-rule);
+    border: none;
     border-radius: var(--home-radius);
     background-color: var(--home-bg);
 }
@@ -176,29 +177,39 @@ body {
     top: var(--acc-stack-clear);
     z-index: 2;
     box-sizing: border-box;
-    /* Pull over the panel's 1px frame so label + panel share one stroke path. */
-    width: calc(100% + 2px);
-    margin: -1px -1px 0;
+    width: 100%;
+    margin: 0;
     background-color: var(--home-bg);
     border: none;
     border-radius: 0;
 }
 
-/* Gap mask only — ends above the label so it cannot paint over the top stroke. */
+/* Edge masks above the label. The body's side rules scroll with the content
+   and would otherwise poke through the channels between pinned rows; these
+   strips cover only the left/right pixels, and only as high as this panel's
+   pin line so they cannot wash out the home frame above the stack. */
 .acc-panel.is-open > .acc-title::before,
 .acc-panel.is-collapsing > .acc-title::before {
     content: "";
     position: absolute;
-    left: -2px;
-    right: -2px;
-    top: calc(-1 * var(--acc-gap) - 1px);
-    height: var(--acc-gap);
-    background-color: var(--home-bg);
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: var(--acc-stack-clear);
+    background: linear-gradient(
+        to right,
+        var(--home-bg) 0,
+        var(--home-bg) 2px,
+        transparent 2px,
+        transparent calc(100% - 2px),
+        var(--home-bg) calc(100% - 2px),
+        var(--home-bg) 100%
+    );
     pointer-events: none;
+    z-index: 1;
 }
 
-/* Top + side stroke on the label, same 1px rule as the panel. Painted above
-   the gap mask so the top edge keeps full weight. */
+/* Top + side stroke on the label only — ends at the pinned row. */
 .acc-panel.is-open > .acc-title::after,
 .acc-panel.is-collapsing > .acc-title::after {
     content: "";
@@ -218,14 +229,19 @@ body {
     z-index: 1;
 }
 
-/* No extra chrome — the panel owns left/right/bottom below the label. */
+/* Sides + bottom live on the body so the panel box itself never carries a
+   full-height frame past the pinned rows above. */
 .acc-panel.is-open > .acc-body,
 .acc-panel.is-collapsing > .acc-body {
     position: relative;
     z-index: 0;
-    border: none;
-    border-radius: 0;
-    background-color: transparent;
+    box-sizing: border-box;
+    border: 1px solid var(--home-rule);
+    border-top: none;
+    border-radius: 0 0 var(--home-radius) var(--home-radius);
+    /* Solid fill (not transparent) so fast-scroll compositor tiles never
+       flash an unstyled backing through the open section. */
+    background-color: var(--home-bg);
 }
 
 .accordion > .acc-panel:nth-child(1) { --acc-stack: 0; }
@@ -486,6 +502,11 @@ body {
    ========================================================================== */
 
 .site-wrapper > .home-hero {
+    /* Above open-panel edge masks (z-index 1) so the home frame's side
+       strokes are never covered; pinned accordion rows share this level and
+       still paint over the hero as it scrolls away (later in tree order). */
+    position: relative;
+    z-index: 2;
     box-sizing: border-box;
     width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
     max-width: none;

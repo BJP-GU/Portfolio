@@ -11,8 +11,8 @@
     <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="home.css?v=acc-border-10">
+    <link rel="stylesheet" href="styles.css?v=scroll-flash-1">
+    <link rel="stylesheet" href="home.css?v=acc-border-14">
 </head>
 <body>
     <noscript>
@@ -5115,6 +5115,13 @@
                         || (window.innerWidth && window.innerWidth <= 768)
                         || ('ontouchstart' in window);
                     var vimeoScriptLoaded = false;
+                    // Light blank document — about:blank often paints black and
+                    // flashes during fast scroll / mobile unload cycles.
+                    var blankSrc = 'data:text/html;charset=utf-8,' +
+                        encodeURIComponent('<!doctype html><title></title><body style="margin:0;background:#FAFAFA"></body>');
+                    var loadQueue = [];
+                    var loadsInFlight = 0;
+                    var maxConcurrentLoads = isMobile ? 1 : 2;
 
                     function loadVimeoAPI() {
                         if (vimeoScriptLoaded) return;
@@ -5128,13 +5135,33 @@
                         } catch (e) { vimeoScriptLoaded = false; }
                     }
 
-                    // Load an iframe: move data-src → src
-                    function loadIframe(iframe) {
+                    function markIframeReady(iframe) {
+                        if (!iframe) return;
+                        iframe.classList.add('iframe-ready');
+                    }
+
+                    function pumpLoadQueue() {
+                        while (loadsInFlight < maxConcurrentLoads && loadQueue.length) {
+                            startIframeLoad(loadQueue.shift());
+                        }
+                    }
+
+                    function startIframeLoad(iframe) {
                         try {
-                            if (!iframe) return;
+                            if (!iframe) {
+                                pumpLoadQueue();
+                                return;
+                            }
                             var src = iframe.getAttribute('data-src');
-                            if (!src) return; // already loaded or no source
-                            if (iframe.getAttribute('src') === src) return; // already set
+                            if (!src) {
+                                pumpLoadQueue();
+                                return;
+                            }
+                            if (iframe.getAttribute('src') === src) {
+                                markIframeReady(iframe);
+                                pumpLoadQueue();
+                                return;
+                            }
 
                             // On mobile: strip autoplay & loop from Vimeo to save CPU/memory
                             if (isMobile && src.indexOf('vimeo.com') !== -1) {
@@ -5142,10 +5169,52 @@
                                 src = src.replace(/[&?]loop=1/g, '');
                             }
 
-                            iframe.src = src;
+                            loadsInFlight++;
+                            iframe.classList.remove('iframe-ready');
                             iframe.classList.add('iframe-loaded');
 
+                            var settled = false;
+                            function onSettled() {
+                                if (settled) return;
+                                settled = true;
+                                iframe.removeEventListener('load', onSettled);
+                                markIframeReady(iframe);
+                                loadsInFlight = Math.max(0, loadsInFlight - 1);
+                                pumpLoadQueue();
+                            }
+
+                            iframe.addEventListener('load', onSettled);
+                            // If a frame never fires load (blocked embed), reveal
+                            // after a beat so the slot does not stay invisible.
+                            setTimeout(onSettled, 4000);
+
+                            iframe.src = src;
                             if (src.indexOf('vimeo.com') !== -1) loadVimeoAPI();
+                        } catch (e) {
+                            loadsInFlight = Math.max(0, loadsInFlight - 1);
+                            console.warn('loadIframe error:', e);
+                            pumpLoadQueue();
+                        }
+                    }
+
+                    // Load an iframe: move data-src → src (queued to avoid a
+                    // burst of black player shells during fast scroll).
+                    function loadIframe(iframe) {
+                        try {
+                            if (!iframe) return;
+                            var src = iframe.getAttribute('data-src');
+                            if (!src) return;
+                            if (iframe.getAttribute('src') === src) {
+                                markIframeReady(iframe);
+                                return;
+                            }
+                            if (loadQueue.indexOf(iframe) !== -1) return;
+                            if (iframe.classList.contains('iframe-loaded') && !iframe.classList.contains('iframe-ready')) {
+                                // Already in flight
+                                return;
+                            }
+                            loadQueue.push(iframe);
+                            pumpLoadQueue();
                         } catch (e) {
                             console.warn('loadIframe error:', e);
                         }
@@ -5157,9 +5226,12 @@
                             if (!iframe) return;
                             // Only unload if it was loaded
                             if (!iframe.classList.contains('iframe-loaded')) return;
+                            var qi = loadQueue.indexOf(iframe);
+                            if (qi !== -1) loadQueue.splice(qi, 1);
                             // (data-src stays intact since we never removed it)
-                            iframe.src = 'about:blank';
+                            iframe.src = blankSrc;
                             iframe.classList.remove('iframe-loaded');
+                            iframe.classList.remove('iframe-ready');
                         } catch (e) {
                             console.warn('unloadIframe error:', e);
                         }
@@ -5167,6 +5239,14 @@
 
                     var lazyIframes = document.querySelectorAll('iframe.lazy-iframe');
                     if (!lazyIframes || lazyIframes.length === 0) return;
+
+                    // Warm every frame with the light blank so the slot never
+                    // starts as an unstyled (black) browsing context.
+                    lazyIframes.forEach(function(iframe) {
+                        try {
+                            if (!iframe.getAttribute('src')) iframe.src = blankSrc;
+                        } catch (e) {}
+                    });
 
                     if ('IntersectionObserver' in window) {
                         if (isMobile) {
@@ -5186,7 +5266,7 @@
                                     }
                                 });
                             }, {
-                                rootMargin: '100px 0px',
+                                rootMargin: '200px 0px',
                                 threshold: 0
                             });
 
@@ -5194,7 +5274,7 @@
                                 try { mobileObserver.observe(iframe); } catch (e) {}
                             });
                         } else {
-                            // ── DESKTOP: standard lazy-load, no unloading ──
+                            // ── DESKTOP: prefetch well ahead of fast scroll ──
                             var desktopObserver = new IntersectionObserver(function(entries) {
                                 entries.forEach(function(entry) {
                                     if (entry.isIntersecting) {
@@ -5203,7 +5283,7 @@
                                     }
                                 });
                             }, {
-                                rootMargin: '300px 0px',
+                                rootMargin: '900px 0px',
                                 threshold: 0
                             });
 

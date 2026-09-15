@@ -93,6 +93,10 @@
 
 html {
     scroll-behavior: smooth;
+    /* Match the page fill so fast-scroll compositor gaps and overscroll
+       never flash an unstyled (often black) backing store. */
+    background-color: var(--bg-color);
+    color-scheme: only light;
 }
 
 html.nav-scrolling {
@@ -2924,6 +2928,7 @@ nav.main-grid .grid-cell {
     flex-direction: column;
     gap: var(--space-sm);
     margin: var(--space-md) 0;
+    background-color: var(--bg-color);
 }
 
 .case-embed iframe {
@@ -2954,12 +2959,14 @@ nav.main-grid .grid-cell {
     display: block;
     position: relative;
     width: 100%;
+    background-color: var(--bg-color);
 }
 
 /* Ensure the inner aspect-ratio div displays fully */
 .video-container-wrapper > div {
     overflow: visible !important;
     width: 100%;
+    background-color: var(--bg-color);
 }
 
 /* Ensure iframes inside video wrappers fill the container */
@@ -2975,11 +2982,28 @@ nav.main-grid .grid-cell {
     padding-bottom: 0.5rem;
 }
 
+/* Lazy embeds: keep a light shell until the frame has painted, so fast
+   scroll never reveals a black Vimeo/Figma backing store. */
+iframe.lazy-iframe {
+    background-color: var(--bg-color);
+    color-scheme: light;
+}
+
+iframe.lazy-iframe.iframe-loaded:not(.iframe-ready) {
+    opacity: 0;
+}
+
+iframe.lazy-iframe.iframe-ready {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
 .case-section-image {
     width: 100%;
     margin: var(--space-md) 0;
     border-radius: 8px;
     overflow: hidden;
+    background-color: var(--bg-color);
 }
 
 .case-section-image img {
