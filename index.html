@@ -2932,13 +2932,142 @@
             </section>
 
             <!-- ========================================
-                 #7–#8 RESERVED
+                 #7 ANCHOR (disabled — case study in progress)
                  ======================================== -->
-            <section class="acc-panel" data-reserved>
+            <section class="acc-panel" id="panel-anchor" data-reserved>
                 <h2 class="acc-title">
-                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#7</span><span class="acc-label">???</span></span>
+                    <span class="acc-header" aria-disabled="true">
+                        <span class="acc-num">#7</span>
+                        <span class="acc-label">Anchor</span>
+                        <span class="acc-case">Case study in progress</span>
+                    </span>
                 </h2>
+                <!-- Case study body retained for future publish; panel is not openable. -->
+                <div class="acc-body" id="body-anchor" hidden>
+                    <div class="acc-inner">
+                        <section id="anchor-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
+
+                                <main class="work-main-content">
+
+                                    <article class="project-case" id="anchor">
+                                        <!-- Project Summary Section -->
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">Anchor</h1>
+                                                <p class="project-summary-tagline"></p>
+                                            </div>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">This work brings an investigative, futuristic lens to blind and low vision passengers navigating autonomous rideshare.<br><br>We combined research with Lighthouse, a leading BLV organization, and hands-on sessions with BLV rideshare users, to build a fully functioning wayfinding solution for BLV passengers.</p>
+                                                </div>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Role</span>
+                                                                <span class="project-summary-team-value">Interaction / Experience Designer</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Team</span>
+                                                                <span class="project-summary-team-value">Angy He, Cody Chen, Tala Salman</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <section class="case-section">
+                                            <header class="case-section-header">
+                                                <p class="case-section-eyebrow">Problem Space</p>
+                                                <h2 class="case-section-title">Ride share is becoming more autonomous, leaving the blind and low vision community behind</h2>
+                                            </header>
+                                            <div class="case-section-content">
+                                                <p>Traditional rideshare drivers are notified of a passenger's vision impairment in advance and pay closer attention to their needs throughout the experience: arriving closer to pickup and drop-off locations, providing a clear approach to and from the vehicle, and occasionally offering physical guidance.</p>
+                                                <br>
+                                                <p>As we move toward an autonomous rideshare future, blind and low vision riders will navigate their ride experience without another human present.</p>
+                                                <br>
+                                                <p>This work builds on traditional rideshare affordances for the blind and low vision community, aiming to design an equally accessible future for BLV riders in emerging autonomous services.</p>
+
+                                                <div class="anchor-journey-fit" role="img" aria-label="Diagram comparing autonomous vehicle stages with a blind or low-vision rider's journey, highlighting navigating to and boarding the vehicle.">
+                                                    <div class="anchor-journey-fit__inner">
+                                                        <div class="anchor-journey">
+                                                            <div class="anchor-journey__focus" aria-hidden="true"></div>
+
+                                                            <img class="anchor-journey__icon anchor-journey__icon--vehicle" src="Anchor/vehicle-auto.png" alt="" width="130" height="65">
+                                                            <img class="anchor-journey__icon anchor-journey__icon--rider" src="Anchor/blv-cane.png" alt="" width="103" height="125">
+
+                                                            <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:268;--y:12;--w:205;--h:84;">Vehicle Arrives at Pickup</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:489;--y:12;--w:246;--h:84;">Vehicle Waits</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:751;--y:12;--w:171;--h:84;">Vehicle Departs</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:943;--y:12;--w:320;--h:84;">Vehicle Drives to Destination</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:1280;--y:12;--w:158;--h:84;">Vehicle Arrives at Destination</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:1455;--y:12;--w:217;--h:84;">Vehicle Departs</div>
+
+                                                            <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:266;--y:168;--w:320;--h:96;">Navigating to the vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:603;--y:168;--w:834;--h:96;">Vehicle Experience</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:1454;--y:168;--w:218;--h:96;">Navigating from Vehicle</div>
+
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:266;--y:292;--w:146;--h:84;">Preparing to depart</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:425;--y:292;--w:161;--h:84;">Way finding to vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:603;--y:292;--w:204;--h:84;">Getting in the vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:824;--y:292;--w:205;--h:84;">Riding in the vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:1046;--y:292;--w:218;--h:84;">Rider prepares to depart vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:1278;--y:292;--w:159;--h:84;">Rider departs vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--step" style="--x:1454;--y:291;--w:218;--h:85;">Walking from Vehicle</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <header class="case-section-header">
+                                                <p class="case-section-eyebrow">Research</p>
+                                                <h2 class="case-section-title">Placeholder headline</h2>
+                                            </header>
+                                            <div class="case-section-content">
+                                                <h4>Methods</h4>
+                                                <h4>Findings</h4>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <header class="case-section-header">
+                                                <p class="case-section-eyebrow">Solution</p>
+                                                <h2 class="case-section-title">Placeholder headline</h2>
+                                            </header>
+                                            <div class="case-section-content">
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <header class="case-section-header">
+                                                <p class="case-section-eyebrow">Reflection</p>
+                                                <h2 class="case-section-title">Placeholder headline</h2>
+                                            </header>
+                                            <div class="case-section-content">
+                                            </div>
+                                        </section>
+                                    </article>
+
+                                </main>
+
+                                <!-- Right Spacer Column -->
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </section>
+
+            <!-- ========================================
+                 #8 RESERVED
+                 ======================================== -->
             <section class="acc-panel" data-reserved>
                 <h2 class="acc-title">
                     <span class="acc-header" aria-disabled="true"><span class="acc-num">#8</span><span class="acc-label">???</span></span>
@@ -3536,7 +3665,7 @@
 
             function navigateToHash(id, options) {
                 var opts = options || {};
-                var aliases = { home: 'home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design' };
+                var aliases = { home: 'home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design', archetype: 'panel-archetype' };
                 var direct = document.getElementById(aliases[id] || id) || document.getElementById(id);
                 if (!direct) return;
 

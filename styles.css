@@ -9121,3 +9121,107 @@ nav.main-grid .grid-cell {
     width: 16px !important;
     height: 16px !important;
 }
+
+/* ==========================================================================
+   Anchor — autonomous rideshare journey diagram (Figma 1033:1328)
+   Fixed 1685×388 artboard. Scales to the content column; below ~50% scale
+   it stops shrinking and scrolls horizontally so type stays legible.
+   ========================================================================== */
+
+.anchor-journey-fit {
+    --anchor-journey-design-width: 1685px;
+    --anchor-journey-design-height: 388px;
+    --anchor-journey-scale: min(1, calc(100cqw / 1685px));
+    container-type: inline-size;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: var(--space-lg) 0 var(--space-md);
+}
+
+.anchor-journey-fit__inner {
+    width: calc(var(--anchor-journey-design-width) * var(--anchor-journey-scale));
+    height: calc(var(--anchor-journey-design-height) * var(--anchor-journey-scale));
+    position: relative;
+}
+
+.anchor-journey {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--anchor-journey-design-width);
+    height: var(--anchor-journey-design-height);
+    transform: scale(var(--anchor-journey-scale));
+    transform-origin: top left;
+    box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+    .anchor-journey-fit {
+        --anchor-journey-scale: 0.55;
+    }
+}
+
+.anchor-journey__focus {
+    position: absolute;
+    left: 254px;
+    top: 157px;
+    width: 562px;
+    height: 231px;
+    border: 2.5px dashed #2F6FED;
+    border-radius: 2px;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.anchor-journey__icon {
+    position: absolute;
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+.case-section-content .anchor-journey__icon--vehicle {
+    left: 55px;
+    top: 28px;
+    width: 130px !important;
+    height: 65px !important;
+}
+
+.case-section-content .anchor-journey__icon--rider {
+    left: 69px;
+    top: 192px;
+    width: 103px !important;
+    height: 125px !important;
+}
+
+.anchor-journey__cell {
+    position: absolute;
+    left: calc(var(--x) * 1px);
+    top: calc(var(--y) * 1px);
+    width: calc(var(--w) * 1px);
+    height: calc(var(--h) * 1px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    margin: 0;
+    background: #fff;
+    border: 1px solid #c8c8c8;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: var(--font-normal);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+    text-align: center;
+    z-index: 1;
+}
