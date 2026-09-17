@@ -241,6 +241,9 @@ nav.main-grid .grid-cell {
     justify-content: center;
     transition: transform 0.2s ease, opacity 0.2s ease;
     cursor: pointer;
+    position: relative;
+    line-height: 0;
+    text-decoration: none;
 }
 
 .home-button:hover {
@@ -249,6 +252,53 @@ nav.main-grid .grid-cell {
 
 .home-button:active {
     transform: scale(0.95);
+}
+
+/* P → bike mark swap on resume logo (mirrors home.css site-logo). */
+.home-button .site-logo__mark {
+    position: relative;
+    display: block;
+    width: clamp(24.61px, 2.11vw + 7.04px, 35.16px);
+    height: clamp(24.61px, 2.11vw + 7.04px, 35.16px);
+}
+
+.home-button .site-logo__p,
+.home-button .site-logo__bike {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.home-button .site-logo__bike {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.home-button .site-logo__p {
+    transition: opacity 240ms cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .home-button:hover .site-logo__p,
+    .home-button:focus-visible .site-logo__p {
+        opacity: 0;
+    }
+
+    .home-button:hover .site-logo__bike,
+    .home-button:focus-visible .site-logo__bike {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-button .site-logo__p,
+    .home-button .site-logo__bike {
+        transition: none;
+    }
 }
 
 .nav-links-cell {

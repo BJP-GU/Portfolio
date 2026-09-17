@@ -74,11 +74,6 @@ body {
     display: block;
     line-height: 0;
     text-decoration: none;
-    transition: opacity 0.2s ease;
-}
-
-.site-logo:hover {
-    opacity: 0.6;
 }
 
 .site-logo:focus-visible {
@@ -86,10 +81,51 @@ body {
     outline-offset: 4px;
 }
 
-.site-logo img {
+/* P → bike mark swap (same opacity crossfade as Product → Interaction). */
+.site-logo__mark {
+    position: relative;
     display: block;
     width: 41px;
     height: 41px;
+}
+
+.site-logo__p,
+.site-logo__bike {
+    display: block;
+    width: 41px;
+    height: 41px;
+}
+
+.site-logo__bike {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms var(--acc-ease);
+}
+
+.site-logo__p {
+    transition: opacity 240ms var(--acc-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .site-logo:hover .site-logo__p,
+    .site-logo:focus-visible .site-logo__p {
+        opacity: 0;
+    }
+
+    .site-logo:hover .site-logo__bike,
+    .site-logo:focus-visible .site-logo__bike {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-logo__p,
+    .site-logo__bike {
+        transition: none;
+    }
 }
 
 /* ==========================================================================
@@ -953,7 +989,9 @@ body {
         padding-left: 12px;
     }
 
-    .site-logo img {
+    .site-logo__mark,
+    .site-logo__p,
+    .site-logo__bike {
         width: 41px;
         height: 41px;
     }
