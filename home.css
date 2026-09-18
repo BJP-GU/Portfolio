@@ -186,20 +186,12 @@ body {
 .bike-race__bike--green {
     color: #f3feab;
     z-index: 2;
-    /* Outside stroke in site black so the pale green reads on light header. */
+    /* Thin outside stroke in site black so the pale green reads on light header. */
     filter:
-        drop-shadow(2px 0 0 #1A1A1A)
-        drop-shadow(-2px 0 0 #1A1A1A)
-        drop-shadow(0 2px 0 #1A1A1A)
-        drop-shadow(0 -2px 0 #1A1A1A)
-        drop-shadow(2px 2px 0 #1A1A1A)
-        drop-shadow(-2px 2px 0 #1A1A1A)
-        drop-shadow(2px -2px 0 #1A1A1A)
-        drop-shadow(-2px -2px 0 #1A1A1A)
-        drop-shadow(3px 0 0 #1A1A1A)
-        drop-shadow(-3px 0 0 #1A1A1A)
-        drop-shadow(0 3px 0 #1A1A1A)
-        drop-shadow(0 -3px 0 #1A1A1A);
+        drop-shadow(1px 0 0 #1A1A1A)
+        drop-shadow(-1px 0 0 #1A1A1A)
+        drop-shadow(0 1px 0 #1A1A1A)
+        drop-shadow(0 -1px 0 #1A1A1A);
 }
 
 .bike-race__bike--black {
