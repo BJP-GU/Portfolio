@@ -163,16 +163,22 @@ body {
 
 .bike-race__bike--blue {
     color: #2D00FB;
+    left: 7%;
+    top: 60%;
     z-index: 3;
 }
 
 .bike-race__bike--green {
     color: #f3feab;
+    left: 9%;
+    top: 64%;
     z-index: 2;
 }
 
 .bike-race__bike--black {
     color: #1A1A1A;
+    left: 4%;
+    top: 68%;
     z-index: 1;
 }
 
@@ -258,14 +264,19 @@ body {
         top: 34%;
         transform: translate3d(0, -2px, 0) rotate(-2deg);
     }
-    72% {
-        left: 74%;
-        top: 10%;
+    68% {
+        left: 70%;
+        top: 12%;
+        transform: translate3d(0, -4px, 0) rotate(2deg);
+    }
+    82% {
+        left: calc(100% - 86px);
+        top: 5%;
         transform: translate3d(0, -6px, 0) rotate(3deg);
     }
     100% {
-        left: calc(100% - 72px);
-        top: 3%;
+        left: calc(100% - 56px);
+        top: 2%;
         transform: translate3d(0, 0, 0) rotate(0deg);
     }
 }
@@ -294,8 +305,9 @@ body {
         0% { left: 5%; top: 54%; transform: translate3d(0, 0, 0) rotate(-1deg); }
         22% { left: 22%; top: 46%; transform: translate3d(0, 2px, 0) rotate(2deg); }
         48% { left: 42%; top: 30%; transform: translate3d(0, -2px, 0) rotate(-2deg); }
-        72% { left: 70%; top: 10%; transform: translate3d(0, -5px, 0) rotate(3deg); }
-        100% { left: calc(100% - 56px); top: 2%; transform: translate3d(0, 0, 0) rotate(0deg); }
+        68% { left: 66%; top: 12%; transform: translate3d(0, -4px, 0) rotate(2deg); }
+        82% { left: calc(100% - 68px); top: 5%; transform: translate3d(0, -5px, 0) rotate(3deg); }
+        100% { left: calc(100% - 44px); top: 2%; transform: translate3d(0, 0, 0) rotate(0deg); }
     }
 }
 
