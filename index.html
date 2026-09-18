@@ -173,6 +173,11 @@
                     </div>
                 </div>
             </div>
+            <div class="bike-race" id="bike-race" aria-hidden="true">
+                <span class="bike-race__bike bike-race__bike--green"></span>
+                <span class="bike-race__bike bike-race__bike--black"></span>
+                <span class="bike-race__bike bike-race__bike--blue"></span>
+            </div>
         </section>
 
         <div class="accordion" id="accordion">
@@ -3397,8 +3402,63 @@
 
             // The logo returns to the top of the page. Home is always open
             // above the index, so this only has to close a work panel if one
-            // is expanded and then sit back at the hero.
+            // is expanded and then sit back at the hero. Once home is in view,
+            // three brand-colored bikes race across the home section (~3s).
             var homeLogo = document.getElementById('home-logo');
+            var bikeRace = document.getElementById('bike-race');
+            var bikeRaceClear = 0;
+            var bikeRaceWatch = 0;
+
+            function clearBikeRace() {
+                if (bikeRaceClear) {
+                    clearTimeout(bikeRaceClear);
+                    bikeRaceClear = 0;
+                }
+                if (bikeRace) bikeRace.classList.remove('is-racing');
+            }
+
+            function startBikeRace() {
+                if (!bikeRace || prefersReducedMotion()) return;
+                clearBikeRace();
+                // Restart CSS animations from the beginning.
+                void bikeRace.offsetWidth;
+                bikeRace.classList.add('is-racing');
+                bikeRaceClear = setTimeout(clearBikeRace, 3200);
+            }
+
+            function raceAfterScrollHome() {
+                if (prefersReducedMotion() || !bikeRace) return;
+                if (bikeRaceWatch) {
+                    clearTimeout(bikeRaceWatch);
+                    bikeRaceWatch = 0;
+                }
+
+                var started = false;
+                function kickoff() {
+                    if (started) return;
+                    started = true;
+                    window.removeEventListener('scroll', onScroll);
+                    if (bikeRaceWatch) {
+                        clearTimeout(bikeRaceWatch);
+                        bikeRaceWatch = 0;
+                    }
+                    // Brief beat so the home section settles after scroll.
+                    setTimeout(startBikeRace, window.scrollY <= 8 ? 80 : 120);
+                }
+
+                function onScroll() {
+                    if (window.scrollY <= 8) kickoff();
+                }
+
+                window.addEventListener('scroll', onScroll, { passive: true });
+                if (window.scrollY <= 8) {
+                    kickoff();
+                } else {
+                    // Smooth-scroll fallback if scroll events settle above 8px.
+                    bikeRaceWatch = setTimeout(kickoff, 900);
+                }
+            }
+
             if (homeLogo) {
                 homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -3408,6 +3468,7 @@
                     var open = getOpenPanel();
                     if (open) collapse(open);
                     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+                    raceAfterScrollHome();
                 });
             }
 
