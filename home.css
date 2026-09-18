@@ -153,6 +153,15 @@ body {
     opacity: 1;
 }
 
+/* Keep a single P mark while the race runs (avoid hover bike + racers). */
+.site-header:has(.bike-race.is-racing) .site-logo__p {
+    opacity: 1;
+}
+
+.site-header:has(.bike-race.is-racing) .site-logo__bike {
+    opacity: 0;
+}
+
 .bike-race__bike {
     position: absolute;
     left: 0;
