@@ -71,6 +71,8 @@ body {
 }
 
 .site-logo {
+    position: relative;
+    z-index: 3;
     display: block;
     line-height: 0;
     text-decoration: none;
@@ -130,14 +132,16 @@ body {
 
 /* ==========================================================================
    BIKE RACE — logo click → scroll home → three bikes (~3s)
+   Lane sits in the sticky header, vertically aligned with Icons/P.svg.
    Brand blue #2D00FB, Interaction green #f3feab, site black #1A1A1A.
+   Motion is rAF + transform/opacity only (see index.html) for smooth travel.
    Green jets first, black surges, blue finishes first at top-right.
    ========================================================================== */
 
 .bike-race {
     position: absolute;
     inset: 0;
-    z-index: 8;
+    z-index: 2;
     overflow: hidden;
     pointer-events: none;
     opacity: 0;
@@ -146,178 +150,44 @@ body {
 
 .bike-race.is-racing {
     visibility: visible;
-    animation: bike-race-layer 3.15s ease forwards;
+    opacity: 1;
 }
 
 .bike-race__bike {
     position: absolute;
-    width: 68px;
-    height: 65px;
+    left: 0;
+    top: 50%;
+    width: 41px;
+    height: 41px;
+    margin-top: -20.5px;
     background-color: currentColor;
     -webkit-mask: url("Icons/bike.png") center / contain no-repeat;
     mask: url("Icons/bike.png") center / contain no-repeat;
-    filter: drop-shadow(0 1px 0 rgba(26, 26, 26, 0.35))
-            drop-shadow(0 0 1px rgba(26, 26, 26, 0.2));
-    will-change: left, top, transform;
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
 }
 
 .bike-race__bike--blue {
     color: #2D00FB;
-    left: 7%;
-    top: 60%;
     z-index: 3;
 }
 
 .bike-race__bike--green {
     color: #f3feab;
-    left: 9%;
-    top: 64%;
     z-index: 2;
 }
 
 .bike-race__bike--black {
     color: #1A1A1A;
-    left: 4%;
-    top: 68%;
     z-index: 1;
-}
-
-.bike-race.is-racing .bike-race__bike--green {
-    animation: bike-race-green 3s cubic-bezier(0.33, 0.1, 0.2, 1) forwards;
-}
-
-.bike-race.is-racing .bike-race__bike--black {
-    animation: bike-race-black 3s cubic-bezier(0.33, 0.1, 0.2, 1) forwards;
-}
-
-.bike-race.is-racing .bike-race__bike--blue {
-    animation: bike-race-blue 3s cubic-bezier(0.33, 0.05, 0.15, 1) forwards;
-}
-
-@keyframes bike-race-layer {
-    0% { opacity: 0; }
-    4% { opacity: 1; }
-    88% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-/* Start clustered lower-left; finish toward top-right of home. */
-@keyframes bike-race-green {
-    0% {
-        left: 9%;
-        top: 64%;
-        transform: translate3d(0, 0, 0) rotate(-2deg);
-    }
-    22% {
-        left: 38%;
-        top: 42%;
-        transform: translate3d(0, -4px, 0) rotate(3deg);
-    }
-    48% {
-        left: 58%;
-        top: 28%;
-        transform: translate3d(0, 2px, 0) rotate(-1deg);
-    }
-    100% {
-        left: calc(100% - 118px);
-        top: 16%;
-        transform: translate3d(0, 0, 0) rotate(1deg);
-    }
-}
-
-@keyframes bike-race-black {
-    0% {
-        left: 4%;
-        top: 68%;
-        transform: translate3d(0, 0, 0) rotate(2deg);
-    }
-    22% {
-        left: 24%;
-        top: 54%;
-        transform: translate3d(0, 3px, 0) rotate(-2deg);
-    }
-    48% {
-        left: 64%;
-        top: 20%;
-        transform: translate3d(0, -5px, 0) rotate(4deg);
-    }
-    100% {
-        left: calc(100% - 132px);
-        top: 24%;
-        transform: translate3d(0, 0, 0) rotate(-1deg);
-    }
-}
-
-@keyframes bike-race-blue {
-    0% {
-        left: 7%;
-        top: 60%;
-        transform: translate3d(0, 0, 0) rotate(-1deg);
-    }
-    22% {
-        left: 26%;
-        top: 50%;
-        transform: translate3d(0, 2px, 0) rotate(2deg);
-    }
-    48% {
-        left: 46%;
-        top: 34%;
-        transform: translate3d(0, -2px, 0) rotate(-2deg);
-    }
-    68% {
-        left: 70%;
-        top: 12%;
-        transform: translate3d(0, -4px, 0) rotate(2deg);
-    }
-    82% {
-        left: calc(100% - 86px);
-        top: 5%;
-        transform: translate3d(0, -6px, 0) rotate(3deg);
-    }
-    100% {
-        left: calc(100% - 56px);
-        top: 2%;
-        transform: translate3d(0, 0, 0) rotate(0deg);
-    }
-}
-
-@media (max-width: 720px) {
-    .bike-race__bike {
-        width: 52px;
-        height: 50px;
-    }
-
-    @keyframes bike-race-green {
-        0% { left: 6%; top: 58%; transform: translate3d(0, 0, 0) rotate(-2deg); }
-        22% { left: 34%; top: 40%; transform: translate3d(0, -3px, 0) rotate(3deg); }
-        48% { left: 54%; top: 26%; transform: translate3d(0, 2px, 0) rotate(-1deg); }
-        100% { left: calc(100% - 92px); top: 14%; transform: translate3d(0, 0, 0) rotate(1deg); }
-    }
-
-    @keyframes bike-race-black {
-        0% { left: 2%; top: 62%; transform: translate3d(0, 0, 0) rotate(2deg); }
-        22% { left: 20%; top: 50%; transform: translate3d(0, 2px, 0) rotate(-2deg); }
-        48% { left: 58%; top: 18%; transform: translate3d(0, -4px, 0) rotate(4deg); }
-        100% { left: calc(100% - 104px); top: 22%; transform: translate3d(0, 0, 0) rotate(-1deg); }
-    }
-
-    @keyframes bike-race-blue {
-        0% { left: 5%; top: 54%; transform: translate3d(0, 0, 0) rotate(-1deg); }
-        22% { left: 22%; top: 46%; transform: translate3d(0, 2px, 0) rotate(2deg); }
-        48% { left: 42%; top: 30%; transform: translate3d(0, -2px, 0) rotate(-2deg); }
-        68% { left: 66%; top: 12%; transform: translate3d(0, -4px, 0) rotate(2deg); }
-        82% { left: calc(100% - 68px); top: 5%; transform: translate3d(0, -5px, 0) rotate(3deg); }
-        100% { left: calc(100% - 44px); top: 2%; transform: translate3d(0, 0, 0) rotate(0deg); }
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .bike-race,
-    .bike-race.is-racing,
-    .bike-race.is-racing .bike-race__bike--green,
-    .bike-race.is-racing .bike-race__bike--black,
-    .bike-race.is-racing .bike-race__bike--blue {
-        animation: none !important;
+    .bike-race.is-racing {
+        display: none !important;
         opacity: 0 !important;
         visibility: hidden !important;
     }
