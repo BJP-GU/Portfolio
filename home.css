@@ -71,14 +71,11 @@ body {
 }
 
 .site-logo {
+    position: relative;
+    z-index: 3;
     display: block;
     line-height: 0;
     text-decoration: none;
-    transition: opacity 0.2s ease;
-}
-
-.site-logo:hover {
-    opacity: 0.6;
 }
 
 .site-logo:focus-visible {
@@ -86,10 +83,129 @@ body {
     outline-offset: 4px;
 }
 
-.site-logo img {
+/* P → bike mark swap (same opacity crossfade as Product → Interaction). */
+.site-logo__mark {
+    position: relative;
     display: block;
     width: 41px;
     height: 41px;
+}
+
+.site-logo__p,
+.site-logo__bike {
+    display: block;
+    width: 41px;
+    height: 41px;
+}
+
+.site-logo__bike {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms var(--acc-ease);
+}
+
+.site-logo__p {
+    transition: opacity 240ms var(--acc-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .site-logo:hover .site-logo__p,
+    .site-logo:focus-visible .site-logo__p {
+        opacity: 0;
+    }
+
+    .site-logo:hover .site-logo__bike,
+    .site-logo:focus-visible .site-logo__bike {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-logo__p,
+    .site-logo__bike {
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   BIKE RACE — logo click → scroll home → three bikes (~3s)
+   Lane sits in the sticky header, vertically aligned with Icons/P.svg.
+   Brand blue #2D00FB, Interaction green #f3feab, site black #1A1A1A.
+   Motion is rAF + transform/opacity only (see index.html) for smooth travel.
+   Green jets first, black surges, blue finishes first at top-right.
+   ========================================================================== */
+
+.bike-race {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.bike-race.is-racing {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Keep a single P mark while the race runs (avoid hover bike + racers). */
+.site-header:has(.bike-race.is-racing) .site-logo__p {
+    opacity: 1;
+}
+
+.site-header:has(.bike-race.is-racing) .site-logo__bike {
+    opacity: 0;
+}
+
+.bike-race__bike {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 41px;
+    height: 41px;
+    margin-top: -20.5px;
+    background-color: currentColor;
+    -webkit-mask: url("Icons/bike.png") center / contain no-repeat;
+    mask: url("Icons/bike.png") center / contain no-repeat;
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+.bike-race__bike--blue {
+    color: #2D00FB;
+    z-index: 3;
+}
+
+.bike-race__bike--green {
+    color: #f3feab;
+    z-index: 2;
+    /* Thin outside stroke in site black so the pale green reads on light header. */
+    filter:
+        drop-shadow(1px 0 0 #1A1A1A)
+        drop-shadow(-1px 0 0 #1A1A1A)
+        drop-shadow(0 1px 0 #1A1A1A)
+        drop-shadow(0 -1px 0 #1A1A1A);
+}
+
+.bike-race__bike--black {
+    color: #1A1A1A;
+    z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bike-race,
+    .bike-race.is-racing {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
 }
 
 /* ==========================================================================
@@ -953,7 +1069,9 @@ body {
         padding-left: 12px;
     }
 
-    .site-logo img {
+    .site-logo__mark,
+    .site-logo__p,
+    .site-logo__bike {
         width: 41px;
         height: 41px;
     }

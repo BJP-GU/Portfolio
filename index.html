@@ -118,8 +118,16 @@
     <div class="site-wrapper">
         <header class="site-header">
             <a class="site-logo" href="#home" id="home-logo" aria-label="Bryce Parsons — back to home">
-                <img src="Icons/P.svg" alt="" width="41" height="41" decoding="async">
+                <span class="site-logo__mark" aria-hidden="true">
+                    <img class="site-logo__p" src="Icons/P.svg" alt="" width="41" height="41" decoding="async">
+                    <img class="site-logo__bike" src="Icons/bike.svg" alt="" width="41" height="41" decoding="async">
+                </span>
             </a>
+            <div class="bike-race" id="bike-race" aria-hidden="true">
+                <span class="bike-race__bike bike-race__bike--green"></span>
+                <span class="bike-race__bike bike-race__bike--black"></span>
+                <span class="bike-race__bike bike-race__bike--blue"></span>
+            </div>
         </header>
 
         <section class="home-hero" id="home">
@@ -3394,8 +3402,161 @@
 
             // The logo returns to the top of the page. Home is always open
             // above the index, so this only has to close a work panel if one
-            // is expanded and then sit back at the hero.
+            // is expanded and then sit back at the hero. Once home is in view,
+            // three brand-colored bikes race along the logo row (~3s).
             var homeLogo = document.getElementById('home-logo');
+            var bikeRace = document.getElementById('bike-race');
+            var bikeRaceRaf = 0;
+            var bikeRaceWatch = 0;
+            var bikeRaceClear = 0;
+            var bikeEls = bikeRace ? {
+                green: bikeRace.querySelector('.bike-race__bike--green'),
+                black: bikeRace.querySelector('.bike-race__bike--black'),
+                blue: bikeRace.querySelector('.bike-race__bike--blue')
+            } : null;
+
+            function clamp01(t) {
+                return t < 0 ? 0 : t > 1 ? 1 : t;
+            }
+
+            // Smoothstep — continuous first derivative, no keyframe corners.
+            function smoothstep(t) {
+                t = clamp01(t);
+                return t * t * (3 - 2 * t);
+            }
+
+            // Ease-out that keeps late-race acceleration for the closer.
+            function easeOutCubic(t) {
+                t = clamp01(t);
+                return 1 - Math.pow(1 - t, 3);
+            }
+
+            function bikeOpacity(t) {
+                if (t < 0.06) return smoothstep(t / 0.06);
+                if (t > 0.88) return 1 - smoothstep((t - 0.88) / 0.12);
+                return 1;
+            }
+
+            // Progress curves: green jets early, black mid-surge, blue wins late.
+            function progressGreen(t) {
+                return smoothstep(Math.min(1, t / 0.82)) * 0.86;
+            }
+
+            function progressBlack(t) {
+                var early = smoothstep(Math.min(1, t / 0.55)) * 0.42;
+                var late = t < 0.35 ? 0 : smoothstep((t - 0.35) / 0.55) * 0.5;
+                return Math.min(0.92, early + late);
+            }
+
+            function progressBlue(t) {
+                var crawl = smoothstep(Math.min(1, t / 0.5)) * 0.38;
+                var kick = t < 0.42 ? 0 : easeOutCubic((t - 0.42) / 0.58) * 0.62;
+                return Math.min(1, crawl + kick);
+            }
+
+            function clearBikeRace() {
+                if (bikeRaceRaf) {
+                    cancelAnimationFrame(bikeRaceRaf);
+                    bikeRaceRaf = 0;
+                }
+                if (bikeRaceClear) {
+                    clearTimeout(bikeRaceClear);
+                    bikeRaceClear = 0;
+                }
+                if (bikeRace) bikeRace.classList.remove('is-racing');
+                if (!bikeEls) return;
+                ['green', 'black', 'blue'].forEach(function(key) {
+                    var el = bikeEls[key];
+                    if (!el) return;
+                    el.style.opacity = '';
+                    el.style.transform = '';
+                });
+            }
+
+            function startBikeRace() {
+                if (!bikeRace || !bikeEls || prefersReducedMotion()) return;
+                clearBikeRace();
+                bikeRace.classList.add('is-racing');
+
+                var duration = 3000;
+                var start = performance.now();
+                var bikeSize = bikeEls.blue ? bikeEls.blue.offsetWidth || 41 : 41;
+                // Start just past the P mark; finish flush to the header's right edge.
+                var startX = 56;
+                var endPad = 10;
+                var laneY = {
+                    green: 5,
+                    black: 10,
+                    blue: -6
+                };
+
+                function place(el, progress, y) {
+                    if (!el) return;
+                    var track = Math.max(0, bikeRace.clientWidth - bikeSize - endPad - startX);
+                    var x = startX + track * progress;
+                    el.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y + 'px,0)';
+                }
+
+                function frame(now) {
+                    var t = clamp01((now - start) / duration);
+                    var opacity = bikeOpacity(t);
+                    var pg = progressGreen(t);
+                    var pk = progressBlack(t);
+                    var pb = progressBlue(t);
+
+                    if (bikeEls.green) bikeEls.green.style.opacity = opacity;
+                    if (bikeEls.black) bikeEls.black.style.opacity = opacity;
+                    if (bikeEls.blue) bikeEls.blue.style.opacity = opacity;
+
+                    place(bikeEls.green, pg, laneY.green);
+                    place(bikeEls.black, pk, laneY.black);
+                    place(bikeEls.blue, pb, laneY.blue);
+
+                    if (t < 1) {
+                        bikeRaceRaf = requestAnimationFrame(frame);
+                    } else {
+                        bikeRaceRaf = 0;
+                        // Hold the finish a beat, then clear.
+                        bikeRaceClear = setTimeout(clearBikeRace, 120);
+                    }
+                }
+
+                bikeRaceRaf = requestAnimationFrame(frame);
+            }
+
+            function raceAfterScrollHome() {
+                if (prefersReducedMotion() || !bikeRace) return;
+                if (bikeRaceWatch) {
+                    clearTimeout(bikeRaceWatch);
+                    bikeRaceWatch = 0;
+                }
+
+                var started = false;
+                function kickoff() {
+                    if (started) return;
+                    started = true;
+                    window.removeEventListener('scroll', onScroll);
+                    if (bikeRaceWatch) {
+                        clearTimeout(bikeRaceWatch);
+                        bikeRaceWatch = 0;
+                    }
+                    // Brief beat so the home section settles after scroll.
+                    setTimeout(startBikeRace, window.scrollY <= 8 ? 80 : 120);
+                }
+
+                function onScroll() {
+                    if (window.scrollY <= 8) kickoff();
+                }
+
+                window.addEventListener('scroll', onScroll, { passive: true });
+                if (window.scrollY <= 8) {
+                    kickoff();
+                } else {
+                    // Smooth-scroll fallback if scroll events settle above 8px.
+                    bikeRaceWatch = setTimeout(kickoff, 900);
+                }
+            }
+
             if (homeLogo) {
                 homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -3405,6 +3566,7 @@
                     var open = getOpenPanel();
                     if (open) collapse(open);
                     window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+                    raceAfterScrollHome();
                 });
             }
 
