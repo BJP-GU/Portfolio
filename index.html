@@ -3229,10 +3229,6 @@
                 return collapsed ? collapsed.offsetHeight : 35;
             }
 
-            function rowStep() {
-                return rowHeight() + accordionGap();
-            }
-
             // A pinned row reports its pinned rect, not its place in the
             // document, so positions are summed from the flow instead.
             function naturalTop(target) {
@@ -3267,14 +3263,15 @@
                 return top;
             }
 
-            // Viewport line the panel's own label settles on: below the header,
-            // below every row pinned above it. Matches the CSS stack offsets.
-            function stackedLabelTop(target) {
-                return headerOffset() + Math.max(0, rows.indexOf(target)) * rowStep();
+            // Viewport line the open panel's label settles on: just below the
+            // sticky site header. Prior accordion rows scroll away while a
+            // panel is open, so the opened case study sits at the top of the
+            // viewport rather than under a stack of pinned index rows.
+            function stackedLabelTop(/* target */) {
+                return headerOffset();
             }
 
-            // Viewport line below everything pinned above this panel's content:
-            // the header, the rows stacked above it, and its own pinned label.
+            // Viewport line below the open panel's own pinned label.
             function contentClearance(panel) {
                 return stackedLabelTop(panel) + rowHeight();
             }
@@ -3282,7 +3279,40 @@
             // Must be read before any panel is collapsed: a collapsing panel
             // still measures its full height for the length of its animation.
             function landingScroll(target) {
-                return Math.max(0, projectedTop(target) - stackedLabelTop(target));
+                return Math.max(0, projectedTop(target) - headerOffset());
+            }
+
+            // Lower rows can't scroll under the header until the page is tall
+            // enough. Pad the accordion before the pre-expand scroll, then trim
+            // once the open body (or a close) restores real height.
+            function landingPadEl() {
+                var pad = accordion._landingPad;
+                if (pad && pad.isConnected) return pad;
+                pad = document.createElement('div');
+                pad.className = 'acc-landing-pad';
+                pad.setAttribute('aria-hidden', 'true');
+                accordion.appendChild(pad);
+                accordion._landingPad = pad;
+                return pad;
+            }
+
+            function ensureLandingRoom(landing) {
+                var pad = landingPadEl();
+                var withoutPad = document.documentElement.scrollHeight - pad.offsetHeight;
+                var maxScroll = Math.max(0, withoutPad - window.innerHeight);
+                var need = Math.max(0, Math.ceil(landing - maxScroll));
+                pad.style.height = need ? need + 'px' : '';
+            }
+
+            function trimLandingPad() {
+                var pad = accordion && accordion._landingPad;
+                if (!pad || !pad.isConnected) return;
+                var current = window.pageYOffset;
+                pad.style.height = '';
+                var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+                if (current > maxScroll) {
+                    window.scrollTo({ top: maxScroll, behavior: 'auto' });
+                }
             }
 
             function scrollPage(top) {
@@ -3318,15 +3348,20 @@
                 });
 
                 if (opts.scroll !== false) {
-                    // Instantly sit on the final stack slot, then let the body
-                    // grow down from there. Scrolling after the expand was what
-                    // painted the case study low and snapped it up.
+                    // Instantly sit the opened row under the site header, then
+                    // let the body grow down from there. A temporary pad makes
+                    // room when the panel is near the bottom of a short page.
+                    ensureLandingRoom(landing);
                     scrollPageInstant(landing);
                 }
 
                 expand(target);
 
-                if (opts.scroll !== false) scheduleWorkNavUpdate();
+                if (opts.scroll !== false) {
+                    scheduleWorkNavUpdate();
+                    clearTimeout(accordion._trimPadTimer);
+                    accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
+                }
 
                 return target;
             }
@@ -3335,6 +3370,8 @@
                 if (!panel || !panel.classList.contains('is-open')) return;
                 var landing = landingScroll(panel);
                 collapse(panel);
+                clearTimeout(accordion._trimPadTimer);
+                accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
                 if (landing < window.pageYOffset) scrollPage(landing);
             }
 

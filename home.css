@@ -247,14 +247,25 @@ body {
 }
 
 /* Collapsed rows pin under the header and stack in document order, so the
-   index stays readable and clickable while a long panel scrolls past. The
-   shadow fills the 10px channel below each row; without it, content shows
-   through the gaps in the pinned stack. */
+   index stays readable and clickable while browsing closed. The shadow fills
+   the 10px channel below each row; without it, content shows through the
+   gaps in the pinned stack. */
 .acc-panel:not(.is-open) {
     position: sticky;
     top: var(--acc-stack-clear);
     z-index: 2;
     box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
+}
+
+/* While a case study is open (or collapsing), prior collapsed rows scroll
+   away instead of stacking — so the opened panel can sit at the top of the
+   viewport under the site header. The sticky index returns when everything
+   is closed again. */
+.accordion:has(.acc-panel.is-open, .acc-panel.is-collapsing) > .acc-panel:not(.is-open):not(.is-collapsing) {
+    position: relative;
+    top: auto;
+    z-index: 1;
+    box-shadow: none;
 }
 
 /* The open panel scrolls normally — pinning the whole panel would freeze its
@@ -270,6 +281,13 @@ body {
     top: auto;
     z-index: 1;
     box-shadow: none;
+}
+
+/* Open panel label + in-panel sticky clearance pin under the site header,
+   not under a stack of prior rows (those scroll away while open). */
+.acc-panel.is-open,
+.acc-panel.is-collapsing {
+    --acc-stack-clear: var(--acc-stack-top);
 }
 
 /* Open panel: no frame on the panel itself. A full-height side rule would
@@ -369,6 +387,16 @@ body {
 .accordion > .acc-panel:nth-child(7) { --acc-stack: 6; }
 .accordion > .acc-panel:nth-child(8) { --acc-stack: 7; }
 .accordion > .acc-panel:nth-child(9) { --acc-stack: 8; }
+
+/* Invisible height used only while opening a lower row so it can scroll under
+   the site header before its body has expanded. */
+.acc-landing-pad {
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    visibility: hidden;
+    flex-shrink: 0;
+}
 
 /* The row label is a heading for outline purposes only; it carries no styling
    of its own so the button inside defines the row box. */
