@@ -3150,6 +3150,7 @@
                     }
                     if (panel) panel.classList.remove('is-expanding');
                     scheduleWorkNavUpdate();
+                    schedulePeekUpdate();
                 }, DURATION + 20);
             }
 
@@ -3363,6 +3364,12 @@
                     accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
                 }
 
+                // Peek depends on the open body's height; refresh during and
+                // after the expand so it does not stay hidden from a mid-animation layout.
+                schedulePeekUpdate();
+                clearTimeout(accordion._peekExpandTimer);
+                accordion._peekExpandTimer = setTimeout(schedulePeekUpdate, DURATION + 40);
+
                 return target;
             }
 
@@ -3373,6 +3380,7 @@
                 clearTimeout(accordion._trimPadTimer);
                 accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
                 if (landing < window.pageYOffset) scrollPage(landing);
+                schedulePeekUpdate();
             }
 
             function getOpenPanel() {
@@ -3381,6 +3389,151 @@
                 }
                 return null;
             }
+
+            // ---------------------------------------------
+            // NEXT-ROW PEEK
+            // Fixed clone of the following collapsed row, pinned to the
+            // bottom of the viewport while an open panel is being read.
+            // Hides when the real next row reaches that same bottom slot.
+            // ---------------------------------------------
+            var peekRoot = null;
+            var peekRow = null;
+            var peekHeader = null;
+            var peekTargetKey = null;
+
+            function nextPanelSibling(panel) {
+                var el = panel ? panel.nextElementSibling : null;
+                while (el && !(el.classList && el.classList.contains('acc-panel'))) {
+                    el = el.nextElementSibling;
+                }
+                return el;
+            }
+
+            function ensurePeek() {
+                if (peekRoot) return peekRoot;
+                var wrap = document.querySelector('.site-wrapper') || document.body;
+                peekRoot = document.createElement('div');
+                peekRoot.className = 'acc-peek-next';
+                peekRoot.hidden = true;
+                peekRoot.innerHTML = ''
+                    + '<div class="acc-peek-next__row">'
+                    +   '<h2 class="acc-title">'
+                    +     '<button class="acc-header" type="button">'
+                    +       '<span class="acc-num"></span>'
+                    +       '<span class="acc-label"></span>'
+                    +       '<span class="acc-case" hidden></span>'
+                    +     '</button>'
+                    +   '</h2>'
+                    + '</div>';
+                wrap.appendChild(peekRoot);
+                peekRow = peekRoot.querySelector('.acc-peek-next__row');
+                peekHeader = peekRoot.querySelector('.acc-header');
+
+                peekRoot.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (!peekRow || peekRow.hasAttribute('data-reserved')) return;
+                    var name = peekRoot.getAttribute('data-panel');
+                    if (!name) return;
+                    if (window.location.hash && history.replaceState) {
+                        history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
+                    openPanel(name);
+                });
+
+                return peekRoot;
+            }
+
+            function syncPeekFrom(next) {
+                ensurePeek();
+                var src = next.querySelector('.acc-header');
+                if (!src || !peekHeader || !peekRow) return;
+
+                var key = (next.id || '') + '|' + (next.getAttribute('data-panel') || '') + '|' + (next.hasAttribute('data-reserved') ? '1' : '0');
+                if (key === peekTargetKey) return;
+                peekTargetKey = key;
+
+                var num = src.querySelector('.acc-num');
+                var label = src.querySelector('.acc-label');
+                var caseEl = src.querySelector('.acc-case');
+                var peekNum = peekHeader.querySelector('.acc-num');
+                var peekLabel = peekHeader.querySelector('.acc-label');
+                var peekCase = peekHeader.querySelector('.acc-case');
+
+                if (peekNum) peekNum.textContent = num ? num.textContent : '';
+                if (peekLabel) peekLabel.textContent = label ? label.textContent : '';
+                if (peekCase) {
+                    if (caseEl && caseEl.textContent) {
+                        peekCase.textContent = caseEl.textContent;
+                        peekCase.hidden = false;
+                    } else {
+                        peekCase.textContent = '';
+                        peekCase.hidden = true;
+                    }
+                }
+
+                var panelName = next.getAttribute('data-panel');
+                if (next.hasAttribute('data-reserved') || !panelName) {
+                    peekRow.setAttribute('data-reserved', '');
+                    peekRoot.removeAttribute('data-panel');
+                    peekHeader.setAttribute('aria-disabled', 'true');
+                    peekHeader.setAttribute('tabindex', '-1');
+                } else {
+                    peekRow.removeAttribute('data-reserved');
+                    peekRoot.setAttribute('data-panel', panelName);
+                    peekHeader.removeAttribute('aria-disabled');
+                    peekHeader.removeAttribute('tabindex');
+                }
+
+                peekHeader.setAttribute('aria-label', (peekNum ? peekNum.textContent + ' ' : '') + (peekLabel ? peekLabel.textContent : '') + (peekCase && !peekCase.hidden ? ' ' + peekCase.textContent : ''));
+            }
+
+            function updatePeek() {
+                if (!accordion) return;
+                ensurePeek();
+
+                if (accordion.classList.contains('is-intro')
+                    || document.documentElement.classList.contains('intro-running')) {
+                    peekRoot.hidden = true;
+                    return;
+                }
+
+                var open = getOpenPanel();
+                if (!open) {
+                    peekRoot.hidden = true;
+                    peekTargetKey = null;
+                    return;
+                }
+
+                var next = nextPanelSibling(open);
+                if (!next) {
+                    peekRoot.hidden = true;
+                    peekTargetKey = null;
+                    return;
+                }
+
+                var rowH = next.offsetHeight || rowHeight();
+                var nextTop = next.getBoundingClientRect().top;
+                // Real next row has reached the bottom peek slot — let it take over.
+                if (nextTop <= window.innerHeight - rowH + 0.5) {
+                    peekRoot.hidden = true;
+                    return;
+                }
+
+                syncPeekFrom(next);
+                peekRoot.hidden = false;
+            }
+
+            var peekTick = null;
+            function schedulePeekUpdate() {
+                if (peekTick) return;
+                peekTick = requestAnimationFrame(function() {
+                    peekTick = null;
+                    updatePeek();
+                });
+            }
+
+            window.addEventListener('scroll', schedulePeekUpdate, { passive: true });
+            window.addEventListener('resize', schedulePeekUpdate);
 
             var pointerDownInOpenPanel = false;
 
@@ -3429,6 +3582,7 @@
                 if (!target || !target.isConnected) return;
                 if (open.contains(target)) return;
                 if (target.closest('.acc-panel[data-panel] .acc-header')) return;
+                if (target.closest('.acc-peek-next')) return;
                 if (target.closest('#home-logo')) return;
 
                 closePanel(open);

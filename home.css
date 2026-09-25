@@ -290,6 +290,12 @@ body {
     --acc-stack-clear: var(--acc-stack-top);
 }
 
+/* Keep the last lines of an open case study clear of the bottom peek row. */
+.acc-panel.is-open > .acc-body,
+.acc-panel.is-collapsing > .acc-body {
+    padding-bottom: calc(var(--acc-row) + var(--acc-gap));
+}
+
 /* Open panel: no frame on the panel itself. A full-height side rule would
    keep painting above the sticky label as the body scrolls, and show through
    the gaps in the pinned stack. The label draws the top and sides; the body
@@ -380,6 +386,51 @@ body {
     pointer-events: none;
     visibility: hidden;
     flex-shrink: 0;
+}
+
+/* ==========================================================================
+   NEXT-ROW PEEK
+   While a case study is open, a fixed clone of the following collapsed row
+   sits at the bottom of the viewport so the next section stays reachable.
+   It hides when the real next row scrolls into that same slot.
+   ========================================================================== */
+
+.acc-peek-next {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.acc-peek-next[hidden] {
+    display: none !important;
+}
+
+.acc-peek-next__row {
+    pointer-events: auto;
+    box-sizing: border-box;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
+    background-color: var(--home-bg);
+}
+
+.acc-peek-next__row > .acc-title {
+    margin: 0;
+}
+
+.acc-peek-next__row[data-reserved] .acc-header {
+    cursor: default;
+    color: rgba(0, 0, 0, 0.35);
+    padding-right: var(--acc-pad);
+}
+
+.acc-peek-next__row[data-reserved] .acc-header::after {
+    content: none;
 }
 
 /* The row label is a heading for outline purposes only; it carries no styling
