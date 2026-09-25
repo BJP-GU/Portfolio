@@ -9214,6 +9214,10 @@ iframe.lazy-iframe.iframe-ready {
     margin: var(--space-lg) 0 var(--space-md);
 }
 
+.case-section-content h4 + .anchor-journey-fit {
+    margin-top: 0;
+}
+
 .anchor-journey-fit__inner {
     width: calc(var(--anchor-journey-design-width) * var(--anchor-journey-scale));
     height: calc(var(--anchor-journey-design-height) * var(--anchor-journey-scale));
