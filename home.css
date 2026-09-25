@@ -259,13 +259,13 @@ body {
 
 /* While a case study is open (or collapsing), prior collapsed rows scroll
    away instead of stacking — so the opened panel can sit at the top of the
-   viewport under the site header. The sticky index returns when everything
-   is closed again. */
+   viewport under the site header. Keep the same gap-filling shadow as the
+   collapsed sticky rows so the 10px channels match. */
 .accordion:has(.acc-panel.is-open, .acc-panel.is-collapsing) > .acc-panel:not(.is-open):not(.is-collapsing) {
     position: relative;
     top: auto;
     z-index: 1;
-    box-shadow: none;
+    box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
 }
 
 /* The open panel scrolls normally — pinning the whole panel would freeze its
@@ -290,10 +290,18 @@ body {
     --acc-stack-clear: var(--acc-stack-top);
 }
 
-/* Keep the last lines of an open case study clear of the bottom peek row. */
+/* Peek clearance lives inside the open body so content is not covered, but the
+   same length is pulled back with a negative margin so the flex gap to the
+   next row stays the collapsed 10px — otherwise the pad reads as a ~55px
+   section gap once the peek hands off. */
 .acc-panel.is-open > .acc-body,
 .acc-panel.is-collapsing > .acc-body {
     padding-bottom: calc(var(--acc-row) + var(--acc-gap));
+}
+
+.acc-panel.is-open,
+.acc-panel.is-collapsing {
+    margin-bottom: calc(-1 * (var(--acc-row) + var(--acc-gap)));
 }
 
 /* Open panel: no frame on the panel itself. A full-height side rule would
@@ -417,6 +425,8 @@ body {
     border: 1px solid var(--home-rule);
     border-radius: var(--home-radius);
     background-color: var(--home-bg);
+    /* Same 10px channel the collapsed stack paints between rows. */
+    box-shadow: 0 calc(var(--acc-gap) * -1) 0 var(--home-bg);
 }
 
 .acc-peek-next__row > .acc-title {
