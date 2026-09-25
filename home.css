@@ -290,18 +290,13 @@ body {
     --acc-stack-clear: var(--acc-stack-top);
 }
 
-/* Peek clearance lives inside the open body so content is not covered, but the
-   same length is pulled back with a negative margin so the flex gap to the
-   next row stays the collapsed 10px — otherwise the pad reads as a ~55px
-   section gap once the peek hands off. */
+/* Peek clearance inside the open body so scrolling content is not covered.
+   Do not cancel this with a negative margin — that pulled the next row up
+   flush against (or over) the open panel's bottom border. The flex gap alone
+   keeps the bordered section channel at --acc-gap. */
 .acc-panel.is-open > .acc-body,
 .acc-panel.is-collapsing > .acc-body {
     padding-bottom: calc(var(--acc-row) + var(--acc-gap));
-}
-
-.acc-panel.is-open,
-.acc-panel.is-collapsing {
-    margin-bottom: calc(-1 * (var(--acc-row) + var(--acc-gap)));
 }
 
 /* Open panel: no frame on the panel itself. A full-height side rule would

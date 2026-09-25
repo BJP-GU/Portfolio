@@ -3238,14 +3238,6 @@
 
             // A pinned row reports its pinned rect, not its place in the
             // document, so positions are summed from the flow instead.
-            // Open panels use a negative margin to cancel peek-clearance
-            // padding so inter-row gaps stay at --acc-gap; include that margin
-            // when projecting positions of rows below.
-            function panelFlowExtent(panel) {
-                var mb = parseFloat(getComputedStyle(panel).marginBottom) || 0;
-                return panel.offsetHeight + mb;
-            }
-
             function naturalTop(target) {
                 var top = accordion.getBoundingClientRect().top + window.pageYOffset
                     + parseFloat(getComputedStyle(accordion).paddingTop);
@@ -3253,26 +3245,25 @@
 
                 for (var i = 0; i < rows.length; i++) {
                     if (rows[i] === target) break;
-                    top += panelFlowExtent(rows[i]) + gap;
+                    top += rows[i].offsetHeight + gap;
                 }
 
                 return top;
             }
 
             // Where the panel's top edge will land once the panel above it has
-            // finished collapsing. Collapsing removes the open body's height
-            // (minus the peek-clearance margin cancel), so the shift is known
-            // before the animation runs and the scroll can be aimed at the
-            // final layout instead of the current one.
+            // finished collapsing. Collapsing removes exactly that panel's body
+            // height, so the shift is known before the animation runs and the
+            // scroll can be aimed at the final layout instead of the current one.
             function projectedTop(target) {
                 var top = naturalTop(target);
-                var collapsed = rowHeight();
 
                 panels.forEach(function(panel) {
                     if (panel === target || !panel.classList.contains('is-open')) return;
                     var isAbove = !!(panel.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING);
                     if (isAbove) {
-                        top -= (panelFlowExtent(panel) - collapsed);
+                        var body = bodyOf(panel);
+                        if (body) top -= body.offsetHeight;
                     }
                 });
 
