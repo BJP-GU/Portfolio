@@ -318,29 +318,13 @@ body {
     border-radius: 0;
 }
 
-/* Edge masks above the label. The body's side rules scroll with the content
-   and would otherwise poke through the channels between pinned rows; these
-   strips cover only the left/right pixels, and only as high as this panel's
-   pin line so they cannot wash out the home frame above the stack. */
+/* Edge masks above the label used to hide the body's side rules poking
+   through gaps in a sticky index stack. Prior rows now scroll away while a
+   panel is open, so that mask would paint over their left/right borders —
+   leave it off. The sticky open label's own fill + ::after stroke is enough. */
 .acc-panel.is-open > .acc-title::before,
 .acc-panel.is-collapsing > .acc-title::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: var(--acc-stack-clear);
-    background: linear-gradient(
-        to right,
-        var(--home-bg) 0,
-        var(--home-bg) 2px,
-        transparent 2px,
-        transparent calc(100% - 2px),
-        var(--home-bg) calc(100% - 2px),
-        var(--home-bg) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
+    content: none;
 }
 
 /* Top + side stroke on the label only — ends at the pinned row. */
