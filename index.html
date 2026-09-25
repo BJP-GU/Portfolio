@@ -2940,18 +2940,16 @@
             </section>
 
             <!-- ========================================
-                 #7 ANCHOR (disabled — case study in progress)
+                 #7 ANCHOR
                  ======================================== -->
-            <section class="acc-panel" id="panel-anchor" data-reserved>
+            <section class="acc-panel" id="panel-anchor" data-panel="anchor">
                 <h2 class="acc-title">
-                    <span class="acc-header" aria-disabled="true">
+                    <button class="acc-header" type="button" id="header-anchor" aria-expanded="false" aria-controls="body-anchor">
                         <span class="acc-num">#7</span>
                         <span class="acc-label">Anchor</span>
-                        <span class="acc-case">Case study in progress</span>
-                    </span>
+                    </button>
                 </h2>
-                <!-- Case study body retained for future publish; panel is not openable. -->
-                <div class="acc-body" id="body-anchor" hidden>
+                <div class="acc-body" id="body-anchor" role="region" aria-labelledby="header-anchor">
                     <div class="acc-inner">
                         <section id="anchor-work" class="my-work-section">
                             <div class="work-scroll-layout">
@@ -3827,7 +3825,7 @@
 
             function navigateToHash(id, options) {
                 var opts = options || {};
-                var aliases = { home: 'home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design', archetype: 'panel-archetype' };
+                var aliases = { home: 'home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design', archetype: 'panel-archetype', anchor: 'panel-anchor' };
                 var direct = document.getElementById(aliases[id] || id) || document.getElementById(id);
                 if (!direct) return;
 
