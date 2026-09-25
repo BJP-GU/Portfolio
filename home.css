@@ -414,6 +414,7 @@ body {
 }
 
 .acc-peek-next__row {
+    position: relative;
     pointer-events: auto;
     box-sizing: border-box;
     width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
@@ -422,6 +423,39 @@ body {
     background-color: var(--home-bg);
     /* Same 10px channel the collapsed stack paints between rows. */
     box-shadow: 0 calc(var(--acc-gap) * -1) 0 var(--home-bg);
+}
+
+/* Bottom edge of the open panel, drawn above the channel. The panel's real
+   bottom border sits below the fold or behind this row until the real next
+   row reaches the slot, at which point the peek hides and the real border
+   lands on this same line. Assumes the peek and the open panel share a
+   column width. */
+.acc-peek-next__row::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(100% + 1px + var(--acc-gap));
+    height: var(--home-radius);
+    box-sizing: border-box;
+    border: 1px solid var(--home-rule);
+    border-top: none;
+    border-radius: 0 0 var(--home-radius) var(--home-radius);
+    background-color: var(--home-bg);
+    pointer-events: none;
+}
+
+/* Square fill for the channel. The row's shadow follows its rounded corners,
+   which lets the panel's side rules show past the bottom edge above. */
+.acc-peek-next__row::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(100% + 1px);
+    height: var(--acc-gap);
+    background-color: var(--home-bg);
+    pointer-events: none;
 }
 
 .acc-peek-next__row > .acc-title {
