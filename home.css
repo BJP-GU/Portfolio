@@ -247,13 +247,24 @@ body {
 }
 
 /* Collapsed rows pin under the header and stack in document order, so the
-   index stays readable and clickable while a long panel scrolls past. The
-   shadow fills the 10px channel below each row; without it, content shows
-   through the gaps in the pinned stack. */
+   index stays readable and clickable while browsing closed. The shadow fills
+   the 10px channel below each row; without it, content shows through the
+   gaps in the pinned stack. */
 .acc-panel:not(.is-open) {
     position: sticky;
     top: var(--acc-stack-clear);
     z-index: 2;
+    box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
+}
+
+/* While a case study is open (or collapsing), prior collapsed rows scroll
+   away instead of stacking — so the opened panel can sit at the top of the
+   viewport under the site header. Keep the same gap-filling shadow as the
+   collapsed sticky rows so the 10px channels match. */
+.accordion:has(.acc-panel.is-open, .acc-panel.is-collapsing) > .acc-panel:not(.is-open):not(.is-collapsing) {
+    position: relative;
+    top: auto;
+    z-index: 1;
     box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
 }
 
@@ -270,6 +281,22 @@ body {
     top: auto;
     z-index: 1;
     box-shadow: none;
+}
+
+/* Open panel label + in-panel sticky clearance pin under the site header,
+   not under a stack of prior rows (those scroll away while open). */
+.acc-panel.is-open,
+.acc-panel.is-collapsing {
+    --acc-stack-clear: var(--acc-stack-top);
+}
+
+/* Peek clearance inside the open body so scrolling content is not covered.
+   Do not cancel this with a negative margin — that pulled the next row up
+   flush against (or over) the open panel's bottom border. The flex gap alone
+   keeps the bordered section channel at --acc-gap. */
+.acc-panel.is-open > .acc-body,
+.acc-panel.is-collapsing > .acc-body {
+    padding-bottom: calc(var(--acc-row) + var(--acc-gap));
 }
 
 /* Open panel: no frame on the panel itself. A full-height side rule would
@@ -300,29 +327,13 @@ body {
     border-radius: 0;
 }
 
-/* Edge masks above the label. The body's side rules scroll with the content
-   and would otherwise poke through the channels between pinned rows; these
-   strips cover only the left/right pixels, and only as high as this panel's
-   pin line so they cannot wash out the home frame above the stack. */
+/* Edge masks above the label used to hide the body's side rules poking
+   through gaps in a sticky index stack. Prior rows now scroll away while a
+   panel is open, so that mask would paint over their left/right borders —
+   leave it off. The sticky open label's own fill + ::after stroke is enough. */
 .acc-panel.is-open > .acc-title::before,
 .acc-panel.is-collapsing > .acc-title::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: var(--acc-stack-clear);
-    background: linear-gradient(
-        to right,
-        var(--home-bg) 0,
-        var(--home-bg) 2px,
-        transparent 2px,
-        transparent calc(100% - 2px),
-        var(--home-bg) calc(100% - 2px),
-        var(--home-bg) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
+    content: none;
 }
 
 /* Top + side stroke on the label only — ends at the pinned row. */
@@ -369,6 +380,97 @@ body {
 .accordion > .acc-panel:nth-child(7) { --acc-stack: 6; }
 .accordion > .acc-panel:nth-child(8) { --acc-stack: 7; }
 .accordion > .acc-panel:nth-child(9) { --acc-stack: 8; }
+
+/* Invisible height used only while opening a lower row so it can scroll under
+   the site header before its body has expanded. */
+.acc-landing-pad {
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    visibility: hidden;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   NEXT-ROW PEEK
+   While a case study is open, a fixed clone of the following collapsed row
+   sits at the bottom of the viewport so the next section stays reachable.
+   It hides when the real next row scrolls into that same slot.
+   ========================================================================== */
+
+.acc-peek-next {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.acc-peek-next[hidden] {
+    display: none !important;
+}
+
+.acc-peek-next__row {
+    position: relative;
+    pointer-events: auto;
+    box-sizing: border-box;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
+    background-color: var(--home-bg);
+    /* Same 10px channel the collapsed stack paints between rows. */
+    box-shadow: 0 calc(var(--acc-gap) * -1) 0 var(--home-bg);
+}
+
+/* Bottom edge of the open panel, drawn above the channel. The panel's real
+   bottom border sits below the fold or behind this row until the real next
+   row reaches the slot, at which point the peek hides and the real border
+   lands on this same line. Assumes the peek and the open panel share a
+   column width. */
+.acc-peek-next__row::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(100% + 1px + var(--acc-gap));
+    height: var(--home-radius);
+    box-sizing: border-box;
+    border: 1px solid var(--home-rule);
+    border-top: none;
+    border-radius: 0 0 var(--home-radius) var(--home-radius);
+    background-color: var(--home-bg);
+    pointer-events: none;
+}
+
+/* Square fill for the channel. The row's shadow follows its rounded corners,
+   which lets the panel's side rules show past the bottom edge above. */
+.acc-peek-next__row::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(100% + 1px);
+    height: var(--acc-gap);
+    background-color: var(--home-bg);
+    pointer-events: none;
+}
+
+.acc-peek-next__row > .acc-title {
+    margin: 0;
+}
+
+.acc-peek-next__row[data-reserved] .acc-header {
+    cursor: default;
+    color: rgba(0, 0, 0, 0.35);
+    padding-right: var(--acc-pad);
+}
+
+.acc-peek-next__row[data-reserved] .acc-header::after {
+    content: none;
+}
 
 /* The row label is a heading for outline purposes only; it carries no styling
    of its own so the button inside defines the row box. */

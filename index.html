@@ -2836,7 +2836,7 @@
                         </section>
                     </div>
                 </div>
-                <span class="acc-marker">Work I did in design school</span>
+                <span class="acc-marker">Work I've done in design school</span>
             </section>
 
             <!-- ========================================
@@ -2940,18 +2940,16 @@
             </section>
 
             <!-- ========================================
-                 #7 ANCHOR (disabled — case study in progress)
+                 #7 ANCHOR
                  ======================================== -->
-            <section class="acc-panel" id="panel-anchor" data-reserved>
+            <section class="acc-panel" id="panel-anchor" data-panel="anchor">
                 <h2 class="acc-title">
-                    <span class="acc-header" aria-disabled="true">
+                    <button class="acc-header" type="button" id="header-anchor" aria-expanded="false" aria-controls="body-anchor">
                         <span class="acc-num">#7</span>
                         <span class="acc-label">Anchor</span>
-                        <span class="acc-case">Case study in progress</span>
-                    </span>
+                    </button>
                 </h2>
-                <!-- Case study body retained for future publish; panel is not openable. -->
-                <div class="acc-body" id="body-anchor" hidden>
+                <div class="acc-body" id="body-anchor" role="region" aria-labelledby="header-anchor">
                     <div class="acc-inner">
                         <section id="anchor-work" class="my-work-section">
                             <div class="work-scroll-layout">
@@ -3001,6 +2999,7 @@
                                                 <br>
                                                 <p>This work builds on traditional rideshare affordances for the blind and low vision community, aiming to design an equally accessible future for BLV riders in emerging autonomous services.</p>
 
+                                                <h4>Scope: Pickup → Vehicle</h4>
                                                 <div class="anchor-journey-fit" role="img" aria-label="Diagram comparing autonomous vehicle stages with a blind or low-vision rider's journey, highlighting navigating to and boarding the vehicle.">
                                                     <div class="anchor-journey-fit__inner">
                                                         <div class="anchor-journey">
@@ -3016,7 +3015,7 @@
                                                             <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:1280;--y:12;--w:158;--h:84;">Vehicle Arrives at Destination</div>
                                                             <div class="anchor-journey__cell anchor-journey__cell--vehicle" style="--x:1455;--y:12;--w:217;--h:84;">Vehicle Departs</div>
 
-                                                            <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:266;--y:168;--w:320;--h:96;">Navigating to the vehicle</div>
+                                                            <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:266;--y:168;--w:320;--h:96;">Pre-vehicle experience</div>
                                                             <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:603;--y:168;--w:834;--h:96;">Vehicle Experience</div>
                                                             <div class="anchor-journey__cell anchor-journey__cell--phase" style="--x:1454;--y:168;--w:218;--h:96;">Navigating from Vehicle</div>
 
@@ -3030,6 +3029,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <h4>Constraints</h4>
+                                                <ul>
+                                                    <li>Zero access to an autonomous vehicle</li>
+                                                    <li>Minimal R&amp;D budget</li>
+                                                </ul>
                                             </div>
                                         </section>
 
@@ -3152,6 +3157,7 @@
                     }
                     if (panel) panel.classList.remove('is-expanding');
                     scheduleWorkNavUpdate();
+                    schedulePeekUpdate();
                 }, DURATION + 20);
             }
 
@@ -3231,10 +3237,6 @@
                 return collapsed ? collapsed.offsetHeight : 35;
             }
 
-            function rowStep() {
-                return rowHeight() + accordionGap();
-            }
-
             // A pinned row reports its pinned rect, not its place in the
             // document, so positions are summed from the flow instead.
             function naturalTop(target) {
@@ -3269,14 +3271,15 @@
                 return top;
             }
 
-            // Viewport line the panel's own label settles on: below the header,
-            // below every row pinned above it. Matches the CSS stack offsets.
-            function stackedLabelTop(target) {
-                return headerOffset() + Math.max(0, rows.indexOf(target)) * rowStep();
+            // Viewport line the open panel's label settles on: just below the
+            // sticky site header. Prior accordion rows scroll away while a
+            // panel is open, so the opened case study sits at the top of the
+            // viewport rather than under a stack of pinned index rows.
+            function stackedLabelTop(/* target */) {
+                return headerOffset();
             }
 
-            // Viewport line below everything pinned above this panel's content:
-            // the header, the rows stacked above it, and its own pinned label.
+            // Viewport line below the open panel's own pinned label.
             function contentClearance(panel) {
                 return stackedLabelTop(panel) + rowHeight();
             }
@@ -3284,7 +3287,40 @@
             // Must be read before any panel is collapsed: a collapsing panel
             // still measures its full height for the length of its animation.
             function landingScroll(target) {
-                return Math.max(0, projectedTop(target) - stackedLabelTop(target));
+                return Math.max(0, projectedTop(target) - headerOffset());
+            }
+
+            // Lower rows can't scroll under the header until the page is tall
+            // enough. Pad the accordion before the pre-expand scroll, then trim
+            // once the open body (or a close) restores real height.
+            function landingPadEl() {
+                var pad = accordion._landingPad;
+                if (pad && pad.isConnected) return pad;
+                pad = document.createElement('div');
+                pad.className = 'acc-landing-pad';
+                pad.setAttribute('aria-hidden', 'true');
+                accordion.appendChild(pad);
+                accordion._landingPad = pad;
+                return pad;
+            }
+
+            function ensureLandingRoom(landing) {
+                var pad = landingPadEl();
+                var withoutPad = document.documentElement.scrollHeight - pad.offsetHeight;
+                var maxScroll = Math.max(0, withoutPad - window.innerHeight);
+                var need = Math.max(0, Math.ceil(landing - maxScroll));
+                pad.style.height = need ? need + 'px' : '';
+            }
+
+            function trimLandingPad() {
+                var pad = accordion && accordion._landingPad;
+                if (!pad || !pad.isConnected) return;
+                var current = window.pageYOffset;
+                pad.style.height = '';
+                var maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+                if (current > maxScroll) {
+                    window.scrollTo({ top: maxScroll, behavior: 'auto' });
+                }
             }
 
             function scrollPage(top) {
@@ -3320,15 +3356,26 @@
                 });
 
                 if (opts.scroll !== false) {
-                    // Instantly sit on the final stack slot, then let the body
-                    // grow down from there. Scrolling after the expand was what
-                    // painted the case study low and snapped it up.
+                    // Instantly sit the opened row under the site header, then
+                    // let the body grow down from there. A temporary pad makes
+                    // room when the panel is near the bottom of a short page.
+                    ensureLandingRoom(landing);
                     scrollPageInstant(landing);
                 }
 
                 expand(target);
 
-                if (opts.scroll !== false) scheduleWorkNavUpdate();
+                if (opts.scroll !== false) {
+                    scheduleWorkNavUpdate();
+                    clearTimeout(accordion._trimPadTimer);
+                    accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
+                }
+
+                // Peek depends on the open body's height; refresh during and
+                // after the expand so it does not stay hidden from a mid-animation layout.
+                schedulePeekUpdate();
+                clearTimeout(accordion._peekExpandTimer);
+                accordion._peekExpandTimer = setTimeout(schedulePeekUpdate, DURATION + 40);
 
                 return target;
             }
@@ -3337,7 +3384,10 @@
                 if (!panel || !panel.classList.contains('is-open')) return;
                 var landing = landingScroll(panel);
                 collapse(panel);
+                clearTimeout(accordion._trimPadTimer);
+                accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
                 if (landing < window.pageYOffset) scrollPage(landing);
+                schedulePeekUpdate();
             }
 
             function getOpenPanel() {
@@ -3346,6 +3396,151 @@
                 }
                 return null;
             }
+
+            // ---------------------------------------------
+            // NEXT-ROW PEEK
+            // Fixed clone of the following collapsed row, pinned to the
+            // bottom of the viewport while an open panel is being read.
+            // Hides when the real next row reaches that same bottom slot.
+            // ---------------------------------------------
+            var peekRoot = null;
+            var peekRow = null;
+            var peekHeader = null;
+            var peekTargetKey = null;
+
+            function nextPanelSibling(panel) {
+                var el = panel ? panel.nextElementSibling : null;
+                while (el && !(el.classList && el.classList.contains('acc-panel'))) {
+                    el = el.nextElementSibling;
+                }
+                return el;
+            }
+
+            function ensurePeek() {
+                if (peekRoot) return peekRoot;
+                var wrap = document.querySelector('.site-wrapper') || document.body;
+                peekRoot = document.createElement('div');
+                peekRoot.className = 'acc-peek-next';
+                peekRoot.hidden = true;
+                peekRoot.innerHTML = ''
+                    + '<div class="acc-peek-next__row">'
+                    +   '<h2 class="acc-title">'
+                    +     '<button class="acc-header" type="button">'
+                    +       '<span class="acc-num"></span>'
+                    +       '<span class="acc-label"></span>'
+                    +       '<span class="acc-case" hidden></span>'
+                    +     '</button>'
+                    +   '</h2>'
+                    + '</div>';
+                wrap.appendChild(peekRoot);
+                peekRow = peekRoot.querySelector('.acc-peek-next__row');
+                peekHeader = peekRoot.querySelector('.acc-header');
+
+                peekRoot.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (!peekRow || peekRow.hasAttribute('data-reserved')) return;
+                    var name = peekRoot.getAttribute('data-panel');
+                    if (!name) return;
+                    if (window.location.hash && history.replaceState) {
+                        history.replaceState(null, '', window.location.pathname + window.location.search);
+                    }
+                    openPanel(name);
+                });
+
+                return peekRoot;
+            }
+
+            function syncPeekFrom(next) {
+                ensurePeek();
+                var src = next.querySelector('.acc-header');
+                if (!src || !peekHeader || !peekRow) return;
+
+                var key = (next.id || '') + '|' + (next.getAttribute('data-panel') || '') + '|' + (next.hasAttribute('data-reserved') ? '1' : '0');
+                if (key === peekTargetKey) return;
+                peekTargetKey = key;
+
+                var num = src.querySelector('.acc-num');
+                var label = src.querySelector('.acc-label');
+                var caseEl = src.querySelector('.acc-case');
+                var peekNum = peekHeader.querySelector('.acc-num');
+                var peekLabel = peekHeader.querySelector('.acc-label');
+                var peekCase = peekHeader.querySelector('.acc-case');
+
+                if (peekNum) peekNum.textContent = num ? num.textContent : '';
+                if (peekLabel) peekLabel.textContent = label ? label.textContent : '';
+                if (peekCase) {
+                    if (caseEl && caseEl.textContent) {
+                        peekCase.textContent = caseEl.textContent;
+                        peekCase.hidden = false;
+                    } else {
+                        peekCase.textContent = '';
+                        peekCase.hidden = true;
+                    }
+                }
+
+                var panelName = next.getAttribute('data-panel');
+                if (next.hasAttribute('data-reserved') || !panelName) {
+                    peekRow.setAttribute('data-reserved', '');
+                    peekRoot.removeAttribute('data-panel');
+                    peekHeader.setAttribute('aria-disabled', 'true');
+                    peekHeader.setAttribute('tabindex', '-1');
+                } else {
+                    peekRow.removeAttribute('data-reserved');
+                    peekRoot.setAttribute('data-panel', panelName);
+                    peekHeader.removeAttribute('aria-disabled');
+                    peekHeader.removeAttribute('tabindex');
+                }
+
+                peekHeader.setAttribute('aria-label', (peekNum ? peekNum.textContent + ' ' : '') + (peekLabel ? peekLabel.textContent : '') + (peekCase && !peekCase.hidden ? ' ' + peekCase.textContent : ''));
+            }
+
+            function updatePeek() {
+                if (!accordion) return;
+                ensurePeek();
+
+                if (accordion.classList.contains('is-intro')
+                    || document.documentElement.classList.contains('intro-running')) {
+                    peekRoot.hidden = true;
+                    return;
+                }
+
+                var open = getOpenPanel();
+                if (!open) {
+                    peekRoot.hidden = true;
+                    peekTargetKey = null;
+                    return;
+                }
+
+                var next = nextPanelSibling(open);
+                if (!next) {
+                    peekRoot.hidden = true;
+                    peekTargetKey = null;
+                    return;
+                }
+
+                var rowH = next.offsetHeight || rowHeight();
+                var nextTop = next.getBoundingClientRect().top;
+                // Real next row has reached the bottom peek slot — let it take over.
+                if (nextTop <= window.innerHeight - rowH + 0.5) {
+                    peekRoot.hidden = true;
+                    return;
+                }
+
+                syncPeekFrom(next);
+                peekRoot.hidden = false;
+            }
+
+            var peekTick = null;
+            function schedulePeekUpdate() {
+                if (peekTick) return;
+                peekTick = requestAnimationFrame(function() {
+                    peekTick = null;
+                    updatePeek();
+                });
+            }
+
+            window.addEventListener('scroll', schedulePeekUpdate, { passive: true });
+            window.addEventListener('resize', schedulePeekUpdate);
 
             var pointerDownInOpenPanel = false;
 
@@ -3394,6 +3589,7 @@
                 if (!target || !target.isConnected) return;
                 if (open.contains(target)) return;
                 if (target.closest('.acc-panel[data-panel] .acc-header')) return;
+                if (target.closest('.acc-peek-next')) return;
                 if (target.closest('#home-logo')) return;
 
                 closePanel(open);
@@ -3827,7 +4023,7 @@
 
             function navigateToHash(id, options) {
                 var opts = options || {};
-                var aliases = { home: 'home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design', archetype: 'panel-archetype' };
+                var aliases = { home: 'home', glean: 'panel-glean-composer', work: 'panel-onlook', 'my-work': 'panel-onlook', about: 'panel-about', resume: 'panel-about', 'growth-design': 'panel-growth-design', archetype: 'panel-archetype', anchor: 'panel-anchor' };
                 var direct = document.getElementById(aliases[id] || id) || document.getElementById(id);
                 if (!direct) return;
 
