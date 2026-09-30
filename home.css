@@ -536,6 +536,34 @@ body {
     color: var(--case-text-label);
 }
 
+/* Descriptive tags, held against the far end of the row so they line up as
+   a column down the index and leave the number, company and case study to
+   read first. They sit 2px into the row's padding above and below, so the
+   row keeps its 35px height, and they keep their gray while the label takes
+   the hover accent. The trailing margin clears the plus that fades in. */
+.acc-tags {
+    flex: none;
+    display: flex;
+    gap: 4px;
+    margin: -2px var(--acc-gap) -2px auto;
+}
+
+.acc-tags[hidden] {
+    display: none;
+}
+
+.acc-tag {
+    box-sizing: border-box;
+    height: 17px;
+    padding: 0 5px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: var(--home-radius);
+    font-size: 10px;
+    line-height: 15px;
+    text-transform: none;
+    color: var(--case-text-label);
+}
+
 /* The open affordance, Figma node 949:4944. An 11px plus held against the far
    end of the row, drawn as two hairlines rather than an asset so it stays
    crisp and needs no markup in every row. Odd dimensions and integer offsets
@@ -1186,6 +1214,13 @@ body {
     .accordion,
     .site-footer {
         padding-inline: 12px;
+    }
+
+    /* The row is too narrow to seat the tags beside the case study without
+       clipping it, and wrapping would break the fixed row height the pinned
+       stack is measured from. */
+    .acc-tags {
+        display: none;
     }
 
     .home-canvas {

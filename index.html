@@ -323,6 +323,7 @@
                         <span class="acc-num">#2</span>
                         <span class="acc-label">Glean</span>
                         <span class="acc-case">Composer redesign</span>
+                        <span class="acc-tags"><span class="acc-tag">Case Study</span><span class="acc-tag">Enterprise AI</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-glean-composer" role="region" aria-labelledby="header-glean-composer">
@@ -731,6 +732,7 @@
                         <span class="acc-num">#3</span>
                         <span class="acc-label">Glean</span>
                         <span class="acc-case">Agents in assistant (automations)</span>
+                        <span class="acc-tags"><span class="acc-tag">Case Study</span><span class="acc-tag">Enterprise AI</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-glean-agents" role="region" aria-labelledby="header-glean-agents">
@@ -2502,6 +2504,7 @@
                         <span class="acc-num">#4</span>
                         <span class="acc-label">Onlook (YC)</span>
                         <span class="acc-case">AI agent context feature</span>
+                        <span class="acc-tags"><span class="acc-tag">Creativity Support Tool</span><span class="acc-tag">AI Coding</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-onlook" role="region" aria-labelledby="header-onlook">
@@ -2660,6 +2663,7 @@
                         <span class="acc-num">#5</span>
                         <span class="acc-label">Onlook (YC)</span>
                         <span class="acc-case">Growth design</span>
+                        <span class="acc-tags"><span class="acc-tag">Creativity Support Tool</span><span class="acc-tag">AI Coding</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-growth-design" role="region" aria-labelledby="header-growth-design">
@@ -2947,6 +2951,7 @@
                     <button class="acc-header" type="button" id="header-anchor" aria-expanded="false" aria-controls="body-anchor">
                         <span class="acc-num">#7</span>
                         <span class="acc-label">Anchor</span>
+                        <span class="acc-tags"><span class="acc-tag">Case Study</span><span class="acc-tag">Autonomous Vehicles</span><span class="acc-tag">Accessibility</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-anchor" role="region" aria-labelledby="header-anchor">
@@ -3429,6 +3434,7 @@
                     +       '<span class="acc-num"></span>'
                     +       '<span class="acc-label"></span>'
                     +       '<span class="acc-case" hidden></span>'
+                    +       '<span class="acc-tags" hidden></span>'
                     +     '</button>'
                     +   '</h2>'
                     + '</div>';
@@ -3475,6 +3481,20 @@
                     } else {
                         peekCase.textContent = '';
                         peekCase.hidden = true;
+                    }
+                }
+
+                var tagsEl = src.querySelector('.acc-tags');
+                var peekTags = peekHeader.querySelector('.acc-tags');
+                if (peekTags) {
+                    peekTags.textContent = '';
+                    if (tagsEl && tagsEl.children.length) {
+                        Array.prototype.forEach.call(tagsEl.children, function(tag) {
+                            peekTags.appendChild(tag.cloneNode(true));
+                        });
+                        peekTags.hidden = false;
+                    } else {
+                        peekTags.hidden = true;
                     }
                 }
 
