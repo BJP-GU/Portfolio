@@ -405,7 +405,6 @@ body {
     transition: color 0.2s ease;
 }
 
-.acc-header:hover,
 .acc-header:focus-visible {
     color: var(--home-accent);
 }
@@ -440,8 +439,7 @@ body {
    keep both bars on the pixel grid so the mark stays square at rest and the
    45deg turn reads as a symmetrical cross. It keeps its place in the row at
    rest and only fades in, so the row does not reflow under the pointer, and
-   it stays black while the label turns: the mark is the affordance, the
-   colour is the hover. */
+   it stays black, so the mark alone is the hover affordance. */
 .acc-header::after {
     content: '';
     position: absolute;
@@ -1040,10 +1038,6 @@ body {
     text-transform: uppercase;
     color: rgba(0, 0, 0, 0.45);
     margin-bottom: 6px;
-}
-
-.site-footer .footer-link:hover {
-    color: var(--home-accent);
 }
 
 .double-line-divider {
