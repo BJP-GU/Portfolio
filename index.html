@@ -3617,19 +3617,45 @@
             });
 
 
-            // The logo returns to the top of the page. Home is always open
-            // above the index, so this only has to close a work panel if one
-            // is expanded and then sit back at the hero.
+            // The reel has to start from the page as it is on arrival: every
+            // work panel shut, no landing pad, no animation still in flight.
+            function collapseInstant(panel) {
+                var body = bodyOf(panel);
+                var header = headerOf(panel);
+                clearTimeout(panel._collapseTimer);
+                panel.classList.remove('is-open', 'is-expanding', 'is-collapsing');
+                if (header && header.tagName === 'BUTTON') header.setAttribute('aria-expanded', 'false');
+                if (body) {
+                    clearTimeout(body._settleTimer);
+                    body.style.height = '';
+                    body.style.overflow = '';
+                }
+            }
+
+            // The logo replays the arrival reel, which ends on Home at the top
+            // of the page. With reduced motion there is no reel, so it simply
+            // closes any open panel and returns to the top.
             var homeLogo = document.getElementById('home-logo');
             if (homeLogo) {
                 homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
+                    if (introPlaying) return;
                     if (window.location.hash && history.replaceState) {
                         history.replaceState(null, '', window.location.pathname + window.location.search);
                     }
-                    var open = getOpenPanel();
-                    if (open) collapse(open);
-                    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+                    if (prefersReducedMotion()) {
+                        var open = getOpenPanel();
+                        if (open) collapse(open);
+                        window.scrollTo({ top: 0, behavior: 'auto' });
+                        return;
+                    }
+                    panels.forEach(collapseInstant);
+                    clearTimeout(accordion._trimPadTimer);
+                    var pad = accordion._landingPad;
+                    if (pad && pad.parentNode) pad.parentNode.removeChild(pad);
+                    accordion._landingPad = null;
+                    document.documentElement.classList.add('intro-armed');
+                    playIntro();
                 });
             }
 
@@ -3642,9 +3668,12 @@
             // the visitor, so the index reads as #1–#8 again the moment it
             // settles.
             // =============================================
-            (function() {
+            var introPlaying = false;
+
+            function playIntro() {
                 var docEl = document.documentElement;
-                if (!accordion || !docEl.classList.contains('intro-armed')) return;
+                if (!accordion || introPlaying) return;
+                introPlaying = true;
 
                 var LAST_NUMBER = 100;
                 var FILLER_ROWS = Math.max(0, LAST_NUMBER - rows.length);
@@ -3696,6 +3725,13 @@
                     stopped = true;
                 }
 
+                // Nothing on the page is in its place mid-reel, so clicks wait
+                // until it lands.
+                function blockClick(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
                 function finish() {
                     if (done) return;
                     done = true;
@@ -3704,6 +3740,7 @@
                     window.removeEventListener('wheel', cancel);
                     window.removeEventListener('touchstart', cancel);
                     window.removeEventListener('keydown', cancel);
+                    document.removeEventListener('click', blockClick, true);
 
                     var extras = accordion.querySelectorAll('[data-intro-filler]');
                     for (var i = 0; i < extras.length; i++) {
@@ -3714,6 +3751,8 @@
                     window.scrollTo(0, 0);
                     docEl.classList.remove('intro-armed');
                     docEl.classList.remove('intro-running');
+                    introPlaying = false;
+                    schedulePeekUpdate();
                 }
 
                 function frame(now) {
@@ -3766,6 +3805,7 @@
                     window.addEventListener('wheel', cancel, { passive: true });
                     window.addEventListener('touchstart', cancel, { passive: true });
                     window.addEventListener('keydown', cancel);
+                    document.addEventListener('click', blockClick, true);
 
                     // Animation frames stop entirely in a background tab, which
                     // would leave the page parked at the foot of an index full
@@ -3777,7 +3817,9 @@
                     console.warn('Intro reel error:', e);
                     finish();
                 }
-            })();
+            }
+
+            if (accordion && document.documentElement.classList.contains('intro-armed')) playIntro();
 
             // The open panel's height is set to auto, so nothing needs to be
             // recalculated on resize; only mid-animation panels would be stale.
