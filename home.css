@@ -1310,3 +1310,23 @@ body {
         padding-left: 16px;
     }
 }
+
+/* ==========================================================================
+   EXPERIMENT — no outer strokes
+   Hides the frame around the home section and around every accordion row
+   and case-study panel. The strokes go transparent rather than away, so each
+   box keeps its 1px border width and nothing shifts. The rules framing the
+   portrait (.home-vrule, .home-hrule) and the tag chips keep their lines.
+   Delete this block to bring the strokes back.
+   ========================================================================== */
+
+.site-wrapper > .home-hero,
+.acc-panel,
+.acc-panel.is-open > .acc-title::after,
+.acc-panel.is-collapsing > .acc-title::after,
+.acc-panel.is-open > .acc-body,
+.acc-panel.is-collapsing > .acc-body,
+.acc-peek-next__row,
+.acc-peek-next__row::before {
+    border-color: transparent;
+}
