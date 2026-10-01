@@ -2162,7 +2162,6 @@ nav.main-grid .grid-cell {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 68% 32%;
-    border-bottom: 1px solid var(--grid-line);
 }
 
 /* Inner track ratio keeps the meta column flush with the page's 20% grid line */
