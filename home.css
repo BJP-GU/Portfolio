@@ -76,6 +76,12 @@ body {
     display: block;
     line-height: 0;
     text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+/* Same grow as the resume page's .home-button. */
+.site-logo:hover {
+    transform: scale(1.1);
 }
 
 .site-logo:focus-visible {
