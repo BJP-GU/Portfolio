@@ -553,6 +553,35 @@ body {
     flex: none;
 }
 
+/* The number and company go bold under the pointer or keyboard focus. Each
+   holds a hidden, zero-height bold copy of its own text (data-text), so it
+   is always as wide as its bold form and the case study and tags do not
+   move when the weight changes. Helvetica has no axis between the two
+   weights, so the switch is instant. */
+.acc-num,
+.acc-label {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.acc-num::after,
+.acc-label::after {
+    content: attr(data-text);
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+}
+
+.acc-header:not([aria-disabled="true"]):hover > .acc-num,
+.acc-header:not([aria-disabled="true"]):hover > .acc-label,
+.acc-header:focus-visible > .acc-num,
+.acc-header:focus-visible > .acc-label {
+    font-weight: 700;
+}
+
 /* The case study a row opens, named beside the company. Set in sentence case
    against the row's uppercase so the company still reads as the index entry
    and the case study as its subject. */
@@ -614,10 +643,10 @@ body {
     height: var(--acc-icon-size);
     margin-top: calc(var(--acc-icon-size) / -2);
     background-image:
-        linear-gradient(#1A1A1A, #1A1A1A),
-        linear-gradient(#1A1A1A, #1A1A1A),
-        linear-gradient(#1A1A1A, #1A1A1A),
-        linear-gradient(#1A1A1A, #1A1A1A);
+        linear-gradient(var(--body-text), var(--body-text)),
+        linear-gradient(var(--body-text), var(--body-text)),
+        linear-gradient(var(--body-text), var(--body-text)),
+        linear-gradient(var(--body-text), var(--body-text));
     background-size:
         var(--acc-icon-stroke) var(--acc-icon-arm),
         var(--acc-icon-stroke) var(--acc-icon-arm),
