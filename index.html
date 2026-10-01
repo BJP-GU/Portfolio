@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=anchor-quotes-1">
+    <link rel="stylesheet" href="styles.css?v=anchor-videos-1">
     <link rel="stylesheet" href="home.css?v=p-hover-grow-1">
 </head>
 <body>
@@ -2967,6 +2967,20 @@
                                                 <h2 class="case-section-title">Placeholder headline</h2>
                                             </header>
                                             <div class="case-section-content">
+                                                <div class="case-section-image-row">
+                                                    <div>
+                                                        <div class="case-section-image">
+                                                            <video class="case-video" src="Anchor/spatial-audio-experiment.mp4?v=1" poster="Anchor/spatial-audio-experiment-poster.jpg?v=1" width="720" height="1280" muted loop playsinline preload="none" aria-label="Spatial audio experiment"></video>
+                                                        </div>
+                                                        <p class="case-section-caption">Caption placeholder</p>
+                                                    </div>
+                                                    <div>
+                                                        <div class="case-section-image">
+                                                            <video class="case-video" src="Anchor/tactile-wayfinding.mp4?v=1" poster="Anchor/tactile-wayfinding-poster.jpg?v=1" width="720" height="1280" muted loop playsinline preload="none" aria-label="Tactile wayfinding"></video>
+                                                        </div>
+                                                        <p class="case-section-caption">Caption placeholder</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </section>
 
@@ -5817,6 +5831,32 @@
                 document.documentElement.classList.remove('intro-running');
             }
         });
+    </script>
+    <script>
+        // Case-study clips are silent loops. They load and play only while on
+        // screen (a closed panel clips them, so they wait until it is opened),
+        // and with reduced motion they stay on the poster with controls.
+        (function () {
+            var videos = [].slice.call(document.querySelectorAll('video.case-video'));
+            if (!videos.length) return;
+            var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduced || !('IntersectionObserver' in window)) {
+                videos.forEach(function (v) { v.controls = true; });
+                return;
+            }
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    var v = entry.target;
+                    if (entry.isIntersecting) {
+                        var p = v.play();
+                        if (p && p.catch) p.catch(function () { v.controls = true; });
+                    } else if (!v.paused) {
+                        v.pause();
+                    }
+                });
+            }, { threshold: 0.25 });
+            videos.forEach(function (v) { io.observe(v); });
+        })();
     </script>
 </body>
 </html>

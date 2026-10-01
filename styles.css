@@ -3033,7 +3033,8 @@ iframe.lazy-iframe.iframe-ready {
     background-color: var(--bg-color);
 }
 
-.case-section-image img {
+.case-section-image img,
+.case-section-image video {
     width: 100%;
     height: auto;
     display: block;
