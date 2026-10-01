@@ -513,9 +513,12 @@ body {
 }
 
 .acc-header {
-    --acc-icon-size: 11px;
-    --acc-icon-stroke: 1px;
+    --acc-icon-size: 24px;
+    --acc-icon-stroke: 2px;
+    --acc-icon-arm: 8px;
     --acc-icon-offset: calc((var(--acc-icon-size) - var(--acc-icon-stroke)) / 2);
+    --acc-icon-inset: 0px;
+    --acc-icon-smooth: cubic-bezier(0.76, 0, 0.24, 1);
 
     all: unset;
     box-sizing: border-box;
@@ -537,7 +540,6 @@ body {
     transition: color 0.2s ease;
 }
 
-.acc-header:hover,
 .acc-header:focus-visible {
     color: var(--home-accent);
 }
@@ -569,8 +571,8 @@ body {
 /* Descriptive tags, held against the far end of the row so they line up as
    a column down the index and leave the number, company and case study to
    read first. They sit 2px into the row's padding above and below, so the
-   row keeps its 35px height, and they keep their gray while the label takes
-   the hover accent. The trailing margin clears the plus that fades in. */
+   row keeps its 35px height, and they keep their gray on hover. The trailing
+   margin clears the plus that fades in. */
 .acc-tags {
     flex: none;
     display: flex;
@@ -594,14 +596,15 @@ body {
     color: var(--case-text-label);
 }
 
-/* The open affordance, Figma node 949:4944. An 11px plus held against the far
-   end of the row, drawn as two hairlines rather than an asset so it stays
-   crisp and needs no markup in every row. Odd dimensions and integer offsets
-   keep both bars on the pixel grid so the mark stays square at rest and the
-   45deg turn reads as a symmetrical cross. It keeps its place in the row at
-   rest and only fades in, so the row does not reflow under the pointer, and
-   it stays black while the label turns: the mark is the affordance, the
-   colour is the hover. */
+/* The open affordance, after the archetypeai.io button plus: four 2px arms
+   pinned to the edges of a 24px box, leaving the centre open. On hover the
+   arms close in on the centre while the whole mark turns half over. The arms
+   are background layers rather than markup so every row gets the mark for
+   free, and an even stroke in an even box keeps the arms on the pixel grid.
+   It keeps its place in the row at rest and only fades in, so the row does
+   not reflow under the pointer, and it stays black, so the mark alone is the
+   hover affordance. The hover turn rides on `transform` and the open turn on
+   `rotate`, so each keeps its own timing and the two compose. */
 .acc-header::after {
     content: '';
     position: absolute;
@@ -612,23 +615,36 @@ body {
     margin-top: calc(var(--acc-icon-size) / -2);
     background-image:
         linear-gradient(#1A1A1A, #1A1A1A),
+        linear-gradient(#1A1A1A, #1A1A1A),
+        linear-gradient(#1A1A1A, #1A1A1A),
         linear-gradient(#1A1A1A, #1A1A1A);
     background-size:
-        var(--acc-icon-size) var(--acc-icon-stroke),
-        var(--acc-icon-stroke) var(--acc-icon-size);
+        var(--acc-icon-stroke) var(--acc-icon-arm),
+        var(--acc-icon-stroke) var(--acc-icon-arm),
+        var(--acc-icon-arm) var(--acc-icon-stroke),
+        var(--acc-icon-arm) var(--acc-icon-stroke);
     background-position:
-        0 var(--acc-icon-offset),
-        var(--acc-icon-offset) 0;
+        var(--acc-icon-offset) var(--acc-icon-inset),
+        var(--acc-icon-offset) calc(100% - var(--acc-icon-inset)),
+        var(--acc-icon-inset) var(--acc-icon-offset),
+        calc(100% - var(--acc-icon-inset)) var(--acc-icon-offset);
     background-repeat: no-repeat;
     transform-origin: center center;
     opacity: 0;
     transition: opacity 0.2s ease,
-                transform var(--acc-duration) var(--acc-ease);
+                background-position 0.6s var(--acc-icon-smooth),
+                transform 0.6s var(--acc-icon-smooth),
+                rotate var(--acc-duration) var(--acc-ease);
 }
 
 .acc-header:hover::after,
 .acc-header:focus-visible::after {
     opacity: 1;
+}
+
+.acc-header:hover::after {
+    --acc-icon-inset: 4px;
+    transform: rotate(180deg);
 }
 
 /* Open, the plus turns into a cross: the same mark, so the row reads as one
@@ -638,12 +654,12 @@ body {
    closed row the mark answers a hover, but on the open one it is the standing
    way out of the section, so it has to be there before it is looked for. */
 .acc-panel.is-open > .acc-title > .acc-header::after {
-    transform: rotate(45deg);
+    rotate: 45deg;
     opacity: 1;
 }
 
-/* Rows #7–#8 are reserved and do not open. Nothing opens, so nothing offers
-   to: they take neither the accent nor the plus. */
+/* Row #8 is reserved and does not open. Nothing opens, so nothing offers
+   to: it takes no plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
     color: rgba(0, 0, 0, 0.35);
@@ -1200,10 +1216,6 @@ body {
     text-transform: uppercase;
     color: rgba(0, 0, 0, 0.45);
     margin-bottom: 6px;
-}
-
-.site-footer .footer-link:hover {
-    color: var(--home-accent);
 }
 
 .double-line-divider {
