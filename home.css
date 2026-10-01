@@ -247,13 +247,24 @@ body {
 }
 
 /* Collapsed rows pin under the header and stack in document order, so the
-   index stays readable and clickable while a long panel scrolls past. The
-   shadow fills the 10px channel below each row; without it, content shows
-   through the gaps in the pinned stack. */
+   index stays readable and clickable while browsing closed. The shadow fills
+   the 10px channel below each row; without it, content shows through the
+   gaps in the pinned stack. */
 .acc-panel:not(.is-open) {
     position: sticky;
     top: var(--acc-stack-clear);
     z-index: 2;
+    box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
+}
+
+/* While a case study is open (or collapsing), prior collapsed rows scroll
+   away instead of stacking — so the opened panel can sit at the top of the
+   viewport under the site header. Keep the same gap-filling shadow as the
+   collapsed sticky rows so the 10px channels match. */
+.accordion:has(.acc-panel.is-open, .acc-panel.is-collapsing) > .acc-panel:not(.is-open):not(.is-collapsing) {
+    position: relative;
+    top: auto;
+    z-index: 1;
     box-shadow: 0 var(--acc-gap) 0 var(--home-bg);
 }
 
@@ -270,6 +281,22 @@ body {
     top: auto;
     z-index: 1;
     box-shadow: none;
+}
+
+/* Open panel label + in-panel sticky clearance pin under the site header,
+   not under a stack of prior rows (those scroll away while open). */
+.acc-panel.is-open,
+.acc-panel.is-collapsing {
+    --acc-stack-clear: var(--acc-stack-top);
+}
+
+/* Peek clearance inside the open body so scrolling content is not covered.
+   Do not cancel this with a negative margin — that pulled the next row up
+   flush against (or over) the open panel's bottom border. The flex gap alone
+   keeps the bordered section channel at --acc-gap. */
+.acc-panel.is-open > .acc-body,
+.acc-panel.is-collapsing > .acc-body {
+    padding-bottom: calc(var(--acc-row) + 2 * var(--acc-gap));
 }
 
 /* Open panel: no frame on the panel itself. A full-height side rule would
@@ -300,29 +327,13 @@ body {
     border-radius: 0;
 }
 
-/* Edge masks above the label. The body's side rules scroll with the content
-   and would otherwise poke through the channels between pinned rows; these
-   strips cover only the left/right pixels, and only as high as this panel's
-   pin line so they cannot wash out the home frame above the stack. */
+/* Edge masks above the label used to hide the body's side rules poking
+   through gaps in a sticky index stack. Prior rows now scroll away while a
+   panel is open, so that mask would paint over their left/right borders —
+   leave it off. The sticky open label's own fill + ::after stroke is enough. */
 .acc-panel.is-open > .acc-title::before,
 .acc-panel.is-collapsing > .acc-title::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: var(--acc-stack-clear);
-    background: linear-gradient(
-        to right,
-        var(--home-bg) 0,
-        var(--home-bg) 2px,
-        transparent 2px,
-        transparent calc(100% - 2px),
-        var(--home-bg) calc(100% - 2px),
-        var(--home-bg) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
+    content: none;
 }
 
 /* Top + side stroke on the label only — ends at the pinned row. */
@@ -370,6 +381,127 @@ body {
 .accordion > .acc-panel:nth-child(8) { --acc-stack: 7; }
 .accordion > .acc-panel:nth-child(9) { --acc-stack: 8; }
 
+/* Invisible height used only while opening a lower row so it can scroll under
+   the site header before its body has expanded. */
+.acc-landing-pad {
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    visibility: hidden;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   NEXT-ROW PEEK
+   While a case study is open, a fixed clone of the following collapsed row
+   sits at the bottom of the viewport so the next section stays reachable.
+   It hides when the real next row scrolls into that same slot. The row sits
+   one gap above the viewport's bottom edge, so the frame shows the channel
+   that would follow it, just as it shows the one above.
+   ========================================================================== */
+
+.acc-peek-next {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    padding-bottom: var(--acc-gap);
+    pointer-events: none;
+}
+
+/* Page fill for the channel below the row, square-cornered and column-wide
+   so the open panel's side rules stop at the row rather than running past
+   it to the viewport edge. */
+.acc-peek-next::before,
+.acc-peek-next::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    height: var(--acc-gap);
+    transform: translateX(-50%);
+    background-color: var(--home-bg);
+}
+
+/* Square fill behind the drawn bottom edge's rounded corners, so the
+   panel's side rules end on the curve as they do on the real panel. */
+.acc-peek-next::before {
+    z-index: -1;
+    bottom: calc(100% + var(--acc-gap));
+    height: var(--home-radius);
+}
+
+.acc-peek-next[hidden] {
+    display: none !important;
+}
+
+.acc-peek-next__row {
+    position: relative;
+    pointer-events: auto;
+    box-sizing: border-box;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
+    background-color: var(--home-bg);
+    /* Same 10px channel the collapsed stack paints between rows, above and
+       below. The lower one also masks the panel's side rules outside the
+       row's bottom corners. */
+    box-shadow:
+        0 calc(var(--acc-gap) * -1) 0 var(--home-bg),
+        0 var(--acc-gap) 0 var(--home-bg);
+}
+
+/* Bottom edge of the open panel, drawn above the channel. The panel's real
+   bottom border sits below the fold or behind this row until the real next
+   row reaches the slot, at which point the peek hides and the real border
+   lands on this same line. Assumes the peek and the open panel share a
+   column width. */
+.acc-peek-next__row::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(100% + 1px + var(--acc-gap));
+    height: var(--home-radius);
+    box-sizing: border-box;
+    border: 1px solid var(--home-rule);
+    border-top: none;
+    border-radius: 0 0 var(--home-radius) var(--home-radius);
+    background-color: var(--home-bg);
+    pointer-events: none;
+}
+
+/* Square fill for the channel. The row's shadow follows its rounded corners,
+   which lets the panel's side rules show past the bottom edge above. */
+.acc-peek-next__row::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: calc(100% + 1px);
+    height: var(--acc-gap);
+    background-color: var(--home-bg);
+    pointer-events: none;
+}
+
+.acc-peek-next__row > .acc-title {
+    margin: 0;
+}
+
+.acc-peek-next__row[data-reserved] .acc-header {
+    cursor: default;
+    color: rgba(0, 0, 0, 0.35);
+    padding-right: var(--acc-pad);
+}
+
+.acc-peek-next__row[data-reserved] .acc-header::after {
+    content: none;
+}
+
 /* The row label is a heading for outline purposes only; it carries no styling
    of its own so the button inside defines the row box. */
 .acc-title {
@@ -381,9 +513,12 @@ body {
 }
 
 .acc-header {
-    --acc-icon-size: 11px;
-    --acc-icon-stroke: 1px;
+    --acc-icon-size: 24px;
+    --acc-icon-stroke: 2px;
+    --acc-icon-arm: 8px;
     --acc-icon-offset: calc((var(--acc-icon-size) - var(--acc-icon-stroke)) / 2);
+    --acc-icon-inset: 0px;
+    --acc-icon-smooth: cubic-bezier(0.76, 0, 0.24, 1);
 
     all: unset;
     box-sizing: border-box;
@@ -405,7 +540,6 @@ body {
     transition: color 0.2s ease;
 }
 
-.acc-header:hover,
 .acc-header:focus-visible {
     color: var(--home-accent);
 }
@@ -434,14 +568,43 @@ body {
     color: var(--case-text-label);
 }
 
-/* The open affordance, Figma node 949:4944. An 11px plus held against the far
-   end of the row, drawn as two hairlines rather than an asset so it stays
-   crisp and needs no markup in every row. Odd dimensions and integer offsets
-   keep both bars on the pixel grid so the mark stays square at rest and the
-   45deg turn reads as a symmetrical cross. It keeps its place in the row at
-   rest and only fades in, so the row does not reflow under the pointer, and
-   it stays black while the label turns: the mark is the affordance, the
-   colour is the hover. */
+/* Descriptive tags, held against the far end of the row so they line up as
+   a column down the index and leave the number, company and case study to
+   read first. They sit 2px into the row's padding above and below, so the
+   row keeps its 35px height, and they keep their gray on hover. The trailing
+   margin clears the plus that fades in. */
+.acc-tags {
+    flex: none;
+    display: flex;
+    gap: 4px;
+    margin: -2px var(--acc-gap) -2px auto;
+}
+
+.acc-tags[hidden] {
+    display: none;
+}
+
+.acc-tag {
+    box-sizing: border-box;
+    height: 17px;
+    padding: 0 5px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: var(--home-radius);
+    font-size: 10px;
+    line-height: 15px;
+    text-transform: none;
+    color: var(--case-text-label);
+}
+
+/* The open affordance, after the archetypeai.io button plus: four 2px arms
+   pinned to the edges of a 24px box, leaving the centre open. On hover the
+   arms close in on the centre while the whole mark turns half over. The arms
+   are background layers rather than markup so every row gets the mark for
+   free, and an even stroke in an even box keeps the arms on the pixel grid.
+   It keeps its place in the row at rest and only fades in, so the row does
+   not reflow under the pointer, and it stays black, so the mark alone is the
+   hover affordance. The hover turn rides on `transform` and the open turn on
+   `rotate`, so each keeps its own timing and the two compose. */
 .acc-header::after {
     content: '';
     position: absolute;
@@ -452,23 +615,36 @@ body {
     margin-top: calc(var(--acc-icon-size) / -2);
     background-image:
         linear-gradient(#1A1A1A, #1A1A1A),
+        linear-gradient(#1A1A1A, #1A1A1A),
+        linear-gradient(#1A1A1A, #1A1A1A),
         linear-gradient(#1A1A1A, #1A1A1A);
     background-size:
-        var(--acc-icon-size) var(--acc-icon-stroke),
-        var(--acc-icon-stroke) var(--acc-icon-size);
+        var(--acc-icon-stroke) var(--acc-icon-arm),
+        var(--acc-icon-stroke) var(--acc-icon-arm),
+        var(--acc-icon-arm) var(--acc-icon-stroke),
+        var(--acc-icon-arm) var(--acc-icon-stroke);
     background-position:
-        0 var(--acc-icon-offset),
-        var(--acc-icon-offset) 0;
+        var(--acc-icon-offset) var(--acc-icon-inset),
+        var(--acc-icon-offset) calc(100% - var(--acc-icon-inset)),
+        var(--acc-icon-inset) var(--acc-icon-offset),
+        calc(100% - var(--acc-icon-inset)) var(--acc-icon-offset);
     background-repeat: no-repeat;
     transform-origin: center center;
     opacity: 0;
     transition: opacity 0.2s ease,
-                transform var(--acc-duration) var(--acc-ease);
+                background-position 0.6s var(--acc-icon-smooth),
+                transform 0.6s var(--acc-icon-smooth),
+                rotate var(--acc-duration) var(--acc-ease);
 }
 
 .acc-header:hover::after,
 .acc-header:focus-visible::after {
     opacity: 1;
+}
+
+.acc-header:hover::after {
+    --acc-icon-inset: 4px;
+    transform: rotate(180deg);
 }
 
 /* Open, the plus turns into a cross: the same mark, so the row reads as one
@@ -478,12 +654,12 @@ body {
    closed row the mark answers a hover, but on the open one it is the standing
    way out of the section, so it has to be there before it is looked for. */
 .acc-panel.is-open > .acc-title > .acc-header::after {
-    transform: rotate(45deg);
+    rotate: 45deg;
     opacity: 1;
 }
 
-/* Rows #7–#8 are reserved and do not open. Nothing opens, so nothing offers
-   to: they take neither the accent nor the plus. */
+/* Row #8 is reserved and does not open. Nothing opens, so nothing offers
+   to: it takes no plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
     color: rgba(0, 0, 0, 0.35);
@@ -1042,10 +1218,6 @@ body {
     margin-bottom: 6px;
 }
 
-.site-footer .footer-link:hover {
-    color: var(--home-accent);
-}
-
 .double-line-divider {
     display: none;
 }
@@ -1084,6 +1256,22 @@ body {
     .accordion,
     .site-footer {
         padding-inline: 12px;
+    }
+
+    /* The peek must share the panels' column, which the accordion's inline
+       padding narrows here, or its bottom edge overhangs the panel's sides
+       and the row jumps width at the handoff. */
+    .acc-peek-next__row,
+    .acc-peek-next::before,
+    .acc-peek-next::after {
+        width: calc(100% - 2 * var(--site-gutter) - 24px);
+    }
+
+    /* The row is too narrow to seat the tags beside the case study without
+       clipping it, and wrapping would break the fixed row height the pinned
+       stack is measured from. */
+    .acc-tags {
+        display: none;
     }
 
     .home-canvas {
