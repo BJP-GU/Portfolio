@@ -76,6 +76,12 @@ body {
     display: block;
     line-height: 0;
     text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+/* Same grow as the resume page's .home-button. */
+.site-logo:hover {
+    transform: scale(1.1);
 }
 
 .site-logo:focus-visible {
@@ -83,129 +89,11 @@ body {
     outline-offset: 4px;
 }
 
-/* P → bike mark swap (same opacity crossfade as Product → Interaction). */
-.site-logo__mark {
-    position: relative;
-    display: block;
-    width: 41px;
-    height: 41px;
-}
-
-.site-logo__p,
-.site-logo__bike {
-    display: block;
-    width: 41px;
-    height: 41px;
-}
-
-.site-logo__bike {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 240ms var(--acc-ease);
-}
-
+.site-logo__mark,
 .site-logo__p {
-    transition: opacity 240ms var(--acc-ease);
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .site-logo:hover .site-logo__p,
-    .site-logo:focus-visible .site-logo__p {
-        opacity: 0;
-    }
-
-    .site-logo:hover .site-logo__bike,
-    .site-logo:focus-visible .site-logo__bike {
-        opacity: 1;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .site-logo__p,
-    .site-logo__bike {
-        transition: none;
-    }
-}
-
-/* ==========================================================================
-   BIKE RACE — logo click → scroll home → three bikes (~3s)
-   Lane sits in the sticky header, vertically aligned with Icons/P.svg.
-   Brand blue #2D00FB, Interaction green #f3feab, site black #1A1A1A.
-   Motion is rAF + transform/opacity only (see index.html) for smooth travel.
-   Green jets first, black surges, blue finishes first at top-right.
-   ========================================================================== */
-
-.bike-race {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    overflow: hidden;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.bike-race.is-racing {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Keep a single P mark while the race runs (avoid hover bike + racers). */
-.site-header:has(.bike-race.is-racing) .site-logo__p {
-    opacity: 1;
-}
-
-.site-header:has(.bike-race.is-racing) .site-logo__bike {
-    opacity: 0;
-}
-
-.bike-race__bike {
-    position: absolute;
-    left: 0;
-    top: 50%;
+    display: block;
     width: 41px;
     height: 41px;
-    margin-top: -20.5px;
-    background-color: currentColor;
-    -webkit-mask: url("Icons/bike.png") center / contain no-repeat;
-    mask: url("Icons/bike.png") center / contain no-repeat;
-    opacity: 0;
-    transform: translate3d(0, 0, 0);
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-}
-
-.bike-race__bike--blue {
-    color: #2D00FB;
-    z-index: 3;
-}
-
-.bike-race__bike--green {
-    color: #f3feab;
-    z-index: 2;
-    /* Thin outside stroke in site black so the pale green reads on light header. */
-    filter:
-        drop-shadow(1px 0 0 #1A1A1A)
-        drop-shadow(-1px 0 0 #1A1A1A)
-        drop-shadow(0 1px 0 #1A1A1A)
-        drop-shadow(0 -1px 0 #1A1A1A);
-}
-
-.bike-race__bike--black {
-    color: #1A1A1A;
-    z-index: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .bike-race,
-    .bike-race.is-racing {
-        display: none !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-    }
 }
 
 /* ==========================================================================
@@ -553,6 +441,35 @@ body {
     flex: none;
 }
 
+/* The number and company go bold under the pointer or keyboard focus. Each
+   holds a hidden, zero-height bold copy of its own text (data-text), so it
+   is always as wide as its bold form and the case study and tags do not
+   move when the weight changes. Helvetica has no axis between the two
+   weights, so the switch is instant. */
+.acc-num,
+.acc-label {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.acc-num::after,
+.acc-label::after {
+    content: attr(data-text);
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+}
+
+.acc-header:not([aria-disabled="true"]):hover > .acc-num,
+.acc-header:not([aria-disabled="true"]):hover > .acc-label,
+.acc-header:focus-visible > .acc-num,
+.acc-header:focus-visible > .acc-label {
+    font-weight: 700;
+}
+
 /* The case study a row opens, named beside the company. Set in sentence case
    against the row's uppercase so the company still reads as the index entry
    and the case study as its subject. */
@@ -614,10 +531,10 @@ body {
     height: var(--acc-icon-size);
     margin-top: calc(var(--acc-icon-size) / -2);
     background-image:
-        linear-gradient(#1A1A1A, #1A1A1A),
-        linear-gradient(#1A1A1A, #1A1A1A),
-        linear-gradient(#1A1A1A, #1A1A1A),
-        linear-gradient(#1A1A1A, #1A1A1A);
+        linear-gradient(var(--body-text), var(--body-text)),
+        linear-gradient(var(--body-text), var(--body-text)),
+        linear-gradient(var(--body-text), var(--body-text)),
+        linear-gradient(var(--body-text), var(--body-text));
     background-size:
         var(--acc-icon-stroke) var(--acc-icon-arm),
         var(--acc-icon-stroke) var(--acc-icon-arm),
@@ -891,13 +808,13 @@ body {
     z-index: 5;
 }
 
-/* The accent word and dot grid both use --home-accent, scoped to the canvas
-   so the rest of the shell keeps its own accent. */
+/* The dot grid uses --home-accent, scoped to the canvas so the rest of the
+   shell keeps its own accent. The role word is set in site black. */
 .home-role-accent {
     --home-role-band: calc((462.5 - var(--home-headline-inset) - var(--home-frame-rule)) * var(--u));
     position: relative;
     display: inline-block;
-    color: var(--home-accent);
+    color: var(--body-text);
 }
 
 /* Stretch the hover target across the role column so the extended
@@ -1242,8 +1159,7 @@ body {
     }
 
     .site-logo__mark,
-    .site-logo__p,
-    .site-logo__bike {
+    .site-logo__p {
         width: 41px;
         height: 41px;
     }

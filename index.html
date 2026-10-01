@@ -11,8 +11,8 @@
     <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=scroll-flash-1">
-    <link rel="stylesheet" href="home.css?v=anchor-plus-merge-1">
+    <link rel="stylesheet" href="styles.css?v=no-bike-1">
+    <link rel="stylesheet" href="home.css?v=p-hover-grow-1">
 </head>
 <body>
     <noscript>
@@ -120,14 +120,8 @@
             <a class="site-logo" href="#home" id="home-logo" aria-label="Bryce Parsons — back to home">
                 <span class="site-logo__mark" aria-hidden="true">
                     <img class="site-logo__p" src="Icons/P.svg" alt="" width="41" height="41" decoding="async">
-                    <img class="site-logo__bike" src="Icons/bike.svg" alt="" width="41" height="41" decoding="async">
                 </span>
             </a>
-            <div class="bike-race" id="bike-race" aria-hidden="true">
-                <span class="bike-race__bike bike-race__bike--green"></span>
-                <span class="bike-race__bike bike-race__bike--black"></span>
-                <span class="bike-race__bike bike-race__bike--blue"></span>
-            </div>
         </header>
 
         <section class="home-hero" id="home">
@@ -188,8 +182,8 @@
             <section class="acc-panel" id="panel-about" data-panel="about">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-about" aria-expanded="false" aria-controls="body-about">
-                        <span class="acc-num">#1</span>
-                        <span class="acc-label">Resume</span>
+                        <span class="acc-num" data-text="#1">#1</span>
+                        <span class="acc-label" data-text="Resume">Resume</span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-about" role="region" aria-labelledby="header-about">
@@ -320,8 +314,8 @@
             <section class="acc-panel" id="panel-glean-composer" data-panel="glean-composer">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-glean-composer" aria-expanded="false" aria-controls="body-glean-composer">
-                        <span class="acc-num">#2</span>
-                        <span class="acc-label">Glean</span>
+                        <span class="acc-num" data-text="#2">#2</span>
+                        <span class="acc-label" data-text="Glean">Glean</span>
                         <span class="acc-case">Composer redesign</span>
                         <span class="acc-tags"><span class="acc-tag">Case Study</span><span class="acc-tag">Enterprise AI</span></span>
                     </button>
@@ -729,8 +723,8 @@
             <section class="acc-panel" id="panel-glean-agents" data-panel="glean-agents">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-glean-agents" aria-expanded="false" aria-controls="body-glean-agents">
-                        <span class="acc-num">#3</span>
-                        <span class="acc-label">Glean</span>
+                        <span class="acc-num" data-text="#3">#3</span>
+                        <span class="acc-label" data-text="Glean">Glean</span>
                         <span class="acc-case">Agents in assistant (automations)</span>
                         <span class="acc-tags"><span class="acc-tag">Case Study</span><span class="acc-tag">Enterprise AI</span></span>
                     </button>
@@ -2501,10 +2495,10 @@
             <section class="acc-panel" id="panel-onlook" data-panel="onlook">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-onlook" aria-expanded="false" aria-controls="body-onlook">
-                        <span class="acc-num">#4</span>
-                        <span class="acc-label">Onlook (YC)</span>
+                        <span class="acc-num" data-text="#4">#4</span>
+                        <span class="acc-label" data-text="Onlook (YC)">Onlook (YC)</span>
                         <span class="acc-case">AI agent context feature</span>
-                        <span class="acc-tags"><span class="acc-tag">Creativity Support Tool</span><span class="acc-tag">AI Coding</span></span>
+                        <span class="acc-tags"><span class="acc-tag">Creativity Support Tool</span><span class="acc-tag">AI Design Tool</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-onlook" role="region" aria-labelledby="header-onlook">
@@ -2660,10 +2654,10 @@
             <section class="acc-panel" id="panel-growth-design" data-panel="growth-design">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-growth-design" aria-expanded="false" aria-controls="body-growth-design">
-                        <span class="acc-num">#5</span>
-                        <span class="acc-label">Onlook (YC)</span>
+                        <span class="acc-num" data-text="#5">#5</span>
+                        <span class="acc-label" data-text="Onlook (YC)">Onlook (YC)</span>
                         <span class="acc-case">Growth design</span>
-                        <span class="acc-tags"><span class="acc-tag">Creativity Support Tool</span><span class="acc-tag">AI Coding</span></span>
+                        <span class="acc-tags"><span class="acc-tag">Creativity Support Tool</span><span class="acc-tag">AI Design Tool</span></span>
                     </button>
                 </h2>
                 <div class="acc-body" id="body-growth-design" role="region" aria-labelledby="header-growth-design">
@@ -2844,113 +2838,13 @@
             </section>
 
             <!-- ========================================
-                 #6 ARCHETYPE
-                 ======================================== -->
-            <section class="acc-panel" id="panel-archetype" data-panel="archetype">
-                <h2 class="acc-title">
-                    <button class="acc-header" type="button" id="header-archetype" aria-expanded="false" aria-controls="body-archetype">
-                        <span class="acc-num">#6</span>
-                        <span class="acc-label">Archetype</span>
-                    </button>
-                </h2>
-                <div class="acc-body" id="body-archetype" role="region" aria-labelledby="header-archetype">
-                    <div class="acc-inner">
-                        <section id="archetype-work" class="my-work-section">
-                            <div class="work-scroll-layout">
-                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
-
-                                <main class="work-main-content">
-
-                                    <article class="project-case" id="archetype">
-                                        <!-- Project Summary Section -->
-                                        <div class="project-summary">
-                                            <div class="project-summary-header">
-                                                <h1 class="project-summary-title">Archetype</h1>
-                                                <p class="project-summary-tagline">Simulated user testing with synthetic users</p>
-                                            </div>
-                                            <div class="project-summary-grid">
-                                                <div class="project-summary-row project-summary-row--summary">
-                                                    <span class="project-summary-label">/ SUMMARY</span>
-                                                    <p class="project-summary-text">Building a tool for product teams to test software with their target customers using synthetic users.</p>
-                                                </div>
-                                                <div class="project-summary-team-group">
-                                                    <div class="project-summary-team-grid">
-                                                        <span class="project-summary-label">/ TEAM</span>
-                                                        <div class="project-summary-team-rows">
-                                                            <div class="project-summary-team-row">
-                                                                <span class="project-summary-team-label">Role</span>
-                                                                <span class="project-summary-team-value">Design &amp; Product Lead</span>
-                                                            </div>
-                                                            <div class="project-summary-team-row">
-                                                                <span class="project-summary-team-label">Technical Lead</span>
-                                                                <span class="project-summary-team-value">Hanyang Gu</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="project-summary-row project-summary-row--site">
-                                                    <span class="project-summary-label">/ COMPANY SITE</span>
-                                                    <div class="project-summary-site">
-                                                        <span class="project-summary-site-name">Synthetic Archetype</span>
-                                                        <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <section class="case-section">
-                                            <h2 class="case-section-title">About</h2>
-                                            <div class="case-section-content">
-                                                <p>Archetype is a product and design research tool that models synthetic users based on your product's exact customers. This work addresses the opportunity space for synthetic users to effectively model usability studies on coded prototypes. Synthetic personas are initially derived from user behavior frameworks, then continually refined based on session recordings that expose real user behaviors through the PostHog API. The Archetype platform consists of a web app for managing synthetic personas and a plug-in for the CLI tool, Claude Code, enabling software builders to quickly run experiments on prototypes as they build.</p>
-                                                <br>
-                                                <p>As of September 2026, I am no longer working on Synthetic Archetype.</p>
-                                                <div class="case-embed">
-                                                    <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://www.syntheticarchetype.com/" allowfullscreen class="lazy-iframe" loading="lazy" title="Synthetic Archetype website"></iframe>
-                                                    <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer" class="case-embed-link">Open Website <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-                                                </div>
-                                            </div>
-                                        </section>
-
-                                        <section class="case-section">
-                                            <h2 class="case-section-title">Achievements</h2>
-                                            <div class="case-section-content">
-                                                <ul>
-                                                    <li>Accepted into Berkeley Skydeck's Pad-13 Accelerator Program (Summer 2026)</li>
-                                                    <li>Top 10% of applicants for YC W25</li>
-                                                </ul>
-                                            </div>
-                                        </section>
-
-                                        <section class="case-section">
-                                            <div class="case-section-content">
-                                                <h4>Additional Information & Resources</h4>
-                                                <ul>
-                                                    <li>Our Collider Cup VC Pitch: <a href="https://www.youtube.com/live/hX7JP95TFhI?si=V4xLaJpR4hkk4TtG&t=1852" target="_blank">Watch on YouTube</a></li>
-                                                    <li>Our Pitch Deck (December 2025): <a href="https://docs.google.com/presentation/d/1Hm2fktXzIEd7LRd6lnXZT1vzIVMefcZN/edit" target="_blank">View on Google Slides</a></li>
-                                                    <li>Related Papers: <a href="https://arxiv.org/abs/2304.03442" target="_blank"><em>Generative Agents: Interactive Simulacra of Human Behavior</em></a></li>
-                                                </ul>
-                                            </div>
-                                        </section>
-                                    </article>
-
-                                </main>
-
-                                <!-- Right Spacer Column -->
-                                <div class="work-right-spacer"></div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ========================================
-                 #7 ANCHOR
+                 #6 ANCHOR
                  ======================================== -->
             <section class="acc-panel" id="panel-anchor" data-panel="anchor">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-anchor" aria-expanded="false" aria-controls="body-anchor">
-                        <span class="acc-num">#7</span>
-                        <span class="acc-label">Anchor</span>
+                        <span class="acc-num" data-text="#6">#6</span>
+                        <span class="acc-label" data-text="Anchor">Anchor</span>
                         <span class="acc-tags"><span class="acc-tag">Case Study</span><span class="acc-tag">Autonomous Vehicles</span><span class="acc-tag">Accessibility</span></span>
                     </button>
                 </h2>
@@ -3045,12 +2939,34 @@
 
                                         <section class="case-section">
                                             <header class="case-section-header">
-                                                <p class="case-section-eyebrow">Research</p>
+                                                <p class="case-section-eyebrow">Primary Research</p>
+                                                <h2 class="case-section-title">The blind and low vision community wayfind to traditional ride share and autonomous rideshare differently</h2>
+                                            </header>
+                                            <div class="case-section-content">
+                                                <h4>Findings</h4>
+                                                <blockquote>
+                                                    <p>&ldquo;I'm reliant on traditional and autonomous rideshare transportation for when I need to go somewhere that public transit does not conveniently get me to.&rdquo;</p>
+                                                </blockquote>
+                                                <blockquote>
+                                                    <p>&ldquo;When I wayfind to an Uber or a Lyft, sometimes I will call the driver to locate their exact position. Sometimes drivers will get out of the car and greet me as I approach the car.&rdquo;</p>
+                                                </blockquote>
+                                                <blockquote>
+                                                    <p>&ldquo;When I'm in Waymo, I always honk the horn on the app to situate the car relative to me. It's helpful, but a bit awkward to do it multiple times in public.&rdquo;</p>
+                                                </blockquote>
+                                                <h4>Takeaways</h4>
+                                                <ul>
+                                                    <li>Spatial audio is welcomed for locating the vehicle, but BLV users prefer it to be a private (e.g., in ear) experience.</li>
+                                                    <li>Without another human in the loop, approaching a parked car in the street or crossing the street could be dangerous.</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <header class="case-section-header">
+                                                <p class="case-section-eyebrow">Prototyping</p>
                                                 <h2 class="case-section-title">Placeholder headline</h2>
                                             </header>
                                             <div class="case-section-content">
-                                                <h4>Methods</h4>
-                                                <h4>Findings</h4>
                                             </div>
                                         </section>
 
@@ -3062,13 +2978,104 @@
                                             <div class="case-section-content">
                                             </div>
                                         </section>
+                                    </article>
+
+                                </main>
+
+                                <!-- Right Spacer Column -->
+                                <div class="work-right-spacer"></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 #7 ARCHETYPE
+                 ======================================== -->
+            <section class="acc-panel" id="panel-archetype" data-panel="archetype">
+                <h2 class="acc-title">
+                    <button class="acc-header" type="button" id="header-archetype" aria-expanded="false" aria-controls="body-archetype">
+                        <span class="acc-num" data-text="#7">#7</span>
+                        <span class="acc-label" data-text="Archetype">Archetype</span>
+                    </button>
+                </h2>
+                <div class="acc-body" id="body-archetype" role="region" aria-labelledby="header-archetype">
+                    <div class="acc-inner">
+                        <section id="archetype-work" class="my-work-section">
+                            <div class="work-scroll-layout">
+                                <nav class="work-nav-sidebar" aria-label="On this page"></nav>
+
+                                <main class="work-main-content">
+
+                                    <article class="project-case" id="archetype">
+                                        <!-- Project Summary Section -->
+                                        <div class="project-summary">
+                                            <div class="project-summary-header">
+                                                <h1 class="project-summary-title">Archetype</h1>
+                                                <p class="project-summary-tagline">Simulated user testing with synthetic users</p>
+                                            </div>
+                                            <div class="project-summary-grid">
+                                                <div class="project-summary-row project-summary-row--summary">
+                                                    <span class="project-summary-label">/ SUMMARY</span>
+                                                    <p class="project-summary-text">Building a tool for product teams to test software with their target customers using synthetic users.</p>
+                                                </div>
+                                                <div class="project-summary-team-group">
+                                                    <div class="project-summary-team-grid">
+                                                        <span class="project-summary-label">/ TEAM</span>
+                                                        <div class="project-summary-team-rows">
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Role</span>
+                                                                <span class="project-summary-team-value">Design &amp; Product Lead</span>
+                                                            </div>
+                                                            <div class="project-summary-team-row">
+                                                                <span class="project-summary-team-label">Technical Lead</span>
+                                                                <span class="project-summary-team-value">Hanyang Gu</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="project-summary-row project-summary-row--site">
+                                                    <span class="project-summary-label">/ COMPANY SITE</span>
+                                                    <div class="project-summary-site">
+                                                        <span class="project-summary-site-name">Synthetic Archetype</span>
+                                                        <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer" class="project-summary-site-link">Visit <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <section class="case-section">
-                                            <header class="case-section-header">
-                                                <p class="case-section-eyebrow">Reflection</p>
-                                                <h2 class="case-section-title">Placeholder headline</h2>
-                                            </header>
+                                            <h2 class="case-section-title">About</h2>
                                             <div class="case-section-content">
+                                                <p>Archetype is a product and design research tool that models synthetic users based on your product's exact customers. This work addresses the opportunity space for synthetic users to effectively model usability studies on coded prototypes. Synthetic personas are initially derived from user behavior frameworks, then continually refined based on session recordings that expose real user behaviors through the PostHog API. The Archetype platform consists of a web app for managing synthetic personas and a plug-in for the CLI tool, Claude Code, enabling software builders to quickly run experiments on prototypes as they build.</p>
+                                                <br>
+                                                <p>As of September 2026, I am no longer working on Synthetic Archetype.</p>
+                                                <div class="case-embed">
+                                                    <iframe style="border: 1px solid rgba(0, 0, 0, 0.1); width: 100%; aspect-ratio: 16/9;" data-src="https://www.syntheticarchetype.com/" allowfullscreen class="lazy-iframe" loading="lazy" title="Synthetic Archetype website"></iframe>
+                                                    <a href="https://www.syntheticarchetype.com/" target="_blank" rel="noopener noreferrer" class="case-embed-link">Open Website <span class="external-link-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <h2 class="case-section-title">Achievements</h2>
+                                            <div class="case-section-content">
+                                                <ul>
+                                                    <li>Accepted into Berkeley Skydeck's Pad-13 Accelerator Program (Summer 2026)</li>
+                                                    <li>Top 10% of applicants for YC W25</li>
+                                                </ul>
+                                            </div>
+                                        </section>
+
+                                        <section class="case-section">
+                                            <div class="case-section-content">
+                                                <h4>Additional Information & Resources</h4>
+                                                <ul>
+                                                    <li>Our Collider Cup VC Pitch: <a href="https://www.youtube.com/live/hX7JP95TFhI?si=V4xLaJpR4hkk4TtG&t=1852" target="_blank">Watch on YouTube</a></li>
+                                                    <li>Our Pitch Deck (December 2025): <a href="https://docs.google.com/presentation/d/1Hm2fktXzIEd7LRd6lnXZT1vzIVMefcZN/edit" target="_blank">View on Google Slides</a></li>
+                                                    <li>Related Papers: <a href="https://arxiv.org/abs/2304.03442" target="_blank"><em>Generative Agents: Interactive Simulacra of Human Behavior</em></a></li>
+                                                </ul>
                                             </div>
                                         </section>
                                     </article>
@@ -3088,7 +3095,7 @@
                  ======================================== -->
             <section class="acc-panel" data-reserved>
                 <h2 class="acc-title">
-                    <span class="acc-header" aria-disabled="true"><span class="acc-num">#8</span><span class="acc-label">???</span></span>
+                    <span class="acc-header" aria-disabled="true"><span class="acc-num" data-text="#8">#8</span><span class="acc-label" data-text="???">???</span></span>
                 </h2>
             </section>
         </div>
@@ -3431,8 +3438,8 @@
                     + '<div class="acc-peek-next__row">'
                     +   '<h2 class="acc-title">'
                     +     '<button class="acc-header" type="button">'
-                    +       '<span class="acc-num"></span>'
-                    +       '<span class="acc-label"></span>'
+                    +       '<span class="acc-num" data-text=""></span>'
+                    +       '<span class="acc-label" data-text=""></span>'
                     +       '<span class="acc-case" hidden></span>'
                     +       '<span class="acc-tags" hidden></span>'
                     +     '</button>'
@@ -3472,8 +3479,14 @@
                 var peekLabel = peekHeader.querySelector('.acc-label');
                 var peekCase = peekHeader.querySelector('.acc-case');
 
-                if (peekNum) peekNum.textContent = num ? num.textContent : '';
-                if (peekLabel) peekLabel.textContent = label ? label.textContent : '';
+                if (peekNum) {
+                    peekNum.textContent = num ? num.textContent : '';
+                    peekNum.setAttribute('data-text', peekNum.textContent);
+                }
+                if (peekLabel) {
+                    peekLabel.textContent = label ? label.textContent : '';
+                    peekLabel.setAttribute('data-text', peekLabel.textContent);
+                }
                 if (peekCase) {
                     if (caseEl && caseEl.textContent) {
                         peekCase.textContent = caseEl.textContent;
@@ -3617,173 +3630,45 @@
             });
 
 
-            // The logo returns to the top of the page. Home is always open
-            // above the index, so this only has to close a work panel if one
-            // is expanded and then sit back at the hero. Once home is in view,
-            // three brand-colored bikes race along the logo row (~3s).
+            // The reel has to start from the page as it is on arrival: every
+            // work panel shut, no landing pad, no animation still in flight.
+            function collapseInstant(panel) {
+                var body = bodyOf(panel);
+                var header = headerOf(panel);
+                clearTimeout(panel._collapseTimer);
+                panel.classList.remove('is-open', 'is-expanding', 'is-collapsing');
+                if (header && header.tagName === 'BUTTON') header.setAttribute('aria-expanded', 'false');
+                if (body) {
+                    clearTimeout(body._settleTimer);
+                    body.style.height = '';
+                    body.style.overflow = '';
+                }
+            }
+
+            // The logo replays the arrival reel, which ends on Home at the top
+            // of the page. With reduced motion there is no reel, so it simply
+            // closes any open panel and returns to the top.
             var homeLogo = document.getElementById('home-logo');
-            var bikeRace = document.getElementById('bike-race');
-            var bikeRaceRaf = 0;
-            var bikeRaceWatch = 0;
-            var bikeRaceClear = 0;
-            var bikeEls = bikeRace ? {
-                green: bikeRace.querySelector('.bike-race__bike--green'),
-                black: bikeRace.querySelector('.bike-race__bike--black'),
-                blue: bikeRace.querySelector('.bike-race__bike--blue')
-            } : null;
-
-            function clamp01(t) {
-                return t < 0 ? 0 : t > 1 ? 1 : t;
-            }
-
-            // Smoothstep — continuous first derivative, no keyframe corners.
-            function smoothstep(t) {
-                t = clamp01(t);
-                return t * t * (3 - 2 * t);
-            }
-
-            // Ease-out that keeps late-race acceleration for the closer.
-            function easeOutCubic(t) {
-                t = clamp01(t);
-                return 1 - Math.pow(1 - t, 3);
-            }
-
-            function bikeOpacity(t) {
-                if (t < 0.06) return smoothstep(t / 0.06);
-                if (t > 0.88) return 1 - smoothstep((t - 0.88) / 0.12);
-                return 1;
-            }
-
-            // Progress curves: green jets early, black mid-surge, blue wins late.
-            function progressGreen(t) {
-                return smoothstep(Math.min(1, t / 0.82)) * 0.86;
-            }
-
-            function progressBlack(t) {
-                var early = smoothstep(Math.min(1, t / 0.55)) * 0.42;
-                var late = t < 0.35 ? 0 : smoothstep((t - 0.35) / 0.55) * 0.5;
-                return Math.min(0.92, early + late);
-            }
-
-            function progressBlue(t) {
-                var crawl = smoothstep(Math.min(1, t / 0.5)) * 0.38;
-                var kick = t < 0.42 ? 0 : easeOutCubic((t - 0.42) / 0.58) * 0.62;
-                return Math.min(1, crawl + kick);
-            }
-
-            function clearBikeRace() {
-                if (bikeRaceRaf) {
-                    cancelAnimationFrame(bikeRaceRaf);
-                    bikeRaceRaf = 0;
-                }
-                if (bikeRaceClear) {
-                    clearTimeout(bikeRaceClear);
-                    bikeRaceClear = 0;
-                }
-                if (bikeRace) bikeRace.classList.remove('is-racing');
-                if (!bikeEls) return;
-                ['green', 'black', 'blue'].forEach(function(key) {
-                    var el = bikeEls[key];
-                    if (!el) return;
-                    el.style.opacity = '';
-                    el.style.transform = '';
-                });
-            }
-
-            function startBikeRace() {
-                if (!bikeRace || !bikeEls || prefersReducedMotion()) return;
-                clearBikeRace();
-                bikeRace.classList.add('is-racing');
-
-                var duration = 3000;
-                var start = performance.now();
-                var bikeSize = bikeEls.blue ? bikeEls.blue.offsetWidth || 41 : 41;
-                // Start just past the P mark; finish flush to the header's right edge.
-                var startX = 56;
-                var endPad = 10;
-                var laneY = {
-                    green: 5,
-                    black: 10,
-                    blue: -6
-                };
-
-                function place(el, progress, y) {
-                    if (!el) return;
-                    var track = Math.max(0, bikeRace.clientWidth - bikeSize - endPad - startX);
-                    var x = startX + track * progress;
-                    el.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y + 'px,0)';
-                }
-
-                function frame(now) {
-                    var t = clamp01((now - start) / duration);
-                    var opacity = bikeOpacity(t);
-                    var pg = progressGreen(t);
-                    var pk = progressBlack(t);
-                    var pb = progressBlue(t);
-
-                    if (bikeEls.green) bikeEls.green.style.opacity = opacity;
-                    if (bikeEls.black) bikeEls.black.style.opacity = opacity;
-                    if (bikeEls.blue) bikeEls.blue.style.opacity = opacity;
-
-                    place(bikeEls.green, pg, laneY.green);
-                    place(bikeEls.black, pk, laneY.black);
-                    place(bikeEls.blue, pb, laneY.blue);
-
-                    if (t < 1) {
-                        bikeRaceRaf = requestAnimationFrame(frame);
-                    } else {
-                        bikeRaceRaf = 0;
-                        // Hold the finish a beat, then clear.
-                        bikeRaceClear = setTimeout(clearBikeRace, 120);
-                    }
-                }
-
-                bikeRaceRaf = requestAnimationFrame(frame);
-            }
-
-            function raceAfterScrollHome() {
-                if (prefersReducedMotion() || !bikeRace) return;
-                if (bikeRaceWatch) {
-                    clearTimeout(bikeRaceWatch);
-                    bikeRaceWatch = 0;
-                }
-
-                var started = false;
-                function kickoff() {
-                    if (started) return;
-                    started = true;
-                    window.removeEventListener('scroll', onScroll);
-                    if (bikeRaceWatch) {
-                        clearTimeout(bikeRaceWatch);
-                        bikeRaceWatch = 0;
-                    }
-                    // Brief beat so the home section settles after scroll.
-                    setTimeout(startBikeRace, window.scrollY <= 8 ? 80 : 120);
-                }
-
-                function onScroll() {
-                    if (window.scrollY <= 8) kickoff();
-                }
-
-                window.addEventListener('scroll', onScroll, { passive: true });
-                if (window.scrollY <= 8) {
-                    kickoff();
-                } else {
-                    // Smooth-scroll fallback if scroll events settle above 8px.
-                    bikeRaceWatch = setTimeout(kickoff, 900);
-                }
-            }
-
             if (homeLogo) {
                 homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
+                    if (introPlaying) return;
                     if (window.location.hash && history.replaceState) {
                         history.replaceState(null, '', window.location.pathname + window.location.search);
                     }
-                    var open = getOpenPanel();
-                    if (open) collapse(open);
-                    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-                    raceAfterScrollHome();
+                    if (prefersReducedMotion()) {
+                        var open = getOpenPanel();
+                        if (open) collapse(open);
+                        window.scrollTo({ top: 0, behavior: 'auto' });
+                        return;
+                    }
+                    panels.forEach(collapseInstant);
+                    clearTimeout(accordion._trimPadTimer);
+                    var pad = accordion._landingPad;
+                    if (pad && pad.parentNode) pad.parentNode.removeChild(pad);
+                    accordion._landingPad = null;
+                    document.documentElement.classList.add('intro-armed');
+                    playIntro();
                 });
             }
 
@@ -3796,9 +3681,12 @@
             // the visitor, so the index reads as #1–#8 again the moment it
             // settles.
             // =============================================
-            (function() {
+            var introPlaying = false;
+
+            function playIntro() {
                 var docEl = document.documentElement;
-                if (!accordion || !docEl.classList.contains('intro-armed')) return;
+                if (!accordion || introPlaying) return;
+                introPlaying = true;
 
                 var LAST_NUMBER = 100;
                 var FILLER_ROWS = Math.max(0, LAST_NUMBER - rows.length);
@@ -3839,8 +3727,8 @@
                         panel.setAttribute('data-intro-filler', '');
                         panel.setAttribute('aria-hidden', 'true');
                         panel.innerHTML = '<h2 class="acc-title"><span class="acc-header" aria-disabled="true">'
-                            + '<span class="acc-num">#' + (firstNumber + i) + '</span>'
-                            + '<span class="acc-label">???</span></span></h2>';
+                            + '<span class="acc-num" data-text="#' + (firstNumber + i) + '">#' + (firstNumber + i) + '</span>'
+                            + '<span class="acc-label" data-text="???">???</span></span></h2>';
                         frag.appendChild(panel);
                     }
                     return frag;
@@ -3848,6 +3736,13 @@
 
                 function cancel() {
                     stopped = true;
+                }
+
+                // Nothing on the page is in its place mid-reel, so clicks wait
+                // until it lands.
+                function blockClick(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                 }
 
                 function finish() {
@@ -3858,6 +3753,7 @@
                     window.removeEventListener('wheel', cancel);
                     window.removeEventListener('touchstart', cancel);
                     window.removeEventListener('keydown', cancel);
+                    document.removeEventListener('click', blockClick, true);
 
                     var extras = accordion.querySelectorAll('[data-intro-filler]');
                     for (var i = 0; i < extras.length; i++) {
@@ -3868,6 +3764,8 @@
                     window.scrollTo(0, 0);
                     docEl.classList.remove('intro-armed');
                     docEl.classList.remove('intro-running');
+                    introPlaying = false;
+                    schedulePeekUpdate();
                 }
 
                 function frame(now) {
@@ -3920,6 +3818,7 @@
                     window.addEventListener('wheel', cancel, { passive: true });
                     window.addEventListener('touchstart', cancel, { passive: true });
                     window.addEventListener('keydown', cancel);
+                    document.addEventListener('click', blockClick, true);
 
                     // Animation frames stop entirely in a background tab, which
                     // would leave the page parked at the foot of an index full
@@ -3931,7 +3830,9 @@
                     console.warn('Intro reel error:', e);
                     finish();
                 }
-            })();
+            }
+
+            if (accordion && document.documentElement.classList.contains('intro-armed')) playIntro();
 
             // The open panel's height is set to auto, so nothing needs to be
             // recalculated on resize; only mid-animation panels would be stale.
