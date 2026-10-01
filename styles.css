@@ -2856,6 +2856,18 @@ nav.main-grid .grid-cell {
     color: var(--case-text-heading);
 }
 
+.case-section-content blockquote {
+    margin: 0 0 var(--space-md);
+    padding-left: var(--space-md);
+    border-left: 1px solid var(--case-text-caption);
+    font-size: var(--text-base);
+    color: var(--case-text-heading);
+}
+
+.case-section-content blockquote p {
+    margin: 0;
+}
+
 .case-section-content a {
     color: inherit;
     text-decoration: underline;
