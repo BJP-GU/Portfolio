@@ -1310,15 +1310,3 @@ body {
         padding-left: 16px;
     }
 }
-
-/* ==========================================================================
-   EXPERIMENT — no home section outer stroke
-   Hides the frame around the home section only. The stroke goes transparent
-   rather than away, so the box keeps its 1px border width and nothing
-   shifts. The rules framing the portrait (.home-vrule, .home-hrule) keep
-   their lines. Delete this block to bring the frame back.
-   ========================================================================== */
-
-.site-wrapper > .home-hero {
-    border-color: transparent;
-}
