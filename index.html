@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=anchor-videos-3">
+    <link rel="stylesheet" href="styles.css?v=anchor-videos-4">
     <link rel="stylesheet" href="home.css?v=p-hover-grow-1">
 </head>
 <body>
@@ -2982,6 +2982,13 @@
                                                         <p class="case-section-caption">Directions are communicated by tactile perception</p>
                                                     </div>
                                                 </div>
+                                                <h4>A/B testing spatial audio sound designs in VR</h4>
+                                                <div class="case-section-video-single">
+                                                    <div class="case-section-image">
+                                                        <video class="case-video case-video--audio" src="Anchor/vr-spatial-audio-exploration.mp4?v=1" poster="Anchor/vr-spatial-audio-exploration-poster.jpg?v=1" width="1280" height="720" controls playsinline preload="none" aria-label="We prototyped a spatial audio environment in Unity and tested two guidance modes with BLV users at the Lighthouse, using a VR headset for head-tracked audio."></video>
+                                                    </div>
+                                                    <p class="case-section-caption">We prototyped a spatial audio environment in Unity and tested two guidance modes with BLV users at the Lighthouse, using a VR headset for head-tracked audio.</p>
+                                                </div>
                                             </div>
                                         </section>
 
@@ -5834,9 +5841,9 @@
         });
     </script>
     <script>
-        // Case-study clips are silent loops. They load and play only while on
-        // screen (a closed panel clips them, so they wait until it is opened),
-        // and with reduced motion they stay on the poster with controls.
+        // Case-study clips: silent loops autoplay in view; clips with meaningful
+        // audio keep controls and play only when the visitor starts them. With
+        // reduced motion, every clip stays on the poster with controls.
         (function () {
             var videos = [].slice.call(document.querySelectorAll('video.case-video'));
             if (!videos.length) return;
@@ -5845,6 +5852,9 @@
                 videos.forEach(function (v) { v.controls = true; });
                 return;
             }
+            var autoplayVideos = videos.filter(function (v) {
+                return !v.classList.contains('case-video--audio');
+            });
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
                     var v = entry.target;
@@ -5856,7 +5866,7 @@
                     }
                 });
             }, { threshold: 0.25 });
-            videos.forEach(function (v) { io.observe(v); });
+            autoplayVideos.forEach(function (v) { io.observe(v); });
         })();
     </script>
 </body>

@@ -3062,6 +3062,16 @@ iframe.lazy-iframe.iframe-ready {
     justify-content: start;
 }
 
+/* Single landscape clip — same width cap as the portrait pair above */
+.case-section-video-single {
+    max-width: 310px;
+    margin: var(--space-md) 0;
+}
+
+.case-section-video-single .case-section-image {
+    margin-top: 0;
+}
+
 /* Caption text under embedded videos/images inside case sections */
 .case-section-caption {
     font-family: var(--font-body);
@@ -4383,6 +4393,10 @@ iframe.lazy-iframe.iframe-ready {
 
     .case-section-video-row {
         grid-template-columns: minmax(0, 280px);
+    }
+
+    .case-section-video-single {
+        max-width: 280px;
     }
 }
 
