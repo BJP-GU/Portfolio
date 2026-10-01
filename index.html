@@ -3540,8 +3540,9 @@
 
                 var rowH = next.offsetHeight || rowHeight();
                 var nextTop = next.getBoundingClientRect().top;
-                // Real next row has reached the bottom peek slot — let it take over.
-                if (nextTop <= window.innerHeight - rowH + 0.5) {
+                // Real next row has reached the bottom peek slot, one row gap
+                // above the viewport's bottom edge — let it take over.
+                if (nextTop <= window.innerHeight - accordionGap() - rowH + 0.5) {
                     peekRoot.hidden = true;
                     return;
                 }

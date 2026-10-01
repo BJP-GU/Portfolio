@@ -296,7 +296,7 @@ body {
    keeps the bordered section channel at --acc-gap. */
 .acc-panel.is-open > .acc-body,
 .acc-panel.is-collapsing > .acc-body {
-    padding-bottom: calc(var(--acc-row) + var(--acc-gap));
+    padding-bottom: calc(var(--acc-row) + 2 * var(--acc-gap));
 }
 
 /* Open panel: no frame on the panel itself. A full-height side rule would
@@ -395,7 +395,9 @@ body {
    NEXT-ROW PEEK
    While a case study is open, a fixed clone of the following collapsed row
    sits at the bottom of the viewport so the next section stays reachable.
-   It hides when the real next row scrolls into that same slot.
+   It hides when the real next row scrolls into that same slot. The row sits
+   one gap above the viewport's bottom edge, so the frame shows the channel
+   that would follow it, just as it shows the one above.
    ========================================================================== */
 
 .acc-peek-next {
@@ -406,7 +408,31 @@ body {
     z-index: 50;
     display: flex;
     justify-content: center;
+    padding-bottom: var(--acc-gap);
     pointer-events: none;
+}
+
+/* Page fill for the channel below the row, square-cornered and column-wide
+   so the open panel's side rules stop at the row rather than running past
+   it to the viewport edge. */
+.acc-peek-next::before,
+.acc-peek-next::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
+    height: var(--acc-gap);
+    transform: translateX(-50%);
+    background-color: var(--home-bg);
+}
+
+/* Square fill behind the drawn bottom edge's rounded corners, so the
+   panel's side rules end on the curve as they do on the real panel. */
+.acc-peek-next::before {
+    z-index: -1;
+    bottom: calc(100% + var(--acc-gap));
+    height: var(--home-radius);
 }
 
 .acc-peek-next[hidden] {
@@ -421,8 +447,12 @@ body {
     border: 1px solid var(--home-rule);
     border-radius: var(--home-radius);
     background-color: var(--home-bg);
-    /* Same 10px channel the collapsed stack paints between rows. */
-    box-shadow: 0 calc(var(--acc-gap) * -1) 0 var(--home-bg);
+    /* Same 10px channel the collapsed stack paints between rows, above and
+       below. The lower one also masks the panel's side rules outside the
+       row's bottom corners. */
+    box-shadow:
+        0 calc(var(--acc-gap) * -1) 0 var(--home-bg),
+        0 var(--acc-gap) 0 var(--home-bg);
 }
 
 /* Bottom edge of the open panel, drawn above the channel. The panel's real
@@ -1214,6 +1244,15 @@ body {
     .accordion,
     .site-footer {
         padding-inline: 12px;
+    }
+
+    /* The peek must share the panels' column, which the accordion's inline
+       padding narrows here, or its bottom edge overhangs the panel's sides
+       and the row jumps width at the handoff. */
+    .acc-peek-next__row,
+    .acc-peek-next::before,
+    .acc-peek-next::after {
+        width: calc(100% - 2 * var(--site-gutter) - 24px);
     }
 
     /* The row is too narrow to seat the tags beside the case study without
