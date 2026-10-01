@@ -802,13 +802,13 @@ body {
     z-index: 5;
 }
 
-/* The accent word and dot grid both use --home-accent, scoped to the canvas
-   so the rest of the shell keeps its own accent. */
+/* The dot grid uses --home-accent, scoped to the canvas so the rest of the
+   shell keeps its own accent. The role word is set in site black. */
 .home-role-accent {
     --home-role-band: calc((462.5 - var(--home-headline-inset) - var(--home-frame-rule)) * var(--u));
     position: relative;
     display: inline-block;
-    color: var(--home-accent);
+    color: var(--body-text);
 }
 
 /* Stretch the hover target across the role column so the extended
