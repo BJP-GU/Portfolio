@@ -3055,6 +3055,13 @@ iframe.lazy-iframe.iframe-ready {
     margin: 0;
 }
 
+/* Portrait clips would run taller than the viewport at half the column, so
+   the pair sits at a fixed width against the column's left edge. */
+.case-section-video-row {
+    grid-template-columns: repeat(2, minmax(0, 310px));
+    justify-content: start;
+}
+
 /* Caption text under embedded videos/images inside case sections */
 .case-section-caption {
     font-family: var(--font-body);
@@ -4372,6 +4379,10 @@ iframe.lazy-iframe.iframe-ready {
     .case-section-image-row {
         grid-template-columns: 1fr;
         gap: var(--space-sm);
+    }
+
+    .case-section-video-row {
+        grid-template-columns: minmax(0, 280px);
     }
 }
 
