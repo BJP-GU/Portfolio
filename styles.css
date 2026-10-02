@@ -3062,9 +3062,9 @@ iframe.lazy-iframe.iframe-ready {
     justify-content: start;
 }
 
-/* Single landscape clip — same width cap as the portrait pair above */
+/* Landscape clip spans the portrait pair (two columns + row gap), left-aligned */
 .case-section-video-single {
-    max-width: 310px;
+    max-width: calc(310px * 2 + var(--space-md));
     margin: var(--space-md) 0;
 }
 
