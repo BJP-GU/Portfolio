@@ -3033,7 +3033,8 @@ iframe.lazy-iframe.iframe-ready {
     background-color: var(--bg-color);
 }
 
-.case-section-image img {
+.case-section-image img,
+.case-section-image video {
     width: 100%;
     height: auto;
     display: block;
@@ -3052,6 +3053,23 @@ iframe.lazy-iframe.iframe-ready {
 .case-section-image-row .case-section-image,
 .case-section-image-row .case-section-image img {
     margin: 0;
+}
+
+/* Portrait clips would run taller than the viewport at half the column, so
+   the pair sits at a fixed width against the column's left edge. */
+.case-section-video-row {
+    grid-template-columns: repeat(2, minmax(0, 310px));
+    justify-content: start;
+}
+
+/* Landscape clip spans the portrait pair (two columns + row gap), left-aligned */
+.case-section-video-single {
+    max-width: calc(310px * 2 + var(--space-md));
+    margin: var(--space-md) 0;
+}
+
+.case-section-video-single .case-section-image {
+    margin-top: 0;
 }
 
 /* Caption text under embedded videos/images inside case sections */
@@ -4371,6 +4389,14 @@ iframe.lazy-iframe.iframe-ready {
     .case-section-image-row {
         grid-template-columns: 1fr;
         gap: var(--space-sm);
+    }
+
+    .case-section-video-row {
+        grid-template-columns: minmax(0, 280px);
+    }
+
+    .case-section-video-single {
+        max-width: 280px;
     }
 }
 

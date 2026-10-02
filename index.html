@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=anchor-quotes-1">
+    <link rel="stylesheet" href="styles.css?v=anchor-videos-5">
     <link rel="stylesheet" href="home.css?v=p-hover-grow-1">
 </head>
 <body>
@@ -2964,9 +2964,31 @@
                                         <section class="case-section">
                                             <header class="case-section-header">
                                                 <p class="case-section-eyebrow">Prototyping</p>
-                                                <h2 class="case-section-title">Placeholder headline</h2>
+                                                <h2 class="case-section-title">BLV users prefer ambient spatial audio over tactile directions for wayfinding</h2>
                                             </header>
                                             <div class="case-section-content">
+                                                <h4>Experimenting with tactile &amp; spatial audio wayfinding methods</h4>
+                                                <div class="case-section-image-row case-section-video-row">
+                                                    <div>
+                                                        <div class="case-section-image">
+                                                            <video class="case-video" src="Anchor/spatial-audio-experiment.mp4?v=1" poster="Anchor/spatial-audio-experiment-poster.jpg?v=1" width="720" height="1280" muted loop playsinline preload="none" aria-label="Ambient spatial audio guides the user"></video>
+                                                        </div>
+                                                        <p class="case-section-caption">Ambient spatial audio guides the user</p>
+                                                    </div>
+                                                    <div>
+                                                        <div class="case-section-image">
+                                                            <video class="case-video" src="Anchor/tactile-wayfinding-experiment.mp4?v=1" poster="Anchor/tactile-wayfinding-experiment-poster.jpg?v=1" width="720" height="1280" muted loop playsinline preload="none" aria-label="Directions are communicated by tactile perception"></video>
+                                                        </div>
+                                                        <p class="case-section-caption">Directions are communicated by tactile perception</p>
+                                                    </div>
+                                                </div>
+                                                <h4>A/B testing spatial audio sound designs in VR</h4>
+                                                <div class="case-section-video-single">
+                                                    <div class="case-section-image">
+                                                        <video class="case-video case-video--audio" src="Anchor/vr-spatial-audio-exploration.mp4?v=1" poster="Anchor/vr-spatial-audio-exploration-poster.jpg?v=1" width="1280" height="720" controls playsinline preload="none" aria-label="We prototyped a spatial audio environment in Unity and tested two guidance modes with BLV users at the Lighthouse, using a VR headset for head-tracked audio."></video>
+                                                    </div>
+                                                    <p class="case-section-caption">We prototyped a spatial audio environment in Unity and tested two guidance modes with BLV users at the Lighthouse, using a VR headset for head-tracked audio.</p>
+                                                </div>
                                             </div>
                                         </section>
 
@@ -5817,6 +5839,35 @@
                 document.documentElement.classList.remove('intro-running');
             }
         });
+    </script>
+    <script>
+        // Case-study clips: silent loops autoplay in view; clips with meaningful
+        // audio keep controls and play only when the visitor starts them. With
+        // reduced motion, every clip stays on the poster with controls.
+        (function () {
+            var videos = [].slice.call(document.querySelectorAll('video.case-video'));
+            if (!videos.length) return;
+            var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reduced || !('IntersectionObserver' in window)) {
+                videos.forEach(function (v) { v.controls = true; });
+                return;
+            }
+            var autoplayVideos = videos.filter(function (v) {
+                return !v.classList.contains('case-video--audio');
+            });
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    var v = entry.target;
+                    if (entry.isIntersecting) {
+                        var p = v.play();
+                        if (p && p.catch) p.catch(function () { v.controls = true; });
+                    } else if (!v.paused) {
+                        v.pause();
+                    }
+                });
+            }, { threshold: 0.25 });
+            autoplayVideos.forEach(function (v) { io.observe(v); });
+        })();
     </script>
 </body>
 </html>
