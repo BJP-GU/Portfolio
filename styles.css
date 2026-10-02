@@ -9314,9 +9314,9 @@ iframe.lazy-iframe.iframe-ready {
    ========================================================================== */
 
 .anchor-solution-fit {
-    --anchor-solution-design-width: 1886px;
+    --anchor-solution-design-width: 1924px;
     --anchor-solution-design-height: 1736px;
-    --anchor-solution-scale: min(1, calc(100cqw / 1886px));
+    --anchor-solution-scale: min(1, calc(100cqw / 1924px));
     container-type: inline-size;
     width: 100%;
     overflow-x: auto;
@@ -9348,7 +9348,7 @@ iframe.lazy-iframe.iframe-ready {
 
 .anchor-solution-model__diagram {
     display: block;
-    width: 1886px;
+    width: 1924px;
     height: 1736px;
     max-width: none !important;
     margin: 0 !important;
@@ -9362,18 +9362,18 @@ iframe.lazy-iframe.iframe-ready {
     z-index: 2;
     border-radius: 4px;
     overflow: hidden;
-    background: #000;
+    background: transparent;
 }
 
 .anchor-solution-model__media--fig3 {
-    left: 501px;
+    left: 538px;
     top: 1427.5px;
     width: 515.556px;
     height: 290px;
 }
 
 .anchor-solution-model__media--fig4 {
-    left: 1138px;
+    left: 1175px;
     top: 1428px;
     width: 515.556px;
     height: 290px;
