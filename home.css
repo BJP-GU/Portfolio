@@ -31,10 +31,10 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 41px logo with an 18px inset above and below. Scroll offsets and the
-       sticky work sidebar both read this, so the header can only be resized
-       in one place. */
-    --header-h: 77px;
+    /* 61.5px logo (1.5× the original 41px) with an 18px inset above and below.
+       Scroll offsets and the sticky work sidebar both read this, so the header
+       can only be resized in one place. */
+    --header-h: 97.5px;
 }
 
 body {
@@ -92,8 +92,8 @@ body {
 .site-logo__mark,
 .site-logo__p {
     display: block;
-    width: 41px;
-    height: 41px;
+    width: 61.5px;
+    height: 61.5px;
 }
 
 /* ==========================================================================
@@ -1150,7 +1150,7 @@ body {
 @media (max-width: 720px) {
     :root {
         --site-gutter: 12px;
-        --header-h: 65px;
+        --header-h: 97.5px;
         --acc-gap: 12px;
     }
 
@@ -1160,8 +1160,8 @@ body {
 
     .site-logo__mark,
     .site-logo__p {
-        width: 41px;
-        height: 41px;
+        width: 61.5px;
+        height: 61.5px;
     }
 
     .site-wrapper > .home-hero {
