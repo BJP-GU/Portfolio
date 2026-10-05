@@ -851,7 +851,7 @@ body {
 /* The dot grid uses --home-accent, scoped to the canvas so the rest of the
    shell keeps its own accent. The role word is set in site black. */
 .home-role-accent {
-    --home-role-band: calc((462.5 - var(--home-headline-inset) - var(--home-frame-rule)) * var(--u));
+    --home-role-band: calc((462.5 - var(--home-frame-rule)) * var(--u));
     position: relative;
     display: inline-block;
     color: var(--body-text);
@@ -874,11 +874,11 @@ body {
 }
 
 /* Desktop: swap Product → Interaction on hover (Figma 1023:1175).
-   Band runs from the inner vertical stroke to the role's right inset;
-   the label stays end-aligned inside it. */
+   Band runs from the inner vertical stroke to the home frame's right edge;
+   the label stays end-aligned inside it (inset matches the headline). */
 .home-role-accent__alt {
     position: absolute;
-    right: 0;
+    right: calc(-1 * var(--home-headline-inset) * var(--u));
     top: 0;
     z-index: 1;
     display: flex;
