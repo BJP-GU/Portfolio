@@ -31,10 +31,10 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 61.5px logo (1.5× the original 41px) with an 18px inset above and below.
+    /* 76.875px logo (1.875× the original 41px) with an 18px inset above and below.
        Scroll offsets and the sticky work sidebar both read this, so the header
        can only be resized in one place. */
-    --header-h: 97.5px;
+    --header-h: 112.875px;
 }
 
 body {
@@ -92,8 +92,8 @@ body {
 .site-logo__mark,
 .site-logo__p {
     display: block;
-    width: 61.5px;
-    height: 61.5px;
+    width: 76.875px;
+    height: 76.875px;
 }
 
 /* ==========================================================================
@@ -1150,7 +1150,7 @@ body {
 @media (max-width: 720px) {
     :root {
         --site-gutter: 12px;
-        --header-h: 97.5px;
+        --header-h: 112.875px;
         --acc-gap: 12px;
     }
 
@@ -1160,8 +1160,8 @@ body {
 
     .site-logo__mark,
     .site-logo__p {
-        width: 61.5px;
-        height: 61.5px;
+        width: 76.875px;
+        height: 76.875px;
     }
 
     .site-wrapper > .home-hero {
