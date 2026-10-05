@@ -12,7 +12,7 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=resume-no-bottom-rule">
+    <link rel="stylesheet" href="styles.css?v=case-caption-12px">
     <link rel="stylesheet" href="home.css?v=reserved-next-up-tooltip">
 </head>
 <body>
@@ -3924,6 +3924,7 @@
                 try {
                     accordion.classList.add('is-intro');
                     accordion.appendChild(fillerRows(FILLER_ROWS, rows.length + 1));
+                    bindReservedRowTooltips(accordion);
                     docEl.classList.add('intro-running');
 
                     // Park on the last row of the index rather than the true

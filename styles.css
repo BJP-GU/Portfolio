@@ -27,6 +27,7 @@
     --case-text-body: #707072;
     --case-text-label: #969696;
     --case-text-caption: #C2C2C2;
+    --case-caption-size: 12px;
     
     /* ===========================================
        TYPOGRAPHY SYSTEM - Perfect Fourth (1.333)
@@ -3074,7 +3075,7 @@ iframe.lazy-iframe.iframe-ready {
 /* Caption text under embedded videos/images inside case sections */
 .case-section-caption {
     font-family: var(--font-body);
-    font-size: var(--text-sm);
+    font-size: var(--case-caption-size);
     line-height: var(--leading-normal);
     color: var(--case-text-caption);
     font-style: normal;
@@ -6557,7 +6558,7 @@ iframe.lazy-iframe.iframe-ready {
 .glean-agents-deck__caption {
     margin: 0;
     font-family: var(--font-body);
-    font-size: var(--text-sm);
+    font-size: var(--case-caption-size);
     line-height: var(--leading-normal);
     color: var(--case-text-caption, #727272);
     letter-spacing: -0.125px;
