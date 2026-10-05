@@ -301,6 +301,7 @@ body {
 .accordion > .acc-panel:nth-child(7) { --acc-stack: 6; }
 .accordion > .acc-panel:nth-child(8) { --acc-stack: 7; }
 .accordion > .acc-panel:nth-child(9) { --acc-stack: 8; }
+.accordion > .acc-panel:nth-child(10) { --acc-stack: 9; }
 
 /* Invisible height used only while opening a lower row so it can scroll under
    the site header before its body has expanded. */
@@ -608,8 +609,8 @@ body {
     opacity: 1;
 }
 
-/* Row #8 is reserved and does not open. Nothing opens, so nothing offers
-   to: it takes no plus. */
+/* Reserved rows (#8–#10, etc.) do not open. Nothing opens, so nothing offers
+   to: they take no plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
     color: rgba(0, 0, 0, 0.35);
