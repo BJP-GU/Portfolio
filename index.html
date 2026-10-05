@@ -13,7 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="styles.css?v=anchor-solution-2">
-    <link rel="stylesheet" href="home.css?v=logo-home-tooltip">
+    <link rel="stylesheet" href="home.css?v=logo-home-tooltip-cursor">
 </head>
 <body>
     <noscript>
@@ -3714,6 +3714,36 @@
             // closes any open panel and returns to the top.
             var homeLogo = document.getElementById('home-logo');
             if (homeLogo) {
+                var logoTooltip = homeLogo.querySelector('.site-logo__tooltip');
+                if (logoTooltip) {
+                    var tooltipOffsetX = 12;
+
+                    function placeLogoTooltip(clientX, clientY) {
+                        logoTooltip.style.left = clientX + 'px';
+                        logoTooltip.style.top = clientY + 'px';
+                        logoTooltip.style.transform = 'translate(' + tooltipOffsetX + 'px, -50%)';
+                    }
+
+                    homeLogo.addEventListener('mouseenter', function(e) {
+                        homeLogo.classList.add('is-tooltip-visible');
+                        placeLogoTooltip(e.clientX, e.clientY);
+                    });
+                    homeLogo.addEventListener('mousemove', function(e) {
+                        placeLogoTooltip(e.clientX, e.clientY);
+                    });
+                    homeLogo.addEventListener('mouseleave', function() {
+                        homeLogo.classList.remove('is-tooltip-visible');
+                    });
+                    homeLogo.addEventListener('focus', function() {
+                        homeLogo.classList.add('is-tooltip-visible');
+                        var rect = homeLogo.getBoundingClientRect();
+                        placeLogoTooltip(rect.right, rect.top + rect.height / 2);
+                    });
+                    homeLogo.addEventListener('blur', function() {
+                        homeLogo.classList.remove('is-tooltip-visible');
+                    });
+                }
+
                 homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
                     if (introPlaying) return;

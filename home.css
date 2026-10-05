@@ -95,11 +95,10 @@ body {
 }
 
 .site-logo__tooltip {
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 8px);
-    transform: translateX(-50%);
-    z-index: 4;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 200;
     padding: 4px 8px;
     border: 1px solid #1A1A1A;
     border-radius: var(--home-radius);
@@ -116,8 +115,7 @@ body {
     transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-.site-logo:hover .site-logo__tooltip,
-.site-logo:focus-visible .site-logo__tooltip {
+.site-logo.is-tooltip-visible .site-logo__tooltip {
     opacity: 1;
     visibility: visible;
 }
@@ -709,6 +707,11 @@ body {
 
     /* The body snaps open here, so the mark snaps over with it. */
     .acc-header::after {
+        transition: none;
+    }
+
+    .site-logo__mark,
+    .site-logo__tooltip {
         transition: none;
     }
 }
