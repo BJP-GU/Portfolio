@@ -116,6 +116,13 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Abbreviations — small caps for legibility (YC, UX, AI, etc.) */
+abbr {
+    font-variant: small-caps;
+    text-decoration: none;
+    cursor: inherit;
+}
+
 /* Global link styles - inherit text color and underline */
 a,
 a:link,
