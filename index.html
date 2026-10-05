@@ -13,7 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="styles.css?v=resume-no-bottom-rule">
-    <link rel="stylesheet" href="home.css?v=p-globe-size-125-tooltip">
+    <link rel="stylesheet" href="home.css?v=reserved-next-up-tooltip">
 </head>
 <body>
     <noscript>
@@ -3201,6 +3201,47 @@
             var panels = accordion ? [].slice.call(accordion.querySelectorAll('.acc-panel[data-panel]')) : [];
             var DURATION = 600;
 
+            var reservedNextTooltip = null;
+
+            function placeCursorTooltip(tooltip, clientX, clientY, offsetX) {
+                tooltip.style.left = clientX + 'px';
+                tooltip.style.top = clientY + 'px';
+                tooltip.style.transform = 'translate(' + offsetX + 'px, -50%)';
+            }
+
+            function ensureReservedNextTooltip() {
+                if (reservedNextTooltip) return reservedNextTooltip;
+                reservedNextTooltip = document.createElement('span');
+                reservedNextTooltip.className = 'acc-next-tooltip';
+                reservedNextTooltip.textContent = 'Next up';
+                document.body.appendChild(reservedNextTooltip);
+                return reservedNextTooltip;
+            }
+
+            function bindReservedRowTooltips(root) {
+                if (!root) return;
+                var tooltip = ensureReservedNextTooltip();
+                var offsetX = 12;
+                var headers = root.querySelectorAll('.acc-panel[data-reserved] .acc-header');
+                for (var i = 0; i < headers.length; i++) {
+                    var header = headers[i];
+                    if (header.dataset.nextTooltipBound) continue;
+                    header.dataset.nextTooltipBound = '1';
+                    header.addEventListener('mouseenter', function(e) {
+                        tooltip.classList.add('is-visible');
+                        placeCursorTooltip(tooltip, e.clientX, e.clientY, offsetX);
+                    });
+                    header.addEventListener('mousemove', function(e) {
+                        placeCursorTooltip(tooltip, e.clientX, e.clientY, offsetX);
+                    });
+                    header.addEventListener('mouseleave', function() {
+                        tooltip.classList.remove('is-visible');
+                    });
+                }
+            }
+
+            bindReservedRowTooltips(accordion);
+
             function prefersReducedMotion() {
                 try {
                     return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -3718,18 +3759,12 @@
                 if (logoTooltip) {
                     var tooltipOffsetX = 12;
 
-                    function placeLogoTooltip(clientX, clientY) {
-                        logoTooltip.style.left = clientX + 'px';
-                        logoTooltip.style.top = clientY + 'px';
-                        logoTooltip.style.transform = 'translate(' + tooltipOffsetX + 'px, -50%)';
-                    }
-
                     homeLogo.addEventListener('mouseenter', function(e) {
                         homeLogo.classList.add('is-tooltip-visible');
-                        placeLogoTooltip(e.clientX, e.clientY);
+                        placeCursorTooltip(logoTooltip, e.clientX, e.clientY, tooltipOffsetX);
                     });
                     homeLogo.addEventListener('mousemove', function(e) {
-                        placeLogoTooltip(e.clientX, e.clientY);
+                        placeCursorTooltip(logoTooltip, e.clientX, e.clientY, tooltipOffsetX);
                     });
                     homeLogo.addEventListener('mouseleave', function() {
                         homeLogo.classList.remove('is-tooltip-visible');
@@ -3737,7 +3772,7 @@
                     homeLogo.addEventListener('focus', function() {
                         homeLogo.classList.add('is-tooltip-visible');
                         var rect = homeLogo.getBoundingClientRect();
-                        placeLogoTooltip(rect.right, rect.top + rect.height / 2);
+                        placeCursorTooltip(logoTooltip, rect.right, rect.top + rect.height / 2, tooltipOffsetX);
                     });
                     homeLogo.addEventListener('blur', function() {
                         homeLogo.classList.remove('is-tooltip-visible');

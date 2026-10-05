@@ -94,7 +94,8 @@ body {
     outline-offset: 4px;
 }
 
-.site-logo__tooltip {
+.site-logo__tooltip,
+.acc-next-tooltip {
     position: fixed;
     left: 0;
     top: 0;
@@ -115,7 +116,8 @@ body {
     transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-.site-logo.is-tooltip-visible .site-logo__tooltip {
+.site-logo.is-tooltip-visible .site-logo__tooltip,
+.acc-next-tooltip.is-visible {
     opacity: 1;
     visibility: visible;
 }
@@ -711,7 +713,8 @@ body {
     }
 
     .site-logo__mark,
-    .site-logo__tooltip {
+    .site-logo__tooltip,
+    .acc-next-tooltip {
         transition: none;
     }
 }
