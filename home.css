@@ -1145,34 +1145,30 @@ body {
 }
 
 /* ==========================================================================
-   FOOTER
-   Restyled from the standalone blue block into a row that matches the stack.
+   FOOTER — link columns + Parsons wordmark at the bottom of the page.
    ========================================================================== */
 
 .site-footer {
     width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
-    margin: 0 auto calc(var(--acc-gap) * 4);
-    padding: 28px 20px;
-    border: 1px solid var(--home-rule);
-    border-radius: var(--home-radius);
+    margin: clamp(32px, 6vw, 64px) auto 0;
+    padding: clamp(40px, 6vw, 72px) 20px clamp(12px, 2vw, 20px);
+    border: none;
+    border-radius: 0;
     background-color: var(--home-bg);
     color: #1A1A1A;
     z-index: auto;
 }
 
-.site-footer .footer-label,
-.site-footer .footer-text,
-.site-footer .footer-link {
+.site-footer .footer-link,
+.site-footer .footer-text {
     font-family: var(--home-font);
-    font-size: var(--acc-text);
+    font-size: clamp(0.8125rem, 0.75rem + 0.25vw, 0.9375rem);
     line-height: 1.6;
     color: #1A1A1A;
 }
 
-.site-footer .footer-label {
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.45);
-    margin-bottom: 6px;
+.site-footer .footer-brand__text {
+    font-family: var(--home-font);
 }
 
 .double-line-divider {

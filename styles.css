@@ -778,25 +778,8 @@ nav.main-grid .grid-cell {
         --summary-label-col: min(8.5rem, 34%);
     }
 
-    /* Footer - Tablet */
-    .footer-content {
-        flex-direction: column;
-        gap: var(--space-sm);
-        align-items: flex-start;
-    }
-    
-    .footer-section {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: var(--space-xs);
-        width: 100%;
-    }
-    
-    .footer-label,
-    .footer-text,
-    .footer-link {
-        font-size: 13px;
+    .footer-nav {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -2344,72 +2327,72 @@ nav.main-grid .grid-cell {
 
 /* Footer */
 .site-footer {
-    background-color: var(--primary-text);
-    color: #ffffff;
-    padding: 64px var(--outer-col-padding-left);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(48px, 10vw, 120px);
+    background-color: var(--bg-color);
+    color: var(--body-text);
+    padding: clamp(40px, 6vw, 72px) var(--outer-col-padding-left) clamp(16px, 2.5vw, 28px);
     position: relative;
-    z-index: 1001;
+    z-index: 1;
 }
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0;
+.footer-nav {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 4vw, 48px);
+    align-items: start;
+    width: 100%;
 }
 
-.footer-section {
+.footer-nav__col {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    flex: 1;
+    align-items: flex-start;
+    gap: clamp(6px, 1vw, 10px);
     min-width: 0;
-    align-items: flex-start;
-}
-
-.footer-label {
-    font-family: var(--font-display);
-    font-weight: var(--font-normal);
-    font-size: 10pt;
-    letter-spacing: var(--tracking-normal);
-    text-transform: none;
-    white-space: nowrap;
-    color: #ffffff;
-    margin-bottom: 0;
-    opacity: 0.7;
-}
-
-.footer-links {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 8px;
 }
 
 .footer-text {
     font-family: var(--font-body);
-    font-size: 16px;
-    color: #ffffff;
+    font-size: clamp(0.9375rem, 0.875rem + 0.25vw, 1rem);
+    color: var(--body-text);
     line-height: var(--leading-normal);
-    margin-top: 8px;
+    margin: 0;
 }
 
 .footer-link {
     font-family: var(--font-body);
-    font-size: 16px;
-    color: #ffffff;
+    font-size: clamp(0.9375rem, 0.875rem + 0.25vw, 1rem);
+    font-weight: var(--font-medium);
+    color: var(--body-text);
     text-decoration: none !important;
     transition: opacity 0.2s ease;
-    white-space: nowrap;
     line-height: var(--leading-normal);
 }
 
-.footer-section > .footer-link {
-    margin-top: 8px;
+.footer-link:hover {
+    opacity: 0.65;
 }
 
-.footer-link:hover {
-    opacity: 0.8;
+.footer-brand {
+    display: block;
+    width: 100%;
+    margin-top: auto;
+    text-decoration: none !important;
+    color: var(--body-text);
+    line-height: 0.82;
+}
+
+.footer-brand__text {
+    display: block;
+    width: 100%;
+    font-family: var(--font-display);
+    font-weight: var(--font-bold);
+    font-size: clamp(3.25rem, 16.5vw, 11.5rem);
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: inherit;
 }
 
 /* Additional responsive adjustments */
@@ -5235,45 +5218,18 @@ iframe.lazy-iframe.iframe-ready {
     
     /* Footer - Mobile */
     .site-footer {
-        padding: 64px var(--space-md);
+        gap: 40px;
+        padding: 40px var(--space-md) 20px;
     }
-    
-    .footer-content {
-        flex-direction: column;
-        gap: var(--space-md);
-        align-items: flex-start;
+
+    .footer-nav {
+        grid-template-columns: 1fr;
+        gap: 24px;
     }
-    
-    .footer-section {
-        flex-direction: column;
-        gap: 0;
-        align-items: flex-start;
-        width: 100%;
-    }
-    
-    .footer-label {
-        font-size: 10pt;
-        font-weight: var(--font-normal);
-        opacity: 0.7;
-    }
-    
-    .footer-links {
-        margin-top: 8px;
-        gap: 8px;
-    }
-    
-    .footer-text {
-        font-size: 16px;
-        line-height: var(--leading-normal);
-        margin-top: 8px;
-    }
-    
-    .footer-link {
-        font-size: 16px;
-    }
-    
-    .footer-section > .footer-link {
-        margin-top: 8px;
+
+    .footer-brand__text {
+        font-size: clamp(2.75rem, 22vw, 4.5rem);
+        letter-spacing: -0.03em;
     }
     
     /* Double line divider - simpler on mobile */
