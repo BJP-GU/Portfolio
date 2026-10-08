@@ -2385,7 +2385,9 @@ nav.main-grid .grid-cell {
 }
 
 .footer-brand__text {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     width: 100%;
     font-family: var(--font-display);
     font-weight: var(--font-bold);
@@ -2393,7 +2395,11 @@ nav.main-grid .grid-cell {
     letter-spacing: 0;
     text-transform: uppercase;
     color: inherit;
-    white-space: nowrap;
+}
+
+.footer-brand__glyph {
+    flex: 0 0 auto;
+    line-height: 0.82;
 }
 
 /* Additional responsive adjustments */

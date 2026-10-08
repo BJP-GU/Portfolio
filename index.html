@@ -3198,7 +3198,15 @@
                 </div>
             </nav>
             <a class="footer-brand" href="#home" id="footer-home" aria-label="Parsons — back to home">
-                <span class="footer-brand__text">Parsons</span>
+                <span class="footer-brand__text" aria-hidden="true">
+                    <span class="footer-brand__glyph">P</span>
+                    <span class="footer-brand__glyph">A</span>
+                    <span class="footer-brand__glyph">R</span>
+                    <span class="footer-brand__glyph">S</span>
+                    <span class="footer-brand__glyph">O</span>
+                    <span class="footer-brand__glyph">N</span>
+                    <span class="footer-brand__glyph">S</span>
+                </span>
             </a>
         </footer>
     </div>
@@ -5963,30 +5971,6 @@
                 });
             })();
 
-            (function bindFooterBrandKerning() {
-                function fitFooterBrandKerning() {
-                    var wordmarks = document.querySelectorAll('.footer-brand__text');
-                    for (var i = 0; i < wordmarks.length; i++) {
-                        var el = wordmarks[i];
-                        var row = el.parentElement;
-                        if (!row) continue;
-                        var targetWidth = row.clientWidth;
-                        el.style.letterSpacing = '0px';
-                        var chars = (el.textContent || '').replace(/\s+/g, '').length;
-                        if (chars < 2 || targetWidth <= 0) continue;
-                        var naturalWidth = el.scrollWidth;
-                        var extra = targetWidth - naturalWidth;
-                        if (extra > 0) {
-                            el.style.letterSpacing = (extra / (chars - 1)) + 'px';
-                        }
-                    }
-                }
-                fitFooterBrandKerning();
-                window.addEventListener('resize', fitFooterBrandKerning);
-                if (document.fonts && document.fonts.ready) {
-                    document.fonts.ready.then(fitFooterBrandKerning).catch(function () {});
-                }
-            })();
             } catch (e) {
                 // Catch any errors in the main DOMContentLoaded handler
                 console.warn('DOMContentLoaded error:', e);
