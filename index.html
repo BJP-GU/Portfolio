@@ -12,7 +12,7 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=footer-parsons-wordmark">
+    <link rel="stylesheet" href="styles.css?v=footer-parsons-kerning">
     <link rel="stylesheet" href="home.css?v=footer-parsons-wordmark">
 </head>
 <body>
@@ -5961,6 +5961,31 @@
                     live = false;
                     schedule();
                 });
+            })();
+
+            (function bindFooterBrandKerning() {
+                function fitFooterBrandKerning() {
+                    var wordmarks = document.querySelectorAll('.footer-brand__text');
+                    for (var i = 0; i < wordmarks.length; i++) {
+                        var el = wordmarks[i];
+                        var row = el.parentElement;
+                        if (!row) continue;
+                        var targetWidth = row.clientWidth;
+                        el.style.letterSpacing = '0px';
+                        var chars = (el.textContent || '').replace(/\s+/g, '').length;
+                        if (chars < 2 || targetWidth <= 0) continue;
+                        var naturalWidth = el.scrollWidth;
+                        var extra = targetWidth - naturalWidth;
+                        if (extra > 0) {
+                            el.style.letterSpacing = (extra / (chars - 1)) + 'px';
+                        }
+                    }
+                }
+                fitFooterBrandKerning();
+                window.addEventListener('resize', fitFooterBrandKerning);
+                if (document.fonts && document.fonts.ready) {
+                    document.fonts.ready.then(fitFooterBrandKerning).catch(function () {});
+                }
             })();
             } catch (e) {
                 // Catch any errors in the main DOMContentLoaded handler

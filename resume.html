@@ -6,7 +6,7 @@
     <title>Resume - Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=footer-parsons-wordmark">
+    <link rel="stylesheet" href="styles.css?v=footer-parsons-kerning">
 </head>
 <body class="resume-page">
     <div class="site-wrapper">
@@ -193,6 +193,26 @@
             const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
             const navLinksContainer = document.getElementById('nav-links');
             
+            function fitFooterBrandKerning() {
+                document.querySelectorAll('.footer-brand__text').forEach(function (el) {
+                    var row = el.parentElement;
+                    if (!row) return;
+                    var targetWidth = row.clientWidth;
+                    el.style.letterSpacing = '0px';
+                    var chars = (el.textContent || '').replace(/\s+/g, '').length;
+                    if (chars < 2 || targetWidth <= 0) return;
+                    var extra = targetWidth - el.scrollWidth;
+                    if (extra > 0) {
+                        el.style.letterSpacing = (extra / (chars - 1)) + 'px';
+                    }
+                });
+            }
+            fitFooterBrandKerning();
+            window.addEventListener('resize', fitFooterBrandKerning);
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(fitFooterBrandKerning).catch(function () {});
+            }
+
             if (mobileMenuToggle && navLinksContainer) {
                 mobileMenuToggle.addEventListener('click', function() {
                     this.classList.toggle('active');

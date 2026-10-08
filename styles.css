@@ -2390,9 +2390,10 @@ nav.main-grid .grid-cell {
     font-family: var(--font-display);
     font-weight: var(--font-bold);
     font-size: clamp(3.25rem, 16.5vw, 11.5rem);
-    letter-spacing: -0.04em;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: inherit;
+    white-space: nowrap;
 }
 
 /* Additional responsive adjustments */
@@ -5229,7 +5230,6 @@ iframe.lazy-iframe.iframe-ready {
 
     .footer-brand__text {
         font-size: clamp(2.75rem, 22vw, 4.5rem);
-        letter-spacing: -0.03em;
     }
     
     /* Double line divider - simpler on mobile */
