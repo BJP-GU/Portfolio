@@ -2380,7 +2380,7 @@ nav.main-grid .grid-cell {
     width: 100%;
     margin-top: auto;
     text-decoration: none !important;
-    color: var(--body-text);
+    color: var(--primary-text);
     line-height: 0.82;
 }
 

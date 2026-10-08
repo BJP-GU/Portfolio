@@ -1167,6 +1167,12 @@ body {
     color: #1A1A1A;
 }
 
+.site-footer .footer-brand,
+.site-footer .footer-brand__text,
+.site-footer .footer-brand__glyph {
+    color: var(--primary-text);
+}
+
 .site-footer .footer-brand__text {
     font-family: var(--home-font);
 }
