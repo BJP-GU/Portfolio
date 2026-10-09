@@ -2963,7 +2963,7 @@ nav.main-grid .grid-cell {
 }
 
 .case-embed-link {
-    align-self: flex-end;
+    align-self: flex-start;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -2977,14 +2977,6 @@ nav.main-grid .grid-cell {
 
 .case-embed-link:hover {
     opacity: 0.7;
-}
-
-.case-embed--link-only {
-    margin: var(--space-md) 0;
-}
-
-.case-embed--link-only .case-embed-link {
-    align-self: flex-start;
 }
 
 /* Ensure responsive video containers are not truncated */
