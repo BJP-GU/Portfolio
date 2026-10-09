@@ -12,8 +12,8 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=case-caption-a8a8a8">
-    <link rel="stylesheet" href="home.css?v=interaction-hover-fill-right">
+    <link rel="stylesheet" href="styles.css?v=footer-parsons-kerning">
+    <link rel="stylesheet" href="home.css?v=footer-parsons-wordmark">
 </head>
 <body>
     <noscript>
@@ -3181,24 +3181,30 @@
 
         <!-- Footer -->
         <footer class="site-footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <span class="footer-label">/ connect</span>
-                    <div class="footer-links">
-                        <a href="https://www.linkedin.com/in/brycejparsons" target="_blank" class="footer-link">LinkedIn</a>
-                        <a href="https://github.com/BJP-GU" target="_blank" class="footer-link">Github</a>
-                        <a href="https://www.cosmos.so/bryceparsons" target="_blank" class="footer-link">Cosmos</a>
-                    </div>
+            <nav class="footer-nav" aria-label="Footer">
+                <div class="footer-nav__col">
+                    <a href="https://www.linkedin.com/in/brycejparsons" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a>
+                    <a href="https://github.com/BJP-GU" target="_blank" rel="noopener noreferrer" class="footer-link">Github</a>
+                    <a href="https://www.cosmos.so/bryceparsons" target="_blank" rel="noopener noreferrer" class="footer-link">Cosmos</a>
                 </div>
-                <div class="footer-section">
-                    <span class="footer-label">/ contact</span>
+                <div class="footer-nav__col">
                     <a href="mailto:bryceparsons@berkeley.edu" class="footer-link">bryceparsons@berkeley.edu</a>
                 </div>
-                <div class="footer-section">
-                    <span class="footer-label">/ this website</span>
+                <div class="footer-nav__col">
                     <span class="footer-text">Built by me using Cursor.</span>
                 </div>
-            </div>
+            </nav>
+            <a class="footer-brand" href="#home" id="footer-home" aria-label="Parsons — back to home">
+                <span class="footer-brand__text" aria-hidden="true">
+                    <span class="footer-brand__glyph">P</span>
+                    <span class="footer-brand__glyph">A</span>
+                    <span class="footer-brand__glyph">R</span>
+                    <span class="footer-brand__glyph">S</span>
+                    <span class="footer-brand__glyph">O</span>
+                    <span class="footer-brand__glyph">N</span>
+                    <span class="footer-brand__glyph">S</span>
+                </span>
+            </a>
         </footer>
     </div>
 
@@ -3745,6 +3751,7 @@
                 if (target.closest('.acc-panel[data-panel] .acc-header')) return;
                 if (target.closest('.acc-peek-next')) return;
                 if (target.closest('#home-logo')) return;
+                if (target.closest('#footer-home')) return;
 
                 closePanel(open);
             });
@@ -3768,6 +3775,27 @@
             // The logo replays the arrival reel, which ends on Home at the top
             // of the page. With reduced motion there is no reel, so it simply
             // closes any open panel and returns to the top.
+            function goHomeFromLogo(e) {
+                e.preventDefault();
+                if (introPlaying) return;
+                if (window.location.hash && history.replaceState) {
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
+                if (prefersReducedMotion()) {
+                    var open = getOpenPanel();
+                    if (open) collapse(open);
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                    return;
+                }
+                panels.forEach(collapseInstant);
+                clearTimeout(accordion._trimPadTimer);
+                var pad = accordion._landingPad;
+                if (pad && pad.parentNode) pad.parentNode.removeChild(pad);
+                accordion._landingPad = null;
+                document.documentElement.classList.add('intro-armed');
+                playIntro();
+            }
+
             var homeLogo = document.getElementById('home-logo');
             if (homeLogo) {
                 var logoTooltip = homeLogo.querySelector('.site-logo__tooltip');
@@ -3794,26 +3822,12 @@
                     });
                 }
 
-                homeLogo.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (introPlaying) return;
-                    if (window.location.hash && history.replaceState) {
-                        history.replaceState(null, '', window.location.pathname + window.location.search);
-                    }
-                    if (prefersReducedMotion()) {
-                        var open = getOpenPanel();
-                        if (open) collapse(open);
-                        window.scrollTo({ top: 0, behavior: 'auto' });
-                        return;
-                    }
-                    panels.forEach(collapseInstant);
-                    clearTimeout(accordion._trimPadTimer);
-                    var pad = accordion._landingPad;
-                    if (pad && pad.parentNode) pad.parentNode.removeChild(pad);
-                    accordion._landingPad = null;
-                    document.documentElement.classList.add('intro-armed');
-                    playIntro();
-                });
+                homeLogo.addEventListener('click', goHomeFromLogo);
+            }
+
+            var footerHome = document.getElementById('footer-home');
+            if (footerHome) {
+                footerHome.addEventListener('click', goHomeFromLogo);
             }
 
             // =============================================
