@@ -5143,6 +5143,10 @@ iframe.lazy-iframe.iframe-ready {
         margin-bottom: var(--space-lg);
     }
 
+    .doc-main > .doc-heading {
+        margin-bottom: 0;
+    }
+
     .doc-heading + .doc-entry {
         padding-top: var(--space-sm);
     }
