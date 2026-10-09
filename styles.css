@@ -2006,7 +2006,7 @@ nav.main-grid .grid-cell {
 }
 
 .resume-entry {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-sm);
 }
 
 .resume-entry:last-child {
@@ -2114,7 +2114,7 @@ nav.main-grid .grid-cell {
     font-size: var(--text-xs);
     font-weight: var(--font-normal);
     color: var(--body-text-muted);
-    margin: var(--space-sm) 0 4px 0;
+    margin: 0 0 4px 0;
 }
 
 .sidebar-subtitle:first-of-type {
@@ -2170,7 +2170,7 @@ nav.main-grid .grid-cell {
     display: grid;
     grid-template-columns: 20fr 48fr;
     align-content: start;
-    row-gap: var(--space-lg);
+    row-gap: var(--space-sm);
     padding: var(--space-lg) 0;
     min-width: 0;
 }
@@ -2192,12 +2192,6 @@ nav.main-grid .grid-cell {
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--body-text);
-}
-
-/* Pull the first job row up so the gap under Work Experience is tighter
-   than the row-gap between entries. */
-.doc-main > .doc-heading {
-    margin-bottom: calc(var(--space-sm) - var(--space-lg));
 }
 
 .doc-aside .doc-heading {
@@ -2291,7 +2285,7 @@ nav.main-grid .grid-cell {
 }
 
 .doc-aside-entry {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
 }
 
 .doc-aside-entry:last-child {
@@ -2311,11 +2305,7 @@ nav.main-grid .grid-cell {
     font-size: var(--text-xs);
     font-weight: var(--font-normal);
     color: var(--body-text-muted);
-    margin: var(--space-sm) 0 4px 0;
-}
-
-.doc-aside-label:first-of-type {
-    margin-top: 0;
+    margin: 0 0 4px 0;
 }
 
 .doc-aside-text {
@@ -5140,11 +5130,7 @@ iframe.lazy-iframe.iframe-ready {
     
     .doc-entry {
         display: block;
-        margin-bottom: var(--space-lg);
-    }
-
-    .doc-main > .doc-heading {
-        margin-bottom: 0;
+        margin-bottom: var(--space-sm);
     }
 
     .doc-heading + .doc-entry {
