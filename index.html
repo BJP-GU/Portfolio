@@ -13,7 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="styles.css?v=resume-section-rhythm">
-    <link rel="stylesheet" href="home.css?v=interaction-hover-fill-right">
+    <link rel="stylesheet" href="home.css?v=composer-hover-preview">
 </head>
 <body>
     <noscript>
@@ -3256,6 +3256,46 @@
             }
 
             bindReservedRowTooltips(accordion);
+
+            (function bindComposerCasePreview() {
+                var header = document.getElementById('header-glean-composer');
+                if (!header) return;
+                var preview = document.createElement('div');
+                preview.className = 'case-hover-preview';
+                preview.setAttribute('aria-hidden', 'true');
+                var img = document.createElement('img');
+                img.src = 'Glean/composer-case-preview.png';
+                img.alt = '';
+                img.draggable = false;
+                preview.appendChild(img);
+                document.body.appendChild(preview);
+
+                function place(clientX, clientY) {
+                    var gap = 16;
+                    var margin = 12;
+                    var w = preview.offsetWidth || 420;
+                    var h = preview.offsetHeight || 280;
+                    var x = clientX + gap;
+                    var y = clientY - h / 2;
+                    if (x + w > window.innerWidth - margin) x = clientX - gap - w;
+                    if (x < margin) x = margin;
+                    if (y < margin) y = margin;
+                    if (y + h > window.innerHeight - margin) y = Math.max(margin, window.innerHeight - margin - h);
+                    preview.style.left = x + 'px';
+                    preview.style.top = y + 'px';
+                }
+
+                header.addEventListener('mouseenter', function(e) {
+                    preview.classList.add('is-visible');
+                    place(e.clientX, e.clientY);
+                });
+                header.addEventListener('mousemove', function(e) {
+                    place(e.clientX, e.clientY);
+                });
+                header.addEventListener('mouseleave', function() {
+                    preview.classList.remove('is-visible');
+                });
+            })();
 
             function prefersReducedMotion() {
                 try {

@@ -122,6 +122,34 @@ body {
     visibility: visible;
 }
 
+/* Cursor-following case preview. Sits beside the pointer, not under it. */
+.case-hover-preview {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 220;
+    width: min(420px, 46vw);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.case-hover-preview.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.case-hover-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 .site-logo__mark,
 .site-logo__p {
     display: block;
