@@ -12,8 +12,8 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=resume-section-rhythm">
-    <link rel="stylesheet" href="home.css?v=interaction-hover-fill-right">
+    <link rel="stylesheet" href="styles.css?v=composer-hover-preview">
+    <link rel="stylesheet" href="home.css?v=composer-hover-preview">
 </head>
 <body>
     <noscript>
@@ -310,7 +310,7 @@
             <!-- ========================================
                  #2 GLEAN — Composer redesign
                  ======================================== -->
-            <section class="acc-panel" id="panel-glean-composer" data-panel="glean-composer">
+            <section class="acc-panel" id="panel-glean-composer" data-panel="glean-composer" data-hover-preview="Glean/Composer Current State Breakdown.png">
                 <h2 class="acc-title">
                     <button class="acc-header" type="button" id="header-glean-composer" aria-expanded="false" aria-controls="body-glean-composer">
                         <span class="acc-num" data-text="#2">#2</span>
@@ -3257,6 +3257,97 @@
 
             bindReservedRowTooltips(accordion);
 
+            var hoverPreview = null;
+
+            function canUseHoverPreview() {
+                try {
+                    return !!(window.matchMedia
+                        && window.matchMedia('(hover: hover)').matches
+                        && window.matchMedia('(pointer: fine)').matches);
+                } catch (e) {
+                    return true;
+                }
+            }
+
+            function ensureHoverPreview() {
+                if (hoverPreview) return hoverPreview;
+                hoverPreview = document.createElement('div');
+                hoverPreview.className = 'acc-hover-preview';
+                hoverPreview.setAttribute('aria-hidden', 'true');
+                hoverPreview.innerHTML = '<img alt="">';
+                document.body.appendChild(hoverPreview);
+                return hoverPreview;
+            }
+
+            function placeHoverPreview(node, clientX, clientY) {
+                var offset = 16;
+                var w = node.offsetWidth || 260;
+                var h = node.offsetHeight || 200;
+                var x = clientX + offset;
+                var y = clientY + offset;
+                if (x + w > window.innerWidth - 12) x = clientX - w - offset;
+                if (y + h > window.innerHeight - 12) y = window.innerHeight - h - 12;
+                if (x < 12) x = 12;
+                if (y < 12) y = 12;
+                node.style.left = x + 'px';
+                node.style.top = y + 'px';
+            }
+
+            function hideHoverPreview() {
+                if (hoverPreview) hoverPreview.classList.remove('is-visible');
+            }
+
+            function hoverPreviewSrcFor(header) {
+                if (!header || !canUseHoverPreview()) return '';
+                if (document.documentElement.classList.contains('intro-running')) return '';
+                if (accordion && accordion.classList.contains('is-intro')) return '';
+
+                var peekHost = header.closest('.acc-peek-next__row');
+                if (peekHost) {
+                    if (peekHost.hasAttribute('data-reserved')) return '';
+                    return peekHost.getAttribute('data-hover-preview') || '';
+                }
+
+                var panel = header.closest('.acc-panel');
+                if (!panel || panel.hasAttribute('data-reserved')) return '';
+                if (panel.classList.contains('is-open') || panel.classList.contains('is-expanding')) return '';
+                return panel.getAttribute('data-hover-preview') || '';
+            }
+
+            function showHoverPreview(src, clientX, clientY) {
+                var node = ensureHoverPreview();
+                var img = node.querySelector('img');
+                if (img && img.getAttribute('src') !== src) {
+                    img.src = src;
+                }
+                placeHoverPreview(node, clientX, clientY);
+                node.classList.add('is-visible');
+            }
+
+            function bindHoverPreview(header) {
+                if (!header || header.dataset.hoverPreviewBound) return;
+                header.dataset.hoverPreviewBound = '1';
+                header.addEventListener('mouseenter', function(e) {
+                    var src = hoverPreviewSrcFor(header);
+                    if (!src) {
+                        hideHoverPreview();
+                        return;
+                    }
+                    showHoverPreview(src, e.clientX, e.clientY);
+                });
+                header.addEventListener('mousemove', function(e) {
+                    var src = hoverPreviewSrcFor(header);
+                    if (!src) {
+                        hideHoverPreview();
+                        return;
+                    }
+                    showHoverPreview(src, e.clientX, e.clientY);
+                });
+                header.addEventListener('mouseleave', hideHoverPreview);
+            }
+
+            bindHoverPreview(document.getElementById('header-glean-composer'));
+
             function prefersReducedMotion() {
                 try {
                     return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -3496,6 +3587,7 @@
                 }
 
                 expand(target);
+                hideHoverPreview();
 
                 if (opts.scroll !== false) {
                     scheduleWorkNavUpdate();
@@ -3568,6 +3660,7 @@
                 wrap.appendChild(peekRoot);
                 peekRow = peekRoot.querySelector('.acc-peek-next__row');
                 peekHeader = peekRoot.querySelector('.acc-header');
+                bindHoverPreview(peekHeader);
 
                 peekRoot.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -3632,8 +3725,10 @@
                 }
 
                 var panelName = next.getAttribute('data-panel');
+                var previewSrc = next.getAttribute('data-hover-preview');
                 if (next.hasAttribute('data-reserved') || !panelName) {
                     peekRow.setAttribute('data-reserved', '');
+                    peekRow.removeAttribute('data-hover-preview');
                     peekRoot.removeAttribute('data-panel');
                     peekHeader.setAttribute('aria-disabled', 'true');
                     peekHeader.setAttribute('tabindex', '-1');
@@ -3642,6 +3737,8 @@
                     peekRoot.setAttribute('data-panel', panelName);
                     peekHeader.removeAttribute('aria-disabled');
                     peekHeader.removeAttribute('tabindex');
+                    if (previewSrc) peekRow.setAttribute('data-hover-preview', previewSrc);
+                    else peekRow.removeAttribute('data-hover-preview');
                 }
 
                 peekHeader.setAttribute('aria-label', (peekNum ? peekNum.textContent + ' ' : '') + (peekLabel ? peekLabel.textContent : '') + (peekCase && !peekCase.hidden ? ' ' + peekCase.textContent : ''));
@@ -3654,6 +3751,7 @@
                 if (accordion.classList.contains('is-intro')
                     || document.documentElement.classList.contains('intro-running')) {
                     peekRoot.hidden = true;
+                    hideHoverPreview();
                     return;
                 }
 
