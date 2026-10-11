@@ -3257,14 +3257,14 @@
 
             bindReservedRowTooltips(accordion);
 
-            (function bindComposerCasePreview() {
-                var header = document.getElementById('header-glean-composer');
+            function bindCaseHoverPreview(headerId, imageSrc) {
+                var header = document.getElementById(headerId);
                 if (!header) return;
                 var preview = document.createElement('div');
                 preview.className = 'case-hover-preview';
                 preview.setAttribute('aria-hidden', 'true');
                 var img = document.createElement('img');
-                img.src = 'Glean/composer-case-preview.png?v=hover-card';
+                img.src = imageSrc;
                 img.alt = '';
                 img.draggable = false;
                 preview.appendChild(img);
@@ -3295,7 +3295,10 @@
                 header.addEventListener('mouseleave', function() {
                     preview.classList.remove('is-visible');
                 });
-            })();
+            }
+
+            bindCaseHoverPreview('header-glean-composer', 'Glean/composer-case-preview.png?v=hover-card');
+            bindCaseHoverPreview('header-glean-agents', 'Glean/agents-case-preview.png?v=hover-card');
 
             function prefersReducedMotion() {
                 try {
