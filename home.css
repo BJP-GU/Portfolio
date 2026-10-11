@@ -31,10 +31,10 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 61.5px logo (1.5× the original 41px) with an 18px inset above and below.
+    /* 76.875px logo (1.875× the original 41px) with an 18px inset above and below.
        Scroll offsets and the sticky work sidebar both read this, so the header
        can only be resized in one place. */
-    --header-h: 97.5px;
+    --header-h: 112.875px;
 }
 
 body {
@@ -76,11 +76,16 @@ body {
     display: block;
     line-height: 0;
     text-decoration: none;
+}
+
+.site-logo__mark {
+    display: block;
     transition: transform 0.2s ease;
 }
 
-/* Same grow as the resume page's .home-button. */
-.site-logo:hover {
+/* Same grow as the resume page's .home-button; scale the mark only so the tooltip stays crisp. */
+.site-logo:hover .site-logo__mark,
+.site-logo:focus-visible .site-logo__mark {
     transform: scale(1.1);
 }
 
@@ -89,11 +94,67 @@ body {
     outline-offset: 4px;
 }
 
+.site-logo__tooltip,
+.acc-next-tooltip {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 200;
+    padding: 4px 8px;
+    border: 1px solid #1A1A1A;
+    border-radius: var(--home-radius);
+    background-color: var(--home-bg);
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #1A1A1A;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.site-logo.is-tooltip-visible .site-logo__tooltip,
+.acc-next-tooltip.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Cursor-following case preview. Sits beside the pointer, not under it. */
+.case-hover-preview {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 220;
+    width: min(420px, 46vw);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.case-hover-preview.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.case-hover-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 .site-logo__mark,
 .site-logo__p {
     display: block;
-    width: 61.5px;
-    height: 61.5px;
+    width: 76.875px;
+    height: 76.875px;
 }
 
 /* ==========================================================================
@@ -268,6 +329,7 @@ body {
 .accordion > .acc-panel:nth-child(7) { --acc-stack: 6; }
 .accordion > .acc-panel:nth-child(8) { --acc-stack: 7; }
 .accordion > .acc-panel:nth-child(9) { --acc-stack: 8; }
+.accordion > .acc-panel:nth-child(10) { --acc-stack: 9; }
 
 /* Invisible height used only while opening a lower row so it can scroll under
    the site header before its body has expanded. */
@@ -575,8 +637,8 @@ body {
     opacity: 1;
 }
 
-/* Row #8 is reserved and does not open. Nothing opens, so nothing offers
-   to: it takes no plus. */
+/* Reserved rows (#8–#10, etc.) do not open. Nothing opens, so nothing offers
+   to: they take no plus. */
 .acc-panel[data-reserved] .acc-header {
     cursor: default;
     color: rgba(0, 0, 0, 0.35);
@@ -676,6 +738,12 @@ body {
 
     /* The body snaps open here, so the mark snaps over with it. */
     .acc-header::after {
+        transition: none;
+    }
+
+    .site-logo__mark,
+    .site-logo__tooltip,
+    .acc-next-tooltip {
         transition: none;
     }
 }
@@ -811,7 +879,7 @@ body {
 /* The dot grid uses --home-accent, scoped to the canvas so the rest of the
    shell keeps its own accent. The role word is set in site black. */
 .home-role-accent {
-    --home-role-band: calc((462.5 - var(--home-headline-inset) - var(--home-frame-rule)) * var(--u));
+    --home-role-band: calc((462.5 - var(--home-frame-rule)) * var(--u));
     position: relative;
     display: inline-block;
     color: var(--body-text);
@@ -834,11 +902,11 @@ body {
 }
 
 /* Desktop: swap Product → Interaction on hover (Figma 1023:1175).
-   Band runs from the inner vertical stroke to the role's right inset;
-   the label stays end-aligned inside it. */
+   Band runs from the inner vertical stroke to the home frame's right edge;
+   the label stays end-aligned inside it (inset matches the headline). */
 .home-role-accent__alt {
     position: absolute;
-    right: 0;
+    right: calc(-1 * var(--home-headline-inset) * var(--u));
     top: 0;
     z-index: 1;
     display: flex;
@@ -1150,7 +1218,7 @@ body {
 @media (max-width: 720px) {
     :root {
         --site-gutter: 12px;
-        --header-h: 97.5px;
+        --header-h: 112.875px;
         --acc-gap: 12px;
     }
 
@@ -1160,8 +1228,8 @@ body {
 
     .site-logo__mark,
     .site-logo__p {
-        width: 61.5px;
-        height: 61.5px;
+        width: 76.875px;
+        height: 76.875px;
     }
 
     .site-wrapper > .home-hero {
