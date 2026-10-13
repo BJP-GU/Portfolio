@@ -144,10 +144,24 @@ body {
     visibility: visible;
 }
 
-.case-hover-preview img {
+/* Image cards are 2560×1800. The video fills that same box and stays aligned right so the cane user remains in frame. */
+.case-hover-preview--video {
+    aspect-ratio: 2560 / 1800;
+}
+
+.case-hover-preview img,
+.case-hover-preview video {
     display: block;
     width: 100%;
     height: auto;
+}
+
+.case-hover-preview--video video {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
 }
 
 .site-logo__mark,

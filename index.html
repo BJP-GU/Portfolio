@@ -13,7 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="styles.css?v=resume-section-rhythm">
-    <link rel="stylesheet" href="home.css?v=composer-hover-preview">
+    <link rel="stylesheet" href="home.css?v=anchor-hover-preview">
 </head>
 <body>
     <noscript>
@@ -3257,17 +3257,36 @@
 
             bindReservedRowTooltips(accordion);
 
-            function bindCaseHoverPreview(headerId, imageSrc) {
+            function bindCaseHoverPreview(headerId, src, options) {
+                var opts = options || {};
                 var header = document.getElementById(headerId);
                 if (!header) return;
                 var preview = document.createElement('div');
-                preview.className = 'case-hover-preview';
+                preview.className = 'case-hover-preview' + (opts.video ? ' case-hover-preview--video' : '');
                 preview.setAttribute('aria-hidden', 'true');
-                var img = document.createElement('img');
-                img.src = imageSrc;
-                img.alt = '';
-                img.draggable = false;
-                preview.appendChild(img);
+                var media;
+                if (opts.video) {
+                    media = document.createElement('video');
+                    media.muted = true;
+                    media.defaultMuted = true;
+                    media.volume = 0;
+                    media.loop = true;
+                    media.playsInline = true;
+                    media.controls = false;
+                    media.preload = 'auto';
+                    media.disablePictureInPicture = true;
+                    media.setAttribute('muted', '');
+                    media.setAttribute('loop', '');
+                    media.setAttribute('playsinline', '');
+                    if (opts.poster) media.poster = opts.poster;
+                    media.src = src;
+                } else {
+                    media = document.createElement('img');
+                    media.src = src;
+                    media.alt = '';
+                    media.draggable = false;
+                }
+                preview.appendChild(media);
                 document.body.appendChild(preview);
 
                 function place(clientX, clientY) {
@@ -3285,20 +3304,35 @@
                     preview.style.top = y + 'px';
                 }
 
+                function silence() {
+                    media.muted = true;
+                    media.volume = 0;
+                }
+
                 header.addEventListener('mouseenter', function(e) {
                     preview.classList.add('is-visible');
                     place(e.clientX, e.clientY);
+                    if (!opts.video || prefersReducedMotion()) return;
+                    silence();
+                    var pending = media.play();
+                    if (pending && typeof pending.catch === 'function') pending.catch(function() {});
                 });
                 header.addEventListener('mousemove', function(e) {
                     place(e.clientX, e.clientY);
                 });
                 header.addEventListener('mouseleave', function() {
                     preview.classList.remove('is-visible');
+                    if (!opts.video) return;
+                    media.pause();
                 });
             }
 
             bindCaseHoverPreview('header-glean-composer', 'Glean/composer-preview.png?v=composer-preview');
             bindCaseHoverPreview('header-glean-agents', 'Glean/agents-case-preview.png?v=hover-card');
+            bindCaseHoverPreview('header-anchor', 'Anchor/waypoint-spatial-audio-example.mp4?v=anchor-hover', {
+                video: true,
+                poster: 'Anchor/waypoint-spatial-audio-example-poster.jpg?v=anchor-hover'
+            });
 
             function prefersReducedMotion() {
                 try {
