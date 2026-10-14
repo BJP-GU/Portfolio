@@ -4062,7 +4062,8 @@ iframe.lazy-iframe.iframe-ready {
 /* Glean composer menus — +, /, @ (Figma 28:19772, 28:19849, 28:20152) */
 .glean-menus-fit {
     --glean-menus-design-width: 1022px;
-    --glean-menus-design-height: 700px;
+    --glean-menu-name-size: 28px;
+    --glean-menus-design-height: calc(700px + var(--glean-menu-name-size));
     --glean-menus-scale: min(1, calc(100cqw / var(--glean-menus-design-width)));
     container-type: inline-size;
     width: 100%;
@@ -4088,6 +4089,27 @@ iframe.lazy-iframe.iframe-ready {
     flex-wrap: nowrap;
     gap: 16px;
     width: var(--glean-menus-design-width);
+}
+
+.glean-menu-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    width: 330px;
+    gap: 8px;
+}
+
+.glean-menu-name {
+    margin: 0;
+    width: 100%;
+    height: 20px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: var(--font-medium);
+    line-height: 20px;
+    color: var(--case-text-heading);
+    text-align: left;
 }
 
 .glean-menus-captions {
