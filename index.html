@@ -12,7 +12,7 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=menu-names">
+    <link rel="stylesheet" href="styles.css?v=composer-demo">
     <link rel="stylesheet" href="home.css?v=anchor-hover-preview">
 </head>
 <body>
@@ -369,6 +369,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="case-section-image">
+                                            <video class="case-video case-video--plain" src="Glean/Glean_Composer_demo_video.mp4?v=composer-demo" width="1920" height="1080" muted loop playsinline autoplay preload="auto" disablepictureinpicture aria-label="Glean composer demo"></video>
+                                        </div>
                                         <!-- Case Study Sections -->
                                         <section class="case-section">
                                             <header class="case-section-header">
@@ -716,9 +719,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="case-section-image">
-                                                    <video class="case-video" src="Glean/Glean_Composer_demo_video.mp4?v=composer-demo" width="1920" height="1080" controls playsinline preload="metadata" aria-label="Glean composer demo"></video>
                                                 </div>
                                             </div>
                                         </section>
@@ -6068,7 +6068,9 @@
             if (!videos.length) return;
             var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             if (reduced || !('IntersectionObserver' in window)) {
-                videos.forEach(function (v) { v.controls = true; });
+                videos.forEach(function (v) {
+                    if (!v.classList.contains('case-video--plain')) v.controls = true;
+                });
                 return;
             }
             var autoplayVideos = videos.filter(function (v) {
@@ -6079,7 +6081,9 @@
                     var v = entry.target;
                     if (entry.isIntersecting) {
                         var p = v.play();
-                        if (p && p.catch) p.catch(function () { v.controls = true; });
+                        if (p && p.catch) p.catch(function () {
+                            if (!v.classList.contains('case-video--plain')) v.controls = true;
+                        });
                     } else if (!v.paused) {
                         v.pause();
                     }

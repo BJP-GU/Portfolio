@@ -3036,6 +3036,12 @@ iframe.lazy-iframe.iframe-ready {
     display: block;
 }
 
+.case-video--plain::-webkit-media-controls,
+.case-video--plain::-webkit-media-controls-enclosure,
+.case-video--plain::-webkit-media-controls-panel {
+    display: none !important;
+}
+
 /* Pairs images across one row; the row owns the vertical rhythm so the
    children drop their own margins and stay top-aligned */
 .case-section-image-row {
