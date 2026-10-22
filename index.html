@@ -369,9 +369,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="case-section-image">
-                                            <video class="case-video case-video--plain" src="Glean/Glean_Composer_demo_video.mp4?v=composer-demo" width="1920" height="1080" muted loop playsinline autoplay preload="auto" disablepictureinpicture aria-label="Glean composer demo"></video>
-                                        </div>
                                         <!-- Case Study Sections -->
                                         <section class="case-section">
                                             <header class="case-section-header">
@@ -719,6 +716,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+
+                                                <h4>Feature demo</h4>
+                                                <div class="case-section-image">
+                                                    <video class="case-video case-video--plain" src="Glean/Glean_Composer_demo_video.mp4?v=composer-hover" poster="Glean/composer-demo-poster.jpg?v=composer-hover" width="1920" height="1080" muted loop playsinline preload="none" disablepictureinpicture aria-label="Glean composer demo"></video>
                                                 </div>
                                             </div>
                                         </section>
@@ -3278,14 +3280,13 @@
                 var header = document.getElementById(headerId);
                 if (!header) return;
                 var preview = document.createElement('div');
-                preview.className = 'case-hover-preview' + (opts.video ? ' case-hover-preview--video' : '');
+                preview.className = 'case-hover-preview' + (opts.video ? (opts.cover === false ? ' case-hover-preview--wide' : ' case-hover-preview--video') : '');
                 preview.setAttribute('aria-hidden', 'true');
                 var media;
                 if (opts.video) {
                     media = document.createElement('video');
                     media.muted = true;
                     media.defaultMuted = true;
-                    media.volume = 0;
                     media.loop = true;
                     media.playsInline = true;
                     media.controls = false;
@@ -3295,12 +3296,25 @@
                     media.setAttribute('loop', '');
                     media.setAttribute('playsinline', '');
                     if (opts.poster) media.poster = opts.poster;
-                    media.src = src;
+                    if (opts.poster) {
+                        var posterImg = new Image();
+                        posterImg.onload = posterImg.onerror = function () { media.src = src; };
+                        posterImg.src = opts.poster;
+                    } else {
+                        media.src = src;
+                    }
                 } else {
                     media = document.createElement('img');
                     media.src = src;
                     media.alt = '';
                     media.draggable = false;
+                }
+                if (opts.video && opts.poster) {
+                    var still = document.createElement('img');
+                    still.src = opts.poster;
+                    still.alt = '';
+                    still.draggable = false;
+                    preview.appendChild(still);
                 }
                 preview.appendChild(media);
                 document.body.appendChild(preview);
@@ -3320,18 +3334,28 @@
                     preview.style.top = y + 'px';
                 }
 
-                function silence() {
-                    media.muted = true;
-                    media.volume = 0;
+                function playPreview() {
+                    if (!opts.video || prefersReducedMotion()) return;
+                    if (!preview.classList.contains('is-visible')) return;
+                    try {
+                        media.muted = true;
+                        media.volume = 0;
+                    } catch (err) {}
+                    var pending = media.play();
+                    if (pending && typeof pending.catch === 'function') pending.catch(function () {});
+                }
+
+                if (opts.video) {
+                    media.addEventListener('loadeddata', function () {
+                        media.classList.add('is-framed');
+                        playPreview();
+                    });
                 }
 
                 header.addEventListener('mouseenter', function(e) {
                     preview.classList.add('is-visible');
                     place(e.clientX, e.clientY);
-                    if (!opts.video || prefersReducedMotion()) return;
-                    silence();
-                    var pending = media.play();
-                    if (pending && typeof pending.catch === 'function') pending.catch(function() {});
+                    playPreview();
                 });
                 header.addEventListener('mousemove', function(e) {
                     place(e.clientX, e.clientY);
@@ -3343,7 +3367,11 @@
                 });
             }
 
-            bindCaseHoverPreview('header-glean-composer', 'Glean/composer-preview.png?v=composer-preview');
+            bindCaseHoverPreview('header-glean-composer', 'Glean/Glean_Composer_demo_video.mp4?v=composer-hover', {
+                video: true,
+                cover: false,
+                poster: 'Glean/composer-demo-poster.jpg?v=composer-hover'
+            });
             bindCaseHoverPreview('header-glean-agents', 'Glean/agents-case-preview.png?v=hover-card');
             bindCaseHoverPreview('header-anchor', 'Anchor/waypoint-spatial-audio-example.mp4?v=anchor-hover', {
                 video: true,

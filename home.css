@@ -164,6 +164,29 @@ body {
     object-position: right center;
 }
 
+/* Composer demo is 16:9. Fill the card and keep the poster visible before the file buffers. */
+.case-hover-preview--wide {
+    aspect-ratio: 16 / 9;
+}
+
+.case-hover-preview--wide img,
+.case-hover-preview--wide video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+}
+
+.case-hover-preview--wide video {
+    opacity: 0;
+}
+
+.case-hover-preview--wide video.is-framed {
+    opacity: 1;
+}
+
 .site-logo__mark,
 .site-logo__p {
     display: block;
