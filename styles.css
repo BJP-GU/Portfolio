@@ -3168,20 +3168,66 @@ html.diagram-viewer-open {
    reachable by scrolling once it is larger than the stage. */
 .diagram-viewer__img {
     display: block;
+    flex-shrink: 0;
     margin: auto;
     width: auto;
     height: auto;
     max-width: 100%;
     max-height: 100%;
     border-radius: 10px;
+    /* Diagrams are transparent; give them the page color so they stay legible over the blur. */
+    background: var(--bg-color);
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 12px 40px rgba(0, 0, 0, 0.12);
     cursor: default;
     user-select: none;
     -webkit-user-select: none;
 }
 
-.diagram-viewer.is-zoomable .diagram-viewer__img {
+.diagram-viewer.is-zoomable .diagram-viewer__img,
+.diagram-viewer.is-zoomable .diagram-viewer__frame {
     cursor: zoom-in;
+}
+
+/* Diagrams built in HTML are copied into this frame and re-laid out at its width */
+.diagram-viewer__frame {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    margin: auto;
+    padding: 24px;
+    border-radius: 10px;
+    background: var(--bg-color);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 12px 40px rgba(0, 0, 0, 0.12);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.diagram-viewer__img[hidden],
+.diagram-viewer__frame[hidden] {
+    display: none;
+}
+
+.diagram-viewer__frame > * {
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.diagram-viewer.is-zoomed .diagram-viewer__frame {
+    cursor: grab;
+}
+
+.diagram-viewer.is-panning .diagram-viewer__frame {
+    cursor: grabbing;
+}
+
+/* HTML diagrams on the page open in the viewer like images do */
+[data-diagram-width].is-expandable {
+    cursor: zoom-in;
+}
+
+[data-diagram-width].is-expandable:focus-visible {
+    outline: 2px solid #1A1A1A;
+    outline-offset: 3px;
 }
 
 .diagram-viewer.is-zoomed .diagram-viewer__img {
@@ -3291,13 +3337,34 @@ html.diagram-viewer-open {
     font-style: normal;
 }
 
+/* Diagram blocks lifted off the page with a soft shadow */
+.case-section-image--shadow {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+}
+
+/* Images and diagrams without padding of their own sit on a padded,
+   page-colored card with the same soft shadow. */
+.case-section-image--card,
+.case-media-card {
+    padding: clamp(12px, 4%, 32px);
+    background: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+}
+
+.case-section-image--card > img {
+    margin: 0;
+}
+
 /* Captions that sit tight under their diagram */
 .case-section-image--tight-caption,
-.case-section-image--tight-caption > img {
+.case-section-image--tight-caption > img,
+.case-section-image-row--tight-caption {
     margin-bottom: 0;
 }
 
-.case-section-image--tight-caption + .case-section-caption {
+.case-section-image--tight-caption + .case-section-caption,
+.case-section-image-row--tight-caption + .case-section-caption {
     margin-top: var(--space-xs);
 }
 
@@ -4294,9 +4361,15 @@ html.diagram-viewer-open {
     margin: var(--space-md) 0;
 }
 
+/* The clip box bleeds 16px past the menus on every side so their drop
+   shadows aren't cut off; the negative margins keep the layout in place. */
 .glean-menus-fit__menus {
+    --glean-menus-bleed: 16px;
+    box-sizing: content-box;
     width: 100%;
     height: calc(var(--glean-menus-design-height) * var(--glean-menus-scale));
+    margin: calc(-1 * var(--glean-menus-bleed));
+    padding: var(--glean-menus-bleed);
     overflow: hidden;
 }
 

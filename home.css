@@ -3,7 +3,7 @@
 
    The page is a stack of bordered rows ("#1 RESUME", "#2 GLEAN", ...). One row
    is open at a time and its body holds that section's content. Home sits
-   above the stack and is always open. The stack is a 1082px column centred
+   above the stack and is always open. The stack is a 1352px column centred
    in the viewport, leaving an empty gutter left and right on wide displays.
 
    The home body is a fixed 1080 x 700 canvas. Every measurement inside it is
@@ -12,7 +12,15 @@
    ========================================================================== */
 
 :root {
-    --site-max: 1082px;
+    /* The column grows up to 1352px (25% wider than the original 1082px), but
+       never so wide that the home canvas pushes the first two rows (Resume,
+       Glean composer) below the fold. The home canvas is 700/1080 of the
+       column, so the second row's bottom edge lands at
+         header + 10px gap + 2px borders + 90px (two rows + gaps) + 700/1080 × column
+       and solving for the column, with 24px of breathing room under that row,
+       gives the height-based term. 720px is the floor for very short windows. */
+    --site-fold-reserve: calc(var(--header-h) + 10px + 2px + 90px + 24px);
+    --site-max: clamp(720px, calc((100vh - var(--site-fold-reserve)) * 1080 / 700 + 2px), 1352px);
     --site-gutter: 20px;
 
     --home-bg: #FAFAFA;
@@ -49,7 +57,7 @@ body {
 
 /* ==========================================================================
    STICKY HEADER
-   Tracks the same 1082px column as the accordion, so its background covers
+   Tracks the same 1352px column as the accordion, so its background covers
    every row that scrolls underneath it.
    ========================================================================== */
 
@@ -1153,6 +1161,14 @@ body {
     min-height: 0;
     grid-column: 2 / -1;
     padding-right: calc(16px + var(--inner-col-padding));
+}
+
+/* Beside the sidebar, extra right padding (8% of the panel) narrows the case
+   column so lines stay short enough to scan comfortably. */
+@media (min-width: 769px) {
+    .work-main-content {
+        padding-right: calc(16px + var(--inner-col-padding) + 8%);
+    }
 }
 
 .work-right-spacer {
