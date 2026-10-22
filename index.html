@@ -3278,7 +3278,7 @@
                 var header = document.getElementById(headerId);
                 if (!header) return;
                 var preview = document.createElement('div');
-                preview.className = 'case-hover-preview' + (opts.video ? ' case-hover-preview--video' : '');
+                preview.className = 'case-hover-preview' + (opts.video && opts.cover !== false ? ' case-hover-preview--video' : '');
                 preview.setAttribute('aria-hidden', 'true');
                 var media;
                 if (opts.video) {
@@ -3294,6 +3294,8 @@
                     media.setAttribute('muted', '');
                     media.setAttribute('loop', '');
                     media.setAttribute('playsinline', '');
+                    if (opts.width) media.setAttribute('width', String(opts.width));
+                    if (opts.height) media.setAttribute('height', String(opts.height));
                     if (opts.poster) media.poster = opts.poster;
                     media.src = src;
                 } else {
@@ -3343,7 +3345,12 @@
                 });
             }
 
-            bindCaseHoverPreview('header-glean-composer', 'Glean/composer-preview.png?v=composer-preview');
+            bindCaseHoverPreview('header-glean-composer', 'Glean/Glean_Composer_demo_video.mp4?v=composer-demo', {
+                video: true,
+                cover: false,
+                width: 1920,
+                height: 1080
+            });
             bindCaseHoverPreview('header-glean-agents', 'Glean/agents-case-preview.png?v=hover-card');
             bindCaseHoverPreview('header-anchor', 'Anchor/waypoint-spatial-audio-example.mp4?v=anchor-hover', {
                 video: true,
