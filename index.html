@@ -12,7 +12,7 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=case-nav-center">
+    <link rel="stylesheet" href="styles.css?v=viewer-blur">
     <link rel="stylesheet" href="home.css?v=case-nav-center">
 </head>
 <body>
@@ -412,7 +412,7 @@
                                                 <h4>Rearchitecting the composer's information</h4>
                                                 <p>To address user feedback that the composer felt inconsistent and unpredictable, I began by defining rules for where tagged information (e.g., @ mentions, / commands, and attachments) populates within it.</p>
                                                 <div class="case-section-image">
-                                                    <img src="Glean/composer-layout.svg?v=composer-layout" alt="Composer layout with a top area, an in-line area, and a bottom bar with add and open controls" loading="lazy">
+                                                    <img src="Glean/composer-layout.svg?v=composer-layout-2" alt="Composer layout with a top area, an in-line area, and a bottom bar with add and open controls" width="1307" height="502" loading="lazy">
                                                 </div>
                                                 <h4>Redesigning the composer's menus: +, /, and @</h4>
                                                 <p>With the architecture and interaction model aligned, I turned to how Glean Assistant's affordances surface in the composer. Our guiding principle: every affordance lives in the "+" menu and is also reachable through the "/" and "@" shortcuts. My first step was deciding how to divide affordances between those two shortcut menus.</p>
@@ -433,6 +433,18 @@
                                                 </ul>
 
                                                 <h4>Designing in-line UI Chips for the composer</h4>
+                                                <div class="case-section-image case-section-image--tight-caption">
+                                                    <img src="Glean/chip-spacing.svg?v=2" alt="Chip spacing redlines: a Create agent chip with 6px side padding, a 16px leading slot holding a 14px glyph, a 4px gap to the label, a 16px label box with 4px above and below, a 24px height equal to the line height, an 8px corner radius, and a 1px inside border" width="1227" height="603" loading="lazy">
+                                                </div>
+                                                <p class="case-section-caption">Chip spacing: every value snaps to a 4px rhythm, and the 24px height is borrowed from the composer's line height</p>
+                                                <div class="case-section-image case-section-image--tight-caption">
+                                                    <img src="Glean/chip-in-context.svg?v=2" alt="Typographic anatomy of the composer line &quot;Summarize Bryce Parsons's comments in Design Review Notes&quot;: the person and document chips share the sentence's baseline, cap height and x-height, and their edges land on the 24px line box" width="4448" height="776" loading="lazy">
+                                                </div>
+                                                <p class="case-section-caption">Chips in context: labels sit on the sentence's baseline and the container matches the line box, so a prompt with chips reads as one continuous line</p>
+                                                <div class="case-section-image case-section-image--tight-caption">
+                                                    <img src="Glean/chip-states.svg?v=2" alt="Chip states for a Create agent chip and a Bryce Parsons person chip: Default with #F6F6F6 fill and #E5E5E5 border, Hover where the leading icon becomes a remove × with #F0F0F0 fill and #CCCCCC border, and × focus where a 16px #E0E0E0 circle marks the remove target" width="1663" height="629" loading="lazy">
+                                                </div>
+                                                <p class="case-section-caption">Chip states: hovering a chip reveals the remove ×, and hovering the × highlights its click target</p>
                                             </div>
                                         </section>
 
@@ -549,9 +561,9 @@
                                                             <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/797e7da06582522417818522d0634f8f23a1be6e.svg" alt="" width="16" height="16"><span class="glean-menu__label">Chat name</span></div></div>
                                                             <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/797e7da06582522417818522d0634f8f23a1be6e.svg" alt="" width="16" height="16"><span class="glean-menu__label">Chat name</span></div></div>
                                                             <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">People</span></div></div>
-                                                            <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
-                                                            <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
-                                                            <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
+                                                            <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png?v=3" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
+                                                            <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png?v=3" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
+                                                            <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png?v=3" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
                                                             <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">Projects</span></div></div>
                                                             <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
                                                             <div class="glean-menu__item"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
@@ -707,9 +719,9 @@
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/797e7da06582522417818522d0634f8f23a1be6e.svg" alt="" width="16" height="16"><span class="glean-menu__label">Chat name</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/797e7da06582522417818522d0634f8f23a1be6e.svg" alt="" width="16" height="16"><span class="glean-menu__label">Chat name</span></div></div>
                                                             <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">People</span></div></div>
-                                                            <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
-                                                            <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
-                                                            <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
+                                                            <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png?v=3" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
+                                                            <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png?v=3" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
+                                                            <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__avatar" src="Glean/menu-icons/avatar.png?v=3" alt="" width="16" height="16"><span class="glean-menu__label">Bryce Parsons</span></div></div>
                                                             <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">Projects</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
                                                             <div class="glean-menu__item" role="menuitem" tabindex="0" data-glean-menu-action="chip" data-chip-section="mention"><div class="glean-menu__leading"><img class="glean-menu__icon" src="Glean/menu-icons/25aa9b0a99c8334450d8a3b75c78ee069e2bcf32.svg" alt="" width="16" height="16"><span class="glean-menu__label">Project name</span></div></div>
@@ -3870,6 +3882,7 @@
                 if (target.closest('.acc-panel[data-panel] .acc-header')) return;
                 if (target.closest('.acc-peek-next')) return;
                 if (target.closest('#home-logo')) return;
+                if (target.closest('.diagram-viewer')) return;
 
                 closePanel(open);
             });
@@ -6120,6 +6133,163 @@
                 });
             }, { threshold: 0.25 });
             autoplayVideos.forEach(function (v) { io.observe(v); });
+        })();
+    </script>
+    <dialog class="diagram-viewer" id="diagram-viewer" aria-label="Expanded diagram">
+        <div class="diagram-viewer__bar">
+            <p class="diagram-viewer__caption"></p>
+            <div class="diagram-viewer__actions">
+                <span class="diagram-viewer__hint" aria-hidden="true"></span>
+                <button class="diagram-viewer__btn diagram-viewer__zoom" type="button" aria-pressed="false">Zoom in</button>
+                <button class="diagram-viewer__btn diagram-viewer__close" type="button" aria-label="Close diagram">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M3.5 3.5l9 9m0-9l-9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="diagram-viewer__stage">
+            <img class="diagram-viewer__img" alt="" draggable="false">
+        </div>
+    </dialog>
+    <script>
+        // Case-study diagrams: click (or Enter/Space) opens the diagram in a
+        // full-screen viewer, fit to the screen. Diagrams larger than the screen
+        // can be zoomed in and panned by dragging.
+        (function () {
+            var viewer = document.getElementById('diagram-viewer');
+            if (!viewer || typeof viewer.showModal !== 'function') return;
+            var stage = viewer.querySelector('.diagram-viewer__stage');
+            var big = viewer.querySelector('.diagram-viewer__img');
+            var caption = viewer.querySelector('.diagram-viewer__caption');
+            var zoomBtn = viewer.querySelector('.diagram-viewer__zoom');
+            var closeBtn = viewer.querySelector('.diagram-viewer__close');
+            var hint = viewer.querySelector('.diagram-viewer__hint');
+            var thumbs = [].slice.call(document.querySelectorAll('.case-section-image > img'));
+            var zoomed = false;
+            var canZoom = false;
+            var opener = null;
+
+            function naturalWidth(img) {
+                return parseFloat(img.getAttribute('width')) || img.naturalWidth || 0;
+            }
+
+            function naturalHeight(img) {
+                return parseFloat(img.getAttribute('height')) || img.naturalHeight || 1;
+            }
+
+            function stageBox() {
+                var cs = getComputedStyle(stage);
+                return {
+                    w: stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight),
+                    h: stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+                };
+            }
+
+            function fitScale() {
+                var b = stageBox();
+                return Math.min(1, b.w / naturalWidth(big), b.h / naturalHeight(big));
+            }
+
+            // Zoomed size: a very wide diagram fills the stage height (it then
+            // pans sideways); anything else shows at its full size. Phones cap
+            // the zoom so labels stay readable without panning across ten screens.
+            function zoomScale() {
+                var cap = window.innerWidth < 640 ? 0.6 : 1;
+                var fillHeight = Math.min(cap, stageBox().h / naturalHeight(big));
+                return fillHeight >= fitScale() * 1.3 ? fillHeight : cap;
+            }
+
+            function setZoom(on, focusX, focusY) {
+                zoomed = on && canZoom;
+                viewer.classList.toggle('is-zoomed', zoomed);
+                zoomBtn.setAttribute('aria-pressed', zoomed ? 'true' : 'false');
+                zoomBtn.textContent = zoomed ? 'Fit to screen' : 'Zoom in';
+                hint.textContent = !canZoom ? '' : zoomed ? 'Drag or scroll to pan' : 'Click the diagram to zoom';
+                big.style.width = zoomed ? Math.round(naturalWidth(big) * zoomScale()) + 'px' : '';
+                if (zoomed) {
+                    // Keep the clicked point under the pointer; default to the left edge.
+                    var fx = focusX === undefined ? 0 : focusX, fy = focusY === undefined ? 0.5 : focusY;
+                    stage.scrollLeft = fx * stage.scrollWidth - stage.clientWidth / 2;
+                    stage.scrollTop = fy * stage.scrollHeight - stage.clientHeight / 2;
+                }
+            }
+
+            function open(img) {
+                opener = img;
+                big.src = img.currentSrc || img.src;
+                big.alt = img.alt;
+                big.setAttribute('width', img.getAttribute('width') || '');
+                big.setAttribute('height', img.getAttribute('height') || '');
+                var cap = img.parentElement.nextElementSibling;
+                caption.textContent = cap && cap.classList.contains('case-section-caption') ? cap.textContent.trim() : '';
+                document.documentElement.classList.add('diagram-viewer-open');
+                viewer.showModal();
+                canZoom = zoomScale() > fitScale() * 1.15;
+                zoomBtn.hidden = !canZoom;
+                viewer.classList.toggle('is-zoomable', canZoom);
+                setZoom(false);
+                closeBtn.focus();
+            }
+
+            viewer.addEventListener('close', function () {
+                document.documentElement.classList.remove('diagram-viewer-open');
+                setZoom(false);
+                big.removeAttribute('src');
+                if (opener) opener.focus();
+            });
+
+            thumbs.forEach(function (img) {
+                img.classList.add('is-expandable');
+                img.tabIndex = 0;
+                img.setAttribute('role', 'button');
+                img.setAttribute('aria-haspopup', 'dialog');
+                img.setAttribute('aria-label', 'Expand diagram' + (img.alt ? ': ' + img.alt : ''));
+                img.addEventListener('click', function () { open(img); });
+                img.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); }
+                });
+            });
+
+            closeBtn.addEventListener('click', function () { viewer.close(); });
+            zoomBtn.addEventListener('click', function () { setZoom(!zoomed, 0.5, 0.5); });
+
+            // Clicking the dimmed area around the diagram closes the viewer.
+            stage.addEventListener('click', function (e) {
+                if (e.target === stage) viewer.close();
+            });
+
+            // A click or tap toggles zoom at the pointer. With a mouse, dragging the
+            // zoomed diagram pans it; touch keeps native scrolling.
+            var drag = null;
+            var suppressClick = false;
+            function endDrag() {
+                if (drag) suppressClick = drag.moved;
+                drag = null;
+                viewer.classList.remove('is-panning');
+            }
+            big.addEventListener('pointerdown', function (e) {
+                if (e.pointerType !== 'mouse' || e.button !== 0 || !zoomed) return;
+                e.preventDefault();
+                drag = { x: e.clientX, y: e.clientY, left: stage.scrollLeft, top: stage.scrollTop, moved: false };
+                big.setPointerCapture(e.pointerId);
+            });
+            big.addEventListener('pointermove', function (e) {
+                if (!drag) return;
+                var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+                if (Math.abs(dx) + Math.abs(dy) > 4) {
+                    drag.moved = true;
+                    viewer.classList.add('is-panning');
+                }
+                stage.scrollLeft = drag.left - dx;
+                stage.scrollTop = drag.top - dy;
+            });
+            big.addEventListener('pointerup', endDrag);
+            big.addEventListener('pointercancel', endDrag);
+            big.addEventListener('click', function (e) {
+                if (suppressClick) { suppressClick = false; return; }
+                if (!canZoom) return;
+                var r = big.getBoundingClientRect();
+                setZoom(!zoomed, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+            });
         })();
     </script>
 </body>

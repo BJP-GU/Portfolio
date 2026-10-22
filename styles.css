@@ -3038,6 +3038,202 @@ iframe.lazy-iframe.iframe-ready {
     display: block;
 }
 
+/* Diagrams open in the full-screen viewer on click */
+.case-section-image > img.is-expandable {
+    cursor: zoom-in;
+    transition: opacity 0.15s ease;
+}
+
+.case-section-image > img.is-expandable:hover {
+    opacity: 0.92;
+}
+
+.case-section-image:has(> img.is-expandable:focus-visible) {
+    outline: 2px solid #1A1A1A;
+    outline-offset: 3px;
+}
+
+.case-section-image > img.is-expandable:focus-visible {
+    outline: none;
+}
+
+html.diagram-viewer-open {
+    overflow: hidden;
+}
+
+.diagram-viewer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    /* Light frosted glass: the page stays visible behind, just softened. */
+    background: rgba(250, 250, 250, 0.55);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    color: #1A1A1A;
+    font-family: var(--font-body);
+    overflow: hidden;
+}
+
+.diagram-viewer[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.diagram-viewer::backdrop {
+    background: transparent;
+}
+
+.diagram-viewer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+    padding: 14px 16px 14px 24px;
+}
+
+.diagram-viewer__caption {
+    min-width: 0;
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: #4D4D4D;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.diagram-viewer__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.diagram-viewer__hint {
+    margin-right: 4px;
+    font-size: var(--text-xs);
+    color: #7A7A7A;
+    white-space: nowrap;
+}
+
+.diagram-viewer__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 34px;
+    min-width: 34px;
+    padding: 0 12px;
+    border: 1px solid #E0E0E0;
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1A1A1A;
+    font: inherit;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.diagram-viewer__btn:hover {
+    background: #F0F0F0;
+    border-color: #CCCCCC;
+}
+
+.diagram-viewer__btn:focus-visible {
+    outline: 2px solid #1A1A1A;
+    outline-offset: 2px;
+}
+
+.diagram-viewer__close {
+    padding: 0;
+}
+
+.diagram-viewer__stage {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 0 24px 24px;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+/* margin: auto centers the diagram while it fits, and keeps every edge
+   reachable by scrolling once it is larger than the stage. */
+.diagram-viewer__img {
+    display: block;
+    margin: auto;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 12px 40px rgba(0, 0, 0, 0.12);
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.diagram-viewer.is-zoomable .diagram-viewer__img {
+    cursor: zoom-in;
+}
+
+.diagram-viewer.is-zoomed .diagram-viewer__img {
+    max-width: none;
+    max-height: none;
+    cursor: grab;
+}
+
+.diagram-viewer.is-panning .diagram-viewer__img {
+    cursor: grabbing;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .diagram-viewer[open] {
+        animation: diagram-viewer-fade 0.18s ease-out;
+    }
+
+    .diagram-viewer[open] .diagram-viewer__img {
+        animation: diagram-viewer-in 0.18s ease-out;
+    }
+
+}
+
+@keyframes diagram-viewer-in {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes diagram-viewer-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+    .diagram-viewer__bar {
+        padding: 10px 10px 10px 16px;
+    }
+
+    .diagram-viewer__hint,
+    .diagram-viewer__caption {
+        display: none;
+    }
+
+    .diagram-viewer__actions {
+        margin-left: auto;
+    }
+
+    .diagram-viewer__stage {
+        padding: 0 12px 12px;
+    }
+}
+
 .case-video--plain::-webkit-media-controls,
 .case-video--plain::-webkit-media-controls-enclosure,
 .case-video--plain::-webkit-media-controls-panel {
@@ -3093,6 +3289,16 @@ iframe.lazy-iframe.iframe-ready {
 
 .case-section-caption em {
     font-style: normal;
+}
+
+/* Captions that sit tight under their diagram */
+.case-section-image--tight-caption,
+.case-section-image--tight-caption > img {
+    margin-bottom: 0;
+}
+
+.case-section-image--tight-caption + .case-section-caption {
+    margin-top: var(--space-xs);
 }
 
 /* Glean composer — inline chip illustration (Figma 28:20446) */
@@ -3709,6 +3915,16 @@ iframe.lazy-iframe.iframe-ready {
 .glean-composer-open__chip:hover .glean-composer-open__chip-icon--remove,
 .glean-composer-open__chip:focus-visible .glean-composer-open__chip-icon--remove {
     display: block;
+}
+
+/* Pointer on the × itself: tint its 16px click target one step darker than the hover fill. */
+.glean-composer-open__chip-leading {
+    border-radius: 50%;
+    transition: background-color 0.12s ease;
+}
+
+.glean-composer-open__chip:hover .glean-composer-open__chip-leading:hover {
+    background: #e0e0e0;
 }
 
 .glean-composer-open__chip-label {
