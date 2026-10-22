@@ -1137,10 +1137,13 @@ body {
 }
 
 .work-nav-sidebar {
-    top: calc(var(--acc-content-top) + 20px);
-    padding-top: 32px;
+    top: var(--acc-content-top);
+    height: calc(100dvh - var(--acc-content-top));
+    padding-top: 0;
+    padding-bottom: 0;
     padding-left: 20px;
     padding-right: 16px;
+    justify-content: center;
 }
 
 /* While the body is height-clipped, it becomes a scroll container and sticky
@@ -1150,6 +1153,8 @@ body {
 .acc-panel.is-collapsing .work-nav-sidebar {
     position: relative;
     top: auto;
+    height: fit-content;
+    justify-content: flex-start;
 }
 
 .project-case:first-child {

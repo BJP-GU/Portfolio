@@ -2429,23 +2429,25 @@ nav.main-grid .grid-cell {
     display: contents;
 }
 
-/* Sticky left sidebar carrying the section label */
+/* Sticky left sidebar carrying the section label.
+   Tall enough to fill the sticky viewport so the links can sit in the middle. */
 .work-nav-sidebar {
     grid-column: 1;
     grid-row: 1;
     position: sticky;
     top: 80px;
-    height: fit-content;
+    height: calc(100dvh - 80px);
     width: 100%;
     max-width: 100%;
-    padding-top: clamp(24px, 4vw, 48px);
+    padding-top: 0;
     padding-right: clamp(12px, 2vw, 24px);
-    padding-bottom: var(--space-lg);
+    padding-bottom: 0;
     padding-left: clamp(32px, 3vw, 48px);
     align-self: start;
     justify-self: stretch;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: flex-start;
     text-align: left;
     box-sizing: border-box;
