@@ -1091,37 +1091,63 @@ body {
     }
 }
 
-/* --- Credentials -------------------------------------------------------- */
+/* --- Credentials & bio ------------------------------------------------- */
 
-.home-meta {
-    left: calc(153 * var(--u));
-    top: calc(339 * var(--u));
+/* Justified, all-caps blocks (Figma 1174:454). Each logo sits inline with the
+   word it belongs to; the wrapper keeps that pair from splitting across lines. */
+.home-meta,
+.home-bio {
     z-index: 4;
-    width: calc(175 * var(--u));
-    display: flex;
-    flex-direction: column;
-    gap: calc(16 * var(--u));
-}
-
-.home-meta li {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: calc(6 * var(--u));
-    height: calc(13 * var(--u));
+    width: calc(154 * var(--u));
+    margin: 0;
     font-size: calc(11.675 * var(--u));
     font-weight: 400;
     line-height: calc(13 * var(--u));
     letter-spacing: 0;
     color: #1A1A1A;
+    text-align: justify;
+    text-transform: uppercase;
+}
+
+.home-meta {
+    /* Centred in its cell: the left column (0–463) between the two
+       horizontal rules (289–467), whatever height the text wraps to. */
+    left: calc(231.5 * var(--u));
+    top: calc(378 * var(--u));
+    transform: translate(-50%, -50%);
+    width: calc(222.5 * var(--u));
+    display: flex;
+    flex-direction: column;
+    gap: calc(13 * var(--u));
+}
+
+.home-meta p {
+    margin: 0;
+    /* Hanging indent: wrapped lines start under the text, not under the
+       logo (12.5px logo + 4px gap). */
+    padding-left: calc(16.5 * var(--u));
+    text-indent: calc(-16.5 * var(--u));
+}
+
+.home-bio {
+    /* Centred in its cell: the middle column (464–617.6) below the lower
+       horizontal rule (468.1–700), whatever height the text wraps to. */
+    left: calc(540.8 * var(--u));
+    top: calc(584 * var(--u));
+    transform: translate(-50%, -50%);
+}
+
+.home-meta__lead {
     white-space: nowrap;
 }
 
 .home-meta__icon {
-    display: block;
+    display: inline-block;
     width: calc(12.5 * var(--u));
     height: calc(12.5 * var(--u));
-    flex-shrink: 0;
+    margin-right: calc(4 * var(--u));
+    /* Centres the 12.5px mark on the cap height of 11.675px text */
+    vertical-align: calc(-2 * var(--u));
     object-fit: contain;
 }
 
@@ -1150,7 +1176,17 @@ body {
     white-space: nowrap;
 }
 
-.home-place--sf { left: calc(794 * var(--u)); }
+/* Centred in its cell: the right column (618.6–1080.2) between the two
+   horizontal rules (289–467), whatever its text length. */
+.home-place--sf {
+    left: calc(849.4 * var(--u));
+    top: calc(378 * var(--u));
+    transform: translate(-50%, -50%);
+}
+
+.home-place {
+    text-transform: uppercase;
+}
 
 /* ==========================================================================
    WORK BODY
@@ -1418,24 +1454,35 @@ body {
         max-width: none;
     }
 
-    .home-meta {
-        gap: 16px;
+    .home-meta,
+    .home-bio {
         width: 100%;
+        font-size: 11.675px;
+        line-height: 13px;
+        text-align: left;
     }
 
-    .home-meta li {
-        height: 13px;
-        gap: 6px;
-        font-size: 11.675px;
-        font-weight: 400;
-        line-height: 13px;
-        white-space: nowrap;
+    .home-meta {
+        gap: 13px;
+    }
+
+    .home-meta p {
+        padding-left: 16.5px;
+        text-indent: -16.5px;
+    }
+
+    .home-meta,
+    .home-bio {
+        transform: none;
     }
 
     .home-meta__icon {
         width: 12.5px;
         height: 12.5px;
+        margin-right: 4px;
+        vertical-align: -2px;
     }
+
 
     .work-nav-sidebar,
     .about-body .resume-row .row-label,
