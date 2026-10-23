@@ -2783,6 +2783,17 @@ nav.main-grid .grid-cell {
     padding-top: 0;
 }
 
+/* A full-width hairline closes each section, with equal room above and below
+   it, so the break between sections reads clearly. */
+.case-section:not(:last-child) {
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+}
+
+.case-section + .case-section {
+    margin-top: var(--space-lg);
+}
+
 .case-section-header {
     margin-bottom: var(--space-md);
 }
@@ -3337,19 +3348,13 @@ html.diagram-viewer-open {
     font-style: normal;
 }
 
-/* Diagram blocks lifted off the page with a soft shadow */
-.case-section-image--shadow {
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
-}
-
 /* Images and diagrams without padding of their own sit on a padded,
-   page-colored card with the same soft shadow. */
+   page-colored card. */
 .case-section-image--card,
 .case-media-card {
     padding: clamp(12px, 4%, 32px);
     background: var(--bg-color);
     border-radius: 8px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
 }
 
 .case-section-image--card > img {
@@ -4660,6 +4665,71 @@ html.diagram-viewer-open {
     width: 100%;
     height: 1px;
     background: #e5e5e5;
+}
+
+.glean-menu--explore {
+    width: 200px;
+    height: auto;
+    /* Figma draws the 1px stroke inside the 8px padding */
+    padding: 7px;
+}
+
+/* Shortcut explorations (Figma 28:19453, 209:2605, 28:19553, 210:2733): each
+   example is the menu a shortcut opens, with the shortcut character set
+   8px below it. */
+.shortcut-explore__title {
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    color: var(--case-text-body);
+}
+
+/* A short label naming the diagram below it, styled like the exploration titles */
+.case-figure-label {
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    color: var(--case-text-body);
+}
+
+.case-figure-label + .case-section-image {
+    margin-top: 0;
+}
+
+.shortcut-explore__defs {
+    margin-top: 0;
+}
+
+.shortcut-explore {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 32px 48px;
+    margin: var(--space-md) 0 0;
+}
+
+.shortcut-explore__example {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: min(281px, 100%);
+    margin: 0;
+}
+
+.shortcut-explore__example .glean-menu {
+    margin-left: 24px;
+}
+
+.shortcut-explore__key {
+    /* Lines up with the menu items' text: 24px menu offset + 8px padding + 16px item inset */
+    margin-left: 48px;
+    font-family: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.125px;
+    color: #1B1B1B;
 }
 
 /* Problem Space Stats Grid */

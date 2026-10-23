@@ -130,6 +130,13 @@ body {
     visibility: visible;
 }
 
+/* Hover previews are desktop-only: never shown on touch screens or phones. */
+@media (hover: none), (pointer: coarse), (max-width: 720px) {
+    .case-hover-preview {
+        display: none !important;
+    }
+}
+
 /* Cursor-following case preview. Sits beside the pointer, not under it. */
 .case-hover-preview {
     position: fixed;

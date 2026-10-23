@@ -12,8 +12,8 @@
     <title>Bryce Parsons Designer</title>
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
-    <link rel="stylesheet" href="styles.css?v=viewer-zoom-all">
-    <link rel="stylesheet" href="home.css?v=case-right-pad">
+    <link rel="stylesheet" href="styles.css?v=chip-figure-labels">
+    <link rel="stylesheet" href="home.css?v=no-mobile-previews">
 </head>
 <body>
     <noscript>
@@ -376,13 +376,8 @@
                                                 <h2 class="case-section-title">Glean's composer left room for opportunity</h2>
                                             </header>
                                             <div class="case-section-content">
-                                                <div class="case-section-image case-section-image--card case-section-image--tight-caption">
-                                                    <img src="Glean/Composer Current State Breakdown.png" alt="Annotated breakdown of Glean's composer in its current state" loading="lazy">
-                                                </div>
-                                                <p class="case-section-caption">An illustrative breakdown of Glean's composer in its current state, surfacing the inconsistencies and shortcomings of the existing system.</p>
-
                                                 <h4>Problem</h4>
-                                                <p>Glean's current composer was:</p>
+                                                <p>Glean's composer (was):</p>
                                                 <ol>
                                                     <li><strong>Inconsistent:</strong> Actions, create docs or images, and create skills, all follow different patterns.</li>
                                                     <li><strong>Doesn't showcase Glean's affordances:</strong> The composer only shows a small subset of the features and tools of the Assistant.</li>
@@ -411,20 +406,89 @@
 
                                                 <h4>Rearchitecting the composer's information</h4>
                                                 <p>To address user feedback that the composer felt inconsistent and unpredictable, I began by defining rules for where tagged information (e.g., @ mentions, / commands, and attachments) populates within it.</p>
-                                                <div class="case-section-image case-section-image--shadow">
+                                                <div class="case-section-image">
                                                     <img src="Glean/composer-layout.svg?v=composer-layout-3" alt="Composer layout with a top area, an in-line area, and a bottom bar with add and open controls" width="1307" height="502" loading="lazy">
                                                 </div>
                                                 <h4>Redesigning the composer's menus: +, /, and @</h4>
                                                 <p>With the architecture and interaction model aligned, I turned to how Glean Assistant's affordances surface in the composer. Our guiding principle: every affordance lives in the "+" menu and is also reachable through the "/" and "@" shortcuts. My first step was deciding how to divide affordances between those two shortcut menus.</p>
-                                                <div class="case-section-image-row case-section-image-row--tight-caption">
-                                                    <div class="case-section-image case-section-image--card">
-                                                        <img src="Glean/Shortcut Exploration 1.png" alt="Exploration 1: / for creation of everything, @ for context, running skills and agents" loading="lazy">
-                                                    </div>
-                                                    <div class="case-section-image case-section-image--card">
-                                                        <img src="Glean/Shortcut Exploration 2.png" alt="Exploration 2: / for actions such as create and run, @ for adding context" loading="lazy">
-                                                    </div>
+                                                <p class="shortcut-explore__title">Exploration #1</p>
+                                                <ul class="shortcut-explore__defs">
+                                                    <li><strong>/</strong> for the creation of anything, e.g., create document, create agent</li>
+                                                    <li><strong>@</strong> for adding context, e.g., an artifact name or a person, and for invoking agents and skills, e.g., @ux-writing-agent, @design-review-skill</li>
+                                                </ul>
+                                                <div class="shortcut-explore case-media-card">
+                                                    <figure class="shortcut-explore__example" role="img" aria-label="Exploration 1 slash menu: a /CREATE section listing Agent, Skill, Document, Spreadsheet, Slides, Image, Audio, Answer and Projects">
+                                                        <div class="glean-menu glean-menu--explore" aria-hidden="true">
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">/CREATE</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Agent</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Skill</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Document</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Spreadsheet</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Slides</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Image</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Audio</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Answer</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Projects</span></div>
+                                                        </div>
+                                                        <span class="shortcut-explore__key" aria-hidden="true">/</span>
+                                                    </figure>
+                                                    <figure class="shortcut-explore__example" role="img" aria-label="Exploration 1 at menu: sections for agents, skills, people, artifacts and projects">
+                                                        <div class="glean-menu glean-menu--explore" aria-hidden="true">
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">AGENTS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Agent name]</span></div>
+                                                            <div class="glean-menu__divider"></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">SKILLS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Skill name]</span></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">PEOPLE</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Person name]</span></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">ARTIFACTS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Artifact name]</span></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">PROJECTS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Project name]</span></div>
+                                                        </div>
+                                                        <span class="shortcut-explore__key" aria-hidden="true">@</span>
+                                                    </figure>
                                                 </div>
-                                                <p class="case-section-caption">Two different shortcut models: #1 "/" to create any artifact via Glean's assistant, "@" to invoke an agent or a skill or add any context, #2 "/" to create an artifact or invoke an agent or skill, "@" to add any context</p>
+
+                                                <p class="shortcut-explore__title">Exploration #2</p>
+                                                <ul class="shortcut-explore__defs">
+                                                    <li><strong>/</strong> for the creation of anything, e.g., create document, create agent, and for invoking agents and skills, e.g., /ux-writing-agent, /design-review-skill</li>
+                                                    <li><strong>@</strong> for adding context to your prompts, e.g., @bryceparsons, @composer-prd</li>
+                                                </ul>
+                                                <div class="shortcut-explore case-media-card">
+                                                    <figure class="shortcut-explore__example" role="img" aria-label="Exploration 2 slash menu: agents and skills to run, then a Create section listing Agent, Skill, Document, Spreadsheet, Slides, Image, Audio and Answer">
+                                                        <div class="glean-menu glean-menu--explore" aria-hidden="true">
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">AGENTS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Agent name]</span></div>
+                                                            <div class="glean-menu__divider"></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">SKILLS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Skill name]</span></div>
+                                                            <div class="glean-menu__divider"></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">CREATE</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Agent</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Skill</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Document</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Spreadsheet</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Slides</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Image</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Audio</span></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">Answer</span></div>
+                                                        </div>
+                                                        <span class="shortcut-explore__key" aria-hidden="true">/</span>
+                                                    </figure>
+                                                    <figure class="shortcut-explore__example" role="img" aria-label="Exploration 2 at menu: sections for people, documents and projects">
+                                                        <div class="glean-menu glean-menu--explore" aria-hidden="true">
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">PEOPLE</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Person name]</span></div>
+                                                            <div class="glean-menu__divider"></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">DOCUMENTS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Document name]</span></div>
+                                                            <div class="glean-menu__item glean-menu__item--header"><div class="glean-menu__header-area"><span class="glean-menu__header-text">PROJECTS</span></div></div>
+                                                            <div class="glean-menu__item"><span class="glean-menu__label">[Project name]</span></div>
+                                                        </div>
+                                                        <span class="shortcut-explore__key" aria-hidden="true">@</span>
+                                                    </figure>
+                                                </div>
                                                 <p>UX Findings:</p>
                                                 <ul>
                                                     <li>Users preferred exploration #2, since they already invoke skills with "/" and see agents as related to skills, so they expected both to live in the same place.</li>
@@ -432,16 +496,19 @@
                                                     <li>While "Interactive" artifact adoption is high, users find the artifact name unclear</li>
                                                 </ul>
 
-                                                <h4>Designing in-line UI Chips for the composer</h4>
-                                                <div class="case-section-image case-section-image--tight-caption case-section-image--shadow">
+                                                <h4>Designing new in-line UI Chips for the composer</h4>
+                                                <p class="case-figure-label">New chip design</p>
+                                                <div class="case-section-image case-section-image--tight-caption">
                                                     <img src="Glean/chip-spacing.svg?v=3" alt="Chip spacing redlines: a Create agent chip with 6px side padding, a 16px leading slot holding a 14px glyph, a 4px gap to the label, a 16px label box with 4px above and below, a 24px height equal to the line height, an 8px corner radius, and a 1px inside border" width="1227" height="603" loading="lazy">
                                                 </div>
-                                                <p class="case-section-caption">Chip spacing: every value snaps to a 4px rhythm, and the 24px height is borrowed from the composer's line height</p>
-                                                <div class="case-section-image case-section-image--tight-caption case-section-image--shadow">
+                                                <p class="case-section-caption">New chip design: every value snaps to a 4px rhythm, and the 24px height is borrowed from the composer's line height</p>
+                                                <p class="case-figure-label">Chips in context</p>
+                                                <div class="case-section-image case-section-image--tight-caption">
                                                     <img src="Glean/chip-in-context.svg?v=3" alt="Typographic anatomy of the composer line &quot;Summarize Bryce Parsons's comments in Design Review Notes&quot;: the person and document chips share the sentence's baseline, cap height and x-height, and their edges land on the 24px line box" width="4448" height="776" loading="lazy">
                                                 </div>
                                                 <p class="case-section-caption">Chips in context: labels sit on the sentence's baseline and the container matches the line box, so a prompt with chips reads as one continuous line</p>
-                                                <div class="case-section-image case-section-image--tight-caption case-section-image--shadow">
+                                                <p class="case-figure-label">Chip states</p>
+                                                <div class="case-section-image case-section-image--tight-caption">
                                                     <img src="Glean/chip-states.svg?v=3" alt="Chip states for a Create agent chip and a Bryce Parsons person chip: Default with #F6F6F6 fill and #E5E5E5 border, Hover where the leading icon becomes a remove × with #F0F0F0 fill and #CCCCCC border, and × focus where a 16px #E0E0E0 circle marks the remove target" width="1663" height="629" loading="lazy">
                                                 </div>
                                                 <p class="case-section-caption">Chip states: hovering a chip reveals the remove ×, and hovering the × highlights its click target</p>
@@ -3289,7 +3356,18 @@
 
             bindReservedRowTooltips(accordion);
 
+            // Previews follow a mouse pointer. Touch screens and phone-width
+            // windows skip them entirely, so their images and videos never load.
+            function canShowHoverPreviews() {
+                try {
+                    return window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 721px)').matches;
+                } catch (e) {
+                    return false;
+                }
+            }
+
             function bindCaseHoverPreview(headerId, src, options) {
+                if (!canShowHoverPreviews()) return;
                 var opts = options || {};
                 var header = document.getElementById(headerId);
                 if (!header) return;
@@ -3367,6 +3445,7 @@
                 }
 
                 header.addEventListener('mouseenter', function(e) {
+                    if (!canShowHoverPreviews()) return;
                     preview.classList.add('is-visible');
                     place(e.clientX, e.clientY);
                     playPreview();
