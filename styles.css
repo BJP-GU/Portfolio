@@ -2611,15 +2611,6 @@ nav.main-grid .grid-cell {
     border-top: 1px solid var(--summary-border);
 }
 
-.project-summary-list {
-    padding-left: 1.1em;
-    list-style: disc;
-}
-
-.project-summary-list li + li {
-    margin-top: 2px;
-}
-
 .project-summary-text {
     font-family: var(--font-body);
     font-size: var(--text-sm);
