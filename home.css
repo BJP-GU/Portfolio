@@ -6,21 +6,22 @@
    above the stack and is always open. The stack is a 1352px column centred
    in the viewport, leaving an empty gutter left and right on wide displays.
 
-   The home body is a fixed 1080 x 700 canvas. Every measurement inside it is
+   The home body is a fixed 1080 x 720 canvas. Every measurement inside it is
    written in those canvas coordinates and multiplied by --u, which resolves to
    1px at full width and shrinks proportionally below it.
    ========================================================================== */
 
 :root {
     /* The column grows up to 1352px (25% wider than the original 1082px), but
-       never so wide that the home canvas pushes the first two rows (Resume,
-       Glean composer) below the fold. The home canvas is 700/1080 of the
-       column, so the second row's bottom edge lands at
-         header + 10px gap + 2px borders + 90px (two rows + gaps) + 700/1080 × column
-       and solving for the column, with 24px of breathing room under that row,
-       gives the height-based term. 720px is the floor for very short windows. */
-    --site-fold-reserve: calc(var(--header-h) + 10px + 2px + 90px + 24px);
-    --site-max: clamp(720px, calc((100vh - var(--site-fold-reserve)) * 1080 / 700 + 2px), 1352px);
+       never so wide that the home canvas pushes the Resume row, and at least
+       half of the Glean composer row, below the fold. The home canvas is
+       720/1080 of the column, so the middle of the second row lands at
+         header + 10px gap + 2px borders + 72.5px (gap, Resume row, gap, half a row)
+         + 720/1080 × column
+       and solving for the column, with 8px of breathing room, gives the
+       height-based term. 720px is the floor for very short windows. */
+    --site-fold-reserve: calc(var(--header-h) + 10px + 2px + 72.5px + 8px);
+    --site-max: clamp(720px, calc((100vh - var(--site-fold-reserve)) * 1080 / 720 + 2px), 1352px);
     --site-gutter: 20px;
 
     --home-bg: #FAFAFA;
@@ -627,6 +628,76 @@ body {
     color: var(--case-text-label);
 }
 
+/* A link that rides in an open row's pinned label (the Resume row's "Open PDF").
+   It sits just after the row's label, styled like the tags, and appears only while
+   the row is open. It lives outside the header button, so following it never
+   toggles the row. */
+.acc-title {
+    position: relative;
+}
+
+.acc-header-link {
+    position: absolute;
+    top: 50%;
+    /* Just after the row's label: 1px stroke + padding + "#1" (13px) + gap +
+       "RESUME" at its bold width (50px) + gap, plus 6px of extra breathing room. */
+    left: calc(1px + var(--acc-pad) + 13px + var(--acc-gap) + 50px + var(--acc-gap) + 6px);
+    z-index: 3;
+    display: none;
+    align-items: center;
+    gap: 3px;
+    box-sizing: border-box;
+    height: 17px;
+    padding: 0 5px;
+    transform: translateY(-50%);
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: var(--home-radius);
+    font-family: var(--home-font);
+    font-size: 10px;
+    line-height: 15px;
+    color: #1A1A1A;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.acc-panel.is-open > .acc-title > .acc-header-link {
+    display: inline-flex;
+}
+
+.acc-header-link:hover {
+    border-color: rgba(0, 0, 0, 0.35);
+}
+
+.acc-header-link:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 2px;
+}
+
+/* Beats the site-wide underline on every link state */
+.acc-title > a.acc-header-link,
+.acc-title > a.acc-header-link:link,
+.acc-title > a.acc-header-link:visited,
+.acc-title > a.acc-header-link:hover,
+.acc-title > a.acc-header-link:active {
+    text-decoration: none;
+}
+
+/* Just the arrow here, without the bordered square the Visit links use */
+.acc-header-link .external-link-icon {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border: 0;
+    border-radius: 0;
+}
+
+.acc-header-link svg {
+    display: block;
+    width: 9px;
+    height: 9px;
+}
+
 /* The open affordance, after the archetypeai.io button plus: four 2px arms
    pinned to the edges of a 24px box, leaving the centre open. On hover the
    arms close in on the centre while the whole mark turns half over. The arms
@@ -857,7 +928,7 @@ body {
 }
 
 /* ==========================================================================
-   HOME BODY — 1080 x 700 canvas
+   HOME BODY — 1080 x 720 canvas
    ========================================================================== */
 
 .home-stage {
@@ -874,8 +945,10 @@ body {
        strokes, not on top of them. */
     --home-frame-left: 463;
     --home-frame-right: 617.5;
-    --home-frame-top: 288;
-    --home-frame-bottom: 467;
+    /* The middle band (photo row) sits in the middle of the 720 canvas: the
+       top cell (0–270) and the bottom cell (450–720) are the same height. */
+    --home-frame-top: 270;
+    --home-frame-bottom: 449;
     --home-frame-rule: 1;
     position: relative;
     /* The layers below (rules, portrait, dots, credentials) are numbered 1–5
@@ -886,7 +959,7 @@ body {
        whole canvas sits below the label and the numbering stays private. */
     z-index: 0;
     width: 100%;
-    height: calc(700 * var(--u));
+    height: calc(720 * var(--u));
     overflow: hidden;
     font-family: var(--home-font);
 }
@@ -1061,7 +1134,7 @@ body {
 .home-dots {
     position: absolute;
     left: calc(409 * var(--u));
-    top: calc(250 * var(--u));
+    top: calc(232 * var(--u));
     z-index: 5;
     width: calc(261 * var(--u));
     height: calc(256 * var(--u));
@@ -1111,9 +1184,9 @@ body {
 
 .home-meta {
     /* Centred in its cell: the left column (0–463) between the two
-       horizontal rules (289–467), whatever height the text wraps to. */
+       horizontal rules (271–449), whatever height the text wraps to. */
     left: calc(231.5 * var(--u));
-    top: calc(378 * var(--u));
+    top: calc(360 * var(--u));
     transform: translate(-50%, -50%);
     width: calc(222.5 * var(--u));
     display: flex;
@@ -1131,9 +1204,9 @@ body {
 
 .home-bio {
     /* Centred in its cell: the middle column (464–617.6) below the lower
-       horizontal rule (468.1–700), whatever height the text wraps to. */
+       horizontal rule (450–720), whatever height the text wraps to. */
     left: calc(540.8 * var(--u));
-    top: calc(584 * var(--u));
+    top: calc(585 * var(--u));
     transform: translate(-50%, -50%);
 }
 
@@ -1177,10 +1250,10 @@ body {
 }
 
 /* Centred in its cell: the right column (618.6–1080.2) between the two
-   horizontal rules (289–467), whatever its text length. */
+   horizontal rules (271–449), whatever its text length. */
 .home-place--sf {
     left: calc(849.4 * var(--u));
-    top: calc(378 * var(--u));
+    top: calc(360 * var(--u));
     transform: translate(-50%, -50%);
 }
 
@@ -1415,7 +1488,9 @@ body {
         place-items: center;
         width: 100%;
         max-width: none;
-        height: 328px;
+        /* 256px dot field + 20px above and below; trimmed from 328px so the
+           Resume row and half the Glean row clear the fold on an 812px phone */
+        height: 296px;
         pointer-events: auto;
     }
 
