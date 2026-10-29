@@ -180,9 +180,9 @@ body {
     object-position: right center;
 }
 
-/* Composer demo is 16:9. Fill the card and keep the poster visible before the file buffers. */
+/* Composer thumbnail clip is 1080×720. Fill the card and keep the poster visible before the file buffers. */
 .case-hover-preview--wide {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1080 / 720;
 }
 
 .case-hover-preview--wide img,
