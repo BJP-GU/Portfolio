@@ -40,11 +40,11 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 88 × 60.5px meridian-globe logo with a ~17.75px inset above and below.
+    /* 112 × 44.35px globe-mark logo with a ~25.8px inset above and below.
        Scroll offsets and the sticky work sidebar both read this, so the header
        can only be resized in one place. */
-    --logo-w: 88px;
-    --logo-h: 60.5px; /* 88 × 716 / 1041, the globe's own proportions */
+    --logo-w: 112px;
+    --logo-h: 44.35px; /* 112 × 476 / 1202, the mark's own proportions */
     --header-h: 96px;
 }
 

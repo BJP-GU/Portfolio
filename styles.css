@@ -258,13 +258,12 @@ nav.main-grid .grid-cell {
 
 .home-button .site-logo__mark {
     display: block;
-    width: clamp(24.61px, 2.11vw + 7.04px, 35.16px);
     height: clamp(24.61px, 2.11vw + 7.04px, 35.16px);
 }
 
 .home-button .site-logo__p {
     display: block;
-    width: 100%;
+    width: auto;
     height: 100%;
 }
 
