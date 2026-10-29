@@ -10,10 +10,10 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#FAFAFA">
     <title>Bryce Parsons Designer</title>
-    <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
-    <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=meridian">
+    <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=meridian" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="styles.css?v=achievements-inline">
-    <link rel="stylesheet" href="home.css?v=no-hero-dots">
+    <link rel="stylesheet" href="home.css?v=header-globe">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -125,7 +125,7 @@
             <a class="site-logo" href="#home" id="home-logo" aria-label="Bryce Parsons — back to home">
                 <span class="site-logo__tooltip">Top of Page</span>
                 <span class="site-logo__mark" aria-hidden="true">
-                    <img class="site-logo__p" src="Icons/P.svg" alt="" width="77" height="77" decoding="async">
+                    <img class="site-logo__p" src="Icons/Meridian%20globe.svg?v=meridian" alt="" width="88" height="61" decoding="async">
                 </span>
             </a>
         </header>
@@ -3473,11 +3473,12 @@
                     accordion._trimPadTimer = setTimeout(trimLandingPad, DURATION + 40);
                 }
 
-                // Peek depends on the open body's height; refresh during and
-                // after the expand so it does not stay hidden from a mid-animation layout.
-                schedulePeekUpdate();
-                clearTimeout(accordion._peekExpandTimer);
-                accordion._peekExpandTimer = setTimeout(schedulePeekUpdate, DURATION + 40);
+                // Peek depends on the open body's height. Track it on every
+                // frame of the expand: the next row is pushed down until it
+                // reaches the bottom slot, and the peek takes over right there,
+                // so the row settles in place instead of sliding off-screen and
+                // popping back up once the animation ends.
+                trackPeekThroughExpand();
 
                 return target;
             }
@@ -3652,6 +3653,17 @@
 
                 syncPeekFrom(next);
                 peekRoot.hidden = false;
+            }
+
+            function trackPeekThroughExpand() {
+                cancelAnimationFrame(accordion._peekTrackRaf);
+                var until = performance.now() + DURATION + 80;
+                (function frame() {
+                    updatePeek();
+                    if (performance.now() < until) {
+                        accordion._peekTrackRaf = requestAnimationFrame(frame);
+                    }
+                })();
             }
 
             var peekTick = null;

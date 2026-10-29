@@ -40,10 +40,12 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 76.875px logo (1.875× the original 41px) with an 18px inset above and below.
+    /* 88 × 60.5px meridian-globe logo with a ~17.75px inset above and below.
        Scroll offsets and the sticky work sidebar both read this, so the header
        can only be resized in one place. */
-    --header-h: 112.875px;
+    --logo-w: 88px;
+    --logo-h: 60.5px; /* 88 × 716 / 1041, the globe's own proportions */
+    --header-h: 96px;
 }
 
 body {
@@ -206,8 +208,8 @@ body {
 .site-logo__mark,
 .site-logo__p {
     display: block;
-    width: 76.875px;
-    height: 76.875px;
+    width: var(--logo-w);
+    height: var(--logo-h);
 }
 
 /* ==========================================================================
@@ -1259,17 +1261,30 @@ body {
     padding-left: 20px;
     padding-right: 16px;
     justify-content: center;
+    transition: opacity 0.22s ease;
 }
 
 /* While the body is height-clipped, it becomes a scroll container and sticky
    jump links pin against it — they drop down the expanding panel, then jump
-   back when overflow is restored. Keep them in flow until the clip lifts. */
+   back when overflow is restored. Keep them in flow until the clip lifts, and
+   keep them hidden too: the nav only fades in once the case study has fully
+   opened and the links already sit in their centred, sticky position, so they
+   never visibly move. */
 .acc-panel.is-expanding .work-nav-sidebar,
 .acc-panel.is-collapsing .work-nav-sidebar {
     position: relative;
     top: auto;
     height: fit-content;
     justify-content: flex-start;
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .work-nav-sidebar {
+        transition: none;
+    }
 }
 
 .project-case:first-child {
@@ -1352,18 +1367,11 @@ body {
 @media (max-width: 720px) {
     :root {
         --site-gutter: 12px;
-        --header-h: 112.875px;
         --acc-gap: 12px;
     }
 
     .site-wrapper > .site-header {
         padding-left: 12px;
-    }
-
-    .site-logo__mark,
-    .site-logo__p {
-        width: 76.875px;
-        height: 76.875px;
     }
 
     .site-wrapper > .home-hero {
