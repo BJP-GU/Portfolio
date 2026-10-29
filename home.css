@@ -1124,46 +1124,6 @@ body {
     opacity: 0.9;
 }
 
-/* --- Dot grid ----------------------------------------------------------- */
-
-/* 4 columns x 6 rows of 6px dots, 85px apart across, 50px down.
-   Dropped one row above and below the 8-row field so the portrait
-   still sits in the middle. The whole field is the hover target; JS
-   sets --dot-s from cursor distance so a region of dots swells
-   without per-dot hit testing. */
-.home-dots {
-    position: absolute;
-    left: calc(409 * var(--u));
-    top: calc(232 * var(--u));
-    z-index: 5;
-    width: calc(261 * var(--u));
-    height: calc(256 * var(--u));
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(4, calc(6 * var(--u)));
-    grid-template-rows: repeat(6, calc(6 * var(--u)));
-    column-gap: calc(79 * var(--u));
-    row-gap: calc(44 * var(--u));
-    pointer-events: auto;
-}
-
-.home-dot {
-    width: calc(6 * var(--u));
-    height: calc(6 * var(--u));
-    border-radius: 50%;
-    background-color: var(--home-accent);
-    pointer-events: none;
-    transform: scale(var(--dot-s, 1));
-    transform-origin: center;
-    transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .home-dot {
-        transition: none;
-    }
-}
-
 /* --- Credentials & bio ------------------------------------------------- */
 
 /* Justified, all-caps blocks (Figma 1174:454). Each logo sits inline with the
@@ -1488,8 +1448,8 @@ body {
         place-items: center;
         width: 100%;
         max-width: none;
-        /* 256px dot field + 20px above and below; trimmed from 328px so the
-           Resume row and half the Glean row clear the fold on an 812px phone */
+        /* Portrait band; trimmed from 328px so the Resume row and half the
+           Glean row clear the fold on an 812px phone */
         height: 296px;
         pointer-events: auto;
     }
@@ -1502,30 +1462,6 @@ body {
         z-index: 3;
         width: 154px;
         height: 179px;
-        max-width: none;
-    }
-
-    /* Same 4×6 / 85×50 field as the desktop canvas, stacked on the
-       portrait so both share the centre of the 328px band. */
-    .home-dots {
-        position: relative;
-        left: auto;
-        top: auto;
-        grid-area: 1 / 1;
-        z-index: 5;
-        display: grid;
-        width: 261px;
-        height: 256px;
-        max-width: none;
-        grid-template-columns: repeat(4, 6px);
-        grid-template-rows: repeat(6, 6px);
-        column-gap: 79px;
-        row-gap: 44px;
-    }
-
-    .home-dot {
-        width: 6px;
-        height: 6px;
         max-width: none;
     }
 

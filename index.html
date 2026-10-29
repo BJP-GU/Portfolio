@@ -13,7 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=favicon-chrome-dark">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon-dark.svg?v=favicon-chrome-dark" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="styles.css?v=achievements-inline">
-    <link rel="stylesheet" href="home.css?v=hero-720-2">
+    <link rel="stylesheet" href="home.css?v=no-hero-dots">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -153,15 +153,6 @@
                         <figure class="home-portrait">
                             <img src="Homepage/home-portrait.jpg?v=home-portrait-2" alt="Bryce Parsons" loading="eager" decoding="async">
                         </figure>
-
-                        <span class="home-dots" aria-hidden="true">
-                            <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
-                            <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
-                            <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
-                            <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
-                            <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
-                            <span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span><span class="home-dot"></span>
-                        </span>
                     </div>
 
                     <span class="home-hrule home-hrule--b" aria-hidden="true"></span>
@@ -5846,93 +5837,6 @@
                     }).observe(deck, { attributes: true, attributeFilter: ['data-slide'] });
                 })();
 
-            // =============================================
-            // HOME DOTS — regional hover
-            // The whole 4×6 field is the hit target. Pointer position is
-            // mapped into grid-cell space so the nearest dots grow most
-            // (up to 2×) and the ring around them eases down to rest.
-            // One rAF + one getBoundingClientRect per move; no layout
-            // reads on the dots themselves. Step sizes come from the
-            // live box so the same math holds on the desktop canvas and
-            // the mobile frame.
-            // =============================================
-            (function initHomeDotRegion() {
-                var root = document.querySelector('.home-dots');
-                if (!root) return;
-
-                var COLS = 4;
-                var DOT = 6;
-                var DOT_R = DOT / 2;
-                var REACH = 1.85;
-                var dots = [].slice.call(root.querySelectorAll('.home-dot'));
-                var ROWS = Math.max(1, Math.round(dots.length / COLS));
-                var last = new Float32Array(dots.length);
-                var px = 0;
-                var py = 0;
-                var raf = 0;
-                var live = false;
-
-                function reset() {
-                    for (var i = 0; i < dots.length; i++) {
-                        if (last[i] === 1) continue;
-                        last[i] = 1;
-                        dots[i].style.removeProperty('--dot-s');
-                    }
-                }
-
-                function paint() {
-                    raf = 0;
-                    if (!live) {
-                        reset();
-                        return;
-                    }
-
-                    var rect = root.getBoundingClientRect();
-                    var colStep = COLS > 1 ? (rect.width - DOT) / (COLS - 1) : 0;
-                    var rowStep = ROWS > 1 ? (rect.height - DOT) / (ROWS - 1) : 0;
-                    var lx = px - rect.left;
-                    var ly = py - rect.top;
-                    var reach2 = REACH * REACH;
-
-                    for (var i = 0; i < dots.length; i++) {
-                        var dx = colStep ? (lx - (DOT_R + (i % COLS) * colStep)) / colStep : 0;
-                        var dy = rowStep ? (ly - (DOT_R + ((i / COLS) | 0) * rowStep)) / rowStep : 0;
-                        var d2 = dx * dx + dy * dy;
-                        var s = 1;
-                        if (d2 < reach2) {
-                            var t = 1 - Math.sqrt(d2) / REACH;
-                            t = t * t * (3 - 2 * t);
-                            s = 1 + t;
-                        }
-                        if (Math.abs(s - last[i]) < 0.012) continue;
-                        last[i] = s;
-                        if (s <= 1.012) dots[i].style.removeProperty('--dot-s');
-                        else dots[i].style.setProperty('--dot-s', s.toFixed(3));
-                    }
-                }
-
-                function schedule() {
-                    if (!raf) raf = requestAnimationFrame(paint);
-                }
-
-                root.addEventListener('pointerenter', function (e) {
-                    live = true;
-                    px = e.clientX;
-                    py = e.clientY;
-                    schedule();
-                });
-
-                root.addEventListener('pointermove', function (e) {
-                    px = e.clientX;
-                    py = e.clientY;
-                    if (live) schedule();
-                });
-
-                root.addEventListener('pointerleave', function () {
-                    live = false;
-                    schedule();
-                });
-            })();
 
             } catch (e) {
                 // Catch any errors in the main DOMContentLoaded handler
