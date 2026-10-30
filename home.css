@@ -61,8 +61,11 @@
        can only be resized in one place. */
     --site-col: min(var(--site-max), calc(100vw - 2 * var(--site-gutter)));
     --header-h: clamp(64px, calc(var(--site-col) * var(--header-k)), 96px);
-    --logo-w: calc(var(--header-h) * 112 / 96);
-    --logo-h: calc(var(--logo-w) * 486 / 1206); /* the mark's own proportions */
+    /* The file pads the 1206 x 486 artwork to 1222 x 494 so its outer ring
+       and shadow clear the image edge; the width is scaled up by the same
+       amount so the mark itself stays 112px wide at full size. */
+    --logo-w: calc(var(--header-h) * 112 / 96 * 1222 / 1206);
+    --logo-h: calc(var(--logo-w) * 494 / 1222); /* the file's own proportions */
 }
 
 body {

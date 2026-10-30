@@ -26,8 +26,8 @@
     <meta name="twitter:description" content="Product designer in San Francisco. Previously design at Glean, Kleiner Perkins Fellow, UC Berkeley Master of Design.">
     <meta name="twitter:image" content="https://brycejparsons.com/Homepage/og-image.png">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=globe-mark-3">
-    <link rel="stylesheet" href="styles.css?v=no-logo-tooltip">
-    <link rel="stylesheet" href="home.css?v=no-logo-tooltip">
+    <link rel="stylesheet" href="styles.css?v=logo-padding">
+    <link rel="stylesheet" href="home.css?v=logo-padding">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -138,7 +138,11 @@
         <header class="site-header">
             <a class="site-logo" href="#home" id="home-logo" aria-label="Bryce Parsons — back to home">
                 <span class="site-logo__mark" aria-hidden="true">
-                    <img class="site-logo__p" src="Icons/Globe%20mark.svg?v=globe-mark-3" alt="" width="112" height="45" decoding="async">
+                    <picture>
+                        <!-- Phones and tablets draw the SVG's blur filters at low resolution, so they get a 6x render of the same artwork. -->
+                        <source media="(max-width: 720px), (hover: none)" srcset="Icons/Globe%20mark.png?v=globe-mark-4">
+                        <img class="site-logo__p" src="Icons/Globe%20mark.svg?v=globe-mark-4" alt="" width="112" height="45" decoding="async">
+                    </picture>
                 </span>
             </a>
         </header>

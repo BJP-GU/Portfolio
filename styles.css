@@ -271,9 +271,9 @@ nav.main-grid .grid-cell {
    so it applies to the mark alone, not to everything inside the link. */
 .site-logo__mark {
     /* Where the light lands: on the outer ring, 35° up from its right end
-       (x 1085, y 109 of the mark's 1206 x 486 artwork). */
-    --glint-x: 89.5%;
-    --glint-y: 24.5%;
+       (x 1087, y 123 of the file's padded 1222 x 494 canvas). */
+    --glint-x: 89%;
+    --glint-y: 24.9%;
     position: relative;
     /* No transform or will-change at rest. Either one promotes the mark to
        its own compositor layer, which phones rasterise once at a fixed
@@ -308,8 +308,8 @@ nav.main-grid .grid-cell {
         rgba(255, 255, 255, 0.35) 45%,
         transparent 100%
     );
-    -webkit-mask: url("Icons/Globe%20mark.svg?v=globe-mark-3") center / 100% 100% no-repeat;
-    mask: url("Icons/Globe%20mark.svg?v=globe-mark-3") center / 100% 100% no-repeat;
+    -webkit-mask: url("Icons/Globe%20mark.svg?v=globe-mark-4") center / 100% 100% no-repeat;
+    mask: url("Icons/Globe%20mark.svg?v=globe-mark-4") center / 100% 100% no-repeat;
 }
 
 /* Star: a hot core with thin horizontal and vertical rays, the horizontal
