@@ -26,9 +26,11 @@
 
     --home-bg: #FAFAFA;
     --home-accent: #E8441F;
-    /* Figma draws 0.25px black hairlines; 1px at 45% reproduces that weight
-       consistently across pixel ratios. */
-    --home-rule: rgba(0, 0, 0, 0.45);
+    /* Figma draws 0.25px black hairlines; 1px of 45% black on the page
+       background reproduces that weight. It is mixed down to a solid grey so
+       crossing rules, and rules laid over the portrait's edge, never stack
+       into a darker pixel. */
+    --home-rule: #8A8A8A;
     /* Softens the section strokes; kept small so the stack still reads as a
        set of ruled rows rather than cards. */
     --home-radius: 4px;
@@ -40,11 +42,11 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 112 × 44.35px globe-mark logo with a ~25.8px inset above and below.
+    /* 112 × 45.13px globe-mark logo with a ~25.4px inset above and below.
        Scroll offsets and the sticky work sidebar both read this, so the header
        can only be resized in one place. */
     --logo-w: 112px;
-    --logo-h: 44.35px; /* 112 × 476 / 1202, the mark's own proportions */
+    --logo-h: 45.13px; /* 112 × 486 / 1206, the mark's own proportions */
     --header-h: 96px;
 }
 
@@ -91,14 +93,9 @@ body {
 
 .site-logo__mark {
     display: block;
-    transition: transform 0.2s ease;
 }
 
-/* Same grow as the resume page's .home-button; scale the mark only so the tooltip stays crisp. */
-.site-logo:hover .site-logo__mark,
-.site-logo:focus-visible .site-logo__mark {
-    transform: scale(1.1);
-}
+/* The hover tilt and glint live in styles.css, shared with the resume page. */
 
 .site-logo:focus-visible {
     outline: 1px solid var(--home-accent);
@@ -1078,10 +1075,13 @@ body {
 
 /* --- Rules -------------------------------------------------------------- */
 
+/* Every rule is a whole 1px, the same as the frame's border. Scaling the
+   width with the canvas left it at fractions of a pixel, which the browser
+   smeared across neighbouring pixels by a different amount for each rule. */
 .home-vrule {
     top: 0;
     z-index: 4;
-    width: calc(var(--home-frame-rule) * var(--u));
+    width: 1px;
     height: 100%;
     background-color: var(--home-rule);
 }
@@ -1093,7 +1093,7 @@ body {
     left: 0;
     z-index: 4;
     width: 100%;
-    height: calc(var(--home-frame-rule) * var(--u));
+    height: 1px;
     background-color: var(--home-rule);
 }
 
@@ -1102,14 +1102,17 @@ body {
 
 /* --- Portrait ----------------------------------------------------------- */
 
-/* Sits inside the four rules; each edge clears the 1px stroke. */
+/* Fills the cell between the four rules and tucks half a pixel under each
+   one. The photo's edge lands on a fraction of a pixel, so butting it against
+   a rule blended the two into a line that read heavier than the others; the
+   solid rules above it now cover that edge. */
 .home-portrait {
     position: absolute;
-    left: calc((var(--home-frame-left) + var(--home-frame-rule)) * var(--u));
-    top: calc((var(--home-frame-top) + var(--home-frame-rule)) * var(--u));
+    left: calc(var(--home-frame-left) * var(--u) + 0.5px);
+    top: calc(var(--home-frame-top) * var(--u) + 0.5px);
     z-index: 3;
-    width: calc((var(--home-frame-right) - var(--home-frame-left) - var(--home-frame-rule)) * var(--u));
-    height: calc((var(--home-frame-bottom) - var(--home-frame-top) - var(--home-frame-rule)) * var(--u));
+    width: calc((var(--home-frame-right) - var(--home-frame-left)) * var(--u));
+    height: calc((var(--home-frame-bottom) - var(--home-frame-top)) * var(--u));
     margin: 0;
     padding: 0;
     overflow: hidden;
