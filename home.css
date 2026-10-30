@@ -13,15 +13,26 @@
 
 :root {
     /* The column grows up to 1352px (25% wider than the original 1082px), but
-       never so wide that the home canvas pushes the Resume row, and at least
-       half of the Glean composer row, below the fold. The home canvas is
-       720/1080 of the column, so the middle of the second row lands at
-         header + 10px gap + 2px borders + 72.5px (gap, Resume row, gap, half a row)
+       never so wide that the home canvas pushes more than half of the Resume
+       row below the fold. The home canvas is 720/1080 of the column, so the
+       middle of the Resume row lands at
+         header + 10px gap + 2px borders + 27.5px (gap, half the Resume row)
          + 720/1080 × column
-       and solving for the column, with 8px of breathing room, gives the
-       height-based term. 720px is the floor for very short windows. */
-    --site-fold-reserve: calc(var(--header-h) + 10px + 2px + 72.5px + 8px);
-    --site-max: clamp(720px, calc((100vh - var(--site-fold-reserve)) * 1080 / 720 + 2px), 1352px);
+       The header is itself a share of the column (below), so the two are
+       solved together: with header = k × column, k = 96 / 1352,
+         column = (150vh − 57.25px) / (1 + 1.5k)
+       Once the header bottoms out at 64px it stops shrinking, and the second
+       term (the same sum with a 64px header) takes over. 720px is the floor
+       for very short windows. */
+    --header-k: 0.0710059;
+    --site-max: clamp(
+        720px,
+        min(
+            calc((150vh - 57.25px) / 1.1065089),
+            calc(150vh - 153.25px)
+        ),
+        1352px
+    );
     --site-gutter: 20px;
 
     --home-bg: #FAFAFA;
@@ -42,12 +53,16 @@
     --acc-duration: 600ms;
     --acc-ease: cubic-bezier(0.45, 0, 0.55, 1);
 
-    /* 112 × 45.13px globe-mark logo with a ~25.4px inset above and below.
-       Scroll offsets and the sticky work sidebar both read this, so the header
+    /* The header scales with the column it sits over, so it keeps the same
+       proportion to the site at every window size: 96px over the full 1352px
+       column, never shorter than 64px. The logo keeps its 112px-in-96px
+       proportion (a ~25.4px inset above and below at full size). Scroll
+       offsets and the sticky work sidebar both read --header-h, so the header
        can only be resized in one place. */
-    --logo-w: 112px;
-    --logo-h: 45.13px; /* 112 × 486 / 1206, the mark's own proportions */
-    --header-h: 96px;
+    --site-col: min(var(--site-max), calc(100vw - 2 * var(--site-gutter)));
+    --header-h: clamp(64px, calc(var(--site-col) * var(--header-k)), 96px);
+    --logo-w: calc(var(--header-h) * 112 / 96);
+    --logo-h: calc(var(--logo-w) * 486 / 1206); /* the mark's own proportions */
 }
 
 body {
@@ -102,7 +117,6 @@ body {
     outline-offset: 4px;
 }
 
-.site-logo__tooltip,
 .acc-next-tooltip {
     position: fixed;
     left: 0;
@@ -124,7 +138,6 @@ body {
     transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-.site-logo.is-tooltip-visible .site-logo__tooltip,
 .acc-next-tooltip.is-visible {
     opacity: 1;
     visibility: visible;
@@ -864,7 +877,6 @@ body {
     }
 
     .site-logo__mark,
-    .site-logo__tooltip,
     .acc-next-tooltip {
         transition: none;
     }
@@ -959,7 +971,9 @@ body {
     z-index: 0;
     width: 100%;
     height: calc(720 * var(--u));
-    overflow: hidden;
+    /* Not clipped, so the glint on the closing N can reach past the frame.
+       Everything else is positioned inside the canvas. */
+    overflow: visible;
     font-family: var(--home-font);
 }
 
@@ -1016,8 +1030,8 @@ body {
     position: absolute;
     right: 0;
     top: 0;
-    /* Cover the stroke-to-edge band and the wider Interaction label. */
-    width: max(var(--home-role-band), calc(548 * var(--u)));
+    /* Cover the stroke-to-edge band and the wider "& Interaction" label. */
+    width: max(var(--home-role-band), calc(632 * var(--u)));
     height: calc(92 * var(--u));
 }
 
@@ -1044,10 +1058,73 @@ body {
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    /* Figma 1023:1175 — #f3feab on #1A1A1A, Helvetica Bold 80px */
+    /* Figma 1023:1175 — Helvetica Bold 80px on #1A1A1A; the letters are
+       silvered to match the globe mark (below). */
     color: #f3feab;
     background-color: #1A1A1A;
     transition: opacity 240ms var(--acc-ease);
+}
+
+/* Fills the letters with the globe mark's chrome palette, run top to bottom
+   over the em box. The caps span about 5% to 77% of it, so the horizon is
+   centred on their midline (~41%) and eased from highlight to shadow over
+   a wide band, rather than the logo's hard edge, which read harsh at this
+   size. */
+.home-role-accent__metal {
+    display: inline-block;
+    line-height: 1;
+    background-image: linear-gradient(
+        180deg,
+        #B8B8BB 0%,
+        #FAFAFE 12%,
+        #C4C4C8 23%,
+        #F2F2F6 31%,
+        #FFFFFF 35%,
+        #D9D9DD 40%,
+        #A9A9AD 45%,
+        #86868A 51%,
+        #78787C 56%,
+        #8E8E92 62%,
+        #C9C9CD 69%,
+        #F4F4F8 76%,
+        #FCFCFF 82%,
+        #919195 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Glint: the same four-point star the logo catches, centred on the outer
+   top right corner of the closing N. */
+.home-role-accent__alt::after {
+    content: "";
+    position: absolute;
+    right: calc(var(--glint-n-right) * var(--u));
+    top: calc(var(--glint-n-top) * var(--u));
+    width: calc(30 * var(--u));
+    height: calc(24 * var(--u));
+    margin: calc(-12 * var(--u)) calc(-15 * var(--u)) 0 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle, #fff 0, rgba(255, 255, 255, 0.9) 6%, rgba(255, 255, 255, 0.25) 18%, transparent 34%),
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent) center / 100% calc(2 * var(--u)) no-repeat,
+        linear-gradient(0deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent) center / calc(2 * var(--u)) 100% no-repeat;
+    /* The rays that pass the frame land on the near-white page, where white
+       alone would vanish; a faint shadow traces them there, as on the logo's
+       star, and disappears into the dark band. */
+    filter: drop-shadow(0 0 calc(0.6 * var(--u)) rgba(0, 0, 0, 0.55)) drop-shadow(0 0 calc(3 * var(--u)) rgba(0, 0, 0, 0.12));
+    opacity: 0;
+    transform: scale(0.2) rotate(-12deg);
+}
+
+.home-role-accent__alt {
+    /* The N's outer top right corner, measured from the band's right and
+       top edges in canvas units: the glyph's right side bearing, and the cap
+       line. The star is centred on it, so its rays reach past the frame. */
+    --glint-n-right: 5.2;
+    --glint-n-top: 16.2;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1064,12 +1141,24 @@ body {
     .home-role-accent:focus-visible .home-role-accent__alt {
         opacity: 1;
     }
+
+    /* Flicks once as the label finishes fading in, then stays dark for the
+       rest of the hover. Shares the logo's keyframes in styles.css. */
+    .home-role-accent:hover .home-role-accent__alt::after,
+    .home-role-accent:focus-visible .home-role-accent__alt::after {
+        animation: site-logo-glint 1000ms cubic-bezier(0.3, 0, 0.2, 1) 200ms both;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .home-role-accent__default,
     .home-role-accent__alt {
         transition: none;
+    }
+
+    .home-role-accent:hover .home-role-accent__alt::after,
+    .home-role-accent:focus-visible .home-role-accent__alt::after {
+        animation: none;
     }
 }
 
@@ -1367,39 +1456,30 @@ body {
 
 /* ==========================================================================
    SMALL SCREENS — Figma node 1015:454
-   Home is a stacked column (lede, credentials, 4×6 dots around the
-   portrait) and the accordion starts at Resume. The 390 frame insets
-   12px, then 12px of padding, so the hero and the index share a 342px
-   content width.
+   Home is a stacked column (lede, credentials, bio, links) and the
+   accordion starts at Resume. Everything sits 12px in from the screen edge,
+   so on a 390 frame the hero and the index share a 366px content width.
    ========================================================================== */
 
 @media (max-width: 720px) {
     :root {
         --site-gutter: 12px;
         --acc-gap: 12px;
+        /* Below the desktop floor: on a phone the header is a much larger
+           share of the screen. The logo follows at ~65px wide with a ~14px
+           inset above and below. */
+        --header-h: 56px;
     }
 
+    /* The 12px gutter is the only inset from the screen edge: the logo, the
+       home column, the rows and the footer all run edge to edge inside it. */
     .site-wrapper > .site-header {
-        padding-left: 12px;
+        padding-left: 0;
     }
 
     .site-wrapper > .home-hero {
         border: none;
-        padding: 12px;
-    }
-
-    .accordion,
-    .site-footer {
-        padding-inline: 12px;
-    }
-
-    /* The peek must share the panels' column, which the accordion's inline
-       padding narrows here, or its bottom edge overhangs the panel's sides
-       and the row jumps width at the handoff. */
-    .acc-peek-next__row,
-    .acc-peek-next::before,
-    .acc-peek-next::after {
-        width: calc(100% - 2 * var(--site-gutter) - 24px);
+        padding: 12px 0;
     }
 
     /* The row is too narrow to seat the tags beside the case study without

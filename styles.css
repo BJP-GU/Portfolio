@@ -268,18 +268,19 @@ nav.main-grid .grid-cell {
    badge tipped into the light, and that edge catches it: a four-point star
    flicks on where the outer ring curves over at the upper right, and the
    metal just under it blooms. The perspective is written into the transform
-   rather than set on the link: perspective on an ancestor would become the
-   containing block for the fixed-position tooltip. */
+   so it applies to the mark alone, not to everything inside the link. */
 .site-logo__mark {
     /* Where the light lands: on the outer ring, 35° up from its right end
        (x 1085, y 109 of the mark's 1206 x 486 artwork). */
     --glint-x: 89.5%;
     --glint-y: 24.5%;
     position: relative;
-    transform: perspective(420px) rotateY(0deg) rotateX(0deg) scale(1);
+    /* No transform or will-change at rest. Either one promotes the mark to
+       its own compositor layer, which phones rasterise once at a fixed
+       resolution and then scale, so the logo came out pixelated on devices
+       that never hover. The tilt below interpolates from none. */
     transform-origin: 50% 50%;
     transition: transform 700ms cubic-bezier(0.22, 0.8, 0.24, 1);
-    will-change: transform;
 }
 
 .site-logo__p {

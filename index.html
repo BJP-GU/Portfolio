@@ -26,8 +26,8 @@
     <meta name="twitter:description" content="Product designer in San Francisco. Previously design at Glean, Kleiner Perkins Fellow, UC Berkeley Master of Design.">
     <meta name="twitter:image" content="https://brycejparsons.com/Homepage/og-image.png">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=globe-mark-3">
-    <link rel="stylesheet" href="styles.css?v=logo-star-2">
-    <link rel="stylesheet" href="home.css?v=logo-glint">
+    <link rel="stylesheet" href="styles.css?v=no-logo-tooltip">
+    <link rel="stylesheet" href="home.css?v=no-logo-tooltip">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -137,7 +137,6 @@
     <div class="site-wrapper">
         <header class="site-header">
             <a class="site-logo" href="#home" id="home-logo" aria-label="Bryce Parsons — back to home">
-                <span class="site-logo__tooltip">Top of Page</span>
                 <span class="site-logo__mark" aria-hidden="true">
                     <img class="site-logo__p" src="Icons/Globe%20mark.svg?v=globe-mark-3" alt="" width="112" height="45" decoding="async">
                 </span>
@@ -149,12 +148,12 @@
                 <div class="home-canvas">
                     <p class="home-lede" aria-hidden="true">BRYCE PARSONS— <span class="home-role-accent">Product</span> Designer BASED IN SAN FRANCISCO, CA.</p>
                     <h1 class="home-name">Bryce Parsons</h1>
-                    <p class="home-role"><span class="home-role-accent"><span class="home-role-accent__default">Product</span><span class="home-role-accent__alt" aria-hidden="true">Interaction</span></span><br>Designer</p>
+                    <p class="home-role"><span class="home-role-accent"><span class="home-role-accent__default">Product</span><span class="home-role-accent__alt" aria-hidden="true"><span class="home-role-accent__metal">&amp; Interaction</span></span></span><br>Designer</p>
 
                     <div class="home-meta">
-                        <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/kleiner-perkins.svg" alt="" width="13" height="13" decoding="async">Kleiner</span> Perkins Fellow</p>
-                        <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/glean.svg" alt="" width="13" height="13" decoding="async">Previously</span> design at Glean</p>
-                        <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/berkeley.svg" alt="" width="13" height="13" decoding="async">UC</span> Berkeley Master of Design</p>
+                        <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/kleiner-perkins.svg?v=color" alt="" width="13" height="13" decoding="async">Kleiner</span> Perkins Fellow</p>
+                        <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/glean.svg?v=color" alt="" width="13" height="13" decoding="async">Previously</span> design at Glean</p>
+                        <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/berkeley.svg?v=color" alt="" width="13" height="13" decoding="async">UC</span> Berkeley Master of Design</p>
                     </div>
 
                     <p class="home-bio">6 years of experience including design and strategy work at Glean, Onlook (YC), the Gates Foundation, Microsoft, Nintendo, and more.</p>
@@ -3773,30 +3772,6 @@
             // closes any open panel and returns to the top.
             var homeLogo = document.getElementById('home-logo');
             if (homeLogo) {
-                var logoTooltip = homeLogo.querySelector('.site-logo__tooltip');
-                if (logoTooltip) {
-                    var tooltipOffsetX = 12;
-
-                    homeLogo.addEventListener('mouseenter', function(e) {
-                        homeLogo.classList.add('is-tooltip-visible');
-                        placeCursorTooltip(logoTooltip, e.clientX, e.clientY, tooltipOffsetX);
-                    });
-                    homeLogo.addEventListener('mousemove', function(e) {
-                        placeCursorTooltip(logoTooltip, e.clientX, e.clientY, tooltipOffsetX);
-                    });
-                    homeLogo.addEventListener('mouseleave', function() {
-                        homeLogo.classList.remove('is-tooltip-visible');
-                    });
-                    homeLogo.addEventListener('focus', function() {
-                        homeLogo.classList.add('is-tooltip-visible');
-                        var rect = homeLogo.getBoundingClientRect();
-                        placeCursorTooltip(logoTooltip, rect.right, rect.top + rect.height / 2, tooltipOffsetX);
-                    });
-                    homeLogo.addEventListener('blur', function() {
-                        homeLogo.classList.remove('is-tooltip-visible');
-                    });
-                }
-
                 homeLogo.addEventListener('click', function(e) {
                     e.preventDefault();
                     if (introPlaying) return;
