@@ -1186,6 +1186,12 @@ body {
     object-fit: contain;
 }
 
+/* Social links sit under the bio on small screens only; desktop keeps them
+   in the footer. */
+.home-links {
+    display: none;
+}
+
 /* --- Locations ---------------------------------------------------------- */
 
 .home-places {
@@ -1500,6 +1506,42 @@ body {
         height: 12.5px;
         margin-right: 4px;
         vertical-align: -2px;
+    }
+
+    /* No portrait on mobile: the column runs straight from the credentials
+       to the links. */
+    .home-canvas > .home-photo {
+        display: none;
+    }
+
+    /* Each link carries 12px above and below, so the tap target clears 40px
+       while the row still reads as one line of text. */
+    .home-links {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 28px;
+        margin-top: -12px;
+    }
+
+    .home-links .home-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 0;
+        font-size: 11.675px;
+        line-height: 16px;
+        color: var(--case-text-label);
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .home-links .home-link:focus-visible {
+        outline: 1px solid var(--case-text-label);
+        outline-offset: 2px;
+    }
+
+    .home-link__arrow {
+        flex-shrink: 0;
     }
 
 
