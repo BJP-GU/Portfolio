@@ -27,7 +27,7 @@
     <meta name="twitter:image" content="https://brycejparsons.com/Homepage/og-image.png">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=globe-mark-3">
     <link rel="stylesheet" href="styles.css?v=logo-padding">
-    <link rel="stylesheet" href="home.css?v=logo-padding">
+    <link rel="stylesheet" href="home.css?v=portrait-lens-9">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -152,7 +152,7 @@
                 <div class="home-canvas">
                     <p class="home-lede" aria-hidden="true">BRYCE PARSONS— <span class="home-role-accent">Product</span> Designer BASED IN SAN FRANCISCO, CA.</p>
                     <h1 class="home-name">Bryce Parsons</h1>
-                    <p class="home-role"><span class="home-role-accent"><span class="home-role-accent__default">Product</span><span class="home-role-accent__alt" aria-hidden="true"><span class="home-role-accent__metal">&amp; Interaction</span></span></span><br>Designer</p>
+                    <p class="home-role"><span class="home-role-accent">Product</span><br>Designer</p>
 
                     <div class="home-meta">
                         <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/kleiner-perkins.svg?v=color" alt="" width="13" height="13" decoding="async">Kleiner</span> Perkins Fellow</p>
@@ -160,7 +160,7 @@
                         <p><span class="home-meta__lead"><img class="home-meta__icon" src="Icons/berkeley.svg?v=color" alt="" width="13" height="13" decoding="async">UC</span> Berkeley Master of Design</p>
                     </div>
 
-                    <p class="home-bio">6 years of experience including design and strategy work at Glean, Onlook (YC), the Gates Foundation, Microsoft, Nintendo, and more.</p>
+                    <p class="home-bio">6 years of experience including design and strategy work at Glean, Onlook (YC), the Gates Foundation, Microsoft, and Nintendo.</p>
 
                     <nav class="home-links" aria-label="Elsewhere">
                         <a class="home-link" href="https://www.linkedin.com/in/brycejparsons" target="_blank" rel="noopener noreferrer">LinkedIn<svg class="home-link__arrow" width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -2959,7 +2959,7 @@
                                             <div class="project-summary-grid">
                                                 <div class="project-summary-row project-summary-row--summary">
                                                     <span class="project-summary-label">/ SUMMARY</span>
-                                                    <p class="project-summary-text">Building a tool for product teams to test software with their target customers using synthetic users.</p>
+                                                    <p class="project-summary-text">I built a tool for product teams to test software with their target customers using synthetic users.</p>
                                                 </div>
                                                 <div class="project-summary-row">
                                                     <span class="project-summary-label">/ ACHIEVEMENTS</span>
@@ -3070,10 +3070,14 @@
                     <a href="mailto:bryceparsons@berkeley.edu" class="footer-link">bryceparsons@berkeley.edu</a>
                 </div>
                 <div class="footer-section">
-                    <span class="footer-label">/ this website</span>
-                    <span class="footer-text">Built by me using Cursor.</span>
+                    <span class="footer-label">/ Something to live by</span>
+                    <span class="footer-text">“To give anything less than your best is to sacrifice the gift.”<br>— Steve Prefontaine</span>
                 </div>
             </div>
+            <picture class="footer-logo">
+                <source media="(max-width: 720px), (hover: none)" srcset="Icons/Globe%20mark.png?v=globe-mark-4">
+                <img src="Icons/Globe%20mark.svg?v=globe-mark-4" alt="Bryce Parsons" width="180" height="73" loading="lazy" decoding="async">
+            </picture>
         </footer>
     </div>
 
@@ -3148,7 +3152,7 @@
                 var header = document.getElementById(headerId);
                 if (!header) return;
                 var preview = document.createElement('div');
-                preview.className = 'case-hover-preview' + (opts.video ? (opts.cover === false ? ' case-hover-preview--wide' : ' case-hover-preview--video') : '');
+                preview.className = 'case-hover-preview' + (opts.video ? (opts.cover === false ? ' case-hover-preview--wide' : ' case-hover-preview--video') : '') + (opts.portrait ? ' case-hover-preview--portrait' : '');
                 preview.setAttribute('aria-hidden', 'true');
                 var media;
                 if (opts.video) {
@@ -3236,7 +3240,7 @@
                 });
             }
 
-            bindCaseHoverPreview('header-about', 'Homepage/resume-preview.jpg?v=resume-hover-2');
+            bindCaseHoverPreview('header-about', 'Homepage/resume-preview.jpg?v=resume-pdf-2', { portrait: true });
             bindCaseHoverPreview('header-glean-composer', 'Glean/Glean%20Composer%20Thumbnail%20Video.mp4?v=composer-thumb', {
                 video: true,
                 cover: false,
@@ -3249,6 +3253,59 @@
             });
             bindCaseHoverPreview('header-onlook', 'Onlook/onlook-case-preview.png?v=onlook-hover');
             bindCaseHoverPreview('header-archetype', 'Archetype/archetype-case-preview.webp?v=archetype-hover');
+
+            // Portrait lens: over the home portrait the cursor becomes a small
+            // rounded square that shows the halftone version of whatever part
+            // of the photo sits beneath it. The halftone layer is sized and
+            // placed to match the portrait exactly, then shifted against the
+            // square's own position, so the square reads as a window onto it.
+            (function bindPortraitLens() {
+                if (!canShowHoverPreviews()) return;
+                var portrait = document.querySelector('.home-portrait');
+                if (!portrait) return;
+                var lens = document.createElement('div');
+                lens.className = 'portrait-lens';
+                lens.setAttribute('aria-hidden', 'true');
+                var layer = document.createElement('div');
+                layer.className = 'portrait-lens__layer';
+                lens.appendChild(layer);
+                document.body.appendChild(lens);
+
+                var raf = 0;
+                var lastX = 0;
+                var lastY = 0;
+
+                function place() {
+                    raf = 0;
+                    var rect = portrait.getBoundingClientRect();
+                    var size = lens.offsetWidth;
+                    var x = lastX - size / 2;
+                    var y = lastY - size / 2;
+                    lens.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+                    layer.style.width = rect.width + 'px';
+                    layer.style.height = rect.height + 'px';
+                    layer.style.transform = 'translate(' + (rect.left - x) + 'px, ' + (rect.top - y) + 'px)';
+                }
+
+                function track(e) {
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                    if (!raf) raf = requestAnimationFrame(place);
+                }
+
+                portrait.addEventListener('pointerenter', function(e) {
+                    track(e);
+                    lens.classList.add('is-visible');
+                });
+                portrait.addEventListener('pointermove', track);
+                portrait.addEventListener('pointerleave', function() {
+                    lens.classList.remove('is-visible');
+                });
+                // Scrolling moves the portrait under a still pointer.
+                window.addEventListener('scroll', function() {
+                    if (lens.classList.contains('is-visible') && !raf) raf = requestAnimationFrame(place);
+                }, { passive: true });
+            })();
 
             function prefersReducedMotion() {
                 try {

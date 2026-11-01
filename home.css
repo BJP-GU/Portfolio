@@ -175,6 +175,13 @@ body {
     visibility: visible;
 }
 
+/* A portrait page (the resume) at the landscape cards' width would be about
+   twice their area, so it is narrowed to roughly match them: 290 × 411px
+   against their 420 × ~280px, scaling down with the window in step. */
+.case-hover-preview--portrait {
+    width: min(290px, 32vw);
+}
+
 /* Image cards are 2560×1800. The video fills that same box and stays aligned right so the cane user remains in frame. */
 .case-hover-preview--video {
     aspect-ratio: 2560 / 1800;
@@ -516,7 +523,8 @@ body {
     padding-right: var(--acc-pad);
 }
 
-.acc-peek-next__row[data-reserved] .acc-header::after {
+.acc-peek-next__row[data-reserved] .acc-header::after,
+.acc-peek-next__row[data-reserved] .acc-header::before {
     content: none;
 }
 
@@ -719,9 +727,14 @@ body {
    are background layers rather than markup so every row gets the mark for
    free, and an even stroke in an even box keeps the arms on the pixel grid.
    It keeps its place in the row at rest and only fades in, so the row does
-   not reflow under the pointer, and it stays black, so the mark alone is the
-   hover affordance. The hover turn rides on `transform` and the open turn on
-   `rotate`, so each keeps its own timing and the two compose. */
+   not reflow under the pointer. It is silvered to match the globe mark: the
+   box is filled with a chrome sweep in the logo's greys, and the four arms
+   are a mask that cuts the plus out of it, so the sheen turns with the mark
+   as it rotates. The ramp sits darker than the logo's, with one bright band
+   through the centre, since 2px arms on the near-white page need the contrast
+   at their tips. The hover turn rides on `transform` and
+   the open turn on `rotate`, so each keeps its own timing and the two
+   compose. */
 .acc-header::after {
     content: '';
     position: absolute;
@@ -730,28 +743,83 @@ body {
     width: var(--acc-icon-size);
     height: var(--acc-icon-size);
     margin-top: calc(var(--acc-icon-size) / -2);
-    background-image:
-        linear-gradient(var(--body-text), var(--body-text)),
-        linear-gradient(var(--body-text), var(--body-text)),
-        linear-gradient(var(--body-text), var(--body-text)),
-        linear-gradient(var(--body-text), var(--body-text));
-    background-size:
+    background-image: linear-gradient(
+        135deg,
+        #4F4F53 0%,
+        #6E6E72 20%,
+        #9A9A9E 36%,
+        #E8E8EC 47%,
+        #FAFAFE 50%,
+        #A9A9AD 55%,
+        #6E6E72 68%,
+        #5E5E62 84%,
+        #4F4F53 100%
+    );
+    -webkit-mask-image:
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000);
+    mask-image:
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000);
+    -webkit-mask-size:
         var(--acc-icon-stroke) var(--acc-icon-arm),
         var(--acc-icon-stroke) var(--acc-icon-arm),
         var(--acc-icon-arm) var(--acc-icon-stroke),
         var(--acc-icon-arm) var(--acc-icon-stroke);
-    background-position:
+    mask-size:
+        var(--acc-icon-stroke) var(--acc-icon-arm),
+        var(--acc-icon-stroke) var(--acc-icon-arm),
+        var(--acc-icon-arm) var(--acc-icon-stroke),
+        var(--acc-icon-arm) var(--acc-icon-stroke);
+    -webkit-mask-position:
         var(--acc-icon-offset) var(--acc-icon-inset),
         var(--acc-icon-offset) calc(100% - var(--acc-icon-inset)),
         var(--acc-icon-inset) var(--acc-icon-offset),
         calc(100% - var(--acc-icon-inset)) var(--acc-icon-offset);
-    background-repeat: no-repeat;
+    mask-position:
+        var(--acc-icon-offset) var(--acc-icon-inset),
+        var(--acc-icon-offset) calc(100% - var(--acc-icon-inset)),
+        var(--acc-icon-inset) var(--acc-icon-offset),
+        calc(100% - var(--acc-icon-inset)) var(--acc-icon-offset);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
     transform-origin: center center;
     opacity: 0;
     transition: opacity 0.2s ease,
-                background-position 0.6s var(--acc-icon-smooth),
+                -webkit-mask-position 0.6s var(--acc-icon-smooth),
+                mask-position 0.6s var(--acc-icon-smooth),
                 transform 0.6s var(--acc-icon-smooth),
                 rotate var(--acc-duration) var(--acc-ease);
+}
+
+/* Glint: as the plus finishes its half turn, the square outer corner of its
+   right arm catches the light with the same four-point star as the logo. White alone
+   would vanish on the near-white page, so a faint shadow traces the rays
+   where they leave the metal. */
+.acc-header::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    /* Centred on the right arm's top outer corner once the arms have closed
+       in: 4px in from the box's right side (the closed inset), and half the
+       stroke above the midline. */
+    right: calc(var(--acc-pad) + 4px);
+    width: 16px;
+    height: 12px;
+    margin: calc(-1 * var(--acc-icon-stroke) / 2 - 6px) -8px 0 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle, #fff 0, rgba(255, 255, 255, 0.9) 6%, rgba(255, 255, 255, 0.25) 18%, transparent 34%),
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent) center / 100% 1px no-repeat,
+        linear-gradient(0deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent) center / 1px 100% no-repeat;
+    filter: drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 2px rgba(0, 0, 0, 0.12));
+    opacity: 0;
+    transform: scale(0.2) rotate(-12deg);
 }
 
 .acc-header:hover::after,
@@ -762,6 +830,14 @@ body {
 .acc-header:hover::after {
     --acc-icon-inset: 4px;
     transform: rotate(180deg);
+}
+
+/* Flicks once per hover, timed to land as the half turn settles. Shares the
+   logo's keyframes in styles.css. */
+@media (hover: hover) and (pointer: fine) {
+    .acc-header:hover::before {
+        animation: site-logo-glint 900ms cubic-bezier(0.3, 0, 0.2, 1) 380ms both;
+    }
 }
 
 /* Open, the plus turns into a cross: the same mark, so the row reads as one
@@ -783,7 +859,8 @@ body {
     padding-right: var(--acc-pad);
 }
 
-.acc-panel[data-reserved] .acc-header::after {
+.acc-panel[data-reserved] .acc-header::after,
+.acc-panel[data-reserved] .acc-header::before {
     content: none;
 }
 
@@ -874,9 +951,14 @@ body {
         transition: none;
     }
 
-    /* The body snaps open here, so the mark snaps over with it. */
+    /* The body snaps open here, so the mark snaps over with it, and the
+       glint stays dark. */
     .acc-header::after {
         transition: none;
+    }
+
+    .acc-header:hover::before {
+        animation: none;
     }
 
     .site-logo__mark,
@@ -974,9 +1056,7 @@ body {
     z-index: 0;
     width: 100%;
     height: calc(720 * var(--u));
-    /* Not clipped, so the glint on the closing N can reach past the frame.
-       Everything else is positioned inside the canvas. */
-    overflow: visible;
+    overflow: hidden;
     font-family: var(--home-font);
 }
 
@@ -1013,156 +1093,12 @@ body {
     box-sizing: border-box;
     padding-right: calc(var(--home-headline-inset) * var(--u));
     text-align: right;
-    /* Above the places positioning frame so the accent word can receive hover. */
     z-index: 5;
 }
 
-/* The dot grid uses --home-accent, scoped to the canvas so the rest of the
-   shell keeps its own accent. The role word is set in site black. */
+/* The role word is set in site black. */
 .home-role-accent {
-    --home-role-band: calc((462.5 - var(--home-frame-rule)) * var(--u));
-    position: relative;
-    display: inline-block;
     color: var(--body-text);
-}
-
-/* Stretch the hover target across the role column so the extended
-   Interaction band does not drop hover when the pointer leaves "Product". */
-.home-role-accent::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    /* Cover the stroke-to-edge band and the wider "& Interaction" label. */
-    width: max(var(--home-role-band), calc(632 * var(--u)));
-    height: calc(92 * var(--u));
-}
-
-.home-role-accent__default {
-    transition: opacity 240ms var(--acc-ease);
-}
-
-/* Desktop: swap Product → Interaction on hover (Figma 1023:1175).
-   Band runs from the inner vertical stroke to the home frame's right edge;
-   the label stays end-aligned inside it (inset matches the headline). */
-.home-role-accent__alt {
-    position: absolute;
-    right: calc(-1 * var(--home-headline-inset) * var(--u));
-    top: 0;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    box-sizing: border-box;
-    /* At least to the inner vertical stroke; grow if the label is longer. */
-    min-width: var(--home-role-band);
-    width: max-content;
-    height: calc(92 * var(--u));
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    /* Figma 1023:1175 — Helvetica Bold 80px on #1A1A1A; the letters are
-       silvered to match the globe mark (below). */
-    color: #f3feab;
-    background-color: #1A1A1A;
-    transition: opacity 240ms var(--acc-ease);
-}
-
-/* Fills the letters with the globe mark's chrome palette, run top to bottom
-   over the em box. The caps span about 5% to 77% of it, so the horizon is
-   centred on their midline (~41%) and eased from highlight to shadow over
-   a wide band, rather than the logo's hard edge, which read harsh at this
-   size. */
-.home-role-accent__metal {
-    display: inline-block;
-    line-height: 1;
-    background-image: linear-gradient(
-        180deg,
-        #B8B8BB 0%,
-        #FAFAFE 12%,
-        #C4C4C8 23%,
-        #F2F2F6 31%,
-        #FFFFFF 35%,
-        #D9D9DD 40%,
-        #A9A9AD 45%,
-        #86868A 51%,
-        #78787C 56%,
-        #8E8E92 62%,
-        #C9C9CD 69%,
-        #F4F4F8 76%,
-        #FCFCFF 82%,
-        #919195 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
-
-/* Glint: the same four-point star the logo catches, centred on the outer
-   top right corner of the closing N. */
-.home-role-accent__alt::after {
-    content: "";
-    position: absolute;
-    right: calc(var(--glint-n-right) * var(--u));
-    top: calc(var(--glint-n-top) * var(--u));
-    width: calc(30 * var(--u));
-    height: calc(24 * var(--u));
-    margin: calc(-12 * var(--u)) calc(-15 * var(--u)) 0 0;
-    pointer-events: none;
-    background:
-        radial-gradient(circle, #fff 0, rgba(255, 255, 255, 0.9) 6%, rgba(255, 255, 255, 0.25) 18%, transparent 34%),
-        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent) center / 100% calc(2 * var(--u)) no-repeat,
-        linear-gradient(0deg, transparent, rgba(255, 255, 255, 0.95) 50%, transparent) center / calc(2 * var(--u)) 100% no-repeat;
-    /* The rays that pass the frame land on the near-white page, where white
-       alone would vanish; a faint shadow traces them there, as on the logo's
-       star, and disappears into the dark band. */
-    filter: drop-shadow(0 0 calc(0.6 * var(--u)) rgba(0, 0, 0, 0.55)) drop-shadow(0 0 calc(3 * var(--u)) rgba(0, 0, 0, 0.12));
-    opacity: 0;
-    transform: scale(0.2) rotate(-12deg);
-}
-
-.home-role-accent__alt {
-    /* The N's outer top right corner, measured from the band's right and
-       top edges in canvas units: the glyph's right side bearing, and the cap
-       line. The star is centred on it, so its rays reach past the frame. */
-    --glint-n-right: 5.2;
-    --glint-n-top: 16.2;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .home-role-accent {
-        cursor: default;
-    }
-
-    .home-role-accent:hover .home-role-accent__default,
-    .home-role-accent:focus-visible .home-role-accent__default {
-        opacity: 0;
-    }
-
-    .home-role-accent:hover .home-role-accent__alt,
-    .home-role-accent:focus-visible .home-role-accent__alt {
-        opacity: 1;
-    }
-
-    /* Flicks once as the label finishes fading in, then stays dark for the
-       rest of the hover. Shares the logo's keyframes in styles.css. */
-    .home-role-accent:hover .home-role-accent__alt::after,
-    .home-role-accent:focus-visible .home-role-accent__alt::after {
-        animation: site-logo-glint 1000ms cubic-bezier(0.3, 0, 0.2, 1) 200ms both;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .home-role-accent__default,
-    .home-role-accent__alt {
-        transition: none;
-    }
-
-    .home-role-accent:hover .home-role-accent__alt::after,
-    .home-role-accent:focus-visible .home-role-accent__alt::after {
-        animation: none;
-    }
 }
 
 /* --- Rules -------------------------------------------------------------- */
@@ -1219,6 +1155,55 @@ body {
     object-fit: cover;
     object-position: center center;
     opacity: 0.9;
+}
+
+/* --- Portrait lens -------------------------------------------------------
+   On desktop the cursor over the portrait becomes a rounded square, with the
+   system radius, that shows a halftone of the photo beneath it in the site
+   black on the page white. The script places the square on the pointer and
+   slides the halftone layer against it, sized to the portrait, so the two
+   line up. The photo's full-canvas frame never takes the pointer, so the
+   portrait alone opts back in here. */
+@media (hover: hover) and (pointer: fine) and (min-width: 721px) {
+    .home-portrait {
+        pointer-events: auto;
+        cursor: none;
+    }
+}
+
+.portrait-lens {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 230;
+    width: 120px;
+    height: 120px;
+    border-radius: var(--home-radius);
+    overflow: hidden;
+    background-color: var(--home-bg);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    will-change: transform;
+}
+
+.portrait-lens.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.portrait-lens__layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url("Homepage/home-portrait-halftone.png?v=halftone-5") center / cover no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .portrait-lens {
+        transition: none;
+    }
 }
 
 /* --- Credentials & bio ------------------------------------------------- */
@@ -1424,33 +1409,81 @@ body {
 
 /* ==========================================================================
    FOOTER
-   Restyled from the standalone blue block into a row that matches the stack.
+   A block in the site black that closes the page, with the text inverted to
+   the page white. It keeps the column's width, so its sides line up with the
+   rows above, and sits flush on the bottom of the page, with all four corners
+   rounded like the rows. Inside, a two-column grid on two rows: the three link
+   groups across the right half on top, and the silver mark in the bottom
+   left, directly under the line the groups end on and 24px off the bottom.
    ========================================================================== */
 
 .site-footer {
+    box-sizing: border-box;
     width: min(var(--site-max), calc(100% - 2 * var(--site-gutter)));
-    margin: 0 auto calc(var(--acc-gap) * 4);
-    padding: 28px 20px;
-    border: 1px solid var(--home-rule);
+    margin: 0 auto;
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0;
+    border: none;
     border-radius: var(--home-radius);
-    background-color: var(--home-bg);
-    color: #1A1A1A;
+    background-color: var(--body-text);
+    color: var(--home-bg);
     z-index: auto;
 }
 
+.site-footer .footer-content {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    /* The first two groups take their own width and the quote the rest, so
+       the space between each group's text is the same 48px gap rather than
+       whatever equal tracks leave around text of different lengths. */
+    grid-template-columns: max-content max-content minmax(0, 1fr);
+    column-gap: 48px;
+    align-items: start;
+}
+
+.site-footer .footer-section {
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+}
+
+.footer-logo {
+    grid-column: 1;
+    grid-row: 2;
+    display: block;
+    line-height: 0;
+}
+
+.footer-logo img {
+    display: block;
+    width: clamp(132px, 13vw, 180px);
+    height: auto;
+}
+
+/* The group labels are the bright line and the entries under them sit back,
+   so each column reads label first. */
 .site-footer .footer-label,
 .site-footer .footer-text,
 .site-footer .footer-link {
     font-family: var(--home-font);
     font-size: var(--acc-text);
     line-height: 1.6;
-    color: #1A1A1A;
+    color: rgba(250, 250, 250, 0.55);
 }
 
 .site-footer .footer-label {
     text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.45);
+    color: var(--home-bg);
+    opacity: 1;
     margin-bottom: 6px;
+}
+
+.site-footer .footer-link:hover {
+    color: var(--home-bg);
+    opacity: 1;
 }
 
 .double-line-divider {
@@ -1483,6 +1516,28 @@ body {
     .site-wrapper > .home-hero {
         border: none;
         padding: 12px 0;
+    }
+
+    /* One column: the link groups stack, then the mark closes the block. */
+    .site-footer {
+        padding: 24px 20px;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        row-gap: 48px;
+    }
+
+    .site-footer .footer-content {
+        grid-column: 1;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        grid-row: 2;
+    }
+
+    .footer-logo img {
+        width: 120px;
     }
 
     /* The row is too narrow to seat the tags beside the case study without
