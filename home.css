@@ -1159,11 +1159,12 @@ body {
 
 /* --- Portrait lens -------------------------------------------------------
    On desktop the cursor over the portrait becomes a rounded square, with the
-   system radius, that shows a halftone of the photo beneath it in the site
-   black on the page white. The script places the square on the pointer and
-   slides the halftone layer against it, sized to the portrait, so the two
-   line up. The photo's full-canvas frame never takes the pointer, so the
-   portrait alone opts back in here. */
+   system radius, that shows a halftone of the photo beneath it: page-white
+   (#FAFAFA) four-point stars on black, each sized by the brightness under it
+   and growing toward the frame's edges. The script places the square on the
+   pointer and slides the halftone layer against it, sized to the portrait,
+   so the two line up. The photo's full-canvas frame never takes the pointer,
+   so the portrait alone opts back in here. */
 @media (hover: hover) and (pointer: fine) and (min-width: 721px) {
     .home-portrait {
         pointer-events: auto;
@@ -1197,7 +1198,9 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    background: url("Homepage/home-portrait-halftone.png?v=halftone-5") center / cover no-repeat;
+    /* The black under the stars stays inside the portrait; past its edge
+       the square shows the page. */
+    background: #000 url("Homepage/home-portrait-halftone.png?v=halftone-stars-10") center / cover no-repeat;
 }
 
 @media (prefers-reduced-motion: reduce) {
