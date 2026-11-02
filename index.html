@@ -3147,6 +3147,8 @@
                 }
             }
 
+            var casePreviews = {};
+
             function bindCaseHoverPreview(headerId, src, options) {
                 if (!canShowHoverPreviews()) return;
                 var opts = options || {};
@@ -3197,11 +3199,13 @@
                     var margin = 12;
                     var w = preview.offsetWidth || 420;
                     var h = preview.offsetHeight || 280;
-                    var x = clientX + gap;
-                    var y = clientY - h / 2;
-                    if (x + w > window.innerWidth - margin) x = clientX - gap - w;
+                    // Centred above the pointer; flips below it when there
+                    // isn't room overhead.
+                    var x = clientX - w / 2;
+                    var y = clientY - gap - h;
+                    if (y < margin) y = clientY + gap;
                     if (x < margin) x = margin;
-                    if (y < margin) y = margin;
+                    if (x + w > window.innerWidth - margin) x = Math.max(margin, window.innerWidth - margin - w);
                     if (y + h > window.innerHeight - margin) y = Math.max(margin, window.innerHeight - margin - h);
                     preview.style.left = x + 'px';
                     preview.style.top = y + 'px';
@@ -3225,20 +3229,74 @@
                     });
                 }
 
+                var controller = {
+                    show: function(e) {
+                        if (!canShowHoverPreviews()) return;
+                        preview.classList.add('is-visible');
+                        place(e.clientX, e.clientY);
+                        playPreview();
+                    },
+                    move: function(e) {
+                        place(e.clientX, e.clientY);
+                    },
+                    hide: function() {
+                        preview.classList.remove('is-visible');
+                        if (!opts.video) return;
+                        media.pause();
+                    }
+                };
+                casePreviews[headerId] = controller;
+
+                // An open section is already on screen, so its own header
+                // doesn't preview it. Clicking open hides the preview too.
+                var panel = header.closest('.acc-panel');
+                function isOpen() {
+                    return !!panel && panel.classList.contains('is-open');
+                }
                 header.addEventListener('mouseenter', function(e) {
-                    if (!canShowHoverPreviews()) return;
-                    preview.classList.add('is-visible');
-                    place(e.clientX, e.clientY);
-                    playPreview();
+                    if (isOpen()) return;
+                    controller.show(e);
                 });
                 header.addEventListener('mousemove', function(e) {
-                    place(e.clientX, e.clientY);
+                    if (isOpen()) {
+                        controller.hide();
+                        return;
+                    }
+                    if (!preview.classList.contains('is-visible')) controller.show(e);
+                    else controller.move(e);
                 });
-                header.addEventListener('mouseleave', function() {
-                    preview.classList.remove('is-visible');
-                    if (!opts.video) return;
-                    media.pause();
-                });
+                header.addEventListener('mouseleave', controller.hide);
+                header.addEventListener('click', controller.hide);
+            }
+
+            // The next-row peek at the bottom of an open section previews the
+            // project it points to, using that project's header preview.
+            function bindPeekHoverPreview(peek) {
+                var active = null;
+                function target() {
+                    var name = peek.getAttribute('data-panel');
+                    return name ? casePreviews['header-' + name] || null : null;
+                }
+                function release() {
+                    if (active) active.hide();
+                    active = null;
+                }
+                function track(e) {
+                    var next = peek.hidden ? null : target();
+                    if (next !== active) {
+                        release();
+                        if (next) {
+                            next.show(e);
+                            active = next;
+                        }
+                    } else if (active) {
+                        active.move(e);
+                    }
+                }
+                peek.addEventListener('mouseenter', track);
+                peek.addEventListener('mousemove', track);
+                peek.addEventListener('mouseleave', release);
+                peek.addEventListener('click', release);
             }
 
             bindCaseHoverPreview('header-about', 'Homepage/resume-preview.jpg?v=resume-pdf-2', { portrait: true });
@@ -3631,6 +3689,7 @@
                     }
                     openPanel(name);
                 });
+                bindPeekHoverPreview(peekRoot);
 
                 return peekRoot;
             }
