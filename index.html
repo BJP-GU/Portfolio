@@ -27,7 +27,7 @@
     <meta name="twitter:image" content="https://brycejparsons.com/Homepage/og-image.png">
     <link rel="icon" type="image/svg+xml" href="Icons/favicon.svg?v=globe-mark-3">
     <link rel="stylesheet" href="styles.css?v=logo-padding">
-    <link rel="stylesheet" href="home.css?v=portrait-lens-9">
+    <link rel="stylesheet" href="home.css?v=bio-parting-1">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -3314,59 +3314,6 @@
             bindCaseHoverPreview('header-onlook', 'Onlook/onlook-case-preview.png?v=onlook-hover');
             bindCaseHoverPreview('header-archetype', 'Archetype/archetype-case-preview.webp?v=archetype-hover');
 
-            // Portrait lens: over the home portrait the cursor becomes a small
-            // rounded square that shows the halftone version of whatever part
-            // of the photo sits beneath it. The halftone layer is sized and
-            // placed to match the portrait exactly, then shifted against the
-            // square's own position, so the square reads as a window onto it.
-            (function bindPortraitLens() {
-                if (!canShowHoverPreviews()) return;
-                var portrait = document.querySelector('.home-portrait');
-                if (!portrait) return;
-                var lens = document.createElement('div');
-                lens.className = 'portrait-lens';
-                lens.setAttribute('aria-hidden', 'true');
-                var layer = document.createElement('div');
-                layer.className = 'portrait-lens__layer';
-                lens.appendChild(layer);
-                document.body.appendChild(lens);
-
-                var raf = 0;
-                var lastX = 0;
-                var lastY = 0;
-
-                function place() {
-                    raf = 0;
-                    var rect = portrait.getBoundingClientRect();
-                    var size = lens.offsetWidth;
-                    var x = lastX - size / 2;
-                    var y = lastY - size / 2;
-                    lens.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-                    layer.style.width = rect.width + 'px';
-                    layer.style.height = rect.height + 'px';
-                    layer.style.transform = 'translate(' + (rect.left - x) + 'px, ' + (rect.top - y) + 'px)';
-                }
-
-                function track(e) {
-                    lastX = e.clientX;
-                    lastY = e.clientY;
-                    if (!raf) raf = requestAnimationFrame(place);
-                }
-
-                portrait.addEventListener('pointerenter', function(e) {
-                    track(e);
-                    lens.classList.add('is-visible');
-                });
-                portrait.addEventListener('pointermove', track);
-                portrait.addEventListener('pointerleave', function() {
-                    lens.classList.remove('is-visible');
-                });
-                // Scrolling moves the portrait under a still pointer.
-                window.addEventListener('scroll', function() {
-                    if (lens.classList.contains('is-visible') && !raf) raf = requestAnimationFrame(place);
-                }, { passive: true });
-            })();
-
             function prefersReducedMotion() {
                 try {
                     return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -5976,6 +5923,200 @@
                 document.documentElement.classList.remove('intro-running');
             }
         });
+    </script>
+    <script>
+        // Parting bio: the lines of the hero bio the cursor touches split at
+        // the cursor, and each half squeezes evenly toward its side of the grid
+        // cell, leaving a straight-edged gap under the cursor. Letters only move
+        // sideways, never pass one another, and never leave the cell between the
+        // portrait columns. Mouse only; off with reduced motion.
+        (function () {
+            var bio = document.querySelector('.home-bio');
+            if (!bio || !window.matchMedia) return;
+            if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            // Clear space either side of the cursor, and how far above and
+            // below it a line still counts as under the cursor.
+            var GAP = 20;
+            var BAND = 14;
+            var EASE = 0.3;
+            var NEAR = 40;
+            var cellRules = {
+                left: document.querySelector('.home-vrule--a'),
+                right: document.querySelector('.home-vrule--b')
+            };
+            var text = bio.textContent;
+
+            var sr = document.createElement('span');
+            sr.className = 'home-bio__sr';
+            sr.textContent = text;
+            var visual = document.createElement('span');
+            visual.setAttribute('aria-hidden', 'true');
+            text.split(/(\s+)/).forEach(function (part) {
+                if (!part) return;
+                if (/^\s+$/.test(part)) {
+                    visual.appendChild(document.createTextNode(' '));
+                    return;
+                }
+                var word = document.createElement('span');
+                word.className = 'home-bio__word';
+                for (var i = 0; i < part.length; i++) {
+                    var c = document.createElement('span');
+                    c.className = 'home-bio__char';
+                    c.textContent = part[i];
+                    word.appendChild(c);
+                }
+                visual.appendChild(word);
+            });
+            bio.textContent = '';
+            bio.appendChild(sr);
+            bio.appendChild(visual);
+
+            var chars = [].slice.call(bio.querySelectorAll('.home-bio__char')).map(function (el) {
+                return { el: el, left: 0, w: 0, top: 0, bottom: 0, dx: 0, tx: 0 };
+            });
+            var lines = [];
+            var cell = null;
+            var mouse = null;
+            var raf = 0;
+            var measured = false;
+
+            // Rest boxes relative to the bio box, taken with every letter at
+            // rest, grouped into lines in reading order.
+            function measure() {
+                chars.forEach(function (c) { c.el.style.transform = 'none'; });
+                var box = bio.getBoundingClientRect();
+                lines = [];
+                var line = null;
+                chars.forEach(function (c) {
+                    var r = c.el.getBoundingClientRect();
+                    c.left = r.left - box.left;
+                    c.w = r.width;
+                    c.top = r.top - box.top;
+                    c.bottom = r.bottom - box.top;
+                    if (!line || c.top >= line.bottom - 1) {
+                        line = { chars: [], top: c.top, bottom: c.bottom };
+                        lines.push(line);
+                    }
+                    line.chars.push(c);
+                });
+                chars.forEach(function (c) {
+                    c.el.style.transform = c.dx ? 'translateX(' + c.dx + 'px)' : '';
+                });
+                cell = {
+                    left: cellRules.left ? cellRules.left.getBoundingClientRect().right - box.left : 0,
+                    right: cellRules.right ? cellRules.right.getBoundingClientRect().left - box.left : box.width
+                };
+                measured = true;
+            }
+
+            // Squeezes a run of letters (in order) into [from, to], keeping their
+            // relative spacing: letter centres are mapped linearly so the first
+            // and last letters sit flush with the ends of the span.
+            function squeeze(run, from, to) {
+                if (!run.length) return;
+                var first = run[0];
+                var last = run[run.length - 1];
+                var start = first.left + first.w / 2;
+                var end = last.left + last.w / 2;
+                var lo = from + first.w / 2;
+                var hi = Math.max(lo, to - last.w / 2);
+                var k = end > start ? (hi - lo) / (end - start) : 0;
+                run.forEach(function (c) {
+                    c.tx = lo + (c.left + c.w / 2 - start) * k - c.w / 2 - c.left;
+                });
+            }
+
+            function part(line, mx) {
+                var left = [];
+                var right = [];
+                line.chars.forEach(function (c) {
+                    (c.left + c.w / 2 < mx ? left : right).push(c);
+                });
+                var gapL = mx - GAP;
+                var gapR = mx + GAP;
+                // A side with too little room for its letters gives them to
+                // the other side, so the gap can reach the cell's rules.
+                var need = function (run) {
+                    return run.length ? (run[run.length - 1].left + run[run.length - 1].w - run[0].left) * 0.4 : 0;
+                };
+                if (right.length && cell.right - gapR < need(right)) {
+                    left = left.concat(right);
+                    right = [];
+                } else if (left.length && gapL - cell.left < need(left)) {
+                    right = left.concat(right);
+                    left = [];
+                }
+                clear(left, cell.left, Math.min(gapL, cell.right), -1);
+                clear(right, Math.max(gapR, cell.left), cell.right, 1);
+            }
+
+            // Moves a run out of the gap: as one rigid block when it fits in
+            // the cell, squeezed against the rule when it does not.
+            function clear(run, from, to, side) {
+                if (!run.length) return;
+                var start = run[0].left;
+                var end = run[run.length - 1].left + run[run.length - 1].w;
+                var shift = side > 0 ? Math.max(0, from - start) : Math.min(0, to - end);
+                if (start + shift >= from - 0.5 && end + shift <= to + 0.5) {
+                    run.forEach(function (c) { c.tx = shift; });
+                } else {
+                    squeeze(run, from, to);
+                }
+            }
+
+            function frame() {
+                raf = 0;
+                if (!measured) measure();
+                var box = bio.getBoundingClientRect();
+                var moving = false;
+                chars.forEach(function (c) { c.tx = 0; });
+                if (mouse) {
+                    var mx = mouse.x - box.left;
+                    var my = mouse.y - box.top;
+                    if (mx > cell.left - GAP && mx < cell.right + GAP) {
+                        lines.forEach(function (line) {
+                            if (line.bottom > my - BAND && line.top < my + BAND) part(line, mx);
+                        });
+                    }
+                }
+                chars.forEach(function (c) {
+                    c.dx += (c.tx - c.dx) * EASE;
+                    if (Math.abs(c.tx - c.dx) < 0.05) {
+                        c.dx = c.tx;
+                    } else {
+                        moving = true;
+                    }
+                    c.el.style.transform = c.dx ? 'translateX(' + c.dx.toFixed(2) + 'px)' : '';
+                });
+                if (moving) schedule();
+            }
+
+            function schedule() {
+                if (!raf) raf = requestAnimationFrame(frame);
+            }
+
+            document.addEventListener('pointermove', function (e) {
+                if (e.pointerType !== 'mouse') return;
+                var box = bio.getBoundingClientRect();
+                var near = e.clientX > box.left - NEAR && e.clientX < box.right + NEAR &&
+                    e.clientY > box.top - NEAR && e.clientY < box.bottom + NEAR;
+                var next = near ? { x: e.clientX, y: e.clientY } : null;
+                if (!next && !mouse) return;
+                // The hero settles after load (intro, fonts), so re-read rest
+                // positions whenever the cursor arrives at text that is at rest.
+                if (next && !mouse && !raf && chars.every(function (c) { return !c.dx; })) measured = false;
+                mouse = next;
+                schedule();
+            }, { passive: true });
+            document.documentElement.addEventListener('mouseleave', function () {
+                mouse = null;
+                schedule();
+            });
+            window.addEventListener('resize', function () { measured = false; schedule(); });
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measured = false; });
+        })();
     </script>
     <script>
         // Case-study clips: silent loops autoplay in view; clips with meaningful

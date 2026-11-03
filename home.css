@@ -1157,58 +1157,6 @@ body {
     opacity: 0.9;
 }
 
-/* --- Portrait lens -------------------------------------------------------
-   On desktop the cursor over the portrait becomes a rounded square, with the
-   system radius, that shows a halftone of the photo beneath it: page-white
-   (#FAFAFA) four-point stars on black, each sized by the brightness under it
-   and growing toward the frame's edges. The script places the square on the
-   pointer and slides the halftone layer against it, sized to the portrait,
-   so the two line up. The photo's full-canvas frame never takes the pointer,
-   so the portrait alone opts back in here. */
-@media (hover: hover) and (pointer: fine) and (min-width: 721px) {
-    .home-portrait {
-        pointer-events: auto;
-        cursor: none;
-    }
-}
-
-.portrait-lens {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 230;
-    width: 120px;
-    height: 120px;
-    border-radius: var(--home-radius);
-    overflow: hidden;
-    background-color: var(--home-bg);
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.15s ease, visibility 0.15s ease;
-    will-change: transform;
-}
-
-.portrait-lens.is-visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.portrait-lens__layer {
-    position: absolute;
-    left: 0;
-    top: 0;
-    /* The black under the stars stays inside the portrait; past its edge
-       the square shows the page. */
-    background: #000 url("Homepage/home-portrait-halftone.png?v=halftone-stars-10") center / cover no-repeat;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .portrait-lens {
-        transition: none;
-    }
-}
-
 /* --- Credentials & bio ------------------------------------------------- */
 
 /* Justified, all-caps blocks (Figma 1174:454). Each logo sits inline with the
@@ -1253,6 +1201,28 @@ body {
     left: calc(540.8 * var(--u));
     top: calc(585 * var(--u));
     transform: translate(-50%, -50%);
+}
+
+/* Parting bio: the script splits the text into letters that step out of the
+   cursor's way. Words stay unbreakable so the justified wrap is unchanged;
+   the plain copy is kept for screen readers. */
+.home-bio__word {
+    white-space: nowrap;
+}
+
+.home-bio__char {
+    display: inline-block;
+    will-change: transform;
+}
+
+.home-bio__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
 
 .home-meta__lead {
