@@ -1346,6 +1346,54 @@ body {
     }
 }
 
+/* Case-study share link: sits on the case title's line, aligned to the
+   title's baseline, and drops under the title when the line is too narrow. */
+.project-summary-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 20px;
+    row-gap: 8px;
+}
+
+.work-share {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--body-text-muted);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.work-share svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+}
+
+/* Icon only at rest; "Copied" shows beside it for a moment after a copy. */
+.work-share__label:empty {
+    display: none;
+}
+
+.work-share:hover,
+.work-share.is-copied {
+    color: var(--body-text);
+}
+
+.work-share:focus-visible {
+    outline: 1px solid var(--primary-text);
+    outline-offset: 2px;
+}
+
 .project-case:first-child {
     padding-top: 24px;
 }
