@@ -2974,10 +2974,10 @@ nav.main-grid .grid-cell {
 
 .case-section-content h4 {
     font-family: var(--font-display);
-    font-size: var(--text-xs);
+    font-size: var(--text-sm);
     font-weight: 400;
-    /* Same grey as the section eyebrows, but in its written case so subsections
-       read a level below the all-caps section labels. */
+    /* Same grey as the section eyebrows, a step larger so sentence case reads
+       as big as the all-caps labels. Never uppercased. */
     text-transform: none;
     letter-spacing: normal;
     color: var(--case-text-label);
@@ -3005,6 +3005,12 @@ nav.main-grid .grid-cell {
 }
 
 .case-section-content strong {
+    color: var(--case-text-heading);
+}
+
+/* Numbers match the bold question they lead */
+.case-list--strong-markers > li::marker {
+    font-weight: bold;
     color: var(--case-text-heading);
 }
 
@@ -3453,6 +3459,21 @@ html.diagram-viewer-open {
 .case-section-image-row .case-section-image,
 .case-section-image-row .case-section-image img {
     margin: 0;
+}
+
+/* Screenshot grid: every cell gets the same 2000×1253 shape, even if a
+   capture is a pixel or two off, and a hairline edge so white UI doesn't
+   melt into the page */
+.case-section-image-row--screens .case-section-image img {
+    aspect-ratio: 2000 / 1253;
+    object-fit: cover;
+    object-position: top center;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+}
+
+.case-section-image-row--screens .case-section-caption {
+    margin-top: var(--space-xs);
 }
 
 /* Portrait clips would run taller than the viewport at half the column, so
@@ -5959,6 +5980,63 @@ html.diagram-viewer-open {
     margin: var(--space-md) 0;
 }
 
+/* Two static demo screens side by side (version A left, B right) */
+.glean-agents-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin: var(--space-md) 0;
+}
+
+.glean-agents-pair__item {
+    margin: 0;
+    min-width: 0;
+}
+
+.glean-agents-pair .glean-agents-deck {
+    margin: 0 0 var(--space-xs);
+}
+
+/* Hand-drawn annotations over a demo screen, in its 1280×912 design space */
+.glean-agents-frame--annotated {
+    position: relative;
+}
+
+.glean-agents-annotations {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.glean-agents-annotations path {
+    fill: none;
+    stroke: #E5484D;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.glean-agents-annotations text {
+    fill: #E5484D;
+    font-family: 'Caveat', 'Bradley Hand', 'Segoe Print', cursive;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+/* A single static demo screen with a caption tight beneath it */
+.case-section-image--tight-caption > .glean-agents-deck {
+    margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+    .glean-agents-pair {
+        grid-template-columns: 1fr;
+    }
+}
+
 .glean-agents-fit {
     --glean-agents-design-width: 1280px;
     --glean-agents-design-height: 912px;
@@ -6277,6 +6355,14 @@ html.diagram-viewer-open {
     flex-shrink: 0;
     overflow: hidden;
     background: #c7c7c7;
+}
+
+/* Beats the deck-wide image reset, which would show the photo at its
+   natural size with square corners */
+.case-section-content .glean-agents-deck .glean-agents-nav__avatar {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
 }
 
 .glean-agents-nav__user {
@@ -7639,6 +7725,14 @@ html.diagram-viewer-open {
     height: 20px !important;
 }
 
+/* Photo avatars: out-rank the deck-wide image reset */
+.case-section-content .glean-agents-deck .glean-agents-active__avatar--lg {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+}
+
 .glean-agents-active__lock {
     width: 16px !important;
     height: 16px !important;
@@ -8979,7 +9073,7 @@ html.diagram-viewer-open {
     top: 0;
     right: 0;
     bottom: 0;
-    left: 64px;
+    left: 0; /* covers the collapsed left rail too */
     background: rgba(0, 0, 0, 0.45);
     z-index: 2;
 }
