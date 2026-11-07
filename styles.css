@@ -3493,6 +3493,14 @@ html.diagram-viewer-open {
     margin-top: 0;
 }
 
+/* Clip that follows a .case-media-card figure: fills the column but stops at the
+   card's inset, so its right edge lines up with the figure above. Percentage
+   margin and padding both resolve against the column width. */
+.case-section-video-single.case-section-video-single--figure-width {
+    max-width: none;
+    margin-right: clamp(12px, 4%, 32px);
+}
+
 /* Caption text under embedded videos/images inside case sections */
 .case-section-caption {
     font-family: var(--font-body);
