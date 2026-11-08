@@ -3361,6 +3361,12 @@ html.diagram-viewer-open {
     -webkit-user-select: none;
 }
 
+/* The viewer sets the frame's width itself; zoomed it is wider than the
+   screen, so it opts out of the site-wide phone cap on div widths. */
+.diagram-viewer .diagram-viewer__frame {
+    max-width: none;
+}
+
 .diagram-viewer__img[hidden],
 .diagram-viewer__frame[hidden] {
     display: none;
@@ -9939,9 +9945,18 @@ html.diagram-viewer-open {
     box-sizing: border-box;
 }
 
-@media (max-width: 700px) {
+/* Phones fit the whole artboard to the column instead of scrolling it; the
+   diagram viewer (tap to open) is where the detail is explored. The site-wide
+   phone rule caps every div at its parent's width, which would squeeze the
+   fixed artboard before it is scaled, so the artboard opts out. */
+@media (max-width: 768px) {
     .anchor-journey-fit {
-        --anchor-journey-scale: 0.55;
+        overflow: hidden;
+    }
+
+    .anchor-journey,
+    .anchor-journey * {
+        max-width: none;
     }
 }
 
@@ -10089,8 +10104,25 @@ html.diagram-viewer-open {
     border-radius: 0 !important;
 }
 
-@media (max-width: 700px) {
+/* Phones fit the whole model to the column (tap to open it in the diagram
+   viewer). The card's inset is dropped so the diagram gets the full width, and
+   the artboard opts out of the site-wide phone cap on div widths, which
+   otherwise squeezed it to the column before scaling and pushed the embedded
+   clips off its right edge. */
+@media (max-width: 768px) {
     .anchor-solution-fit {
-        --anchor-solution-scale: 0.55;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .anchor-solution-model,
+    .anchor-solution-model * {
+        max-width: none;
+    }
+
+    /* The demo clip below spans the column too, now that there is no card
+       inset to line up with. */
+    .anchor-solution-fit ~ .case-section-video-single--figure-width {
+        margin-right: 0;
     }
 }

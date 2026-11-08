@@ -42,9 +42,10 @@
        crossing rules, and rules laid over the portrait's edge, never stack
        into a darker pixel. */
     --home-rule: #8A8A8A;
-    /* Softens the section strokes; kept small so the stack still reads as a
-       set of ruled rows rather than cards. */
-    --home-radius: 4px;
+    /* Section, grid and footer strokes get a barely-there corner. */
+    --home-radius: 1px;
+    /* Small controls (tags, header links, tooltip) keep a soft corner. */
+    --home-control-radius: 4px;
     --home-font: Helvetica, 'Helvetica Neue', Arial, sans-serif;
 
     --acc-gap: 10px;
@@ -127,7 +128,7 @@ body {
     z-index: 200;
     padding: 4px 8px;
     border: 1px solid #1A1A1A;
-    border-radius: var(--home-radius);
+    border-radius: var(--home-control-radius);
     background-color: var(--home-bg);
     font-family: var(--home-font);
     font-size: var(--acc-text);
@@ -644,7 +645,7 @@ body {
     height: 17px;
     padding: 0 5px;
     border: 1px solid rgba(0, 0, 0, 0.14);
-    border-radius: var(--home-radius);
+    border-radius: var(--home-control-radius);
     font-size: 10px;
     line-height: 15px;
     text-transform: none;
@@ -674,7 +675,7 @@ body {
     padding: 0 5px;
     transform: translateY(-50%);
     border: 1px solid rgba(0, 0, 0, 0.14);
-    border-radius: var(--home-radius);
+    border-radius: var(--home-control-radius);
     font-family: var(--home-font);
     font-size: 10px;
     line-height: 15px;
@@ -1034,9 +1035,12 @@ body {
 .home-canvas {
     --u: calc(100cqw / 1080);
     --home-accent: var(--primary-text);
-    /* Matches the optical inset created by the left headline's cap sidebearing
-       at 80px, so the role line clears the outer grid line by the same amount. */
-    --home-headline-inset: 6;
+    /* The headline's cap tops sit 14.44 units below the top frame stroke
+       (half-leading plus the font's space above cap height). These pads add
+       to each side's own glyph sidebearing (6.29 on the left "B", 0.94 on the
+       right "T") so the ink clears the side strokes by that same 14.44. */
+    --home-headline-inset-left: 8.15;
+    --home-headline-inset-right: 13.5;
     /* Portrait frame — shared by the rules; the photo sits inside the 1px
        strokes, not on top of them. */
     --home-frame-left: 463;
@@ -1084,6 +1088,7 @@ body {
     left: 0;
     width: calc(463 * var(--u));
     box-sizing: border-box;
+    padding-left: calc(var(--home-headline-inset-left) * var(--u));
     text-align: left;
 }
 
@@ -1091,7 +1096,7 @@ body {
     left: calc(617.5 * var(--u));
     width: calc(462.5 * var(--u));
     box-sizing: border-box;
-    padding-right: calc(var(--home-headline-inset) * var(--u));
+    padding-right: calc(var(--home-headline-inset-right) * var(--u));
     text-align: right;
     z-index: 5;
 }
