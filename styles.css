@@ -6923,6 +6923,45 @@ html.diagram-viewer-open {
     box-sizing: content-box;
 }
 
+/* Active agents page (version B) */
+.glean-agents-slide--active-list {
+    padding: 31px 0 0 59px;
+    background: #ffffff;
+}
+
+.glean-agents-activelist {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+    width: 899px;
+}
+
+.glean-agents-activelist__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.glean-agents-activelist__titleblock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.glean-agents-activelist__desc {
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.125px;
+    color: #333333;
+}
+
+.glean-agents-activelist__link {
+    text-decoration: underline;
+}
+
 /* Manage page */
 .glean-agents-slide--manage {
     padding: 23px 40px 24px;
