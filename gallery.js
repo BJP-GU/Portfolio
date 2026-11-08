@@ -75,7 +75,7 @@
             label: 'Creativity Support Tools',
             anchor: [-1.05, 0.5],
             items: [
-                { cs: 'onlook', section: 'overview', caption: 'Onlook', kind: 'image', src: 'Onlook/onlook-case-preview.png?v=onlook-hover', w: 3456, h: 2234, size: 1.35 },
+                { cs: 'onlook', section: 'about-onlook', caption: 'Onlook', kind: 'image', src: 'Onlook/onlook-case-preview.png?v=onlook-hover', w: 3456, h: 2234, size: 1.35 },
                 { cs: 'onlook', section: 'my-work-at-onlook', caption: 'Composer shortcuts', kind: 'vimeo', vimeo: '1120704633', w: 1000, h: 553 },
                 { cs: 'onlook', section: 'my-work-at-onlook', caption: 'Publishing and sharing', kind: 'vimeo', vimeo: '1120687921', w: 1000, h: 637 }
             ]
@@ -552,6 +552,7 @@
 
     function setFocus(tag) {
         activeTag = tag;
+        setActiveGroup(null);
         chipEls.forEach(function(chip) {
             chip.setAttribute('aria-pressed', chip.textContent === tag ? 'true' : 'false');
         });
@@ -662,10 +663,63 @@
         var el = e.target.closest && e.target.closest('.gallery-item');
         setHovered(el ? el._item : null, e);
         moveTooltip(e);
+        var label = e.target.closest && e.target.closest('.gallery-label');
+        setHoverGroup(label ? groupOfLabel(label) : null);
     });
 
     stage.addEventListener('pointerleave', function() {
         setHovered(null);
+        setHoverGroup(null);
+    });
+
+    // ---------------------------------------------------------------------
+    // THEME HIGHLIGHT
+    // Pointing at a label lights its cluster in colour and washes out the
+    // rest. Clicking the label keeps it lit until the canvas, Fit, a chip or
+    // Escape lets it go.
+    // ---------------------------------------------------------------------
+
+    var activeGroup = null;
+    var hoverGroup = null;
+
+    function groupOfLabel(el) {
+        return GROUPS.filter(function(g) { return g.labelEl === el; })[0] || null;
+    }
+
+    function renderTheme() {
+        var group = hoverGroup || activeGroup;
+        stage.classList.toggle('is-theme', !!group);
+        GROUPS.forEach(function(g) {
+            g.labelEl.classList.toggle('is-theme-label', g === group);
+        });
+        allItems.forEach(function(item) {
+            item.el.classList.toggle('is-theme-item', !!group && item.group === group);
+        });
+        Array.prototype.forEach.call(linesSvg.childNodes, function(line) {
+            var ends = line._ends || [];
+            var on = !!group && ends.length > 0 && ends.every(function(item) { return item.group === group; });
+            line.classList.toggle('is-theme-line', on);
+        });
+    }
+
+    function setHoverGroup(group) {
+        if (hoverGroup === group) return;
+        hoverGroup = group;
+        renderTheme();
+    }
+
+    function setActiveGroup(group) {
+        activeGroup = group;
+        renderTheme();
+    }
+
+    stage.addEventListener('focusin', function(e) {
+        var label = e.target.closest && e.target.closest('.gallery-label');
+        if (label) setHoverGroup(groupOfLabel(label));
+    });
+
+    stage.addEventListener('focusout', function(e) {
+        if (e.target.closest && e.target.closest('.gallery-label')) setHoverGroup(null);
     });
 
     // ---------------------------------------------------------------------
@@ -772,6 +826,7 @@
             var target = press.target;
             press = null;
             if (wasTap && target) activate(target);
+            else if (wasTap && activeGroup) setActiveGroup(null);
         }
 
         if (!list.length) {
@@ -830,6 +885,8 @@
             zoomAt(s.w / 2, s.h / 2, 1.25);
         } else if (e.key === '-' || e.key === '_') {
             zoomAt(s.w / 2, s.h / 2, 0.8);
+        } else if (e.key === 'Escape' && activeGroup) {
+            setActiveGroup(null);
         } else if (e.key === 'Escape' && activeTag) {
             setFocus(null);
         }
@@ -837,13 +894,19 @@
 
     fitBtn.addEventListener('click', function() {
         if (activeTag) setFocus(null);
-        else fitAll();
+        else {
+            setActiveGroup(null);
+            fitAll();
+        }
     });
 
     function activate(el) {
         if (el.classList.contains('gallery-label')) {
-            var group = GROUPS.filter(function(g) { return g.labelEl === el; })[0];
-            if (group) flyToGroup(group);
+            var group = groupOfLabel(el);
+            if (group) {
+                setActiveGroup(group);
+                flyToGroup(group);
+            }
             return;
         }
         if (el._item) openCase(el._item);

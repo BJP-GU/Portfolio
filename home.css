@@ -204,6 +204,39 @@ html.is-embed .acc-panel.is-collapsing > .acc-body {
     border: none;
 }
 
+/* The frame's scroll bar is the thumb alone: no track and no rule beside
+   it, and the site's barely-there corner rather than a pill. */
+html.is-embed::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: transparent;
+}
+
+html.is-embed::-webkit-scrollbar-track,
+html.is-embed::-webkit-scrollbar-corner {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+html.is-embed::-webkit-scrollbar-thumb {
+    background-color: rgba(26, 26, 26, 0.28);
+    border: none;
+    border-radius: var(--home-radius);
+}
+
+html.is-embed::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(26, 26, 26, 0.45);
+}
+
+/* Firefox has no thumb styling beyond colour; keep its track clear. */
+@supports not selector(::-webkit-scrollbar) {
+    html.is-embed {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(26, 26, 26, 0.28) transparent;
+    }
+}
+
 .acc-next-tooltip {
     position: fixed;
     left: 0;

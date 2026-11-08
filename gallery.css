@@ -24,6 +24,9 @@ body.gallery-page {
 
 .gallery-shell {
     --gallery-gutter: var(--site-gutter);
+    /* The sides take a little more room than the top and bottom: 36px on
+       desktop, about 22px on a phone. */
+    --gallery-inline: calc(var(--site-gutter) * 1.8);
 
     display: grid;
     grid-template-rows: var(--header-h) minmax(0, 1fr) auto;
@@ -32,7 +35,7 @@ body.gallery-page {
     grid-template-columns: minmax(0, 1fr);
     height: 100vh;
     height: 100dvh;
-    padding: 0 var(--gallery-gutter);
+    padding: 0 var(--gallery-inline);
     box-sizing: border-box;
 }
 
@@ -47,6 +50,27 @@ body.gallery-page {
 
 .gallery-shell > .site-header .site-header-link {
     padding-right: 0;
+}
+
+/* Back to the index sits just before "Gallery View": a left arrow drawn like
+   the site's other link arrows, the word, then which view it returns to.
+   Only "Back" goes bold under the pointer. */
+.gallery-shell > .site-header .site-header-link--back {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding-right: 24px;
+}
+
+.gallery-shell > .site-header .site-header-link--current {
+    margin-left: 0;
+}
+
+.site-header-link__arrow {
+    display: block;
+    flex: none;
+    width: 10px;
+    height: 10px;
 }
 
 /* --------------------------------------------------------------------------
@@ -146,12 +170,7 @@ body.gallery-page {
         0 0 6px var(--home-bg),
         0 0 12px var(--home-bg),
         0 0 18px var(--home-bg);
-    transition: opacity 0.4s ease, color 0.2s ease;
-}
-
-.gallery-label:hover,
-.gallery-label:focus-visible {
-    color: var(--home-accent);
+    transition: opacity 0.4s ease, color 0.4s ease;
 }
 
 .gallery-label:focus-visible {
@@ -259,6 +278,42 @@ body.gallery-page {
 
 .gallery-stage.is-focused .gallery-item.is-match {
     filter: none;
+}
+
+/* --------------------------------------------------------------------------
+   Theme (a label is hovered, focused or picked): that cluster comes up in
+   full colour with its spokes drawn in, and the rest of the canvas washes
+   out to pale grey, as the reference canvas does it. Comes after the chip
+   focus so a theme always reads over it.
+   -------------------------------------------------------------------------- */
+
+.gallery-stage.is-theme .gallery-item {
+    opacity: 0.28;
+    filter: grayscale(1);
+}
+
+.gallery-stage.is-theme .gallery-item.is-theme-item {
+    opacity: 1;
+    filter: none;
+    pointer-events: auto;
+}
+
+.gallery-stage.is-theme .gallery-label {
+    color: var(--case-text-label);
+    opacity: 0.6;
+}
+
+.gallery-stage.is-theme .gallery-label.is-theme-label {
+    color: var(--body-text);
+    opacity: 1;
+}
+
+.gallery-stage.is-theme .gallery-lines line {
+    opacity: 0.12;
+}
+
+.gallery-stage.is-theme .gallery-lines .is-theme-line {
+    opacity: 0.9;
 }
 
 /* --------------------------------------------------------------------------
@@ -407,7 +462,6 @@ body.gallery-page {
     box-sizing: border-box;
     width: min(1352px, calc(100% - 2 * var(--site-gutter)));
     height: calc(100% - 2 * var(--site-gutter));
-    border: 1px solid var(--home-rule);
     border-radius: var(--home-radius);
     background-color: var(--home-bg);
     box-shadow: 0 24px 64px rgba(26, 26, 26, 0.12);
@@ -450,7 +504,6 @@ body.gallery-page {
     padding: var(--acc-pad);
     padding-right: calc(var(--acc-pad) + 24px + var(--acc-gap));
     box-sizing: border-box;
-    border-bottom: 1px solid var(--home-rule);
     font-family: var(--home-font);
     font-size: var(--acc-text);
     line-height: 13px;
@@ -634,8 +687,8 @@ body.gallery-page {
         flex-wrap: nowrap;
         overflow-x: auto;
         scrollbar-width: none;
-        margin: 0 calc(-1 * var(--gallery-gutter));
-        padding: 0 var(--gallery-gutter);
+        margin: 0 calc(-1 * var(--gallery-inline));
+        padding: 0 var(--gallery-inline);
     }
 
     .gallery-chips::-webkit-scrollbar {
