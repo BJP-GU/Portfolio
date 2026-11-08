@@ -121,6 +121,89 @@ body {
     outline-offset: 4px;
 }
 
+/* The way into the gallery, held against the header's far end and inset as
+   far as the logo is from the near one. Set like the index rows: uppercase,
+   and bold under the pointer, with a hidden bold copy (data-text) holding the
+   width so nothing shifts when the weight changes. On the gallery it marks
+   the page you are on and stays bold. */
+.site-header-link,
+.site-header-link:link,
+.site-header-link:visited,
+.site-header-link:hover,
+.site-header-link:active {
+    position: relative;
+    z-index: 3;
+    margin-left: auto;
+    padding: 6px 20px 6px 6px;
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    font-weight: 400;
+    line-height: 13px;
+    color: #1A1A1A;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.site-header-link__label {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.site-header-link__label::after {
+    content: attr(data-text);
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+}
+
+.site-header-link:hover .site-header-link__label,
+.site-header-link:focus-visible .site-header-link__label,
+.site-header-link[aria-current="page"] .site-header-link__label {
+    font-weight: 700;
+}
+
+.site-header-link:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: -2px;
+}
+
+/* ==========================================================================
+   GALLERY EMBED
+   The gallery shows a case study in a modal by framing this page with
+   ?embed. The frame is the open case study alone: the header, home, the rest
+   of the index, the row's own label (the modal titles it and closes it) and
+   the footer all drop out, and the stack offsets collapse to match.
+   ========================================================================== */
+
+html.is-embed {
+    --header-h: 0px;
+}
+
+html.is-embed .site-wrapper > .site-header,
+html.is-embed .site-wrapper > .home-hero,
+html.is-embed .site-footer,
+html.is-embed .acc-peek-next,
+html.is-embed .acc-next-tooltip,
+html.is-embed .accordion > .acc-panel:not(.is-open):not(.is-collapsing),
+html.is-embed .accordion > .acc-panel > .acc-title {
+    display: none;
+}
+
+html.is-embed .accordion {
+    --acc-row: 0px;
+    padding-top: 0;
+}
+
+html.is-embed .acc-panel.is-open > .acc-body,
+html.is-embed .acc-panel.is-collapsing > .acc-body {
+    padding-bottom: calc(var(--acc-gap) * 4);
+    border: none;
+}
+
 .acc-next-tooltip {
     position: fixed;
     left: 0;
@@ -1537,6 +1620,14 @@ body {
        home column, the rows and the footer all run edge to edge inside it. */
     .site-wrapper > .site-header {
         padding-left: 0;
+    }
+
+    .site-header-link,
+    .site-header-link:link,
+    .site-header-link:visited,
+    .site-header-link:hover,
+    .site-header-link:active {
+        padding-right: 0;
     }
 
     .site-wrapper > .home-hero {

@@ -35,7 +35,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap">
     <link rel="stylesheet" href="styles.css?v=anchor-mobile-2">
-    <link rel="stylesheet" href="home.css?v=headline-inset-1">
+    <link rel="stylesheet" href="home.css?v=gallery-1">
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
@@ -87,6 +87,16 @@
         // arming it here is what keeps the top of the page from showing first.
         (function() {
             var docEl = document.documentElement;
+
+            // The gallery opens a case study inside a frame with ?embed. That
+            // page is only the one case study: no header, home, index or footer,
+            // and never the reel.
+            try {
+                if (/[?&]embed(=|&|$)/.test(window.location.search)) {
+                    docEl.classList.add('is-embed');
+                    return;
+                }
+            } catch (e) {}
 
             try {
                 var navigationType = null;
@@ -153,6 +163,7 @@
                     </picture>
                 </span>
             </a>
+            <a class="site-header-link" href="gallery.html"><span class="site-header-link__label" data-text="Gallery View">Gallery View</span></a>
         </header>
 
         <section class="home-hero" id="home">

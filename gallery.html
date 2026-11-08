@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FAFAFA">
+    <title>Gallery - Bryce Parsons Designer</title>
+    <meta name="description" content="Product designer in San Francisco. Previously design at Glean, Kleiner Perkins Fellow, UC Berkeley Master of Design.">
+    <link rel="canonical" href="https://brycejparsons.com/gallery.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Bryce Parsons">
+    <meta property="og:title" content="Gallery - Bryce Parsons Designer">
+    <meta property="og:description" content="Product designer in San Francisco. Previously design at Glean, Kleiner Perkins Fellow, UC Berkeley Master of Design.">
+    <meta property="og:url" content="https://brycejparsons.com/gallery.html">
+    <meta property="og:image" content="https://brycejparsons.com/Homepage/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="/favicon.ico?v=globe-mark-4" sizes="48x48">
+    <link rel="icon" type="image/svg+xml" href="/Icons/favicon.svg?v=globe-mark-4">
+    <link rel="icon" type="image/png" sizes="96x96" href="/Icons/favicon-96.png?v=globe-mark-4">
+    <link rel="icon" type="image/png" sizes="192x192" href="/Icons/favicon-192.png?v=globe-mark-4">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=globe-mark-4">
+    <link rel="stylesheet" href="styles.css?v=anchor-mobile-2">
+    <link rel="stylesheet" href="home.css?v=gallery-1">
+    <link rel="stylesheet" href="gallery.css?v=gallery-1">
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="gallery-page">
+    <div class="site-wrapper gallery-shell">
+        <header class="site-header">
+            <a class="site-logo" href="index.html" aria-label="Bryce Parsons — back to home">
+                <span class="site-logo__mark" aria-hidden="true">
+                    <picture>
+                        <!-- Phones and tablets draw the SVG's blur filters at low resolution, so they get a 6x render of the same artwork. -->
+                        <source media="(max-width: 720px), (hover: none)" srcset="Icons/Globe%20mark.png?v=globe-mark-4">
+                        <img class="site-logo__p" src="Icons/Globe%20mark.svg?v=globe-mark-4" alt="" width="112" height="45" decoding="async">
+                    </picture>
+                </span>
+            </a>
+            <a class="site-header-link" href="gallery.html" aria-current="page"><span class="site-header-link__label" data-text="Gallery View">Gallery View</span></a>
+        </header>
+
+        <main class="gallery-stage" id="gallery-stage" aria-label="Gallery of work, grouped by theme">
+            <div class="gallery-world" id="gallery-world">
+                <svg class="gallery-lines" id="gallery-lines" aria-hidden="true"></svg>
+            </div>
+        </main>
+
+        <div class="gallery-bar">
+            <div class="gallery-chips" id="gallery-chips" role="group" aria-label="Focus on related work"></div>
+            <div class="gallery-controls">
+                <p class="gallery-hint">Drag to move. Scroll or pinch to zoom. Click a theme or an image.</p>
+                <button class="gallery-control" type="button" id="gallery-fit">Fit</button>
+                <span class="gallery-zoom" id="gallery-zoom" aria-live="polite">100%</span>
+            </div>
+        </div>
+    </div>
+
+    <span class="acc-next-tooltip gallery-tooltip" id="gallery-tooltip" role="tooltip" hidden></span>
+
+    <dialog class="gallery-modal" id="gallery-modal" aria-labelledby="gallery-modal-title">
+        <div class="gallery-modal__frame">
+            <header class="gallery-modal__header">
+                <p class="gallery-modal__title" id="gallery-modal-title">
+                    <span class="gallery-modal__num"></span>
+                    <span class="gallery-modal__company"></span>
+                    <span class="gallery-modal__case"></span>
+                </p>
+                <a class="acc-header-link gallery-modal__open" href="index.html" target="_top">Open in index <span class="external-link-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 2.5H9.5V8.5M9.5 2.5L2.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+                <button class="gallery-modal__close" type="button" aria-label="Close and return to the gallery"></button>
+            </header>
+            <div class="gallery-modal__body">
+                <iframe class="gallery-modal__iframe" title="Case study" tabindex="0"></iframe>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="gallery.js?v=gallery-1"></script>
+</body>
+</html>

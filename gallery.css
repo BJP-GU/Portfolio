@@ -1,0 +1,689 @@
+/* ==========================================================================
+   GALLERY
+
+   Every piece of work on one spatial canvas, clustered around the theme it
+   belongs to. Unlike the index, which is a narrow centred column, the gallery
+   runs the full width of the window inside a small margin, with no frame.
+
+   The page is three rows: the header, the canvas, and a bar of focus chips.
+   The canvas is a camera over a world laid out in gallery.js; panning and
+   zooming move the world, so every coordinate below the world is in world
+   pixels and the camera's scale does the rest.
+   ========================================================================== */
+
+html,
+body.gallery-page {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+body.gallery-page {
+    background-color: var(--home-bg);
+}
+
+.gallery-shell {
+    --gallery-gutter: var(--site-gutter);
+
+    display: grid;
+    grid-template-rows: var(--header-h) minmax(0, 1fr) auto;
+    /* A single column that never grows past the window, so a long row of
+       chips scrolls instead of widening the page. */
+    grid-template-columns: minmax(0, 1fr);
+    height: 100vh;
+    height: 100dvh;
+    padding: 0 var(--gallery-gutter);
+    box-sizing: border-box;
+}
+
+/* Full width, and the logo sits on the page margin rather than inset into a
+   column, so it lines up with the chips along the bottom. */
+.gallery-shell > .site-header {
+    position: relative;
+    width: 100%;
+    padding-left: 0;
+    box-shadow: none;
+}
+
+.gallery-shell > .site-header .site-header-link {
+    padding-right: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Canvas
+   -------------------------------------------------------------------------- */
+
+.gallery-stage {
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    /* A faint dot grid that pans and zooms with the world (gallery.js sets
+       the size and offset), so the ground reads as a surface being moved. */
+    --grid-size: 40px;
+    --grid-x: 0px;
+    --grid-y: 0px;
+    background-image: radial-gradient(circle, rgba(26, 26, 26, 0.16) 0.75px, transparent 1.25px);
+    background-size: var(--grid-size) var(--grid-size);
+    background-position: var(--grid-x) var(--grid-y);
+    /* No stroke at the edge: the work fades out into the margin instead of
+       being cut off on a hard line. */
+    -webkit-mask-image:
+        linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent),
+        linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent),
+        linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-composite: intersect;
+}
+
+.gallery-stage.is-dragging {
+    cursor: grabbing;
+}
+
+.gallery-world {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+}
+
+.gallery-lines {
+    position: absolute;
+    overflow: visible;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+/* Hairlines at any zoom: the stroke ignores the camera's scale. */
+.gallery-lines line,
+.gallery-lines path {
+    fill: none;
+    stroke: var(--home-rule);
+    stroke-width: 0.6px;
+    vector-effect: non-scaling-stroke;
+    transition: opacity 0.4s ease;
+}
+
+.gallery-lines .gallery-spoke {
+    opacity: 0.45;
+}
+
+.gallery-lines .gallery-link {
+    opacity: 0.35;
+}
+
+/* --------------------------------------------------------------------------
+   Theme labels
+   -------------------------------------------------------------------------- */
+
+.gallery-label {
+    all: unset;
+    position: absolute;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    padding: 4px 8px;
+    font-family: var(--home-font);
+    font-size: 52px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--body-text);
+    white-space: nowrap;
+    cursor: pointer;
+    /* Lines run under the label; a soft halo of page colour keeps the type
+       clean where they cross it. */
+    text-shadow:
+        0 0 6px var(--home-bg),
+        0 0 12px var(--home-bg),
+        0 0 18px var(--home-bg);
+    transition: opacity 0.4s ease, color 0.2s ease;
+}
+
+.gallery-label:hover,
+.gallery-label:focus-visible {
+    color: var(--home-accent);
+}
+
+.gallery-label:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 2px;
+}
+
+.gallery-label__count {
+    position: relative;
+    top: -1.1em;
+    margin-left: 3px;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: var(--case-text-label);
+}
+
+.gallery-label__note {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--case-text-label);
+}
+
+/* --------------------------------------------------------------------------
+   Media
+   -------------------------------------------------------------------------- */
+
+.gallery-item {
+    all: unset;
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--home-radius);
+    background-color: #EFEFEF;
+    cursor: pointer;
+    /* Quiet until looked at: greyscale at rest, full colour under the
+       pointer, as the reference canvas does it. */
+    filter: grayscale(1);
+    transition:
+        filter 0.25s ease,
+        transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+        box-shadow 0.35s ease,
+        opacity 0.4s ease;
+}
+
+.gallery-item[hidden] {
+    display: none;
+}
+
+.gallery-item img,
+.gallery-item video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+/* Diagrams are drawn on white and read as a sheet of paper, so they keep
+   their whole frame rather than being cropped to fill. */
+.gallery-item--diagram {
+    background-color: #FFFFFF;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.gallery-item--diagram img {
+    object-fit: contain;
+}
+
+.gallery-item.is-hovered,
+.gallery-item:focus-visible {
+    z-index: 3;
+    filter: none;
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(26, 26, 26, 0.14);
+}
+
+.gallery-item:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Focus (a chip is on): the related work stays, everything else falls back.
+   -------------------------------------------------------------------------- */
+
+.gallery-stage.is-focused .gallery-item:not(.is-match) {
+    opacity: 0.12;
+    pointer-events: none;
+}
+
+.gallery-stage.is-focused .gallery-label:not(.is-match) {
+    opacity: 0.2;
+}
+
+.gallery-stage.is-focused .gallery-lines :not(.is-match) {
+    opacity: 0.08;
+}
+
+.gallery-stage.is-focused .gallery-item.is-match {
+    filter: none;
+}
+
+/* --------------------------------------------------------------------------
+   Bottom bar: focus chips on the left, the canvas controls on the right.
+   -------------------------------------------------------------------------- */
+
+.gallery-bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 52px;
+    padding: 8px 0 var(--gallery-gutter);
+    box-sizing: border-box;
+    font-family: var(--home-font);
+}
+
+.gallery-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+}
+
+/* The case-study tags from the index, made pressable. Same size, stroke
+   and corner; on, they fill in with the page's ink. */
+.gallery-chip {
+    all: unset;
+    box-sizing: border-box;
+    height: 24px;
+    padding: 0 9px;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: var(--home-control-radius);
+    background-color: var(--home-bg);
+    font-family: var(--home-font);
+    font-size: 11px;
+    line-height: 22px;
+    color: var(--case-text-label);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.gallery-chip:hover {
+    border-color: rgba(0, 0, 0, 0.35);
+    color: var(--body-text);
+}
+
+.gallery-chip[aria-pressed="true"] {
+    border-color: var(--body-text);
+    background-color: var(--body-text);
+    color: var(--home-bg);
+}
+
+.gallery-chip:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 2px;
+}
+
+.gallery-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+    font-size: var(--acc-text);
+    line-height: 13px;
+    color: var(--case-text-label);
+    white-space: nowrap;
+}
+
+.gallery-hint {
+    margin: 0;
+}
+
+.gallery-control {
+    all: unset;
+    color: var(--body-text);
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.gallery-control:hover {
+    font-weight: 700;
+}
+
+.gallery-control:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 2px;
+}
+
+.gallery-zoom {
+    min-width: 3.2em;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* The index's tooltip, following the pointer over the media. */
+.gallery-tooltip {
+    pointer-events: none;
+    max-width: min(360px, calc(100vw - 32px));
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gallery-tooltip[hidden] {
+    display: none;
+}
+
+.gallery-tooltip__company {
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Case study modal. The case study itself is the index page framed with
+   ?embed and scrolled to the section the media came from.
+   -------------------------------------------------------------------------- */
+
+.gallery-modal {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow: hidden;
+}
+
+.gallery-modal::backdrop {
+    background-color: rgba(250, 250, 250, 0.72);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+.gallery-modal[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-modal__frame {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: min(1352px, calc(100% - 2 * var(--site-gutter)));
+    height: calc(100% - 2 * var(--site-gutter));
+    border: 1px solid var(--home-rule);
+    border-radius: var(--home-radius);
+    background-color: var(--home-bg);
+    box-shadow: 0 24px 64px rgba(26, 26, 26, 0.12);
+    overflow: hidden;
+}
+
+.gallery-modal[open] .gallery-modal__frame {
+    animation: gallery-modal-in 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.gallery-modal[open]::backdrop {
+    animation: gallery-backdrop-in 0.3s ease both;
+}
+
+@keyframes gallery-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes gallery-backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Titled like the open row in the index: number and company in caps, the
+   case study beside them in sentence case, and the cross at the far end. */
+.gallery-modal__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--acc-gap);
+    flex: none;
+    min-height: 35px;
+    padding: var(--acc-pad);
+    padding-right: calc(var(--acc-pad) + 24px + var(--acc-gap));
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--home-rule);
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    line-height: 13px;
+    color: #1A1A1A;
+}
+
+.gallery-modal__title {
+    display: flex;
+    gap: var(--acc-gap);
+    min-width: 0;
+    margin: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.gallery-modal__company {
+    font-weight: 700;
+}
+
+.gallery-modal__case {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: none;
+    color: var(--case-text-label);
+}
+
+.gallery-modal__header > .gallery-modal__open {
+    position: static;
+    display: inline-flex;
+    flex: none;
+    transform: none;
+}
+
+.gallery-modal__header > a.gallery-modal__open,
+.gallery-modal__header > a.gallery-modal__open:hover {
+    text-decoration: none;
+}
+
+.gallery-modal__open .external-link-icon,
+.gallery-modal__open svg {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border: 0;
+}
+
+/* The index's open/close mark, already turned into its cross: four silvered
+   arms in a 24px box, closing in and turning half over under the pointer. */
+.gallery-modal__close {
+    --icon-size: 24px;
+    --icon-stroke: 2px;
+    --icon-arm: 8px;
+    --icon-offset: calc((var(--icon-size) - var(--icon-stroke)) / 2);
+    --icon-inset: 0px;
+
+    all: unset;
+    position: absolute;
+    top: 50%;
+    right: var(--acc-pad);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    margin-top: calc(var(--icon-size) / -2);
+    cursor: pointer;
+}
+
+.gallery-modal__close::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+        135deg,
+        #4F4F53 0%,
+        #6E6E72 20%,
+        #9A9A9E 36%,
+        #E8E8EC 47%,
+        #FAFAFE 50%,
+        #A9A9AD 55%,
+        #6E6E72 68%,
+        #5E5E62 84%,
+        #4F4F53 100%
+    );
+    -webkit-mask-image:
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000);
+    mask-image:
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000),
+        linear-gradient(#000, #000);
+    -webkit-mask-size:
+        var(--icon-stroke) var(--icon-arm),
+        var(--icon-stroke) var(--icon-arm),
+        var(--icon-arm) var(--icon-stroke),
+        var(--icon-arm) var(--icon-stroke);
+    mask-size:
+        var(--icon-stroke) var(--icon-arm),
+        var(--icon-stroke) var(--icon-arm),
+        var(--icon-arm) var(--icon-stroke),
+        var(--icon-arm) var(--icon-stroke);
+    -webkit-mask-position:
+        var(--icon-offset) var(--icon-inset),
+        var(--icon-offset) calc(100% - var(--icon-inset)),
+        var(--icon-inset) var(--icon-offset),
+        calc(100% - var(--icon-inset)) var(--icon-offset);
+    mask-position:
+        var(--icon-offset) var(--icon-inset),
+        var(--icon-offset) calc(100% - var(--icon-inset)),
+        var(--icon-inset) var(--icon-offset),
+        calc(100% - var(--icon-inset)) var(--icon-offset);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    rotate: 45deg;
+    transition:
+        -webkit-mask-position 0.6s cubic-bezier(0.76, 0, 0.24, 1),
+        mask-position 0.6s cubic-bezier(0.76, 0, 0.24, 1),
+        transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.gallery-modal__close:hover::after {
+    --icon-inset: 4px;
+    transform: rotate(180deg);
+}
+
+.gallery-modal__close:focus-visible {
+    outline: 1px solid var(--home-accent);
+    outline-offset: 2px;
+}
+
+.gallery-modal__body {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* Shows through while the frame is faded out for loading or landing. */
+.gallery-modal__body::before {
+    content: 'Loading';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--home-font);
+    font-size: var(--acc-text);
+    line-height: 13px;
+    text-transform: uppercase;
+    color: var(--case-text-label);
+}
+
+.gallery-modal__iframe {
+    position: relative;
+}
+
+.gallery-modal__iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background-color: var(--home-bg);
+    opacity: 1;
+    transition: opacity 0.25s ease;
+}
+
+.gallery-modal__iframe.is-loading {
+    opacity: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Small screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+    .gallery-bar {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .gallery-chips {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin: 0 calc(-1 * var(--gallery-gutter));
+        padding: 0 var(--gallery-gutter);
+    }
+
+    .gallery-chips::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gallery-hint,
+    .gallery-modal__open {
+        display: none;
+    }
+
+    .gallery-controls {
+        margin-left: 0;
+        justify-content: flex-end;
+    }
+
+    .gallery-modal__frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 0;
+    }
+
+    .gallery-modal__header > .gallery-modal__open {
+        display: none;
+    }
+
+    .gallery-modal__case {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gallery-item,
+    .gallery-label,
+    .gallery-lines line,
+    .gallery-lines path,
+    .gallery-modal__close::after {
+        transition: none;
+    }
+
+    .gallery-modal[open] .gallery-modal__frame,
+    .gallery-modal[open]::backdrop {
+        animation: none;
+    }
+
+    .gallery-item.is-hovered,
+    .gallery-item:focus-visible {
+        transform: none;
+    }
+}
