@@ -426,42 +426,46 @@ body.gallery-page {
 }
 
 /* --------------------------------------------------------------------------
-   Case study modal. The case study itself is the index page framed with
-   ?embed and scrolled to the section the media came from.
+   Case study panel. The case study itself is the index page framed with
+   ?embed and scrolled to the section the media came from. It opens as a
+   panel down the right of the window, beside the canvas rather than over a
+   dimmed one, so the gallery stays in view and in reach: another piece can
+   be picked while a case study is open, and the panel just changes to it.
    -------------------------------------------------------------------------- */
+
+.gallery-page {
+    /* Wide enough that the case study keeps its desktop layout on a laptop
+       screen, while leaving the canvas most of the window on a wide one. */
+    --gallery-panel-w: min(clamp(480px, 58vw, 920px), calc(100vw - 2 * var(--site-gutter)));
+}
 
 .gallery-modal {
     position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    z-index: 100;
+    inset: var(--site-gutter) var(--site-gutter) var(--site-gutter) auto;
+    width: var(--gallery-panel-w);
+    height: auto;
     max-width: none;
     max-height: none;
     margin: 0;
     padding: 0;
     border: none;
     background: transparent;
-    overflow: hidden;
-}
-
-.gallery-modal::backdrop {
-    background-color: rgba(250, 250, 250, 0.72);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
+    color: inherit;
+    overflow: visible;
 }
 
 .gallery-modal[open] {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .gallery-modal__frame {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    width: min(1352px, calc(100% - 2 * var(--site-gutter)));
-    height: calc(100% - 2 * var(--site-gutter));
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(26, 26, 26, 0.1);
     border-radius: var(--home-radius);
     background-color: var(--home-bg);
     box-shadow: 0 24px 64px rgba(26, 26, 26, 0.12);
@@ -469,17 +473,17 @@ body.gallery-page {
 }
 
 .gallery-modal[open] .gallery-modal__frame {
-    animation: gallery-modal-in 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation: gallery-panel-in 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-.gallery-modal[open]::backdrop {
-    animation: gallery-backdrop-in 0.3s ease both;
+.gallery-modal[open].is-closing .gallery-modal__frame {
+    animation: gallery-panel-out 0.24s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
-@keyframes gallery-modal-in {
+@keyframes gallery-panel-in {
     from {
         opacity: 0;
-        transform: translateY(16px) scale(0.985);
+        transform: translateX(32px);
     }
     to {
         opacity: 1;
@@ -487,9 +491,15 @@ body.gallery-page {
     }
 }
 
-@keyframes gallery-backdrop-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes gallery-panel-out {
+    from {
+        opacity: 1;
+        transform: none;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(32px);
+    }
 }
 
 /* Titled like the open row in the index: number and company in caps, the
@@ -705,11 +715,16 @@ body.gallery-page {
         justify-content: flex-end;
     }
 
-    .gallery-modal__frame {
+    /* Too narrow to sit beside the canvas, so the panel takes the screen. */
+    .gallery-modal {
+        inset: 0;
         width: 100%;
-        height: 100%;
+    }
+
+    .gallery-modal__frame {
         border: none;
         border-radius: 0;
+        box-shadow: none;
     }
 
     .gallery-modal__header > .gallery-modal__open {
@@ -731,7 +746,7 @@ body.gallery-page {
     }
 
     .gallery-modal[open] .gallery-modal__frame,
-    .gallery-modal[open]::backdrop {
+    .gallery-modal[open].is-closing .gallery-modal__frame {
         animation: none;
     }
 

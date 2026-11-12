@@ -5,8 +5,9 @@
 // clustered around the theme it belongs to. Groups are assigned by hand
 // below; the lines between media are decoration and carry no meaning.
 //
-// Clicking a piece opens its case study in a modal, framed from the index
-// page with ?embed and landed on the section the piece came from.
+// Clicking a piece opens its case study in a panel down the right, framed
+// from the index page with ?embed and landed on the section the piece came
+// from. The canvas stays live beside it.
 // ==========================================================================
 
 (function() {
@@ -434,16 +435,30 @@
         return Math.min(MAX_ZOOM, Math.max(minZoom, k));
     }
 
+    // How much of the stage's right side the case study panel covers, in
+    // stage pixels. Framing and fitting aim at the part left clear.
+    function panelCover() {
+        var panel = document.getElementById('gallery-modal');
+        if (!panel || !panel.open || panel.classList.contains('is-closing')) return 0;
+        var p = panel.getBoundingClientRect();
+        var st = stage.getBoundingClientRect();
+        var cover = st.right - p.left;
+        // A panel that fills the screen (phones) leaves nothing to aim at.
+        if (cover >= st.width * 0.9) return 0;
+        return Math.max(0, cover);
+    }
+
     function cameraFor(b, maxK) {
         var s = stageSize();
+        var w = s.w - panelCover();
         var bw = Math.max(1, b.maxX - b.minX);
         var bh = Math.max(1, b.maxY - b.minY);
-        var k = Math.min((s.w - FIT_PAD * 2) / bw, (s.h - FIT_PAD * 2) / bh);
+        var k = Math.min((w - FIT_PAD * 2) / bw, (s.h - FIT_PAD * 2) / bh);
         k = Math.min(k, maxK || 1.2);
         k = clampZoom(k);
         var cx = (b.minX + b.maxX) / 2;
         var cy = (b.minY + b.maxY) / 2;
-        return { x: s.w / 2 - cx * k, y: s.h / 2 - cy * k, k: k };
+        return { x: w / 2 - cx * k, y: s.h / 2 - cy * k, k: k };
     }
 
     function cancelFlight() {
@@ -878,10 +893,12 @@
     });
 
     document.addEventListener('keydown', function(e) {
-        if (modal.open || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
         if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
         var s = stageSize();
-        if (e.key === '+' || e.key === '=') {
+        if (e.key === 'Escape' && modal.open) {
+            closeCase();
+        } else if (e.key === '+' || e.key === '=') {
             zoomAt(s.w / 2, s.h / 2, 1.25);
         } else if (e.key === '-' || e.key === '_') {
             zoomAt(s.w / 2, s.h / 2, 0.8);
@@ -913,10 +930,12 @@
     }
 
     // ---------------------------------------------------------------------
-    // CASE STUDY MODAL
+    // CASE STUDY PANEL
     // The frame loads the index once with ?embed. Later opens only change
     // its hash, which the index already answers by opening that case study
-    // and scrolling to the section, so the frame never reloads.
+    // and scrolling to the section, so the frame never reloads. The panel
+    // is a non-modal dialog: the canvas beside it keeps working, and picking
+    // another piece while it is open just moves the panel to that one.
     // ---------------------------------------------------------------------
 
     var modal = document.getElementById('gallery-modal');
@@ -929,7 +948,9 @@
     var frameReady = false;
     var revealTimer = null;
     var returnFocus = null;
+    var closeTimer = null;
     var REVEAL_GIVE_UP_MS = 6000;
+    var CLOSE_MS = 240;
 
     // The frame stays faded out until the index has opened the case study
     // and scrolled the section to the top, so the reader never watches the
@@ -1009,12 +1030,37 @@
         revealWhenLanded(id);
 
         returnFocus = item.el;
-        if (typeof modal.showModal === 'function') {
-            modal.showModal();
-        } else {
-            modal.setAttribute('open', '');
+        clearTimeout(closeTimer);
+        modal.classList.remove('is-closing');
+        if (!modal.open) {
+            if (typeof modal.show === 'function') modal.show();
+            else modal.setAttribute('open', '');
         }
         closeBtn.focus({ preventScroll: true });
+        keepClearOfPanel(item);
+    }
+
+    // If the piece just opened sits under the panel or off the stage, slide
+    // the canvas (at the same zoom) so it lands in the middle of what the
+    // panel leaves clear.
+    function keepClearOfPanel(item) {
+        var cover = panelCover();
+        if (!cover) return;
+        var s = stageSize();
+        var clear = s.w - cover;
+        var r = item.el.getBoundingClientRect();
+        var st = stage.getBoundingClientRect();
+        var left = r.left - st.left;
+        var right = r.right - st.left;
+        var top = r.top - st.top;
+        var bottom = r.bottom - st.top;
+        var pad = 24;
+        if (left >= pad && right <= clear - pad && top >= 0 && bottom <= s.h) return;
+        flyTo({
+            x: clear / 2 - item.x * cam.k,
+            y: (top >= 0 && bottom <= s.h) ? cam.y : s.h / 2 - item.y * cam.k,
+            k: cam.k
+        });
     }
 
     function closeCase() {
@@ -1025,8 +1071,17 @@
                 media.pause();
             });
         } catch (e) {}
-        if (typeof modal.close === 'function') modal.close();
-        else modal.removeAttribute('open');
+        clearTimeout(revealTimer);
+        clearTimeout(closeTimer);
+        modal.classList.add('is-closing');
+        closeTimer = setTimeout(function() {
+            modal.classList.remove('is-closing');
+            if (typeof modal.close === 'function') modal.close();
+            else {
+                modal.removeAttribute('open');
+                modal.dispatchEvent(new Event('close'));
+            }
+        }, prefersReducedMotion() ? 0 : CLOSE_MS);
     }
 
     modal.addEventListener('close', function() {
@@ -1036,11 +1091,6 @@
     });
 
     closeBtn.addEventListener('click', closeCase);
-
-    // A click on the dimmed margin around the frame closes it.
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeCase();
-    });
 
     // ---------------------------------------------------------------------
     // START

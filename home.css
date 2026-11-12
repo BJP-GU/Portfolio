@@ -173,9 +173,9 @@ body {
 
 /* ==========================================================================
    GALLERY EMBED
-   The gallery shows a case study in a modal by framing this page with
+   The gallery shows a case study in a side panel by framing this page with
    ?embed. The frame is the open case study alone: the header, home, the rest
-   of the index, the row's own label (the modal titles it and closes it) and
+   of the index, the row's own label (the panel titles it and closes it) and
    the footer all drop out, and the stack offsets collapse to match.
    ========================================================================== */
 
